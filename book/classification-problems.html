@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>9 Classification Problems | Predictive Learning in R - BIOS 534</title>
+  <meta name="description" content="9 Classification Problems | Predictive Learning in R - BIOS 534" />
+  <meta name="generator" content="bookdown 0.14 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="9 Classification Problems | Predictive Learning in R - BIOS 534" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="9 Classification Problems | Predictive Learning in R - BIOS 534" />
+  
+  
+  
+
+<meta name="author" content="Steve Pittard" />
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="data-pre-processing.html"/>
+<link rel="next" href="using-external-ml-frameworks.html"/>
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
+
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Preface</a></li>
+<li class="chapter" data-level="2" data-path="predictive-supervised-learning.html"><a href="predictive-supervised-learning.html"><i class="fa fa-check"></i><b>2</b> Predictive / Supervised Learning</a><ul>
+<li class="chapter" data-level="2.1" data-path="predictive-supervised-learning.html"><a href="predictive-supervised-learning.html#explanation-vs-prediction"><i class="fa fa-check"></i><b>2.1</b> Explanation vs Prediction</a></li>
+<li class="chapter" data-level="2.2" data-path="predictive-supervised-learning.html"><a href="predictive-supervised-learning.html#two-types-of-predictive-models"><i class="fa fa-check"></i><b>2.2</b> Two Types of Predictive Models:</a></li>
+<li class="chapter" data-level="2.3" data-path="predictive-supervised-learning.html"><a href="predictive-supervised-learning.html#bias-vs-variance"><i class="fa fa-check"></i><b>2.3</b> Bias vs Variance</a></li>
+<li class="chapter" data-level="2.4" data-path="predictive-supervised-learning.html"><a href="predictive-supervised-learning.html#overfitting-and-underfitting"><i class="fa fa-check"></i><b>2.4</b> Overfitting and Underfitting</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="a-motivating-example-linear-regression.html"><a href="a-motivating-example-linear-regression.html"><i class="fa fa-check"></i><b>3</b> A Motivating Example - Linear Regression</a><ul>
+<li class="chapter" data-level="3.1" data-path="a-motivating-example-linear-regression.html"><a href="a-motivating-example-linear-regression.html#scatterplot"><i class="fa fa-check"></i><b>3.1</b> Scatterplot</a></li>
+<li class="chapter" data-level="3.2" data-path="a-motivating-example-linear-regression.html"><a href="a-motivating-example-linear-regression.html#correlations"><i class="fa fa-check"></i><b>3.2</b> Correlations</a></li>
+<li class="chapter" data-level="3.3" data-path="a-motivating-example-linear-regression.html"><a href="a-motivating-example-linear-regression.html#building-a-model---in-sample-error"><i class="fa fa-check"></i><b>3.3</b> Building A Model - In Sample Error</a></li>
+<li class="chapter" data-level="3.4" data-path="a-motivating-example-linear-regression.html"><a href="a-motivating-example-linear-regression.html#out-of-sample-data"><i class="fa fa-check"></i><b>3.4</b> Out Of Sample Data</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="training-test-data.html"><a href="training-test-data.html"><i class="fa fa-check"></i><b>4</b> Training / Test Data</a><ul>
+<li class="chapter" data-level="4.1" data-path="training-test-data.html"><a href="training-test-data.html#cross-fold-validation-continued"><i class="fa fa-check"></i><b>4.1</b> Cross Fold Validation Continued</a></li>
+<li class="chapter" data-level="4.2" data-path="training-test-data.html"><a href="training-test-data.html#create-a-function-to-automate-things"><i class="fa fa-check"></i><b>4.2</b> Create A Function To Automate Things</a></li>
+<li class="chapter" data-level="4.3" data-path="training-test-data.html"><a href="training-test-data.html#repeated-cross-validation"><i class="fa fa-check"></i><b>4.3</b> Repeated Cross Validation</a></li>
+<li class="chapter" data-level="4.4" data-path="training-test-data.html"><a href="training-test-data.html#bootstrap"><i class="fa fa-check"></i><b>4.4</b> Bootstrap</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="using-methods-other-than-lm.html"><a href="using-methods-other-than-lm.html"><i class="fa fa-check"></i><b>5</b> Using Methods Other Than lm</a><ul>
+<li class="chapter" data-level="5.1" data-path="using-methods-other-than-lm.html"><a href="using-methods-other-than-lm.html#parameters-vs-hyperparameters"><i class="fa fa-check"></i><b>5.1</b> Parameters vs Hyperparameters</a></li>
+<li class="chapter" data-level="5.2" data-path="using-methods-other-than-lm.html"><a href="using-methods-other-than-lm.html#hyperparameter-tuning"><i class="fa fa-check"></i><b>5.2</b> Hyperparameter Tuning</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="caret-package.html"><a href="caret-package.html"><i class="fa fa-check"></i><b>6</b> Caret Package</a><ul>
+<li class="chapter" data-level="6.1" data-path="caret-package.html"><a href="caret-package.html#putting-caret-to-work"><i class="fa fa-check"></i><b>6.1</b> Putting caret To Work</a></li>
+<li class="chapter" data-level="6.2" data-path="caret-package.html"><a href="caret-package.html#back-to-the-beginning"><i class="fa fa-check"></i><b>6.2</b> Back To The Beginning</a></li>
+<li class="chapter" data-level="6.3" data-path="caret-package.html"><a href="caret-package.html#splitting"><i class="fa fa-check"></i><b>6.3</b> Splitting</a></li>
+<li class="chapter" data-level="6.4" data-path="caret-package.html"><a href="caret-package.html#one-size-fits-all"><i class="fa fa-check"></i><b>6.4</b> One Size Fits All</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="picking-the-best-model.html"><a href="picking-the-best-model.html"><i class="fa fa-check"></i><b>7</b> Picking The Best Model</a><ul>
+<li class="chapter" data-level="7.1" data-path="picking-the-best-model.html"><a href="picking-the-best-model.html#using-the-resamples-function"><i class="fa fa-check"></i><b>7.1</b> Using the resamples() function</a></li>
+<li class="chapter" data-level="7.2" data-path="picking-the-best-model.html"><a href="picking-the-best-model.html#model-performance"><i class="fa fa-check"></i><b>7.2</b> Model Performance</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="data-pre-processing.html"><a href="data-pre-processing.html"><i class="fa fa-check"></i><b>8</b> Data Pre Processing</a><ul>
+<li class="chapter" data-level="8.1" data-path="data-pre-processing.html"><a href="data-pre-processing.html#look-for-highly-correlated-variables"><i class="fa fa-check"></i><b>8.1</b> Look for Highly Correlated Variables</a></li>
+<li class="chapter" data-level="8.2" data-path="data-pre-processing.html"><a href="data-pre-processing.html#scaling-considerations"><i class="fa fa-check"></i><b>8.2</b> Scaling Considerations</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="classification-problems.html"><a href="classification-problems.html"><i class="fa fa-check"></i><b>9</b> Classification Problems</a><ul>
+<li class="chapter" data-level="9.1" data-path="classification-problems.html"><a href="classification-problems.html#correlations-1"><i class="fa fa-check"></i><b>9.1</b> Correlations</a></li>
+<li class="chapter" data-level="9.2" data-path="classification-problems.html"><a href="classification-problems.html#boxplots-and-densities"><i class="fa fa-check"></i><b>9.2</b> Boxplots And Densities</a></li>
+<li class="chapter" data-level="9.3" data-path="classification-problems.html"><a href="classification-problems.html#generalized-linear-models"><i class="fa fa-check"></i><b>9.3</b> Generalized Linear Models</a></li>
+<li class="chapter" data-level="9.4" data-path="classification-problems.html"><a href="classification-problems.html#random-forests"><i class="fa fa-check"></i><b>9.4</b> Random Forests</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="using-external-ml-frameworks.html"><a href="using-external-ml-frameworks.html"><i class="fa fa-check"></i><b>10</b> Using External ML Frameworks</a><ul>
+<li class="chapter" data-level="10.1" data-path="using-external-ml-frameworks.html"><a href="using-external-ml-frameworks.html#using-h2o"><i class="fa fa-check"></i><b>10.1</b> Using H2o</a></li>
+<li class="chapter" data-level="10.2" data-path="using-external-ml-frameworks.html"><a href="using-external-ml-frameworks.html#create-some-h20-models"><i class="fa fa-check"></i><b>10.2</b> Create Some h20 Models</a></li>
+<li class="chapter" data-level="10.3" data-path="using-external-ml-frameworks.html"><a href="using-external-ml-frameworks.html#saving-a-model"><i class="fa fa-check"></i><b>10.3</b> Saving A Model</a></li>
+<li class="chapter" data-level="10.4" data-path="using-external-ml-frameworks.html"><a href="using-external-ml-frameworks.html#using-the-h2o-auto-ml-feature"><i class="fa fa-check"></i><b>10.4</b> Using The h2o Auto ML Feature</a></li>
+<li class="chapter" data-level="10.5" data-path="using-external-ml-frameworks.html"><a href="using-external-ml-frameworks.html#launching-a-job"><i class="fa fa-check"></i><b>10.5</b> Launching a Job</a></li>
+</ul></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Predictive Learning in R - BIOS 534</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="classification-problems" class="section level1">
+<h1><span class="header-section-number">9</span> Classification Problems</h1>
+<p>Here we present data on Pima Indians as it relates to diabetes. This data is provided by the <strong>mlbench</strong> package. The source of the information is the National Institute of Diabetes and Digestive and Kidney Diseases which in turn was hosted on the UCI Repository of Machine Learning. The variables are:</p>
+<pre><code>pregnant - Number of times pregnant
+glucose  - Plasma glucose concentration (glucose tolerance test)
+pressure - Diastolic blood pressure (mm Hg)
+triceps  - Triceps skin fold thickness (mm)
+insulin  - 2-Hour serum insulin (mu U/ml)
+mass       - Body mass index (weight in kg/(height in m)\^2)
+pedigree - Diabetes pedigree function
+age      - Age (years)
+diabetes - Class variable (test for diabetes)</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(mlbench)
+<span class="kw">data</span>(<span class="st">&quot;PimaIndiansDiabetes&quot;</span>)
+
+<span class="co"># The nqme is a little long so let&#39;s shorten it up</span>
+pm &lt;-<span class="st"> </span>PimaIndiansDiabetes</code></pre></div>
+<div id="correlations-1" class="section level2">
+<h2><span class="header-section-number">9.1</span> Correlations</h2>
+<p>If this were more a talk on exploratory practices we might spend more time investigating the relationships between the variables.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(corrplot)
+mydata.cor =<span class="st"> </span><span class="kw">cor</span>(pm[,<span class="op">-</span><span class="dv">9</span>], <span class="dt">method =</span> <span class="kw">c</span>(<span class="st">&quot;spearman&quot;</span>))
+<span class="kw">corrplot</span>(mydata.cor)</code></pre></div>
+<p><img src="_main_files/figure-html/corrplot-1.png" width="672" /></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">palette =<span class="st"> </span><span class="kw">colorRampPalette</span>(<span class="kw">c</span>(<span class="st">&quot;green&quot;</span>, <span class="st">&quot;white&quot;</span>, <span class="st">&quot;red&quot;</span>)) (<span class="dv">20</span>)
+<span class="kw">heatmap</span>(<span class="dt">x =</span> mydata.cor, <span class="dt">col =</span> palette, <span class="dt">symm =</span> <span class="ot">TRUE</span>)</code></pre></div>
+<p><img src="_main_files/figure-html/heatmap-1.png" width="672" /></p>
+</div>
+<div id="boxplots-and-densities" class="section level2">
+<h2><span class="header-section-number">9.2</span> Boxplots And Densities</h2>
+<p>So the object of this code is to see if there are any apparent differences for any of the variables in terms of the diabetes status of a given individual.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">par</span>(<span class="dt">mfrow=</span><span class="kw">c</span>(<span class="dv">2</span>,<span class="dv">4</span>))
+<span class="cf">for</span> (ii <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="dv">8</span>) {
+  form &lt;-<span class="st"> </span><span class="kw">as.formula</span>(<span class="kw">paste</span>(<span class="kw">names</span>(pm)[ii],<span class="st">&quot; ~ diabetes&quot;</span>,<span class="dt">sep=</span><span class="st">&quot;&quot;</span>))
+  <span class="kw">boxplot</span>(form,<span class="dt">data=</span>pm,<span class="dt">main=</span><span class="kw">names</span>(pm)[ii])
+  <span class="kw">grid</span>()
+}</code></pre></div>
+<p><img src="_main_files/figure-html/basebox-1.png" width="672" /></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">par</span>(<span class="dt">mfrow=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">1</span>))</code></pre></div>
+<p>Same plot, though created by ggplot2 commands</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">gather</span>(pm,<span class="dt">key=</span><span class="st">&quot;variable&quot;</span>,<span class="dt">val=</span><span class="st">&quot;value&quot;</span>,<span class="op">-</span>diabetes) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x=</span>diabetes,<span class="dt">y=</span>value)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_boxplot</span>() <span class="op">+</span><span class="st"> </span><span class="kw">facet_wrap</span>(<span class="op">~</span>variable,<span class="dt">scales=</span><span class="st">&quot;free&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">theme_bw</span>()</code></pre></div>
+<p><img src="_main_files/figure-html/ggplotbox-1.png" width="672" /></p>
+<p>Let’s look at how the densities differ in each group (positive vs negative).</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">splitdf &lt;-<span class="st"> </span><span class="kw">split</span>(pm,pm<span class="op">$</span>diabetes)
+<span class="kw">par</span>(<span class="dt">mfrow=</span><span class="kw">c</span>(<span class="dv">2</span>,<span class="dv">4</span>))
+
+ <span class="cf">for</span> (ii <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="dv">8</span>) {
+    a &lt;-<span class="st"> </span><span class="kw">paste</span>(<span class="st">&quot;splitdf[[1]]$&quot;</span>,<span class="kw">names</span>(pm)[ii],<span class="dt">sep=</span><span class="st">&quot;&quot;</span>)
+    <span class="kw">plot</span>(<span class="kw">density</span>(<span class="kw">eval</span>(<span class="kw">parse</span>(<span class="dt">text=</span>a))),<span class="dt">main=</span><span class="kw">names</span>(pm)[ii],<span class="dt">col=</span><span class="st">&quot;red&quot;</span>)
+    a &lt;-<span class="st"> </span><span class="kw">paste</span>(<span class="st">&quot;splitdf[[2]]$&quot;</span>,<span class="kw">names</span>(pm)[ii],<span class="dt">sep=</span><span class="st">&quot;&quot;</span>)
+    <span class="kw">lines</span>(<span class="kw">density</span>(<span class="kw">eval</span>(<span class="kw">parse</span>(<span class="dt">text=</span>a))),<span class="dt">col=</span><span class="st">&quot;blue&quot;</span>)
+    <span class="kw">legend</span>(<span class="st">&quot;bottomright&quot;</span>,
+           <span class="dt">legend=</span><span class="kw">c</span>(<span class="st">&quot;neg&quot;</span>,<span class="st">&quot;pos&quot;</span>),
+           <span class="dt">col=</span><span class="kw">c</span>(<span class="st">&quot;red&quot;</span>,<span class="st">&quot;blue&quot;</span>),<span class="dt">lty=</span><span class="dv">1</span><span class="op">:</span><span class="dv">1</span>,<span class="dt">cex=</span><span class="fl">0.8</span>)
+    <span class="kw">grid</span>()
+
+}</code></pre></div>
+<p><img src="_main_files/figure-html/density-1.png" width="672" /></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">par</span>(<span class="dt">mfrow=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">1</span>))</code></pre></div>
+</div>
+<div id="generalized-linear-models" class="section level2">
+<h2><span class="header-section-number">9.3</span> Generalized Linear Models</h2>
+<p>Let’s pick a technique to model the data with the ultimate goal of being able to predict whether someone has diabetes or not. We’ll start with the <strong>glm</strong> function in R. We’ll take a kitchen sink approach where we predict the diabetes variable (“yes” or “no”) based on the rest of the information in the data frame.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">set.seed</span>(<span class="dv">123</span>)
+idx &lt;-<span class="st"> </span><span class="kw">createDataPartition</span>(pm<span class="op">$</span>diabetes, <span class="dt">p =</span> .<span class="dv">8</span>, 
+                                  <span class="dt">list =</span> <span class="ot">FALSE</span>, 
+                                  <span class="dt">times =</span> <span class="dv">1</span>)
+<span class="kw">head</span>(idx)</code></pre></div>
+<pre><code>##      Resample1
+## [1,]         1
+## [2,]         2
+## [3,]         3
+## [4,]         4
+## [5,]         5
+## [6,]         6</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">train &lt;-<span class="st"> </span>pm[ idx,]
+test  &lt;-<span class="st"> </span>pm[<span class="op">-</span>idx,]
+
+<span class="co">#</span>
+<span class="kw">nrow</span>(train)</code></pre></div>
+<pre><code>## [1] 615</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">nrow</span>(test)</code></pre></div>
+<pre><code>## [1] 153</code></pre>
+<p>If we used the non caret approach we might do something like the following:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">pm_model_glm &lt;-<span class="st"> </span><span class="kw">glm</span>(diabetes <span class="op">~</span><span class="st"> </span>.,
+                        <span class="dt">data =</span> train, <span class="dt">family=</span><span class="st">&quot;binomial&quot;</span>)
+
+pm_model_fitpreds &lt;-<span class="st"> </span><span class="kw">predict</span>(pm_model_glm,test,<span class="dt">type=</span><span class="st">&quot;response&quot;</span>)
+
+fitpredt &lt;-<span class="st"> </span><span class="cf">function</span>(t) <span class="kw">ifelse</span>(pm_model_fitpreds <span class="op">&gt;</span><span class="st"> </span>t , <span class="st">&quot;pos&quot;</span>,<span class="st">&quot;neg&quot;</span>)
+
+fitpreds &lt;-<span class="st"> </span><span class="kw">factor</span>(<span class="kw">fitpredt</span>(.<span class="dv">4</span>),<span class="dt">level=</span><span class="kw">levels</span>(test<span class="op">$</span>diabetes))
+
+caret<span class="op">::</span><span class="kw">confusionMatrix</span>(fitpreds,
+                       test<span class="op">$</span>diabetes,
+                       <span class="dt">positive=</span><span class="st">&quot;pos&quot;</span>)</code></pre></div>
+<pre><code>## Confusion Matrix and Statistics
+## 
+##           Reference
+## Prediction neg pos
+##        neg  88  20
+##        pos  12  33
+##                                           
+##                Accuracy : 0.7908          
+##                  95% CI : (0.7178, 0.8523)
+##     No Information Rate : 0.6536          
+##     P-Value [Acc &gt; NIR] : 0.0001499       
+##                                           
+##                   Kappa : 0.5211          
+##                                           
+##  Mcnemar&#39;s Test P-Value : 0.2159249       
+##                                           
+##             Sensitivity : 0.6226          
+##             Specificity : 0.8800          
+##          Pos Pred Value : 0.7333          
+##          Neg Pred Value : 0.8148          
+##              Prevalence : 0.3464          
+##          Detection Rate : 0.2157          
+##    Detection Prevalence : 0.2941          
+##       Balanced Accuracy : 0.7513          
+##                                           
+##        &#39;Positive&#39; Class : pos             
+## </code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(caTools)
+<span class="kw">colAUC</span>(pm_model_fitpreds,test<span class="op">$</span>diabetes,<span class="dt">plotROC=</span><span class="ot">TRUE</span>)</code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-42-1.png" width="672" /></p>
+<pre><code>##                  [,1]
+## neg vs. pos 0.8296226</code></pre>
+<p>But wait, why would we do this if we have the <strong>caret</strong> package readily available. We can explore any number methods, implement K Fold Cross Validation,and get feedback on the performance measures at the same time. Let’s reframe our above work using the caret package conveniences.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ctrl &lt;-<span class="st"> </span><span class="kw">trainControl</span>(<span class="dt">method =</span> <span class="st">&quot;cv&quot;</span>, 
+                     <span class="dt">number =</span> <span class="dv">5</span>
+                     )
+
+pm_glm_mod &lt;-<span class="st"> </span><span class="kw">train</span>(<span class="dt">form =</span> diabetes <span class="op">~</span><span class="st"> </span>.,
+                    <span class="dt">data =</span> train,
+                    <span class="dt">trControl =</span> ctrl,
+                    <span class="dt">metric =</span> <span class="st">&quot;Accuracy&quot;</span>,
+                    <span class="dt">method =</span> <span class="st">&quot;glm&quot;</span>,
+                    <span class="dt">family =</span> <span class="st">&quot;binomial&quot;</span>,
+                    <span class="dt">preProc =</span> <span class="kw">c</span>(<span class="st">&quot;center&quot;</span>, <span class="st">&quot;scale&quot;</span>)
+                    )
+pm_glm_mod</code></pre></div>
+<pre><code>## Generalized Linear Model 
+## 
+## 615 samples
+##   8 predictor
+##   2 classes: &#39;neg&#39;, &#39;pos&#39; 
+## 
+## Pre-processing: centered (8), scaled (8) 
+## Resampling: Cross-Validated (5 fold) 
+## Summary of sample sizes: 492, 492, 492, 492, 492 
+## Resampling results:
+## 
+##   Accuracy   Kappa    
+##   0.7756098  0.4849025</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">pm_glm_mod<span class="op">$</span>results</code></pre></div>
+<pre><code>##   parameter  Accuracy     Kappa AccuracySD   KappaSD
+## 1      none 0.7756098 0.4849025 0.04726648 0.1046417</code></pre>
+<p>We asked for the model to be build with concern for Accuracy being the priority. This is why in the result we see an estimated 77% accuracy rate when the model is applied to out of sample data.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">pm_glm_pred_labels &lt;-<span class="st"> </span><span class="kw">predict</span>(pm_glm_mod,test)
+<span class="kw">confusionMatrix</span>(pm_glm_pred_labels,test<span class="op">$</span>diabetes)</code></pre></div>
+<pre><code>## Confusion Matrix and Statistics
+## 
+##           Reference
+## Prediction neg pos
+##        neg  91  26
+##        pos   9  27
+##                                           
+##                Accuracy : 0.7712          
+##                  95% CI : (0.6965, 0.8352)
+##     No Information Rate : 0.6536          
+##     P-Value [Acc &gt; NIR] : 0.001098        
+##                                           
+##                   Kappa : 0.4536          
+##                                           
+##  Mcnemar&#39;s Test P-Value : 0.006841        
+##                                           
+##             Sensitivity : 0.9100          
+##             Specificity : 0.5094          
+##          Pos Pred Value : 0.7778          
+##          Neg Pred Value : 0.7500          
+##              Prevalence : 0.6536          
+##          Detection Rate : 0.5948          
+##    Detection Prevalence : 0.7647          
+##       Balanced Accuracy : 0.7097          
+##                                           
+##        &#39;Positive&#39; Class : neg             
+## </code></pre>
+<p>We can certainly change the scoring metric to prioritize, for example, the area under the associated ROC curve. We just need to make some adjustments to the trainControl argument list and the train argument list.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ctrl &lt;-<span class="st"> </span><span class="kw">trainControl</span>(<span class="dt">method =</span> <span class="st">&quot;cv&quot;</span>, 
+                     <span class="dt">number =</span> <span class="dv">5</span>,
+                     <span class="dt">classProbs =</span> <span class="ot">TRUE</span>,
+                     <span class="dt">summaryFunction =</span> twoClassSummary
+                     )
+
+pm_glm_mod &lt;-<span class="st"> </span><span class="kw">train</span>(<span class="dt">form =</span> diabetes <span class="op">~</span><span class="st"> </span>.,
+                    <span class="dt">data =</span> train,
+                    <span class="dt">trControl =</span> ctrl,
+                    <span class="dt">metric =</span> <span class="st">&quot;ROC&quot;</span>,
+                    <span class="dt">method =</span> <span class="st">&quot;glm&quot;</span>,
+                    <span class="dt">family =</span> <span class="st">&quot;binomial&quot;</span>,
+                    <span class="dt">preProc =</span> <span class="kw">c</span>(<span class="st">&quot;center&quot;</span>, <span class="st">&quot;scale&quot;</span>)
+                    )
+
+pm_glm_mod<span class="op">$</span>results</code></pre></div>
+<pre><code>##   parameter  ROC   Sens      Spec      ROCSD     SensSD     SpecSD
+## 1      none 0.83 0.8775 0.5767442 0.03093329 0.01629801 0.08607793</code></pre>
+</div>
+<div id="random-forests" class="section level2">
+<h2><span class="header-section-number">9.4</span> Random Forests</h2>
+<p>Let’s use random forests to see what results we get. Random forests are robust to over fitting and are fairly easy to implement. They can improve accuracy by fitting many trees. Each tree is fit to a resampled version of the input data (usually a bootstrap). This is known as boostrap aggregation or “bagged” trees. At each split, the function takes a random sample of columns (the mtry argument).</p>
+<p>The function we will use here, <strong>ranger</strong>, has three hyper parameters which could be set to a range of values which, in turn, could influence the resulting model. With glm, we didn’t really have a hyper parameter. Here is how to tell if a caret-supported model has one or more hyper parameters available for tuning:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">modelLookup</span>(<span class="st">&quot;ranger&quot;</span>)</code></pre></div>
+<pre><code>##    model     parameter                         label forReg forClass
+## 1 ranger          mtry #Randomly Selected Predictors   TRUE     TRUE
+## 2 ranger     splitrule                Splitting Rule   TRUE     TRUE
+## 3 ranger min.node.size             Minimal Node Size   TRUE     TRUE
+##   probModel
+## 1      TRUE
+## 2      TRUE
+## 3      TRUE</code></pre>
+<p>We’ll switch out metric back to Accuracy</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ctrl &lt;-<span class="st"> </span><span class="kw">trainControl</span>(<span class="dt">method =</span> <span class="st">&quot;cv&quot;</span>, 
+                     <span class="dt">number =</span> <span class="dv">5</span>
+                     )
+
+pm_ranger_mod &lt;-<span class="st"> </span><span class="kw">train</span>(<span class="dt">form =</span> diabetes <span class="op">~</span><span class="st"> </span>.,
+                    <span class="dt">data =</span> train,
+                    <span class="dt">trControl =</span> ctrl,
+                    <span class="dt">metric =</span> <span class="st">&quot;Accuracy&quot;</span>,
+                    <span class="dt">method =</span> <span class="st">&quot;ranger&quot;</span>,
+                    <span class="dt">preProc =</span> <span class="kw">c</span>(<span class="st">&quot;center&quot;</span>, <span class="st">&quot;scale&quot;</span>)
+                    )</code></pre></div>
+<p>By default the training process will move through three different values of mtry though we could either set this explicitly in the train function or as part of the hyper parameter tuning processed mentioned previously. If we choose the latter, then we can take advantage of the fact that <strong>caret</strong> knows what hyper parameters the method supports and can cycle through possible valid values of these hyper parameters. This is accomplished via the <strong>tuneLength</strong> argument to the <strong>train</strong> function. We could use the <strong>tuneGrid</strong> argument along with a manually specified tuning grid but it’s easier to use <strong>tuneLength</strong> for now.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">pm_ranger_mod</code></pre></div>
+<pre><code>## Random Forest 
+## 
+## 615 samples
+##   8 predictor
+##   2 classes: &#39;neg&#39;, &#39;pos&#39; 
+## 
+## Pre-processing: centered (8), scaled (8) 
+## Resampling: Cross-Validated (5 fold) 
+## Summary of sample sizes: 492, 492, 492, 492, 492 
+## Resampling results across tuning parameters:
+## 
+##   mtry  splitrule   Accuracy   Kappa    
+##   2     gini        0.7430894  0.4171190
+##   2     extratrees  0.7495935  0.4200788
+##   5     gini        0.7512195  0.4438470
+##   5     extratrees  0.7609756  0.4514632
+##   8     gini        0.7495935  0.4402630
+##   8     extratrees  0.7609756  0.4578970
+## 
+## Tuning parameter &#39;min.node.size&#39; was held constant at a value of 1
+## Accuracy was used to select the optimal model using the largest value.
+## The final values used for the model were mtry = 5, splitrule =
+##  extratrees and min.node.size = 1.</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ctrl &lt;-<span class="st"> </span><span class="kw">trainControl</span>(<span class="dt">method =</span> <span class="st">&quot;cv&quot;</span>, 
+                     <span class="dt">number =</span> <span class="dv">5</span>,
+                     <span class="dt">classProbs =</span> <span class="ot">TRUE</span>,
+                     <span class="dt">summaryFunction =</span> twoClassSummary
+                     )
+
+pm_ranger_mod &lt;-<span class="st"> </span><span class="kw">train</span>(<span class="dt">form =</span> diabetes <span class="op">~</span><span class="st"> </span>.,
+                    <span class="dt">data =</span> train,
+                    <span class="dt">trControl =</span> ctrl,
+                    <span class="dt">metric =</span> <span class="st">&quot;ROC&quot;</span>,
+                    <span class="dt">method =</span> <span class="st">&quot;ranger&quot;</span>,
+                    <span class="dt">tuneLength =</span> <span class="dv">7</span>,
+                    <span class="dt">preProc =</span> <span class="kw">c</span>(<span class="st">&quot;center&quot;</span>, <span class="st">&quot;scale&quot;</span>)
+                    )</code></pre></div>
+<p>The object can be plotted. Here we see that the max AUC of .825 occurs when mtry is 3 and the Gini criterion is used to evaluate a tree.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(pm_ranger_mod)</code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-49-1.png" width="672" /></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">max</span>(pm_ranger_mod[[<span class="st">&quot;results&quot;</span>]]<span class="op">$</span>ROC)</code></pre></div>
+<pre><code>## [1] 0.8190116</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">preds &lt;-<span class="st"> </span><span class="kw">predict</span>(pm_ranger_mod,test)
+<span class="kw">confusionMatrix</span>(preds,test<span class="op">$</span>diabetes)</code></pre></div>
+<pre><code>## Confusion Matrix and Statistics
+## 
+##           Reference
+## Prediction neg pos
+##        neg  88  21
+##        pos  12  32
+##                                           
+##                Accuracy : 0.7843          
+##                  95% CI : (0.7106, 0.8466)
+##     No Information Rate : 0.6536          
+##     P-Value [Acc &gt; NIR] : 0.0003018       
+##                                           
+##                   Kappa : 0.5039          
+##                                           
+##  Mcnemar&#39;s Test P-Value : 0.1637344       
+##                                           
+##             Sensitivity : 0.8800          
+##             Specificity : 0.6038          
+##          Pos Pred Value : 0.8073          
+##          Neg Pred Value : 0.7273          
+##              Prevalence : 0.6536          
+##          Detection Rate : 0.5752          
+##    Detection Prevalence : 0.7124          
+##       Balanced Accuracy : 0.7419          
+##                                           
+##        &#39;Positive&#39; Class : neg             
+## </code></pre>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="data-pre-processing.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="using-external-ml-frameworks.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"google": false,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
