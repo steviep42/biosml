@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>3 A Motivating Example - Linear Regression | Predictive Learning in R - BIOS 534</title>
+  <meta name="description" content="3 A Motivating Example - Linear Regression | Predictive Learning in R - BIOS 534" />
+  <meta name="generator" content="bookdown 0.14 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="3 A Motivating Example - Linear Regression | Predictive Learning in R - BIOS 534" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="3 A Motivating Example - Linear Regression | Predictive Learning in R - BIOS 534" />
+  
+  
+  
+
+<meta name="author" content="Steve Pittard" />
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="predictive-supervised-learning.html"/>
+<link rel="next" href="training-test-data.html"/>
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
+
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Preface</a></li>
+<li class="chapter" data-level="2" data-path="predictive-supervised-learning.html"><a href="predictive-supervised-learning.html"><i class="fa fa-check"></i><b>2</b> Predictive / Supervised Learning</a><ul>
+<li class="chapter" data-level="2.1" data-path="predictive-supervised-learning.html"><a href="predictive-supervised-learning.html#explanation-vs-prediction"><i class="fa fa-check"></i><b>2.1</b> Explanation vs Prediction</a></li>
+<li class="chapter" data-level="2.2" data-path="predictive-supervised-learning.html"><a href="predictive-supervised-learning.html#two-types-of-predictive-models"><i class="fa fa-check"></i><b>2.2</b> Two Types of Predictive Models:</a></li>
+<li class="chapter" data-level="2.3" data-path="predictive-supervised-learning.html"><a href="predictive-supervised-learning.html#bias-vs-variance"><i class="fa fa-check"></i><b>2.3</b> Bias vs Variance</a></li>
+<li class="chapter" data-level="2.4" data-path="predictive-supervised-learning.html"><a href="predictive-supervised-learning.html#overfitting-and-underfitting"><i class="fa fa-check"></i><b>2.4</b> Overfitting and Underfitting</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="a-motivating-example-linear-regression.html"><a href="a-motivating-example-linear-regression.html"><i class="fa fa-check"></i><b>3</b> A Motivating Example - Linear Regression</a><ul>
+<li class="chapter" data-level="3.1" data-path="a-motivating-example-linear-regression.html"><a href="a-motivating-example-linear-regression.html#scatterplot"><i class="fa fa-check"></i><b>3.1</b> Scatterplot</a></li>
+<li class="chapter" data-level="3.2" data-path="a-motivating-example-linear-regression.html"><a href="a-motivating-example-linear-regression.html#correlations"><i class="fa fa-check"></i><b>3.2</b> Correlations</a></li>
+<li class="chapter" data-level="3.3" data-path="a-motivating-example-linear-regression.html"><a href="a-motivating-example-linear-regression.html#building-a-model---in-sample-error"><i class="fa fa-check"></i><b>3.3</b> Building A Model - In Sample Error</a></li>
+<li class="chapter" data-level="3.4" data-path="a-motivating-example-linear-regression.html"><a href="a-motivating-example-linear-regression.html#out-of-sample-data"><i class="fa fa-check"></i><b>3.4</b> Out Of Sample Data</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="training-test-data.html"><a href="training-test-data.html"><i class="fa fa-check"></i><b>4</b> Training / Test Data</a><ul>
+<li class="chapter" data-level="4.1" data-path="training-test-data.html"><a href="training-test-data.html#cross-fold-validation-continued"><i class="fa fa-check"></i><b>4.1</b> Cross Fold Validation Continued</a></li>
+<li class="chapter" data-level="4.2" data-path="training-test-data.html"><a href="training-test-data.html#create-a-function-to-automate-things"><i class="fa fa-check"></i><b>4.2</b> Create A Function To Automate Things</a></li>
+<li class="chapter" data-level="4.3" data-path="training-test-data.html"><a href="training-test-data.html#repeated-cross-validation"><i class="fa fa-check"></i><b>4.3</b> Repeated Cross Validation</a></li>
+<li class="chapter" data-level="4.4" data-path="training-test-data.html"><a href="training-test-data.html#bootstrap"><i class="fa fa-check"></i><b>4.4</b> Bootstrap</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="using-methods-other-than-lm.html"><a href="using-methods-other-than-lm.html"><i class="fa fa-check"></i><b>5</b> Using Methods Other Than lm</a><ul>
+<li class="chapter" data-level="5.1" data-path="using-methods-other-than-lm.html"><a href="using-methods-other-than-lm.html#parameters-vs-hyperparameters"><i class="fa fa-check"></i><b>5.1</b> Parameters vs Hyperparameters</a></li>
+<li class="chapter" data-level="5.2" data-path="using-methods-other-than-lm.html"><a href="using-methods-other-than-lm.html#hyperparameter-tuning"><i class="fa fa-check"></i><b>5.2</b> Hyperparameter Tuning</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="caret-package.html"><a href="caret-package.html"><i class="fa fa-check"></i><b>6</b> Caret Package</a><ul>
+<li class="chapter" data-level="6.1" data-path="caret-package.html"><a href="caret-package.html#putting-caret-to-work"><i class="fa fa-check"></i><b>6.1</b> Putting caret To Work</a></li>
+<li class="chapter" data-level="6.2" data-path="caret-package.html"><a href="caret-package.html#back-to-the-beginning"><i class="fa fa-check"></i><b>6.2</b> Back To The Beginning</a></li>
+<li class="chapter" data-level="6.3" data-path="caret-package.html"><a href="caret-package.html#splitting"><i class="fa fa-check"></i><b>6.3</b> Splitting</a></li>
+<li class="chapter" data-level="6.4" data-path="caret-package.html"><a href="caret-package.html#one-size-fits-all"><i class="fa fa-check"></i><b>6.4</b> One Size Fits All</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="picking-the-best-model.html"><a href="picking-the-best-model.html"><i class="fa fa-check"></i><b>7</b> Picking The Best Model</a><ul>
+<li class="chapter" data-level="7.1" data-path="picking-the-best-model.html"><a href="picking-the-best-model.html#using-the-resamples-function"><i class="fa fa-check"></i><b>7.1</b> Using the resamples() function</a></li>
+<li class="chapter" data-level="7.2" data-path="picking-the-best-model.html"><a href="picking-the-best-model.html#model-performance"><i class="fa fa-check"></i><b>7.2</b> Model Performance</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="data-pre-processing.html"><a href="data-pre-processing.html"><i class="fa fa-check"></i><b>8</b> Data Pre Processing</a><ul>
+<li class="chapter" data-level="8.1" data-path="data-pre-processing.html"><a href="data-pre-processing.html#look-for-highly-correlated-variables"><i class="fa fa-check"></i><b>8.1</b> Look for Highly Correlated Variables</a></li>
+<li class="chapter" data-level="8.2" data-path="data-pre-processing.html"><a href="data-pre-processing.html#scaling-considerations"><i class="fa fa-check"></i><b>8.2</b> Scaling Considerations</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="classification-problems.html"><a href="classification-problems.html"><i class="fa fa-check"></i><b>9</b> Classification Problems</a><ul>
+<li class="chapter" data-level="9.1" data-path="classification-problems.html"><a href="classification-problems.html#correlations-1"><i class="fa fa-check"></i><b>9.1</b> Correlations</a></li>
+<li class="chapter" data-level="9.2" data-path="classification-problems.html"><a href="classification-problems.html#boxplots-and-densities"><i class="fa fa-check"></i><b>9.2</b> Boxplots And Densities</a></li>
+<li class="chapter" data-level="9.3" data-path="classification-problems.html"><a href="classification-problems.html#generalized-linear-models"><i class="fa fa-check"></i><b>9.3</b> Generalized Linear Models</a></li>
+<li class="chapter" data-level="9.4" data-path="classification-problems.html"><a href="classification-problems.html#random-forests"><i class="fa fa-check"></i><b>9.4</b> Random Forests</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="using-external-ml-frameworks.html"><a href="using-external-ml-frameworks.html"><i class="fa fa-check"></i><b>10</b> Using External ML Frameworks</a><ul>
+<li class="chapter" data-level="10.1" data-path="using-external-ml-frameworks.html"><a href="using-external-ml-frameworks.html#using-h2o"><i class="fa fa-check"></i><b>10.1</b> Using H2o</a></li>
+<li class="chapter" data-level="10.2" data-path="using-external-ml-frameworks.html"><a href="using-external-ml-frameworks.html#create-some-h20-models"><i class="fa fa-check"></i><b>10.2</b> Create Some h20 Models</a></li>
+<li class="chapter" data-level="10.3" data-path="using-external-ml-frameworks.html"><a href="using-external-ml-frameworks.html#saving-a-model"><i class="fa fa-check"></i><b>10.3</b> Saving A Model</a></li>
+<li class="chapter" data-level="10.4" data-path="using-external-ml-frameworks.html"><a href="using-external-ml-frameworks.html#using-the-h2o-auto-ml-feature"><i class="fa fa-check"></i><b>10.4</b> Using The h2o Auto ML Feature</a></li>
+<li class="chapter" data-level="10.5" data-path="using-external-ml-frameworks.html"><a href="using-external-ml-frameworks.html#launching-a-job"><i class="fa fa-check"></i><b>10.5</b> Launching a Job</a></li>
+</ul></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Predictive Learning in R - BIOS 534</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="a-motivating-example---linear-regression" class="section level1">
+<h1><span class="header-section-number">3</span> A Motivating Example - Linear Regression</h1>
+<p>Thus far we haven’t gotten our hands dirty but we’ll need to do that if we want an experiential approach to any of this. Let’s start out with what is probably the most (over)used data set in R Education - the “mtcars” data frame.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">Motor Trend Car Road Tests
+
+The data was extracted from the <span class="dv">1974</span> Motor Trend US magazine, 
+and comprises fuel consumption and <span class="dv">10</span> aspects of automobile 
+design and performance <span class="cf">for</span> <span class="dv">32</span> <span class="kw">automobiles</span> (<span class="dv">1973</span>–<span class="dv">74</span> models).
+
+A data frame with <span class="dv">32</span> observations on <span class="dv">11</span> (numeric) variables.
+
+[, <span class="dv">1</span>]   mpg   Miles<span class="op">/</span>(US) gallon
+[, <span class="dv">2</span>]   cyl   Number of cylinders
+[, <span class="dv">3</span>]   disp  <span class="kw">Displacement</span> (cu.in.)
+[, <span class="dv">4</span>]   hp    Gross horsepower
+[, <span class="dv">5</span>]   drat    Rear axle ratio
+[, <span class="dv">6</span>]   wt    <span class="kw">Weight</span> (<span class="dv">1000</span> lbs)
+[, <span class="dv">7</span>]   qsec    <span class="dv">1</span><span class="op">/</span><span class="dv">4</span> mile time
+[, <span class="dv">8</span>]   vs    <span class="kw">Engine</span> (<span class="dv">0</span> =<span class="st"> </span>V<span class="op">-</span>shaped, <span class="dv">1</span> =<span class="st"> </span>straight)
+[, <span class="dv">9</span>]   am    <span class="kw">Transmission</span> (<span class="dv">0</span> =<span class="st"> </span>automatic, <span class="dv">1</span> =<span class="st"> </span>manual)
+[,<span class="dv">10</span>]   gear    Number of forward gears
+[,<span class="dv">11</span>]   carb    Number of carburetors</code></pre></div>
+<div id="scatterplot" class="section level2">
+<h2><span class="header-section-number">3.1</span> Scatterplot</h2>
+<p>Let’s look at a <strong>pairs()</strong> plot to see if there are any obvious linear relationships between any of the variables. Some of these variables can be considered as factors or categories (such as cyl, vs, am, gear, and carb) so for now we will exclude them to focus only on the continuous / measured variables.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">pairs</span>(mtcars[,<span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">3</span><span class="op">:</span><span class="dv">7</span>)])</code></pre></div>
+<p><img src="_main_files/figure-html/pairsplot-1.png" width="672" /></p>
+</div>
+<div id="correlations" class="section level2">
+<h2><span class="header-section-number">3.2</span> Correlations</h2>
+<p>Let’s look at some correlations to see how we might predict MPG as a function of other variables in the data set. Note that this isn’t an in-depth modeling lecture so we will fast track over deep discussions on how to fully evaluate and diagnose a model emerging from a specific method - although that is important. But, in the interest of motivating a work flow, we’ll simplify some of those discussions for now.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">suppressMessages</span>(<span class="kw">library</span>(corrplot))
+mydata.cor =<span class="st"> </span><span class="kw">cor</span>(mtcars[,<span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">3</span><span class="op">:</span><span class="dv">7</span>)], <span class="dt">method =</span> <span class="kw">c</span>(<span class="st">&quot;spearman&quot;</span>))
+<span class="kw">corrplot</span>(mydata.cor)</code></pre></div>
+<p><img src="_main_files/figure-html/corrplot1-1.png" width="672" /></p>
+<p>There are some strong correlations here and perhaps a case could be made for collinearity but we aren’t going to get into that right now. We also have variables on different measurement scales but, again, we’ll hold off dealing with that for the moment.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">corr.df &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(<span class="kw">as.table</span>(mydata.cor))
+cdf &lt;-<span class="st"> </span>corr.df <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">filter</span>(Freq <span class="op">!=</span><span class="st"> </span><span class="fl">1.0</span> <span class="op">&amp;</span><span class="st"> </span><span class="kw">abs</span>(Freq) <span class="op">&gt;</span><span class="st"> </span><span class="fl">0.5</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">arrange</span>(<span class="kw">desc</span>(<span class="kw">abs</span>(Freq)))
+
+cdf[<span class="kw">seq</span>(<span class="dv">1</span>,<span class="kw">nrow</span>(cdf),<span class="dv">2</span>),] <span class="op">%&gt;%</span><span class="st">  </span>
+<span class="st">  </span><span class="kw">arrange</span>(<span class="kw">desc</span>(<span class="kw">abs</span>(Freq)))</code></pre></div>
+<pre><code>##    Var1 Var2       Freq
+## 1  disp  mpg -0.9088824
+## 2    wt disp  0.8977064
+## 3    hp  mpg -0.8946646
+## 4    wt  mpg -0.8864220
+## 5    hp disp  0.8510426
+## 6    wt   hp  0.7746767
+## 7    wt drat -0.7503904
+## 8  drat disp -0.6835921
+## 9  qsec   hp -0.6666060
+## 10 drat  mpg  0.6514555
+## 11 drat   hp -0.5201250</code></pre>
+</div>
+<div id="building-a-model---in-sample-error" class="section level2">
+<h2><span class="header-section-number">3.3</span> Building A Model - In Sample Error</h2>
+<p>So now we will use the above information to build a linear model using the mtcars data frame. We’ll turn around and use the same exact data frame to test our model - Any resulting error we see will be <strong>in sample</strong> error and will not generalize well to new data. The model will not help us anticipate any <strong>out of sample error</strong>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(mtcars)
+
+<span class="co"># Let&#39;s evaluate a basic formula</span>
+myform &lt;-<span class="st"> </span><span class="kw">formula</span>(mpg<span class="op">~</span>wt)
+
+<span class="co"># Use the built in &quot;lm&quot; function</span>
+lm_model &lt;-<span class="st"> </span><span class="kw">lm</span>(myform,<span class="dt">data=</span>mtcars)
+<span class="kw">summary</span>(lm_model)</code></pre></div>
+<pre><code>## 
+## Call:
+## lm(formula = myform, data = mtcars)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -4.5432 -2.3647 -0.1252  1.4096  6.8727 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)  37.2851     1.8776  19.858  &lt; 2e-16 ***
+## wt           -5.3445     0.5591  -9.559 1.29e-10 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 3.046 on 30 degrees of freedom
+## Multiple R-squared:  0.7528, Adjusted R-squared:  0.7446 
+## F-statistic: 91.38 on 1 and 30 DF,  p-value: 1.294e-10</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Do the predictions on the data set used to train the</span>
+<span class="co"># model. This isn&#39;t what you want to do in the real world</span>
+
+training_preds &lt;-<span class="st"> </span><span class="kw">predict</span>(
+    lm_model,
+    <span class="dt">newdata=</span>mtcars,
+    <span class="dt">type=</span><span class="st">&quot;response&quot;</span>
+  )</code></pre></div>
+<p>So let’s see what this looks like graphically. Remember that we want to be able to compute the Root Mean Square Error for this model:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">title &lt;-<span class="st"> &quot;lm - mpg~wt&quot;</span>
+<span class="kw">plot</span>(mpg<span class="op">~</span>wt,mtcars,<span class="dt">pch=</span><span class="dv">19</span>,<span class="dt">main=</span>title,
+     <span class="dt">ylim=</span><span class="kw">c</span>(<span class="kw">min</span>(mtcars<span class="op">$</span>mpg)<span class="op">-</span><span class="dv">5</span>,<span class="kw">max</span>(mtcars<span class="op">$</span>mpg)))
+<span class="kw">abline</span>(lm_model)
+<span class="kw">grid</span>()
+<span class="kw">segments</span>(mtcars<span class="op">$</span>wt,training_preds,
+         mtcars<span class="op">$</span>wt,mtcars<span class="op">$</span>mpg,
+         <span class="dt">col=</span><span class="st">&quot;red&quot;</span>,<span class="dt">lwd=</span><span class="fl">1.2</span>)</code></pre></div>
+<p><img src="_main_files/figure-html/lmplot-1.png" width="672" /></p>
+<p>Let’s compute the RMSE for this model. The formula for this is:</p>
+<p><span class="math display">\[
+RMSE = \sqrt\frac{\sum_i^n(P_i-O_i)^2}{n}
+\]</span></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">errors &lt;-<span class="st"> </span>training_preds<span class="op">-</span>mtcars<span class="op">$</span>mpg
+training_rmse   &lt;-<span class="st"> </span><span class="kw">sqrt</span>(<span class="kw">mean</span>(errors<span class="op">^</span><span class="dv">2</span>))
+<span class="kw">print</span>(training_rmse)</code></pre></div>
+<pre><code>## [1] 2.949163</code></pre>
+<p>We might even want to create a function to do this for future use:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Lets define a rmse function for future use</span>
+compute_rmse &lt;-<span class="st"> </span><span class="cf">function</span>(preds,known) {
+  errors &lt;-<span class="st"> </span>preds<span class="op">-</span>known
+  rmse   &lt;-<span class="st"> </span><span class="kw">sqrt</span>(<span class="kw">mean</span>(errors<span class="op">^</span><span class="dv">2</span>))
+  <span class="kw">return</span>(rmse)
+}
+
+<span class="kw">compute_rmse</span>(training_preds,mtcars<span class="op">$</span>mpg)</code></pre></div>
+<pre><code>## [1] 2.949163</code></pre>
+<p>Is this good ? Bad ? Just average ? Well we don’t really know. One good thing is that the metric is in terms of the predicted variable, <strong>mpg</strong>, so it can easily be interpreted.</p>
+<p>However, unless someone has specified a tolerance level for the RMSE we don’t know if we have something that can be extended to other car types. We also could experiment with other regression formula to see if the RMSE goes down (or up).</p>
+</div>
+<div id="out-of-sample-data" class="section level2">
+<h2><span class="header-section-number">3.4</span> Out Of Sample Data</h2>
+<p>Now let’s repeat this exercise by generating a linear model on a subset of the mtcars data frame and then apply that model to the remaining data. In modeling parlance this is known as having a “training” and “test” data set.</p>
+<p>The idea here is to build a model using say the first 21 rows of mtcars (a training set that is roughly 65% of the data) and then use a test set, rows 22 - 32 of mtcars, as input to the model to determine how well the model performs.</p>
+<p>Remember - we want to minimize the RMSE. The first 21 rows are outlined in green and rows 22-32 are outlined in red. This means we are training on a subset of the data and we hope that any model we build thereon will be extensible to the holdout or test data frame</p>
+<div class="figure">
+<img src="pics/mtcars.png" />
+
+</div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">lm_model_train &lt;-<span class="st"> </span><span class="kw">lm</span>(myform,<span class="dt">data=</span>mtcars[<span class="dv">1</span><span class="op">:</span><span class="dv">21</span>,])
+
+<span class="co"># Do the prediction on the test set</span>
+test_preds &lt;-<span class="st"> </span><span class="kw">predict</span>(
+    lm_model_train,
+    <span class="dt">newdata=</span>mtcars[<span class="dv">22</span><span class="op">:</span><span class="dv">32</span>,],
+    <span class="dt">type=</span><span class="st">&quot;response&quot;</span>
+  )
+
+(test_rmse &lt;-<span class="st"> </span><span class="kw">compute_rmse</span>(test_preds,mtcars[<span class="dv">22</span><span class="op">:</span><span class="dv">32</span>,]<span class="op">$</span>mpg))</code></pre></div>
+<pre><code>## [1] 3.286759</code></pre>
+<p>We trained the model on the first 21 rows of the data frame which might contain some outliers (or not). The RMSE got larger ! Does this mean the model is “bad” ? Maybe, maybe not.</p>
+<p>One thing we could do is to experiment with another split of the data, perhaps in a different proportion (e.g. 80/20) or maybe even a series of splits to see if we can get an idea of how widely the RMSE varies. Here we create a sample of 80% of mtcars to create a training set.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Shuffle the row numbers of the data frame</span>
+
+(train_index &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(mtcars),<span class="kw">nrow</span>(mtcars)<span class="op">*</span>.<span class="dv">80</span>))</code></pre></div>
+<pre><code>##  [1] 12 20 18 13 31 32  8  9  3  4 24 19  6  5 10 23 17 16 28 29 26 15 30
+## [24]  2 22</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Get 80% of the records from the data frame</span>
+train_df &lt;-<span class="st"> </span>mtcars[train_index,]
+
+<span class="co"># We have approx 80% of the data in train_df</span>
+<span class="kw">nrow</span>(train_df)</code></pre></div>
+<pre><code>## [1] 25</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Get the other 20% that we wish to test on</span>
+test_df  &lt;-<span class="st"> </span>mtcars[<span class="op">-</span>train_index,]
+<span class="kw">nrow</span>(test_df)</code></pre></div>
+<pre><code>## [1] 7</code></pre>
+<p>Now do the modeling</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">train_model_lm &lt;-<span class="st"> </span><span class="kw">lm</span>(myform, <span class="dt">data=</span>train_df)
+
+<span class="co"># Test the model on the test / holdout data frame</span>
+
+test_pred  &lt;-<span class="st"> </span><span class="kw">predict</span>(
+  train_model_lm,
+  <span class="dt">newdata=</span>test_df,
+  <span class="dt">type=</span><span class="st">&quot;response&quot;</span>
+)
+
+(test_rmse &lt;-<span class="st"> </span><span class="kw">compute_rmse</span>(test_pred,test_df<span class="op">$</span>mpg))</code></pre></div>
+<pre><code>## [1] 2.570558</code></pre>
+<p>What we have done here is to sample some portion of the original data frame to use as a training set while holding out the rest of the data to use as a test data to see how well our model performed. We could repeat this (re)sampling activity multiple times to better train our data over different segments or “folds” of data so any model we ultimately generate will “learn” as much from the data as it can without modeling any “noise”. There are various methods for doing this including K-Fold Cross Validation and Bootstrap Resampling. Let’s dig in a little deeper into these methods because they help us build models that might offer more robust performance when applied to new data.</p>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="predictive-supervised-learning.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="training-test-data.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"google": false,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
