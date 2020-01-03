@@ -240,8 +240,8 @@ Test  &lt;-<span class="st"> </span>mtcars[<span class="op">-</span>idx,]
 ## Summary of sample sizes: 28, 28, 28, 28, 28, 28, ... 
 ## Resampling results:
 ## 
-##   RMSE      Rsquared   MAE    
-##   3.308208  0.7641409  2.71249
+##   RMSE      Rsquared   MAE     
+##   3.090559  0.7803883  2.449923
 ## 
 ## Tuning parameter &#39;intercept&#39; was held constant at a value of TRUE</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(lm_fit)</code></pre></div>
@@ -251,21 +251,21 @@ Test  &lt;-<span class="st"> </span>mtcars[<span class="op">-</span>idx,]
 ## 
 ## Residuals:
 ##     Min      1Q  Median      3Q     Max 
-## -4.4666 -2.2838 -0.0518  1.3108  6.9564 
+## -4.5309 -2.0513  0.0325  1.5684  6.7707 
 ## 
 ## Coefficients:
 ##             Estimate Std. Error t value Pr(&gt;|t|)    
-## (Intercept)  37.1850     1.9048  19.521  &lt; 2e-16 ***
-## wt           -5.3370     0.5693  -9.375 7.99e-10 ***
+## (Intercept)  36.4741     1.8190  20.052  &lt; 2e-16 ***
+## wt           -5.0925     0.5349  -9.521 5.83e-10 ***
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
-## Residual standard error: 3.049 on 26 degrees of freedom
-## Multiple R-squared:  0.7717, Adjusted R-squared:  0.7629 
-## F-statistic: 87.88 on 1 and 26 DF,  p-value: 7.992e-10</code></pre>
+## Residual standard error: 2.842 on 26 degrees of freedom
+## Multiple R-squared:  0.7771, Adjusted R-squared:  0.7685 
+## F-statistic: 90.65 on 1 and 26 DF,  p-value: 5.835e-10</code></pre>
 <p>So let’s apply this model to the test data frame</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">compute_rmse</span>(<span class="kw">predict</span>(lm_fit,Test),Test<span class="op">$</span>mpg)</code></pre></div>
-<pre><code>## [1] 3.03338</code></pre>
+<pre><code>## [1] 4.187237</code></pre>
 <p>There is more here than meets the eye.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">names</span>(lm_fit)</code></pre></div>
 <pre><code>##  [1] &quot;method&quot;       &quot;modelInfo&quot;    &quot;modelType&quot;    &quot;results&quot;     
@@ -312,20 +312,20 @@ Test  &lt;-<span class="st"> </span>mtcars[<span class="op">-</span>idx,]
 ## 
 ## Residuals:
 ##     Min      1Q  Median      3Q     Max 
-## -4.4666 -2.2838 -0.0518  1.3108  6.9564 
+## -4.5309 -2.0513  0.0325  1.5684  6.7707 
 ## 
 ## Coefficients:
 ##             Estimate Std. Error t value Pr(&gt;|t|)    
-## (Intercept)  37.1850     1.9048  19.521  &lt; 2e-16 ***
-## wt           -5.3370     0.5693  -9.375 7.99e-10 ***
+## (Intercept)  36.4741     1.8190  20.052  &lt; 2e-16 ***
+## wt           -5.0925     0.5349  -9.521 5.83e-10 ***
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
-## Residual standard error: 3.049 on 26 degrees of freedom
-## Multiple R-squared:  0.7717, Adjusted R-squared:  0.7629 
-## F-statistic: 87.88 on 1 and 26 DF,  p-value: 7.992e-10</code></pre>
+## Residual standard error: 2.842 on 26 degrees of freedom
+## Multiple R-squared:  0.7771, Adjusted R-squared:  0.7685 
+## F-statistic: 90.65 on 1 and 26 DF,  p-value: 5.835e-10</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(lm_fit<span class="op">$</span>finalModel)<span class="op">$</span>r.squared</code></pre></div>
-<pre><code>## [1] 0.7716987</code></pre>
+<pre><code>## [1] 0.7771038</code></pre>
 <p>We can go right to the final Model which contains the information for the</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">lm_fit<span class="op">$</span>finalModel</code></pre></div>
 <pre><code>## 
@@ -334,7 +334,7 @@ Test  &lt;-<span class="st"> </span>mtcars[<span class="op">-</span>idx,]
 ## 
 ## Coefficients:
 ## (Intercept)           wt  
-##      37.185       -5.337</code></pre>
+##      36.474       -5.092</code></pre>
 <p>So it looks like caret did some re sampling for us by default. However, we can specify cross fold validation if we wanted to. This requires a more involved form of the <strong>train</strong> function.</p>
 <p>You can influence the <strong>train</strong> function by passing a “special” list to it via the <strong>trControl</strong> argument. This gets a bit confusing because the primary function to train models is called <strong>train</strong> and the command used to create the special is called <strong>trainControl</strong> and the argument in the <strong>train</strong> function is called <strong>trControl</strong>. With use, it becomes easier to remember the difference though at first it’s confusing.</p>
 <p>Here we train the model as before but specifically requesting a Cross Fold Validation method of 10 times. We are requesting verbose output.</p>
@@ -361,7 +361,7 @@ Test  &lt;-<span class="st"> </span>mtcars[<span class="op">-</span>idx,]
 ## Aggregating results
 ## Fitting final model on full training set</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">compute_rmse</span>(<span class="kw">predict</span>(my_lm,Test),Test<span class="op">$</span>mpg)</code></pre></div>
-<pre><code>## [1] 3.337871</code></pre>
+<pre><code>## [1] 3.361968</code></pre>
 <p>We could also repeat the 5 times CV validation an arbitrary number of times to generate greater confidence in the RMSE estimates returned by the model. Remember, a major reason for using K Fold validation is to better estimate the out of sample error by holding out a portion of the data frame being trained upon.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">my_lm &lt;-<span class="st"> </span><span class="kw">train</span>(
   mpg <span class="op">~</span><span class="st"> </span>., 
@@ -375,7 +375,7 @@ Test  &lt;-<span class="st"> </span>mtcars[<span class="op">-</span>idx,]
 )
 
 <span class="kw">compute_rmse</span>(<span class="kw">predict</span>(my_lm,Test),Test<span class="op">$</span>mpg)</code></pre></div>
-<pre><code>## [1] 3.337871</code></pre>
+<pre><code>## [1] 3.361968</code></pre>
 <p>As a matter of convenience, you can create a variable to hold the content of <strong>trainControl</strong> and then pass that to the function. This is subjective and either approach is fine.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">my_ctrl &lt;-<span class="st"> </span><span class="kw">trainControl</span>(
     <span class="dt">method =</span> <span class="st">&quot;cv&quot;</span>, 
@@ -402,7 +402,7 @@ my_lm &lt;-<span class="st"> </span><span class="kw">train</span>(
 ## Aggregating results
 ## Fitting final model on full training set</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">compute_rmse</span>(<span class="kw">predict</span>(my_lm,Test),Test<span class="op">$</span>mpg)</code></pre></div>
-<pre><code>## [1] 3.337871</code></pre>
+<pre><code>## [1] 3.361968</code></pre>
 </div>
 <div id="one-size-fits-all" class="section level2">
 <h2><span class="header-section-number">6.4</span> One Size Fits All</h2>
@@ -460,18 +460,18 @@ my_rf &lt;-<span class="st"> </span><span class="kw">train</span>(
 ## 
 ## No pre-processing
 ## Resampling: Cross-Validated (5 fold) 
-## Summary of sample sizes: 21, 21, 23, 24, 23 
+## Summary of sample sizes: 24, 21, 22, 22, 23 
 ## Resampling results across tuning parameters:
 ## 
 ##   mtry  RMSE      Rsquared   MAE     
-##    2    2.174370  0.9096761  1.928405
-##    6    2.080417  0.9072342  1.745514
-##   10    2.110515  0.9046711  1.792882
+##    2    2.359076  0.8951849  2.049685
+##    6    2.264938  0.9091680  1.998761
+##   10    2.333974  0.9026634  2.016589
 ## 
 ## RMSE was used to select the optimal model using the smallest value.
 ## The final value used for the model was mtry = 6.</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">compute_rmse</span>(<span class="kw">predict</span>(my_rf,Test),Test<span class="op">$</span>mpg)</code></pre></div>
-<pre><code>## [1] 1.96663</code></pre>
+<pre><code>## [1] 2.517169</code></pre>
 <p>We can get a plot of how the RMSE and R squared value varied with different values of <strong>mtry</strong>. Here we see that an mtry value of 6 randomly selected columns / variables provides the lowest RMSE.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(my_rf) <span class="op">+</span><span class="st"> </span><span class="kw">theme</span>(<span class="dt">legend.position =</span> <span class="st">&quot;top&quot;</span>)</code></pre></div>
 <p><img src="_main_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
@@ -581,7 +581,7 @@ my_rf &lt;-<span class="st"> </span><span class="kw">train</span>(
 ## - Fold5: mtry=10 
 ## Aggregating results
 ## Selecting tuning parameters
-## Fitting mtry = 3 on full training set</code></pre>
+## Fitting mtry = 6 on full training set</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">my_rf</code></pre></div>
 <pre><code>## Random Forest 
 ## 
@@ -590,26 +590,26 @@ my_rf &lt;-<span class="st"> </span><span class="kw">train</span>(
 ## 
 ## No pre-processing
 ## Resampling: Cross-Validated (5 fold) 
-## Summary of sample sizes: 23, 23, 22, 24, 20 
+## Summary of sample sizes: 21, 23, 22, 23, 23 
 ## Resampling results across tuning parameters:
 ## 
 ##   mtry  RMSE      Rsquared   MAE     
-##    2    2.550192  0.9254300  2.059588
-##    3    2.468909  0.9311674  1.985286
-##    4    2.504383  0.9272223  2.006383
-##    5    2.490215  0.9266302  1.989286
-##    6    2.514788  0.9225756  2.022300
-##    7    2.510702  0.9175701  2.025521
-##    8    2.611756  0.9116845  2.107472
-##    9    2.586982  0.9124715  2.100241
-##   10    2.658476  0.9030617  2.170354
+##    2    2.550328  0.9259972  2.157635
+##    3    2.451108  0.9404582  2.077837
+##    4    2.425326  0.9344548  2.065800
+##    5    2.380862  0.9353815  2.026012
+##    6    2.337921  0.9355866  1.993051
+##    7    2.399456  0.9284858  2.066394
+##    8    2.394226  0.9321007  2.035114
+##    9    2.476481  0.9243743  2.102218
+##   10    2.456958  0.9230695  2.098686
 ## 
 ## RMSE was used to select the optimal model using the smallest value.
-## The final value used for the model was mtry = 3.</code></pre>
+## The final value used for the model was mtry = 6.</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(my_rf)</code></pre></div>
 <p><img src="_main_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">compute_rmse</span>(<span class="kw">predict</span>(my_rf,Test),Test<span class="op">$</span>mpg)</code></pre></div>
-<pre><code>## [1] 2.001658</code></pre>
+<pre><code>## [1] 2.43046</code></pre>
 <p>If you have a questions about what hyper parameters can be tuned for a given method then you can refer to the online <a href="https://topepo.github.io/caret/available-models.html">caret documentation</a> Here is a screenshot of the table of supported models and associated tuning parameters.</p>
 <div class="figure">
 <img src="pics/avmodels.png" />
@@ -665,29 +665,29 @@ my_ranger</code></pre></div>
 ## 
 ## No pre-processing
 ## Resampling: Cross-Validated (3 fold) 
-## Summary of sample sizes: 20, 19, 17 
+## Summary of sample sizes: 18, 19, 19 
 ## Resampling results across tuning parameters:
 ## 
 ##   mtry  splitrule   RMSE      Rsquared   MAE     
-##    2    variance    3.087195  0.9222790  2.514991
-##    2    extratrees  3.155266  0.9172882  2.571040
-##    3    variance    3.050341  0.9183672  2.434449
-##    3    extratrees  3.045186  0.9193507  2.448125
-##    5    variance    3.042739  0.9163474  2.385214
-##    5    extratrees  3.106818  0.9182418  2.485002
-##    6    variance    3.068742  0.9083124  2.404774
-##    6    extratrees  3.163073  0.9137054  2.514254
-##    8    variance    3.105782  0.9089111  2.434500
-##    8    extratrees  3.152811  0.9110308  2.499943
-##   10    variance    3.081122  0.9027784  2.428937
-##   10    extratrees  3.106262  0.9134763  2.462000
+##    2    variance    2.801066  0.8201616  2.157626
+##    2    extratrees  2.855781  0.8203754  2.259120
+##    3    variance    2.738119  0.8300179  2.094509
+##    3    extratrees  2.807128  0.8233273  2.206615
+##    5    variance    2.612530  0.8450905  2.005585
+##    5    extratrees  2.711511  0.8326091  2.140295
+##    6    variance    2.693724  0.8305564  2.073218
+##    6    extratrees  2.693671  0.8324558  2.137594
+##    8    variance    2.649882  0.8372964  1.998709
+##    8    extratrees  2.724841  0.8288370  2.170144
+##   10    variance    2.693918  0.8336172  2.032572
+##   10    extratrees  2.681060  0.8315658  2.100844
 ## 
 ## Tuning parameter &#39;min.node.size&#39; was held constant at a value of 5
 ## RMSE was used to select the optimal model using the smallest value.
 ## The final values used for the model were mtry = 5, splitrule =
 ##  variance and min.node.size = 5.</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">compute_rmse</span>(<span class="kw">predict</span>(my_ranger,Test),Test<span class="op">$</span>mpg)</code></pre></div>
-<pre><code>## [1] 1.900275</code></pre>
+<pre><code>## [1] 2.534949</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(my_ranger)</code></pre></div>
 <p><img src="_main_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
 </div>

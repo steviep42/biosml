@@ -317,8 +317,8 @@ test_preds &lt;-<span class="st"> </span><span class="kw">predict</span>(
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Shuffle the row numbers of the data frame</span>
 
 (train_index &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(mtcars),<span class="kw">nrow</span>(mtcars)<span class="op">*</span>.<span class="dv">80</span>))</code></pre></div>
-<pre><code>##  [1] 12 24 20  6  7 11 19 26 10  2 30 18  8 17 27 32 16 14 25 31  4 23  5
-## [24] 28  1</code></pre>
+<pre><code>##  [1]  6 10 27 26 16  7 29 24  5  2  9 19 15 11 30 31 28 12  8 13  4 14 25
+## [24] 23 17</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Get 80% of the records from the data frame</span>
 train_df &lt;-<span class="st"> </span>mtcars[train_index,]
 
@@ -341,7 +341,7 @@ test_pred  &lt;-<span class="st"> </span><span class="kw">predict</span>(
 )
 
 (test_rmse &lt;-<span class="st"> </span><span class="kw">compute_rmse</span>(test_pred,test_df<span class="op">$</span>mpg))</code></pre></div>
-<pre><code>## [1] 2.84484</code></pre>
+<pre><code>## [1] 4.287469</code></pre>
 <p>What we have done here is to sample some portion of the original data frame to use as a training set while holding out the rest of the data to use as a test data to see how well our model performed. We could repeat this (re)sampling activity multiple times to better train our data over different segments or “folds” of data so any model we ultimately generate will “learn” as much from the data as it can without modeling any “noise”. There are various methods for doing this including K-Fold Cross Validation and Bootstrap Resampling. Let’s dig in a little deeper into these methods because they help us build models that might offer more robust performance when applied to new data.</p>
 </div>
 </div>
