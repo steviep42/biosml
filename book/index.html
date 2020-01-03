@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Predictive Learning in R - BIOS 534</title>
+  <meta name="description" content="Predictive Learning in R - BIOS 534" />
+  <meta name="generator" content="bookdown 0.14 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Predictive Learning in R - BIOS 534" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Predictive Learning in R - BIOS 534" />
+  
+  
+  
+
+<meta name="author" content="Steve Pittard" />
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+
+<link rel="next" href="predictive-supervised-learning.html"/>
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
+
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Preface</a></li>
+<li class="chapter" data-level="2" data-path="predictive-supervised-learning.html"><a href="predictive-supervised-learning.html"><i class="fa fa-check"></i><b>2</b> Predictive / Supervised Learning</a><ul>
+<li class="chapter" data-level="2.1" data-path="predictive-supervised-learning.html"><a href="predictive-supervised-learning.html#explanation-vs-prediction"><i class="fa fa-check"></i><b>2.1</b> Explanation vs Prediction</a></li>
+<li class="chapter" data-level="2.2" data-path="predictive-supervised-learning.html"><a href="predictive-supervised-learning.html#two-types-of-predictive-models"><i class="fa fa-check"></i><b>2.2</b> Two Types of Predictive Models:</a></li>
+<li class="chapter" data-level="2.3" data-path="predictive-supervised-learning.html"><a href="predictive-supervised-learning.html#bias-vs-variance"><i class="fa fa-check"></i><b>2.3</b> Bias vs Variance</a></li>
+<li class="chapter" data-level="2.4" data-path="predictive-supervised-learning.html"><a href="predictive-supervised-learning.html#overfitting-and-underfitting"><i class="fa fa-check"></i><b>2.4</b> Overfitting and Underfitting</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="a-motivating-example-linear-regression.html"><a href="a-motivating-example-linear-regression.html"><i class="fa fa-check"></i><b>3</b> A Motivating Example - Linear Regression</a><ul>
+<li class="chapter" data-level="3.1" data-path="a-motivating-example-linear-regression.html"><a href="a-motivating-example-linear-regression.html#scatterplot"><i class="fa fa-check"></i><b>3.1</b> Scatterplot</a></li>
+<li class="chapter" data-level="3.2" data-path="a-motivating-example-linear-regression.html"><a href="a-motivating-example-linear-regression.html#correlations"><i class="fa fa-check"></i><b>3.2</b> Correlations</a></li>
+<li class="chapter" data-level="3.3" data-path="a-motivating-example-linear-regression.html"><a href="a-motivating-example-linear-regression.html#building-a-model---in-sample-error"><i class="fa fa-check"></i><b>3.3</b> Building A Model - In Sample Error</a></li>
+<li class="chapter" data-level="3.4" data-path="a-motivating-example-linear-regression.html"><a href="a-motivating-example-linear-regression.html#out-of-sample-data"><i class="fa fa-check"></i><b>3.4</b> Out Of Sample Data</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="training-test-data.html"><a href="training-test-data.html"><i class="fa fa-check"></i><b>4</b> Training / Test Data</a><ul>
+<li class="chapter" data-level="4.1" data-path="training-test-data.html"><a href="training-test-data.html#cross-fold-validation-continued"><i class="fa fa-check"></i><b>4.1</b> Cross Fold Validation Continued</a></li>
+<li class="chapter" data-level="4.2" data-path="training-test-data.html"><a href="training-test-data.html#create-a-function-to-automate-things"><i class="fa fa-check"></i><b>4.2</b> Create A Function To Automate Things</a></li>
+<li class="chapter" data-level="4.3" data-path="training-test-data.html"><a href="training-test-data.html#repeated-cross-validation"><i class="fa fa-check"></i><b>4.3</b> Repeated Cross Validation</a></li>
+<li class="chapter" data-level="4.4" data-path="training-test-data.html"><a href="training-test-data.html#bootstrap"><i class="fa fa-check"></i><b>4.4</b> Bootstrap</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="using-methods-other-than-lm.html"><a href="using-methods-other-than-lm.html"><i class="fa fa-check"></i><b>5</b> Using Methods Other Than lm</a><ul>
+<li class="chapter" data-level="5.1" data-path="using-methods-other-than-lm.html"><a href="using-methods-other-than-lm.html#parameters-vs-hyperparameters"><i class="fa fa-check"></i><b>5.1</b> Parameters vs Hyperparameters</a></li>
+<li class="chapter" data-level="5.2" data-path="using-methods-other-than-lm.html"><a href="using-methods-other-than-lm.html#hyperparameter-tuning"><i class="fa fa-check"></i><b>5.2</b> Hyperparameter Tuning</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="caret-package.html"><a href="caret-package.html"><i class="fa fa-check"></i><b>6</b> Caret Package</a><ul>
+<li class="chapter" data-level="6.1" data-path="caret-package.html"><a href="caret-package.html#putting-caret-to-work"><i class="fa fa-check"></i><b>6.1</b> Putting caret To Work</a></li>
+<li class="chapter" data-level="6.2" data-path="caret-package.html"><a href="caret-package.html#back-to-the-beginning"><i class="fa fa-check"></i><b>6.2</b> Back To The Beginning</a></li>
+<li class="chapter" data-level="6.3" data-path="caret-package.html"><a href="caret-package.html#splitting"><i class="fa fa-check"></i><b>6.3</b> Splitting</a></li>
+<li class="chapter" data-level="6.4" data-path="caret-package.html"><a href="caret-package.html#one-size-fits-all"><i class="fa fa-check"></i><b>6.4</b> One Size Fits All</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="picking-the-best-model.html"><a href="picking-the-best-model.html"><i class="fa fa-check"></i><b>7</b> Picking The Best Model</a><ul>
+<li class="chapter" data-level="7.1" data-path="picking-the-best-model.html"><a href="picking-the-best-model.html#using-the-resamples-function"><i class="fa fa-check"></i><b>7.1</b> Using the resamples() function</a></li>
+<li class="chapter" data-level="7.2" data-path="picking-the-best-model.html"><a href="picking-the-best-model.html#model-performance"><i class="fa fa-check"></i><b>7.2</b> Model Performance</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="data-pre-processing.html"><a href="data-pre-processing.html"><i class="fa fa-check"></i><b>8</b> Data Pre Processing</a><ul>
+<li class="chapter" data-level="8.1" data-path="data-pre-processing.html"><a href="data-pre-processing.html#look-for-highly-correlated-variables"><i class="fa fa-check"></i><b>8.1</b> Look for Highly Correlated Variables</a></li>
+<li class="chapter" data-level="8.2" data-path="data-pre-processing.html"><a href="data-pre-processing.html#scaling-considerations"><i class="fa fa-check"></i><b>8.2</b> Scaling Considerations</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="classification-problems.html"><a href="classification-problems.html"><i class="fa fa-check"></i><b>9</b> Classification Problems</a><ul>
+<li class="chapter" data-level="9.1" data-path="classification-problems.html"><a href="classification-problems.html#correlations-1"><i class="fa fa-check"></i><b>9.1</b> Correlations</a></li>
+<li class="chapter" data-level="9.2" data-path="classification-problems.html"><a href="classification-problems.html#boxplots-and-densities"><i class="fa fa-check"></i><b>9.2</b> Boxplots And Densities</a></li>
+<li class="chapter" data-level="9.3" data-path="classification-problems.html"><a href="classification-problems.html#generalized-linear-models"><i class="fa fa-check"></i><b>9.3</b> Generalized Linear Models</a></li>
+<li class="chapter" data-level="9.4" data-path="classification-problems.html"><a href="classification-problems.html#random-forests"><i class="fa fa-check"></i><b>9.4</b> Random Forests</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="using-external-ml-frameworks.html"><a href="using-external-ml-frameworks.html"><i class="fa fa-check"></i><b>10</b> Using External ML Frameworks</a><ul>
+<li class="chapter" data-level="10.1" data-path="using-external-ml-frameworks.html"><a href="using-external-ml-frameworks.html#using-h2o"><i class="fa fa-check"></i><b>10.1</b> Using H2o</a></li>
+<li class="chapter" data-level="10.2" data-path="using-external-ml-frameworks.html"><a href="using-external-ml-frameworks.html#create-some-h20-models"><i class="fa fa-check"></i><b>10.2</b> Create Some h20 Models</a></li>
+<li class="chapter" data-level="10.3" data-path="using-external-ml-frameworks.html"><a href="using-external-ml-frameworks.html#saving-a-model"><i class="fa fa-check"></i><b>10.3</b> Saving A Model</a></li>
+<li class="chapter" data-level="10.4" data-path="using-external-ml-frameworks.html"><a href="using-external-ml-frameworks.html#using-the-h2o-auto-ml-feature"><i class="fa fa-check"></i><b>10.4</b> Using The h2o Auto ML Feature</a></li>
+<li class="chapter" data-level="10.5" data-path="using-external-ml-frameworks.html"><a href="using-external-ml-frameworks.html#launching-a-job"><i class="fa fa-check"></i><b>10.5</b> Launching a Job</a></li>
+</ul></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Predictive Learning in R - BIOS 534</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="header">
+<h1 class="title">Predictive Learning in R - BIOS 534</h1>
+<p class="author"><em>Steve Pittard</em></p>
+</div>
+<div id="preface" class="section level1">
+<h1><span class="header-section-number">Chapter 1</span> Preface</h1>
+<p>NOTE: This document is a work in progress and should be to be in <em>“draft status”</em></p>
+<p>This content exists to motivate use of the <strong>caret</strong> package. Much of the first part (well all of it really) is designed to show how one would use various modeling methods in the R language to build predictive models. Another way to say this is that I’m trying to “scare” you into using <strong>caret</strong> because it provides conveniences and capabilities that help you focus on building models over trying to understand the sometimes arcane syntax associated with the individual modeling functions in R. There is nothing wrong with being able to go deep into a specific method in terms of parameter tuning though you should first start learning how to build models after which we’ll discuss appropriate assessment strategies.</p>
+<p>Of course, there is absolutely no requirement for anyone to use the <strong>caret</strong> package but it provides a uniform interface (for the most part) to over 200 modeling methods. All one needs to do is have some data, a metric by which to score (e.g. RMSE, AUC, logloss), and a method of interest.</p>
+<p>The <strong>caret</strong> package will handle the underlying interaction with the corresponding R method and return results in an object. It’s “reason for being” is to show you how well your selected model might apply to “out of sample” data. For now, though, take a tour through the “old school” way of doing predictive modeling in R after which I’ll introduce <strong>caret</strong> (You can always skip to Section 6).</p>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+
+<a href="predictive-supervised-learning.html" class="navigation navigation-next navigation-unique" aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"google": false,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
