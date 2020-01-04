@@ -193,15 +193,15 @@ my_rf &lt;-<span class="st"> </span><span class="kw">randomForest</span>(mpg<spa
 <span class="co"># Check out the predictions</span>
 
 (test_pred_forest &lt;-<span class="st"> </span><span class="kw">predict</span>(my_rf,test))</code></pre></div>
-<pre><code>##    Duster 360      Merc 230      Fiat 128 Toyota Corona    Camaro Z28 
-##      15.85029      22.91963      27.52315      23.19115      16.01051 
-## Porsche 914-2 
-##      24.05490</code></pre>
+<pre><code>##     Mazda RX4 Wag        Duster 360          Merc 230 Chrysler Imperial 
+##          20.70391          15.22379          22.95171          12.87658 
+##          Fiat 128        Volvo 142E 
+##          27.84187          23.75201</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">(rmse_rf &lt;-<span class="st"> </span><span class="kw">compute_rmse</span>(test_pred_forest,test<span class="op">$</span>mpg))</code></pre></div>
-<pre><code>## [1] 2.588168</code></pre>
+<pre><code>## [1] 2.258225</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#</span>
 <span class="kw">mean</span>(rmse_rf)</code></pre></div>
-<pre><code>## [1] 2.588168</code></pre>
+<pre><code>## [1] 2.258225</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">imp &lt;-<span class="st"> </span><span class="kw">importance</span>(my_rf)
 imp.features &lt;-<span class="st"> </span><span class="kw">tibble</span>(<span class="dt">variables =</span> <span class="kw">row.names</span>(imp), 
                        <span class="dt">importance =</span> imp[, <span class="dv">1</span>])
@@ -234,7 +234,7 @@ imp.features &lt;-<span class="st"> </span><span class="kw">tibble</span>(<span 
 }</code></pre></div>
 <p>So now we could check out RMSE for varying values of <strong>mtry</strong>. The following will call the <strong>randomForest</strong> package 5 times. Starting with the first iteration, the value of <strong>mtry</strong> will be 3, the next time it will be 4, and so on until the last iteration where it will be 8. This is just an experiment to see if varying <strong>mtry</strong> will help minimize the RMSE of our model. We also have to be careful not to pick incorrect values for <strong>mtry</strong> so reading the help page for the <strong>randomForest</strong> package would be helpful. For now, let’s assume that what we are doing is okay.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sapply</span>(<span class="dv">3</span><span class="op">:</span><span class="dv">8</span>,make_mtcars_rf)</code></pre></div>
-<pre><code>## [1] 2.568901 2.567943 2.578272 2.586686 2.540071 2.505675</code></pre>
+<pre><code>## [1] 2.228992 2.228553 2.302355 2.362995 2.394190 2.378743</code></pre>
 <p>While this is fine, it would be nice if there were an easier way to handle this process. Besides, if we pick another method (e.g. the <strong>ranger</strong> function) then we have to deal with whatever arguments that method requires. This leads to a more general discussion on <strong>model parameters</strong> vs <strong>hyperparameters</strong>.</p>
 <div id="parameters-vs-hyperparameters" class="section level2">
 <h2><span class="header-section-number">5.1</span> Parameters vs Hyperparameters</h2>

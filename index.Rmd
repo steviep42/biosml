@@ -17,7 +17,7 @@ library(pls)
 
 # Preface
 
-NOTE: This document is a work in progress and should be to be in *"draft status"*
+NOTE: This document is a work in progress and should be considered to be in *"draft status"*
 
 This content exists to motivate use of the **caret** package. Much of the first part (well all of it really) is designed to show how one would use various modeling methods in the R language to build predictive models. Another way to say this is that I'm trying to "scare" you into using **caret** because it provides conveniences and capabilities that help you focus on building models over trying to understand the sometimes arcane syntax associated with the individual modeling functions in R. There is nothing wrong with being able to go deep into a specific method in terms of parameter tuning though you should first start learning how to build models after which we'll discuss appropriate assessment strategies.
 

@@ -186,7 +186,7 @@ correlations[<span class="dv">1</span><span class="op">:</span><span class="dv">
 ## wt   -0.8676594  0.7824958  0.8879799  0.6587479 -0.7124406  1.0000000</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">suppressMessages</span>(<span class="kw">library</span>(corrplot))
 <span class="kw">corrplot</span>(correlations, <span class="dt">order=</span><span class="st">&quot;hclust&quot;</span>)</code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-33-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-36-1.png" width="672" /></p>
 <p>The <strong>caret</strong> package has some functions that can help us identify highly correlated variables that might be a candidates for removal prior to use in building a model. Let’s go back to the mtcars data set as it exists by default. One of the variables that is highly correlated with others is <strong>mpg</strong> Since that is the one we are trying to predict, we’ll keep it around.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">(highcorr &lt;-<span class="st"> </span><span class="kw">findCorrelation</span>(correlations, <span class="dt">cutoff=</span>.<span class="dv">75</span>))</code></pre></div>
 <pre><code>## [1]  2  3  1 10</code></pre>
@@ -200,7 +200,7 @@ correlations[<span class="dv">1</span><span class="op">:</span><span class="dv">
 ##   25   22   22   29   30    2    2    6</code></pre>
 <p>So, technically, we could turn these into factors before doing anything with the data. We’ll handle these types of variables momentarily. But for now let’s look at a pairs plot of the new_mtcars data frame.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">pairs</span>(new_mtcars)</code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-37-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-40-1.png" width="672" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sapply</span>(new_mtcars,range)</code></pre></div>
 <pre><code>##       mpg  hp drat    wt qsec vs am carb
 ## [1,] 10.4  52 2.76 1.513 14.5  0  0    1
