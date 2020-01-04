@@ -191,10 +191,10 @@ pm &lt;-<span class="st"> </span>PimaIndiansDiabetes</code></pre></div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(corrplot)
 mydata.cor =<span class="st"> </span><span class="kw">cor</span>(pm[,<span class="op">-</span><span class="dv">9</span>], <span class="dt">method =</span> <span class="kw">c</span>(<span class="st">&quot;spearman&quot;</span>))
 <span class="kw">corrplot</span>(mydata.cor)</code></pre></div>
-<p><img src="_main_files/figure-html/corrplot-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/corrplot-1.png" width="672" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">palette =<span class="st"> </span><span class="kw">colorRampPalette</span>(<span class="kw">c</span>(<span class="st">&quot;green&quot;</span>, <span class="st">&quot;white&quot;</span>, <span class="st">&quot;red&quot;</span>)) (<span class="dv">20</span>)
 <span class="kw">heatmap</span>(<span class="dt">x =</span> mydata.cor, <span class="dt">col =</span> palette, <span class="dt">symm =</span> <span class="ot">TRUE</span>)</code></pre></div>
-<p><img src="_main_files/figure-html/heatmap-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/heatmap-1.png" width="672" /></p>
 </div>
 <div id="boxplots-and-densities" class="section level2">
 <h2><span class="header-section-number">9.2</span> Boxplots And Densities</h2>
@@ -205,11 +205,11 @@ mydata.cor =<span class="st"> </span><span class="kw">cor</span>(pm[,<span class
   <span class="kw">boxplot</span>(form,<span class="dt">data=</span>pm,<span class="dt">main=</span><span class="kw">names</span>(pm)[ii])
   <span class="kw">grid</span>()
 }</code></pre></div>
-<p><img src="_main_files/figure-html/basebox-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/basebox-1.png" width="672" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">par</span>(<span class="dt">mfrow=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">1</span>))</code></pre></div>
 <p>Same plot, though created by ggplot2 commands</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">gather</span>(pm,<span class="dt">key=</span><span class="st">&quot;variable&quot;</span>,<span class="dt">val=</span><span class="st">&quot;value&quot;</span>,<span class="op">-</span>diabetes) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x=</span>diabetes,<span class="dt">y=</span>value)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_boxplot</span>() <span class="op">+</span><span class="st"> </span><span class="kw">facet_wrap</span>(<span class="op">~</span>variable,<span class="dt">scales=</span><span class="st">&quot;free&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">theme_bw</span>()</code></pre></div>
-<p><img src="_main_files/figure-html/ggplotbox-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/ggplotbox-1.png" width="672" /></p>
 <p>Let’s look at how the densities differ in each group (positive vs negative).</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">splitdf &lt;-<span class="st"> </span><span class="kw">split</span>(pm,pm<span class="op">$</span>diabetes)
 <span class="kw">par</span>(<span class="dt">mfrow=</span><span class="kw">c</span>(<span class="dv">2</span>,<span class="dv">4</span>))
@@ -225,7 +225,7 @@ mydata.cor =<span class="st"> </span><span class="kw">cor</span>(pm[,<span class
     <span class="kw">grid</span>()
 
 }</code></pre></div>
-<p><img src="_main_files/figure-html/density-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/density-1.png" width="672" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">par</span>(<span class="dt">mfrow=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">1</span>))</code></pre></div>
 </div>
 <div id="generalized-linear-models" class="section level2">
@@ -293,7 +293,7 @@ caret<span class="op">::</span><span class="kw">confusionMatrix</span>(fitpreds,
 ## </code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(caTools)
 <span class="kw">colAUC</span>(pm_model_fitpreds,test<span class="op">$</span>diabetes,<span class="dt">plotROC=</span><span class="ot">TRUE</span>)</code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-42-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-42-1.png" width="672" /></p>
 <pre><code>##                  [,1]
 ## neg vs. pos 0.8296226</code></pre>
 <p>But wait, why would we do this if we have the <strong>caret</strong> package readily available. We can explore any number methods, implement K Fold Cross Validation,and get feedback on the performance measures at the same time. Let’s reframe our above work using the caret package conveniences.</p>
@@ -442,7 +442,7 @@ pm_ranger_mod &lt;-<span class="st"> </span><span class="kw">train</span>(<span 
                     )</code></pre></div>
 <p>The object can be plotted. Here we see that the max AUC of .825 occurs when mtry is 3 and the Gini criterion is used to evaluate a tree.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(pm_ranger_mod)</code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-49-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-49-1.png" width="672" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">max</span>(pm_ranger_mod[[<span class="st">&quot;results&quot;</span>]]<span class="op">$</span>ROC)</code></pre></div>
 <pre><code>## [1] 0.8190116</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">preds &lt;-<span class="st"> </span><span class="kw">predict</span>(pm_ranger_mod,test)

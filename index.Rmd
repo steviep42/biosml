@@ -4,8 +4,8 @@ author: "Steve Pittard"
 site: bookdown::bookdown_site
 documentclass: book
 output:
-  bookdown::gitbook: default
   #bookdown::pdf_book: default
+  bookdown::gitbook: default
 ---
 
 ```{r initialload,echo=FALSE}

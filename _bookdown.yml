@@ -1,4 +1,5 @@
 delete_merged_file: true
+book_filename: "biosml.Rmd"
 output_dir: "book"
 language:
   ui:
