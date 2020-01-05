@@ -346,10 +346,15 @@ diabetes &lt;-<span class="st"> </span><span class="kw">ifelse</span>(glm_probs 
 <p>So - This process has resulted in the creation of a ROC Curve that shows us TPR vs FPR across a large number of possible threshold values. For each selected threshold, we compute a confusion matrix from which we compute the associated tpr and fpr. When we are done, we plot tpr vs fpr. The idea with a ROC curve is to pick the threshold such that the area under the curve is maximized. While we have produced this ROC curve by hand, R provides packages to do this for us.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">metrics &lt;-<span class="st"> </span><span class="kw">t</span>(<span class="kw">sapply</span>(<span class="kw">seq</span>(<span class="fl">0.05</span>,.<span class="dv">95</span>,.<span class="dv">05</span>),<span class="cf">function</span>(x) <span class="kw">get_tprfpr</span>(x))) 
 <span class="kw">plot</span>(tpr<span class="op">~</span>fpr,metrics,
-     <span class="dt">main=</span><span class="st">&quot;Poor Man&#39;s ROC Curve&quot;</span>,
+     <span class="dt">main=</span><span class="st">&quot;Steve&#39;s ROC Curve&quot;</span>,
      <span class="dt">xlab=</span><span class="st">&quot;False Positve Rate (1-Specificity)&quot;</span>,
      <span class="dt">ylab=</span><span class="st">&quot;True Positive Rate&quot;</span>,<span class="dt">type=</span><span class="st">&quot;l&quot;</span>)
-<span class="kw">grid</span>()</code></pre></div>
+<span class="kw">grid</span>()
+
+<span class="co"># Put the associated threshold values on the plot to help you identify</span>
+<span class="co"># the right value to maximize the AUC (Area Under Curve)</span>
+
+<span class="kw">text</span>(metrics[,<span class="dv">2</span>],metrics[,<span class="dv">1</span>],<span class="dt">labels=</span><span class="kw">seq</span>(<span class="fl">0.05</span>,.<span class="dv">95</span>,.<span class="dv">05</span>),<span class="dt">cex=</span><span class="fl">0.9</span>)</code></pre></div>
 <p><img src="biosml_files/figure-html/unnamed-chunk-55-1.png" width="672" /></p>
 </div>
 </div>

@@ -1361,10 +1361,15 @@ So - This process has resulted in the creation of a ROC Curve that shows us TPR 
 ```{r}
 metrics <- t(sapply(seq(0.05,.95,.05),function(x) get_tprfpr(x))) 
 plot(tpr~fpr,metrics,
-     main="Poor Man's ROC Curve",
+     main="Steve's ROC Curve",
      xlab="False Positve Rate (1-Specificity)",
      ylab="True Positive Rate",type="l")
 grid()
+
+# Put the associated threshold values on the plot to help you identify
+# the right value to maximize the AUC (Area Under Curve)
+
+text(metrics[,2],metrics[,1],labels=seq(0.05,.95,.05),cex=0.9)
 ```
 
 
