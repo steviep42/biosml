@@ -4,8 +4,8 @@ author: "Steve Pittard"
 site: bookdown::bookdown_site
 documentclass: book
 output:
-  #bookdown::pdf_book: default
   bookdown::gitbook: default
+  #bookdown::pdf_book: default
 ---
 
 ```{r initialload,echo=FALSE}
@@ -13,6 +13,7 @@ suppressMessages(library(tidyverse))
 library(rpart)
 suppressMessages(library(caret))
 library(pls)
+suppressMessages(library(mlbench))
 ```
 
 # Preface
@@ -1153,6 +1154,222 @@ compute_rmse(predict(mod_lm_sc,Test_sc),Test_sc$mpg)
 
 # Classification Problems
 
+Next up we consider the issue of building a model to predict a binary (e.g. "yes" / "no" or "positive / "negative") outcome although we might also predict more than one class. For the sake of explanation we'll keep our attention to the "two class" situation. As an example, the mtcars data frame has a variable called **am** which indicates whether a car has an automatic or manual transmission. This is indicated, respectively, by a 0 and 1.
+
+```{r}
+head(mtcars)
+```
+
+We could build a classification model to predict whether a car had an automatic or manual transmission based on one or more variables from the data frame. A more general example might be predicting whether a patient has tested positive or negative for a condition. Unlike prediciting a continuous outcome, we would be classifying an outcome as one thing or another. Evaluating such a model involves more than just computing RMSE. Let's explore some considerations that need to be made. 
+
+## Hypothesis Testing 
+
+Now, before we dig into the details our classifier, remember that most things in statistics and classification revolves around the idea of a hypothesis. In this case, the "null" hypothesis is that a patient does NOT have the disease whereas the alternative hypothesis is that they do. Well, for a statistician that's a bit strong. Let's just say that if there is enough evidence to reject the null hypothesis then we will. 
+
+### Type I and II Errors 
+
+Anyway, the larger idea is that we might apply our test to someone and subsequently determine that they have a disease when in fact they don't. This would be an example of a "false positive" also known as a "Type I Error".  It is also possible that we apply the test to someone and we say that the do not have the disease when they actually do. This is known as a "false negative" also known as a Type II Error" wherein we fail to reject the null hypothesis for this person. A perfect test would have zero false positives and zero false negatives
+
+## Performance Measures 
+
+With Linear Regression we were predicting a continuous outcome with the goal of being able to minimize the RMSE (root mean square error). In classification problems we need a metric or "performance measure" that we can use to judge the effectivness of any model we create. 
+
+Let's say that we are predicting whether someone has a disease or not. Pretend we have a classifier that we use against a blood sample to make this determination. The outcome is either a 1 which means that the patient is positive for the condition whereas an outcome of 0 represents a negative. 
+
+## Table of Outcomes
+
+We'll generate two vectors here with one being named "actual" that represents the "truth" or "reality" of the situation. This is our reference against which we will compared our predictions. The second vector, imaginatively named "predicted", contains the predictions. 
+
+```{r}
+# Pretend that this vector represents the actual condition status for the patients
+set.seed(123)
+actual <- factor(sample(c(0,1),20,T),levels=c(1,0))
+
+# Pretend that we generated the following predictions using a really cool, highly-sophisticated model
+set.seed(321)
+predicted <- factor(sample(c(0,1),20,T),levels=c(1,0))
+```
+
+We can now compare the predicted against the actual to see how "good" our model is. This table provdes the basis from which we can compute a number of performance measures 
+
+```{r}
+(myt <- table(predicted,actual))
+sum(myt)
+```
+
+So first of all we notice that there are N = 20 people in this study. It might be helpful to view this table using some terminology:
+
+![](pics/cm1.png){width=1200}
+
+True Positives - With respect to the first row - we predicted that 4 people have the disease that actually do have it. You could then say that the number of TRUE POSITIVES (abbreviated as "TP") is 4. 
+
+False Positives - We also predicted that 4 people have the condition when they in fact do not. We could then say that the number of FALSE POSITIVES, abbreviated as "FP", is 7. This is also known as a "Type 1" error. 
+
+False Negatives - In the second row we predicted that 7 people do NOT have the disease/condition when they actually do. So you could say that the number of FALSE NEGATIVES (abbreviated as FN) is 7. 
+
+True Negatives - We also predicted that 5 people do not have the condition and they do not. So then the number of TRUE NEGATIVES (abbreviated as TN) is also 5. 
+ 
+
+### Computing Performance Metrics
+
+Now comes the fun part in that you might be concerned with specific metrics to assess the quality of your model in specific terms. Since our model, such as it is, seems to relate to the quality of a medical diagnostic we might be concerned with its accuracy, precision, and sensitivty. The first two terms in particular are frequently used synonymously when they are not the same thing. Remember that we have N = 20 patients. Below is a graphic from Wikipedia which presents many (if not all) of the metrics that can be computed against a confusion matrix. 
+
+![](pics/cmwiki.png){width=1200}
+
+We'll focus on some specific metrics as they will assist our understanding of how to assess a model.
+
+
+```{r}
+myt
+sum(myt)
+```
+
+#### Accuracy 
+
+So let's take the number of observed True Positives and True Negatives, add them together, and divide them by the total number of patients in the study group to arrive at what is known as the **Accuracy** of our model. Another way to think of the denominator is as the sum of all observed results, True and False. 
+
+Accuracy =  (TP + TN) / (TP + TN + FP + FN) = 9/20 = 0.45
+
+```{r}
+(accuracy <- (myt[1,1] + myt[2,2]) / sum(myt))
+```
+
+#### Precision
+
+How precise is the model ? This is computed in a different fashion. We take the number of True Postives (TP) and divide that by the sum of True Positives (TP) and False Positives (FP). The denominator is the sum of row 1 in our table myt.
+
+Precision = TP / (TP + FP) = 4 / (4 + 4) = 0.5
+
+```{r}
+(precision <- myt[1,1]/(myt[1,1]+myt[1,2]))
+```
+
+It is helpful to know that **Precision** is also known as the PPV "Positive Predictive Value" since it is concerened with the ratio of True Positives over the sum of all Positive related quantities including the False Positives. The larger the number of FP then the smaller the ratio which results in a lower precision. 
+
+#### Sensitivity
+
+Sensitivity is related to Precision except the ratio we look at is the number of True Positives (TP) divided by the sum of True Positives and False Negatives (which are actually Positives). This tells us how frequently we find a positive case given that it is actually positive. 
+
+Sensitivity = TP / (TP + FN) = 5 / (5 + 4) = 0.5555
+
+```{r}
+(sensitivity <- myt[1,1]/(myt[1,1]+myt[2,1]))
+```
+
+Sensitivity also has synonyms: recall, hit rate, or True Positive Rate (TPR). For example, the concept of True Positive Rate might be more intutitive for you to understand although scientific medical literature might reference Sensitivity. 
+
+#### Specificity
+
+Specificity tells us how frequently we find a negative case given that it is actually negative. This is also known as the "True Negative Rate"
+
+Specificity = TN / (TN + FP) = 5 / (5 + 4) = 0.5555
+
+```{r}
+(specificity <- myt[2,2]/(myt[2,2]+myt[1,2]))
+```
+
+#### False Positive Rate
+
+We compute the FPR as follows:
+
+False Positive Rate = FP / FP + TN = 4 / 4 + 5 
+
+
+```{r}
+(fpr <- myt[1,2] / (myt[1,2] + myt[2,2]))
+```
+
+## Picking the Right Metric
+
+There are more ratios we could compute some of which might be more relavant to our classification issue. In reality, picking the "right" metric is a function of your domain of study. Frequently, the sensitivity and specicity are used in medical testing scenarions as is the false positive rate. But you should search the literature in your area of interest to determine what is commonly used. We could say much more about these metrics but we'll keep it simple for now. 
+
+Where are we ? We compared some predictions against reality and computed some ratios. The problem with this is that we don't yet know from where the predictions came ? Well, we imagined that the predicted values came from some classification model we created though we didn't specify one. Let's take a real example here to illustrate some important points. 
+
+Let's use the **PimaIndiansDiabetes** data frame from the **mlbench** package to predict whether a person has diabetes or not. This is just a basic example here, we aren't trying to create a sophisticated model.
+
+```{r}
+data("PimaIndiansDiabetes")
+pm <- PimaIndiansDiabetes
+
+# Create a logistic regression model
+glm_model <- glm(diabetes ~ .,data=pm,family="binomial")
+```
+
+Now that we have a model, let's do some predictions. What we get back are probabilities (values between 0 and 1). We now have to figure out an appropriate threshold value that, if exceeded, will result in a classification of "positive" for diabetes.  
+
+```{r}
+glm_probs <- predict(glm_model,pm,type="response")
+round(glm_probs,4)[1:20]
+```
+
+Let's create a boxplot of these probabilities. 
+
+```{r}
+par(mfrow=c(1,2))
+boxplot(glm_probs)
+grid()
+hist(glm_probs)
+par(mfrow=c(1,1))
+```
+
+### Working With Prediction Probabilities 
+
+So now we need to write some code to decide how to best use these probabilities to make the predictions. We'll start with 0.5. (That's what most people do anyway). If the predicted probability corresponding to that observation is >= 0.5 then we'll say that the person has diabetes. If not, then they will be classified as negative. 
+
+```{r}
+t <- 0.5
+diabetes <- ifelse(glm_probs >= t,0,1)
+```
+
+Next, let's make a table which compares these predictions against the actual values. It turns out that our classifier doesn't seem to be doing a good job here. There are lots of False Negatives and Positives here. 
+```{r}
+(myt <- table(predicted=diabetes,true=pm$diabetes))
+```
+
+So we could then compute the metrics corresponding to this particular confusion matrix. We could compute, for example, the True Positive Rate and False Positive Rate from this data. 
+
+```{r}
+get_tprfpr <- function(pred,true) {
+  myt <- table(pred,true)
+  tpr <- myt[1,1]/(myt[1,1]+myt[2,1])
+  fpr <- myt[1,2] / (myt[1,2] + myt[2,2])
+  return(c(tpr=tpr,fpr=fpr))
+}
+
+get_tprfpr(diabetes,pm$diabetes)
+```
+
+### Creating a ROC Curve 
+
+Let's look at the metrics associated with other threshold values. Even better let's just adjust our above function to do this for all values between 0 and 1. 
+
+```{r}
+
+get_tprfpr <- function(thresh,probs=glm_probs) {
+  diabetes <- ifelse(probs >= thresh,1,0)
+  myt <- table(diabetes,pm$diabetes)
+  tpr <- myt[1,1]/(myt[1,1]+myt[2,1])
+  fpr <- myt[1,2] / (myt[1,2] + myt[2,2])
+  return(c(tpr=tpr,fpr=fpr))
+}
+```
+
+
+So - This process has resulted in the creation of a ROC Curve that shows us TPR vs FPR across a large number of possible threshold values. For each selected threshold, we compute a confusion matrix from which we compute the associated tpr and fpr. When we are done, we plot tpr vs fpr. The idea with a ROC curve is to pick the threshold such that the area under the curve is maximized. While we have produced this ROC curve by hand, R provides packages to do this for us. 
+
+
+```{r}
+metrics <- t(sapply(seq(0.05,.95,.05),function(x) get_tprfpr(x))) 
+plot(tpr~fpr,metrics,
+     main="Poor Man's ROC Curve",
+     xlab="False Positve Rate (1-Specificity)",
+     ylab="True Positive Rate",type="l")
+grid()
+```
+
+
+# Classification Example
+
 Here we present data on Pima Indians as it relates to diabetes. This data is provided by the **mlbench** package. The source of the information is the National Institute of Diabetes and Digestive and Kidney Diseases which in turn was hosted on the UCI Repository of Machine Learning. The variables are:
 
     pregnant - Number of times pregnant
@@ -1172,9 +1389,6 @@ data("PimaIndiansDiabetes")
 # The nqme is a little long so let's shorten it up
 pm <- PimaIndiansDiabetes
 ```
-
-
-## Correlations
 
 If this were more a talk on exploratory practices we might spend more time investigating the relationships between the variables. 
 
@@ -1401,7 +1615,7 @@ Better yet, there is an [R package](https://cran.r-project.org/web/packages/h2o/
 
 > R interface for 'H2O', the scalable open source machine learning platform that offers parallelized implementations of many supervised and unsupervised machine learning algorithms such as Generalized Linear Models, Gradient Boosting Machines (including XGBoost), Random Forests, Deep Neural Networks (Deep Learning), Stacked Ensembles, Naive Bayes, Cox Proportional Hazards, K-Means, PCA, Word2Vec, as well as a fully automatic machine learning algorithm (AutoML).
 
-## Using H2o
+## Using h2o
 
 The package must first be installed which can done using the **install.packages** function (or the menu in R Studio). Loading the library is done just as you would any other library. 
 
