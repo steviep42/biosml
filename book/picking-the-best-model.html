@@ -133,6 +133,11 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="7" data-path="picking-the-best-model.html"><a href="picking-the-best-model.html"><i class="fa fa-check"></i><b>7</b> Picking The Best Model</a><ul>
 <li class="chapter" data-level="7.1" data-path="picking-the-best-model.html"><a href="picking-the-best-model.html#using-the-resamples-function"><i class="fa fa-check"></i><b>7.1</b> Using the resamples() function</a></li>
 <li class="chapter" data-level="7.2" data-path="picking-the-best-model.html"><a href="picking-the-best-model.html#model-performance"><i class="fa fa-check"></i><b>7.2</b> Model Performance</a></li>
+<li class="chapter" data-level="7.3" data-path="picking-the-best-model.html"><a href="picking-the-best-model.html#feature-selection"><i class="fa fa-check"></i><b>7.3</b> Feature Selection</a><ul>
+<li class="chapter" data-level="7.3.1" data-path="picking-the-best-model.html"><a href="picking-the-best-model.html#recursive-feature-elimination"><i class="fa fa-check"></i><b>7.3.1</b> Recursive Feature Elimination</a></li>
+<li class="chapter" data-level="7.3.2" data-path="picking-the-best-model.html"><a href="picking-the-best-model.html#redundant-feature-removal"><i class="fa fa-check"></i><b>7.3.2</b> Redundant Feature Removal</a></li>
+<li class="chapter" data-level="7.3.3" data-path="picking-the-best-model.html"><a href="picking-the-best-model.html#feature-importance"><i class="fa fa-check"></i><b>7.3.3</b> Feature Importance</a></li>
+</ul></li>
 </ul></li>
 <li class="chapter" data-level="8" data-path="data-pre-processing.html"><a href="data-pre-processing.html"><i class="fa fa-check"></i><b>8</b> Data Pre Processing</a><ul>
 <li class="chapter" data-level="8.1" data-path="data-pre-processing.html"><a href="data-pre-processing.html#look-for-highly-correlated-variables"><i class="fa fa-check"></i><b>8.1</b> Look for Highly Correlated Variables</a></li>
@@ -225,21 +230,21 @@ mod_ranger &lt;-<span class="st"> </span><span class="kw">train</span>(mpg <span
 ## 
 ## MAE 
 ##            Min.  1st Qu.   Median     Mean  3rd Qu.     Max. NA&#39;s
-## lm     2.718249 3.344975 3.971702 3.763169 4.285630 4.599558    0
-## rf     1.870911 1.971330 2.071748 2.157564 2.300890 2.530033    0
-## ranger 1.615309 1.774449 1.933589 2.041555 2.254678 2.575767    0
+## lm     1.715960 2.596568 3.477176 2.938645 3.549988 3.622799    0
+## rf     1.565843 1.817639 2.069435 1.954523 2.148863 2.228291    0
+## ranger 1.522576 1.797004 2.071432 1.957130 2.174407 2.277382    0
 ## 
 ## RMSE 
 ##            Min.  1st Qu.   Median     Mean  3rd Qu.     Max. NA&#39;s
-## lm     3.820721 4.586191 5.351662 4.981069 5.561243 5.770825    0
-## rf     2.206249 2.428879 2.651510 2.804444 3.103541 3.555572    0
-## ranger 2.077763 2.339982 2.602202 2.772274 3.119529 3.636856    0
+## lm     2.466304 3.039126 3.611947 3.688942 4.300261 4.988576    0
+## rf     2.075357 2.383257 2.691157 2.516076 2.736435 2.781714    0
+## ranger 2.092412 2.397888 2.703364 2.517252 2.729672 2.755981    0
 ## 
 ## Rsquared 
 ##             Min.   1st Qu.    Median      Mean   3rd Qu.      Max. NA&#39;s
-## lm     0.4034764 0.4810678 0.5586592 0.6112736 0.7151722 0.8716853    0
-## rf     0.7998902 0.8424308 0.8849715 0.8800726 0.9201638 0.9553560    0
-## ranger 0.7927814 0.8507347 0.9086881 0.8803748 0.9241714 0.9396548    0</code></pre>
+## lm     0.4022978 0.5098904 0.6174830 0.6123940 0.7174421 0.8174011    0
+## rf     0.8229797 0.8628195 0.9026594 0.8864065 0.9181199 0.9335804    0
+## ranger 0.8410808 0.8688931 0.8967055 0.8830953 0.9041025 0.9114995    0</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">bwplot</span>(results)</code></pre></div>
 <p><img src="biosml_files/figure-html/unnamed-chunk-27-1.png" width="672" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">dotplot</span>(results)</code></pre></div>
@@ -249,11 +254,11 @@ mod_ranger &lt;-<span class="st"> </span><span class="kw">train</span>(mpg <span
 <h2><span class="header-section-number">7.2</span> Model Performance</h2>
 <p>Of course, we can now use the Test data frame to see how the RMSE looks on the holdout data frame.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">compute_rmse</span>(<span class="kw">predict</span>(mod_lm,Test),Test<span class="op">$</span>mpg)</code></pre></div>
-<pre><code>## [1] 3.209825</code></pre>
+<pre><code>## [1] 3.605451</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">compute_rmse</span>(<span class="kw">predict</span>(mod_rf,Test),Test<span class="op">$</span>mpg)</code></pre></div>
-<pre><code>## [1] 3.060878</code></pre>
+<pre><code>## [1] 2.82427</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">compute_rmse</span>(<span class="kw">predict</span>(mod_ranger,Test),Test<span class="op">$</span>mpg)</code></pre></div>
-<pre><code>## [1] 3.193888</code></pre>
+<pre><code>## [1] 2.914956</code></pre>
 <p>Another way to look at these models is to use the <strong>diff</strong> function.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">(difs &lt;-<span class="st"> </span><span class="kw">diff</span>(results))</code></pre></div>
 <pre><code>## 
@@ -276,46 +281,139 @@ mod_ranger &lt;-<span class="st"> </span><span class="kw">train</span>(mpg <span
 ## Lower diagonal: p-value for H0: difference = 0
 ## 
 ## MAE 
-##        lm     rf     ranger
-## lm            1.606  1.722 
-## rf     0.4658        0.116 
-## ranger 0.4878 0.9506       
+##        lm     rf        ranger   
+## lm             0.984122  0.981515
+## rf     0.4267           -0.002607
+## ranger 0.3918 1.0000             
 ## 
 ## RMSE 
-##        lm     rf      ranger 
-## lm            2.17663 2.20880
-## rf     0.4752         0.03217
-## ranger 0.5092 1.0000         
+##        lm     rf        ranger   
+## lm             1.172866  1.171690
+## rf     0.5365           -0.001176
+## ranger 0.5040 1.0000             
 ## 
 ## Rsquared 
-##        lm     rf         ranger    
-## lm            -0.2687989 -0.2691011
-## rf     0.5102            -0.0003022
-## ranger 0.4389 1.0000</code></pre>
+##        lm     rf        ranger   
+## lm            -0.274013 -0.270701
+## rf     0.5280            0.003311
+## ranger 0.4961 1.0000</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">compare_models</span>(mod_lm,mod_rf)</code></pre></div>
 <pre><code>## 
 ##  One Sample t-test
 ## 
 ## data:  x
-## t = 2.2036, df = 2, p-value = 0.1584
+## t = 2.0348, df = 2, p-value = 0.1788
 ## alternative hypothesis: true mean is not equal to 0
 ## 95 percent confidence interval:
-##  -2.073439  6.426690
+##  -1.307177  3.652910
 ## sample estimates:
 ## mean of x 
-##  2.176626</code></pre>
+##  1.172866</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">compare_models</span>(mod_ranger,mod_lm)</code></pre></div>
 <pre><code>## 
 ##  One Sample t-test
 ## 
 ## data:  x
-## t = -2.1067, df = 2, p-value = 0.1697
+## t = -2.1209, df = 2, p-value = 0.168
 ## alternative hypothesis: true mean is not equal to 0
 ## 95 percent confidence interval:
-##  -6.719990  2.302399
+##  -3.548703  1.205322
 ## sample estimates:
 ## mean of x 
-## -2.208795</code></pre>
+##  -1.17169</code></pre>
+</div>
+<div id="feature-selection" class="section level2">
+<h2><span class="header-section-number">7.3</span> Feature Selection</h2>
+<p>Features are the columns in your data set. Up until now we have not been concerned with the formula being specified choosing rather to focus on how to run models with the caret package. However, knowing how to select the “best” subset of features is important since an overspcified formula might result in very long training times and, even then, it might not be that good of a model for predicting out of sample error. Of course, various methods have ways to deal with this problem.</p>
+<p>For example, Stepwise regression is one way to look at combinations of predictor variables to arrive at the optimal feature set according to some score (e.g. AIC, BIC). This process is implemented recursively. However, none of this should be a substitute for solid intution about the data or knowing how features vary with each other (if at all). Still, packages such as caret have ways to assist with feature selection. We’ll look at a few here:</p>
+<div id="recursive-feature-elimination" class="section level3">
+<h3><span class="header-section-number">7.3.1</span> Recursive Feature Elimination</h3>
+<p>The general idea with this approach is to build models using combinations of predictors to arrive at the best model according to some metric such as RMSE. Some predictors might be discarded along the way resulting in a “leaner” feature set that would then hopefully be easier to defend than a more complex or fully specified feature set. There is no free lunch here in that blindly accepting the features handed to you by a recursive or automatic method should not be considered authoritative especially if you have a reason to believe that some key feature has been exlcuded. Many people, however, like to use these methods as a starting point. You would still need to review the diagnostics associated with a final model to determine if it is statistically sound.</p>
+<p>According to the <a href="https://topepo.github.io/caret/feature-selection-overview.html#models-with-built-in-feature-selection"><strong>caret</strong> documentation</a> there are a large number of supported models that contain some form of embedded or built-in feature selection. Such functions are doing you a favor (or not) by showing you the importance of contributing features.</p>
+<div class="figure">
+<img src="pics/feature_selection.png" />
+
+</div>
+<div id="an-example" class="section level4">
+<h4><span class="header-section-number">7.3.1.1</span> An Example</h4>
+<p>Let’s work with the <strong>lm</strong> function again to see if we can find some interesting features using some caret functions. The main function for Recursive Feature Elimination is <strong>rfe</strong> which, like the <strong>train</strong> function, accepts a control object to help guide the process. Here we are telling the <strong>rfe</strong> function to use some helper functions to assess predictors. We don’t need to pass it a model - it handles these things under the hood. In this case we’ll use 10 Fold Cross Validation.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">set.seed</span>(<span class="dv">123</span>)
+control &lt;-<span class="st"> </span><span class="kw">rfeControl</span>(<span class="dt">functions=</span>lmFuncs, <span class="dt">method=</span><span class="st">&quot;cv&quot;</span>,<span class="dt">number=</span><span class="dv">10</span>)
+
+results &lt;-<span class="st"> </span><span class="kw">rfe</span>(mtcars[,<span class="dv">2</span><span class="op">:</span><span class="dv">11</span>],     <span class="co"># Predictor features</span>
+               mtcars[,<span class="dv">1</span>],        <span class="co"># Predicted features - mpg</span>
+               <span class="dt">sizes=</span><span class="kw">c</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>),      <span class="co"># pick groups of predictors 1-5 </span>
+               <span class="dt">rfeControl=</span>control)
+results</code></pre></div>
+<pre><code>## 
+## Recursive feature selection
+## 
+## Outer resampling method: Cross-Validated (10 fold) 
+## 
+## Resampling performance over subset size:
+## 
+##  Variables  RMSE Rsquared   MAE RMSESD RsquaredSD MAESD Selected
+##          1 3.817   0.7886 3.209  1.689     0.3498 1.491         
+##          2 3.599   0.7954 3.029  1.850     0.3512 1.562         
+##          3 3.199   0.8921 2.698  1.249     0.1906 0.996         
+##          4 3.021   0.9105 2.653  1.018     0.1269 1.006         
+##          5 2.968   0.9237 2.593  1.075     0.1217 1.078        *
+##         10 3.151   0.8958 2.747  1.274     0.1595 1.173         
+## 
+## The top 5 variables (out of 5):
+##    wt, am, drat, qsec, vs</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(results,<span class="dt">type=</span><span class="kw">c</span>(<span class="st">&quot;o&quot;</span>,<span class="st">&quot;g&quot;</span>))</code></pre></div>
+<p><img src="biosml_files/figure-html/unnamed-chunk-32-1.png" width="672" /></p>
+<p>What we get back is some idea about the important features. We could then build a model with caret that uses only these features to see if the suggested RMSE value mentioned in the rfe process matches.</p>
+</div>
+</div>
+<div id="redundant-feature-removal" class="section level3">
+<h3><span class="header-section-number">7.3.2</span> Redundant Feature Removal</h3>
+<p>The <strong>caret</strong> package has some functions that can help us identify highly correlated variables that might be a candidates for removal prior to use in building a model. Let’s go back to the mtcars data set as it exists by default. One of the variables that is highly correlated with others is <strong>mpg</strong> Since that is the one we are trying to predict, we’ll keep it around.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">correlations &lt;-<span class="st"> </span><span class="kw">cor</span>(mtcars[,<span class="op">-</span><span class="dv">1</span>])
+
+<span class="co"># Find all correlated variables above .75</span>
+(highcorr &lt;-<span class="st"> </span><span class="kw">findCorrelation</span>(correlations, <span class="dt">cutoff=</span>.<span class="dv">75</span>))</code></pre></div>
+<pre><code>## [1] 1 2 9</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># We might want to remove these from the data frame before modeling</span>
+mtcars[,<span class="op">-</span><span class="dv">1</span>][,highcorr]</code></pre></div>
+<pre><code>##                     cyl  disp gear
+## Mazda RX4             6 160.0    4
+## Mazda RX4 Wag         6 160.0    4
+## Datsun 710            4 108.0    4
+## Hornet 4 Drive        6 258.0    3
+## Hornet Sportabout     8 360.0    3
+## Valiant               6 225.0    3
+## Duster 360            8 360.0    3
+## Merc 240D             4 146.7    4
+## Merc 230              4 140.8    4
+## Merc 280              6 167.6    4
+## Merc 280C             6 167.6    4
+## Merc 450SE            8 275.8    3
+## Merc 450SL            8 275.8    3
+## Merc 450SLC           8 275.8    3
+## Cadillac Fleetwood    8 472.0    3
+## Lincoln Continental   8 460.0    3
+## Chrysler Imperial     8 440.0    3
+## Fiat 128              4  78.7    4
+## Honda Civic           4  75.7    4
+## Toyota Corolla        4  71.1    4
+## Toyota Corona         4 120.1    3
+## Dodge Challenger      8 318.0    3
+## AMC Javelin           8 304.0    3
+## Camaro Z28            8 350.0    3
+## Pontiac Firebird      8 400.0    3
+## Fiat X1-9             4  79.0    4
+## Porsche 914-2         4 120.3    5
+## Lotus Europa          4  95.1    5
+## Ford Pantera L        8 351.0    5
+## Ferrari Dino          6 145.0    5
+## Maserati Bora         8 301.0    5
+## Volvo 142E            4 121.0    4</code></pre>
+</div>
+<div id="feature-importance" class="section level3">
+<h3><span class="header-section-number">7.3.3</span> Feature Importance</h3>
+</div>
 </div>
 </div>
             </section>

@@ -10,9 +10,9 @@ output:
 
 ```{r initialload,echo=FALSE}
 suppressMessages(library(tidyverse))
-library(rpart)
+suppressMessages(library(rpart))
 suppressMessages(library(caret))
-library(pls)
+suppressMessages(library(pls))
 suppressMessages(library(mlbench))
 ```
 
@@ -578,7 +578,7 @@ suppressMessages(library(randomForest))
 
 my_rf <- randomForest(mpg~.,
                       data=train,
-                      mtry=3,
+                      mtry=3,      # This is the default 
                       importance=TRUE)
 
 # Check out the predictions
@@ -808,7 +808,10 @@ my_lm <- train(
 )
 ```
 
+So the object returned from caret gives us an estimate of how well the model will perform (based on RMSE) for out of sample data. 
+
 ```{r}
+my_lm
 compute_rmse(predict(my_lm,Test),Test$mpg)
 ```
 
@@ -1052,6 +1055,61 @@ compare_models(mod_lm,mod_rf)
 ```{r}
 compare_models(mod_ranger,mod_lm)
 ```
+
+## Feature Selection
+
+Features are the columns in your data set. Up until now we have not been concerned with the formula being specified choosing rather to focus on how to run models with the caret package. However, knowing how to select the "best" subset of features is important since an overspcified formula might result in very long training times and, even then, it might not be that good of a model for predicting out of sample error. Of course, various methods have ways to deal with this problem. 
+
+For example, Stepwise regression is one way to look at combinations of predictor variables to arrive at the optimal feature set according to some score (e.g. AIC, BIC). This process is implemented recursively. However, none of this should be a substitute for solid intution about the data or knowing how features vary with each other (if at all). Still, packages such as caret have ways to assist with feature selection. We'll look at a few here:
+
+### Recursive Feature Elimination
+
+The general idea with this approach is to build models using combinations of predictors to arrive at the best model according to some metric such as RMSE. Some predictors might be discarded along the way resulting in a "leaner" feature set that would then hopefully be easier to defend than a more complex or fully specified feature set. There is no free lunch here in that blindly accepting the features handed to you by a recursive or automatic method should not be considered authoritative especially if you have a reason to believe that some key feature has been exlcuded. Many people, however, like to use these methods as a starting point. You would still need to review the diagnostics associated with a final model to determine if it is statistically sound. 
+
+According to the [**caret** documentation](https://topepo.github.io/caret/feature-selection-overview.html#models-with-built-in-feature-selection) there are a large number of supported models that contain some form of embedded or built-in feature selection. Such functions are doing you a favor (or not) by showing you the importance of contributing features. 
+
+![](./pics/feature_selection.png)
+
+#### An Example
+
+Let's work with the **lm** function again to see if we can find some interesting features using some caret functions. The main function for Recursive Feature Elimination is **rfe** which, like the **train** function, accepts a control object to help guide the process. Here we are telling the **rfe** function to use some helper functions to assess predictors. We don't need to pass it a model - it handles these things under the hood. In this case we'll use 10 Fold Cross Validation.
+
+```{r}
+set.seed(123)
+control <- rfeControl(functions=lmFuncs, method="cv",number=10)
+
+results <- rfe(mtcars[,2:11],     # Predictor features
+               mtcars[,1],        # Predicted features - mpg
+               sizes=c(1:5),      # pick groups of predictors 1-5 
+               rfeControl=control)
+results
+plot(results,type=c("o","g"))
+```
+
+What we get back is some idea about the important features. We could then build a model with caret that uses only these features to see if the suggested RMSE value mentioned in the rfe process matches. 
+
+### Redundant Feature Removal
+
+The **caret** package has some functions that can help us identify highly correlated variables that might be a candidates for removal prior to use in building a model. Let's go back to the mtcars data set as it exists by default. One of the variables that is highly correlated with others is **mpg** Since that is the one we are trying to predict, we'll keep it around.
+
+
+```{r}
+correlations <- cor(mtcars[,-1])
+
+# Find all correlated variables above .75
+(highcorr <- findCorrelation(correlations, cutoff=.75))
+
+# We might want to remove these from the data frame before modeling
+mtcars[,-1][,highcorr]
+```
+
+### Feature Importance
+
+```{r}
+
+```
+
+
 
 
 # Data Pre Processing

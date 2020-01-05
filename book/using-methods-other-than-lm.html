@@ -133,6 +133,11 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="7" data-path="picking-the-best-model.html"><a href="picking-the-best-model.html"><i class="fa fa-check"></i><b>7</b> Picking The Best Model</a><ul>
 <li class="chapter" data-level="7.1" data-path="picking-the-best-model.html"><a href="picking-the-best-model.html#using-the-resamples-function"><i class="fa fa-check"></i><b>7.1</b> Using the resamples() function</a></li>
 <li class="chapter" data-level="7.2" data-path="picking-the-best-model.html"><a href="picking-the-best-model.html#model-performance"><i class="fa fa-check"></i><b>7.2</b> Model Performance</a></li>
+<li class="chapter" data-level="7.3" data-path="picking-the-best-model.html"><a href="picking-the-best-model.html#feature-selection"><i class="fa fa-check"></i><b>7.3</b> Feature Selection</a><ul>
+<li class="chapter" data-level="7.3.1" data-path="picking-the-best-model.html"><a href="picking-the-best-model.html#recursive-feature-elimination"><i class="fa fa-check"></i><b>7.3.1</b> Recursive Feature Elimination</a></li>
+<li class="chapter" data-level="7.3.2" data-path="picking-the-best-model.html"><a href="picking-the-best-model.html#redundant-feature-removal"><i class="fa fa-check"></i><b>7.3.2</b> Redundant Feature Removal</a></li>
+<li class="chapter" data-level="7.3.3" data-path="picking-the-best-model.html"><a href="picking-the-best-model.html#feature-importance"><i class="fa fa-check"></i><b>7.3.3</b> Feature Importance</a></li>
+</ul></li>
 </ul></li>
 <li class="chapter" data-level="8" data-path="data-pre-processing.html"><a href="data-pre-processing.html"><i class="fa fa-check"></i><b>8</b> Data Pre Processing</a><ul>
 <li class="chapter" data-level="8.1" data-path="data-pre-processing.html"><a href="data-pre-processing.html#look-for-highly-correlated-variables"><i class="fa fa-check"></i><b>8.1</b> Look for Highly Correlated Variables</a></li>
@@ -199,21 +204,21 @@ test  &lt;-<span class="st"> </span>mtcars[<span class="op">-</span>idx,]</code>
 
 my_rf &lt;-<span class="st"> </span><span class="kw">randomForest</span>(mpg<span class="op">~</span>.,
                       <span class="dt">data=</span>train,
-                      <span class="dt">mtry=</span><span class="dv">3</span>,
+                      <span class="dt">mtry=</span><span class="dv">3</span>,      <span class="co"># This is the default </span>
                       <span class="dt">importance=</span><span class="ot">TRUE</span>)
 
 <span class="co"># Check out the predictions</span>
 
 (test_pred_forest &lt;-<span class="st"> </span><span class="kw">predict</span>(my_rf,test))</code></pre></div>
-<pre><code>##          Valiant        Merc 240D        Merc 280C      AMC Javelin 
-##         19.93639         23.27257         19.98638         17.44164 
-## Pontiac Firebird    Maserati Bora 
-##         16.42257         15.50122</code></pre>
+<pre><code>##  Hornet Sportabout         Merc 450SE         Merc 450SL 
+##           16.73762           15.82096           15.72948 
+## Cadillac Fleetwood   Dodge Challenger          Fiat X1-9 
+##           13.04762           16.26073           30.88757</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">(rmse_rf &lt;-<span class="st"> </span><span class="kw">compute_rmse</span>(test_pred_forest,test<span class="op">$</span>mpg))</code></pre></div>
-<pre><code>## [1] 1.932786</code></pre>
+<pre><code>## [1] 2.125718</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#</span>
 <span class="kw">mean</span>(rmse_rf)</code></pre></div>
-<pre><code>## [1] 1.932786</code></pre>
+<pre><code>## [1] 2.125718</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">imp &lt;-<span class="st"> </span><span class="kw">importance</span>(my_rf)
 imp.features &lt;-<span class="st"> </span><span class="kw">tibble</span>(<span class="dt">variables =</span> <span class="kw">row.names</span>(imp), 
                        <span class="dt">importance =</span> imp[, <span class="dv">1</span>])
@@ -246,7 +251,7 @@ imp.features &lt;-<span class="st"> </span><span class="kw">tibble</span>(<span 
 }</code></pre></div>
 <p>So now we could check out RMSE for varying values of <strong>mtry</strong>. The following will call the <strong>randomForest</strong> package 5 times. Starting with the first iteration, the value of <strong>mtry</strong> will be 3, the next time it will be 4, and so on until the last iteration where it will be 8. This is just an experiment to see if varying <strong>mtry</strong> will help minimize the RMSE of our model. We also have to be careful not to pick incorrect values for <strong>mtry</strong> so reading the help page for the <strong>randomForest</strong> package would be helpful. For now, let’s assume that what we are doing is okay.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sapply</span>(<span class="dv">3</span><span class="op">:</span><span class="dv">8</span>,make_mtcars_rf)</code></pre></div>
-<pre><code>## [1] 1.963153 2.021542 2.048275 2.051697 2.035656 2.073120</code></pre>
+<pre><code>## [1] 2.124840 2.142105 2.146157 2.147666 2.202205 2.110491</code></pre>
 <p>While this is fine, it would be nice if there were an easier way to handle this process. Besides, if we pick another method (e.g. the <strong>ranger</strong> function) then we have to deal with whatever arguments that method requires. This leads to a more general discussion on <strong>model parameters</strong> vs <strong>hyperparameters</strong>.</p>
 <div id="parameters-vs-hyperparameters" class="section level2">
 <h2><span class="header-section-number">5.1</span> Parameters vs Hyperparameters</h2>
