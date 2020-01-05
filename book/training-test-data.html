@@ -226,28 +226,28 @@ folds &lt;-<span class="st"> </span><span class="kw">split</span>(<span class="k
 <p>Check out the folds to get a better understanding of what is going on. Remember that each with K-fold</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">folds</code></pre></div>
 <pre><code>## $`1`
-## [1] 12 15  7 27
+## [1] 17  4 19 32
 ## 
 ## $`2`
-## [1] 32 25 20  1
+## [1] 13 10 15 25
 ## 
 ## $`3`
-## [1]  8 11 13  4
+## [1]  5 16 22 20
 ## 
 ## $`4`
-## [1] 21 26 22 31
+## [1]  2 28 26  6
 ## 
 ## $`5`
-## [1]  2  5 28  3
+## [1]  9  8 11 30
 ## 
 ## $`6`
-## [1] 23  6 16 17
+## [1] 12  1 21 31
 ## 
 ## $`7`
-## [1] 30 19 10 14
+## [1] 18  7 27  3
 ## 
 ## $`8`
-## [1]  9 24 18 29</code></pre>
+## [1] 24 14 23 29</code></pre>
 <p>Each list element has the indices of four unique observations from the data frame. We have eight folds with four elements each for a total of 32 numbers corresponding to row numbers from the mtcars data frame.</p>
 <div id="cross-fold-validation-continued" class="section level2">
 <h2><span class="header-section-number">4.1</span> Cross Fold Validation Continued</h2>
@@ -293,9 +293,9 @@ lattice<span class="op">::</span><span class="kw">dotplot</span>(rmse,
                  <span class="dt">main=</span><span class="st">&quot;RMSE Across Folds Using K-Fold CV&quot;</span>)</code></pre></div>
 <p><img src="biosml_files/figure-html/latticeplot-1.png" width="672" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">mean</span>(rmse)</code></pre></div>
-<pre><code>## [1] 3.004214</code></pre>
+<pre><code>## [1] 2.992303</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sd</span>(rmse)</code></pre></div>
-<pre><code>## [1] 1.342243</code></pre>
+<pre><code>## [1] 1.210768</code></pre>
 </div>
 <div id="create-a-function-to-automate-things" class="section level2">
 <h2><span class="header-section-number">4.2</span> Create A Function To Automate Things</h2>
@@ -343,12 +343,12 @@ title &lt;-<span class="st"> </span><span class="kw">paste</span>(<span class="s
 
 
 <span class="kw">print</span>(<span class="kw">mean</span>(rmse))</code></pre></div>
-<pre><code>## [1] 2.951574</code></pre>
+<pre><code>## [1] 2.953308</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">lattice<span class="op">::</span><span class="kw">dotplot</span>(rmse,
                  <span class="dt">main=</span><span class="st">&quot;RMSE Across Folds Using K-Fold CV&quot;</span>)</code></pre></div>
 <p><img src="biosml_files/figure-html/fourfold-1.png" width="672" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sd</span>(rmse)</code></pre></div>
-<pre><code>## [1] 1.391266</code></pre>
+<pre><code>## [1] 1.085035</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">boxplot</span>(rmse,<span class="dt">main=</span>title)</code></pre></div>
 <p><img src="biosml_files/figure-html/fourfold-2.png" width="672" /></p>
 </div>
@@ -361,7 +361,7 @@ title &lt;-<span class="st"> </span><span class="kw">paste</span>(<span class="s
 <span class="co"># once. We get back 4 RMSE values - one for each fold</span>
 
 (rmse &lt;-<span class="st"> </span><span class="kw">make_mtcars_model</span>(num_of_folds))</code></pre></div>
-<pre><code>## [1] 1.874875 2.532692 2.871949 2.923290 4.254217 4.195009 3.858168 1.400334</code></pre>
+<pre><code>## [1] 2.648907 4.015529 4.239965 2.081179 2.539987 2.226582 4.001867 3.180073</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Now we repeat this some number of times - like 10. So we get back</span>
 <span class="co"># 80 RMSE values </span>
 
@@ -378,7 +378,7 @@ repeated_cv_rmse &lt;-<span class="st"> </span><span class="kw">as.vector</span>
 <p><img src="biosml_files/figure-html/unnamed-chunk-8-2.png" width="672" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(repeated_cv_rmse)</code></pre></div>
 <pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-##   1.084   2.236   2.709   3.021   3.925   6.190</code></pre>
+##  0.5104  2.1872  2.7373  3.0332  4.0471  6.2665</code></pre>
 </div>
 <div id="bootstrap" class="section level2">
 <h2><span class="header-section-number">4.4</span> Bootstrap</h2>
@@ -422,7 +422,7 @@ repeated_cv_rmse &lt;-<span class="st"> </span><span class="kw">as.vector</span>
 <span class="co"># Just to be clear - here is what happens when we call the function</span>
 <span class="co"># once. We get back 8 RMSE values - one for each fold</span>
 (rmse &lt;-<span class="st"> </span><span class="kw">make_mtcars_boot</span>(num_of_folds))</code></pre></div>
-<pre><code>## [1] 2.733101 2.578527 3.297600 4.120983 3.218920 3.042154 2.701619 3.206785</code></pre>
+<pre><code>## [1] 2.768829 2.986074 3.123442 3.016328 3.232117 3.274655 3.107560 3.339170</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Now we repeat this some number of times - like 10. So we get back</span>
 <span class="co"># 80 RMSE values </span>
 
@@ -443,12 +443,12 @@ boot_repeated_rmse &lt;-<span class="st"> </span><span class="kw">as.vector</spa
 <pre><code>## [1] &quot;Summary of Bootstrap RMSE&quot;</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(boot_repeated_rmse)</code></pre></div>
 <pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-##   1.679   2.759   3.098   3.146   3.546   5.608</code></pre>
+##   1.518   2.897   3.412   3.361   3.823   5.542</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">print</span>(<span class="st">&quot;Summary of CV&quot;</span>)</code></pre></div>
 <pre><code>## [1] &quot;Summary of CV&quot;</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(repeated_cv_rmse)</code></pre></div>
 <pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-##   1.084   2.236   2.709   3.021   3.925   6.190</code></pre>
+##  0.5104  2.1872  2.7373  3.0332  4.0471  6.2665</code></pre>
 </div>
 </div>
             </section>

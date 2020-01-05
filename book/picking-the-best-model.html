@@ -225,21 +225,21 @@ mod_ranger &lt;-<span class="st"> </span><span class="kw">train</span>(mpg <span
 ## 
 ## MAE 
 ##            Min.  1st Qu.   Median     Mean  3rd Qu.     Max. NA&#39;s
-## lm     3.506740 3.839398 4.172057 3.987110 4.227295 4.282533    0
-## rf     1.321813 1.756970 2.192127 1.928461 2.231785 2.271443    0
-## ranger 1.300096 1.667479 2.034863 1.896737 2.195058 2.355253    0
+## lm     3.780767 3.812632 3.844496 4.311202 4.576419 5.308342    0
+## rf     1.386641 1.595132 1.803623 1.869438 2.110836 2.418049    0
+## ranger 1.417209 1.569133 1.721056 1.862849 2.085669 2.450282    0
 ## 
 ## RMSE 
 ##            Min.  1st Qu.   Median     Mean  3rd Qu.     Max. NA&#39;s
-## lm     4.398730 4.729756 5.060783 4.932963 5.200079 5.339375    0
-## rf     1.554400 2.270115 2.985831 2.578148 3.090022 3.194213    0
-## ranger 1.456555 2.176271 2.895987 2.559307 3.110684 3.325380    0
+## lm     4.276157 4.331396 4.386634 4.918577 5.239787 6.092941    0
+## rf     1.588306 1.896378 2.204451 2.423173 2.840606 3.476762    0
+## ranger 1.612110 1.864269 2.116428 2.405702 2.802498 3.488569    0
 ## 
 ## Rsquared 
 ##             Min.   1st Qu.    Median      Mean   3rd Qu.      Max. NA&#39;s
-## lm     0.4818085 0.5160917 0.5503749 0.5431425 0.5738095 0.5972440    0
-## rf     0.8755935 0.8884610 0.9013284 0.9037871 0.9178839 0.9344394    0
-## ranger 0.8916915 0.8954611 0.8992308 0.9137702 0.9248096 0.9503884    0</code></pre>
+## lm     0.5860879 0.6726695 0.7592512 0.7102529 0.7723354 0.7854196    0
+## rf     0.8967406 0.9096806 0.9226206 0.9214029 0.9337341 0.9448476    0
+## ranger 0.8969193 0.9107665 0.9246138 0.9219229 0.9344247 0.9442357    0</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">bwplot</span>(results)</code></pre></div>
 <p><img src="biosml_files/figure-html/unnamed-chunk-27-1.png" width="672" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">dotplot</span>(results)</code></pre></div>
@@ -249,11 +249,11 @@ mod_ranger &lt;-<span class="st"> </span><span class="kw">train</span>(mpg <span
 <h2><span class="header-section-number">7.2</span> Model Performance</h2>
 <p>Of course, we can now use the Test data frame to see how the RMSE looks on the holdout data frame.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">compute_rmse</span>(<span class="kw">predict</span>(mod_lm,Test),Test<span class="op">$</span>mpg)</code></pre></div>
-<pre><code>## [1] 1.752275</code></pre>
+<pre><code>## [1] 2.988807</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">compute_rmse</span>(<span class="kw">predict</span>(mod_rf,Test),Test<span class="op">$</span>mpg)</code></pre></div>
-<pre><code>## [1] 2.725698</code></pre>
+<pre><code>## [1] 3.194849</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">compute_rmse</span>(<span class="kw">predict</span>(mod_ranger,Test),Test<span class="op">$</span>mpg)</code></pre></div>
-<pre><code>## [1] 2.784891</code></pre>
+<pre><code>## [1] 3.148871</code></pre>
 <p>Another way to look at these models is to use the <strong>diff</strong> function.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">(difs &lt;-<span class="st"> </span><span class="kw">diff</span>(results))</code></pre></div>
 <pre><code>## 
@@ -276,46 +276,46 @@ mod_ranger &lt;-<span class="st"> </span><span class="kw">train</span>(mpg <span
 ## Lower diagonal: p-value for H0: difference = 0
 ## 
 ## MAE 
-##        lm       rf       ranger 
-## lm              2.05865  2.09037
-## rf     0.002875          0.03172
-## ranger 0.004830 1.000000        
+##        lm     rf       ranger  
+## lm            2.441764 2.448353
+## rf     0.1757          0.006589
+## ranger 0.1923 1.0000           
 ## 
 ## RMSE 
 ##        lm     rf      ranger 
-## lm            2.35481 2.37366
-## rf     0.1849         0.01884
-## ranger 0.1928 1.0000         
+## lm            2.49540 2.51288
+## rf     0.3303         0.01747
+## ranger 0.3419 1.0000         
 ## 
 ## Rsquared 
-##        lm       rf        ranger   
-## lm              -0.360645 -0.370628
-## rf     0.006675           -0.009983
-## ranger 0.012136 1.000000</code></pre>
+##        lm     rf       ranger  
+## lm            -0.21115 -0.21167
+## rf     0.1539          -0.00052
+## ranger 0.1524 1.0000</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">compare_models</span>(mod_lm,mod_rf)</code></pre></div>
 <pre><code>## 
 ##  One Sample t-test
 ## 
 ## data:  x
-## t = 3.8392, df = 2, p-value = 0.06164
+## t = 2.7588, df = 2, p-value = 0.1101
 ## alternative hypothesis: true mean is not equal to 0
 ## 95 percent confidence interval:
-##  -0.2842641  4.9938936
+##  -1.396415  6.387224
 ## sample estimates:
 ## mean of x 
-##  2.354815</code></pre>
+##  2.495405</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">compare_models</span>(mod_ranger,mod_lm)</code></pre></div>
 <pre><code>## 
 ##  One Sample t-test
 ## 
 ## data:  x
-## t = -3.7514, df = 2, p-value = 0.06428
+## t = -2.7026, df = 2, p-value = 0.114
 ## alternative hypothesis: true mean is not equal to 0
 ## 95 percent confidence interval:
-##  -5.0961117  0.3488016
+##  -6.513537  1.487786
 ## sample estimates:
 ## mean of x 
-## -2.373655</code></pre>
+## -2.512875</code></pre>
 </div>
 </div>
             </section>
