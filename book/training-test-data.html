@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 4 Training / Test Data | Predictive Learning in R</title>
-  <meta name="description" content="Chapter 4 Training / Test Data | Predictive Learning in R" />
+  <title>Chapter 5 Training / Test Data | Predictive Learning in R</title>
+  <meta name="description" content="Chapter 5 Training / Test Data | Predictive Learning in R" />
   <meta name="generator" content="bookdown 0.14 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 4 Training / Test Data | Predictive Learning in R" />
+  <meta property="og:title" content="Chapter 5 Training / Test Data | Predictive Learning in R" />
   <meta property="og:type" content="book" />
   
   
@@ -16,7 +16,7 @@
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 4 Training / Test Data | Predictive Learning in R" />
+  <meta name="twitter:title" content="Chapter 5 Training / Test Data | Predictive Learning in R" />
   
   
   
@@ -30,7 +30,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="a-motivating-example-linear-regression.html"/>
+<link rel="prev" href="decision-trees.html"/>
 <link rel="next" href="using-methods-other-than-lm.html"/>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -114,59 +114,74 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="3.3" data-path="a-motivating-example-linear-regression.html"><a href="a-motivating-example-linear-regression.html#building-a-model---in-sample-error"><i class="fa fa-check"></i><b>3.3</b> Building A Model - In Sample Error</a></li>
 <li class="chapter" data-level="3.4" data-path="a-motivating-example-linear-regression.html"><a href="a-motivating-example-linear-regression.html#out-of-sample-data"><i class="fa fa-check"></i><b>3.4</b> Out Of Sample Data</a></li>
 </ul></li>
-<li class="chapter" data-level="4" data-path="training-test-data.html"><a href="training-test-data.html"><i class="fa fa-check"></i><b>4</b> Training / Test Data</a><ul>
-<li class="chapter" data-level="4.1" data-path="training-test-data.html"><a href="training-test-data.html#cross-fold-validation-continued"><i class="fa fa-check"></i><b>4.1</b> Cross Fold Validation Continued</a></li>
-<li class="chapter" data-level="4.2" data-path="training-test-data.html"><a href="training-test-data.html#create-a-function-to-automate-things"><i class="fa fa-check"></i><b>4.2</b> Create A Function To Automate Things</a></li>
-<li class="chapter" data-level="4.3" data-path="training-test-data.html"><a href="training-test-data.html#repeated-cross-validation"><i class="fa fa-check"></i><b>4.3</b> Repeated Cross Validation</a></li>
-<li class="chapter" data-level="4.4" data-path="training-test-data.html"><a href="training-test-data.html#bootstrap"><i class="fa fa-check"></i><b>4.4</b> Bootstrap</a></li>
+<li class="chapter" data-level="4" data-path="decision-trees.html"><a href="decision-trees.html"><i class="fa fa-check"></i><b>4</b> Decision Trees</a><ul>
+<li class="chapter" data-level="4.1" data-path="decision-trees.html"><a href="decision-trees.html#advantages"><i class="fa fa-check"></i><b>4.1</b> Advantages</a></li>
+<li class="chapter" data-level="4.2" data-path="decision-trees.html"><a href="decision-trees.html#a-classification-example"><i class="fa fa-check"></i><b>4.2</b> A Classification Example</a><ul>
+<li class="chapter" data-level="4.2.1" data-path="decision-trees.html"><a href="decision-trees.html#evaluating-performance"><i class="fa fa-check"></i><b>4.2.1</b> Evaluating performance</a></li>
+<li class="chapter" data-level="4.2.2" data-path="decision-trees.html"><a href="decision-trees.html#tree-splitting"><i class="fa fa-check"></i><b>4.2.2</b> Tree Splitting</a></li>
 </ul></li>
-<li class="chapter" data-level="5" data-path="using-methods-other-than-lm.html"><a href="using-methods-other-than-lm.html"><i class="fa fa-check"></i><b>5</b> Using Methods Other Than lm</a><ul>
-<li class="chapter" data-level="5.1" data-path="using-methods-other-than-lm.html"><a href="using-methods-other-than-lm.html#parameters-vs-hyperparameters"><i class="fa fa-check"></i><b>5.1</b> Parameters vs Hyperparameters</a></li>
-<li class="chapter" data-level="5.2" data-path="using-methods-other-than-lm.html"><a href="using-methods-other-than-lm.html#hyperparameter-tuning"><i class="fa fa-check"></i><b>5.2</b> Hyperparameter Tuning</a></li>
+<li class="chapter" data-level="4.3" data-path="decision-trees.html"><a href="decision-trees.html#gini-index"><i class="fa fa-check"></i><b>4.3</b> Gini Index</a></li>
+<li class="chapter" data-level="4.4" data-path="decision-trees.html"><a href="decision-trees.html#regression-trees"><i class="fa fa-check"></i><b>4.4</b> Regression Trees</a><ul>
+<li class="chapter" data-level="4.4.1" data-path="decision-trees.html"><a href="decision-trees.html#performance-measure"><i class="fa fa-check"></i><b>4.4.1</b> Performance Measure</a></li>
 </ul></li>
-<li class="chapter" data-level="6" data-path="caret-package.html"><a href="caret-package.html"><i class="fa fa-check"></i><b>6</b> Caret Package</a><ul>
-<li class="chapter" data-level="6.1" data-path="caret-package.html"><a href="caret-package.html#putting-caret-to-work"><i class="fa fa-check"></i><b>6.1</b> Putting caret To Work</a></li>
-<li class="chapter" data-level="6.2" data-path="caret-package.html"><a href="caret-package.html#back-to-the-beginning"><i class="fa fa-check"></i><b>6.2</b> Back To The Beginning</a></li>
-<li class="chapter" data-level="6.3" data-path="caret-package.html"><a href="caret-package.html#splitting"><i class="fa fa-check"></i><b>6.3</b> Splitting</a></li>
-<li class="chapter" data-level="6.4" data-path="caret-package.html"><a href="caret-package.html#one-size-fits-all"><i class="fa fa-check"></i><b>6.4</b> One Size Fits All</a></li>
+<li class="chapter" data-level="4.5" data-path="decision-trees.html"><a href="decision-trees.html#parameters-vs-hyperparameters"><i class="fa fa-check"></i><b>4.5</b> Parameters vs Hyperparameters</a></li>
+<li class="chapter" data-level="4.6" data-path="decision-trees.html"><a href="decision-trees.html#grid-searching"><i class="fa fa-check"></i><b>4.6</b> Grid Searching</a></li>
+<li class="chapter" data-level="4.7" data-path="decision-trees.html"><a href="decision-trees.html#bagged-trees"><i class="fa fa-check"></i><b>4.7</b> Bagged Trees</a></li>
+<li class="chapter" data-level="4.8" data-path="decision-trees.html"><a href="decision-trees.html#random-forests"><i class="fa fa-check"></i><b>4.8</b> Random Forests</a></li>
 </ul></li>
-<li class="chapter" data-level="7" data-path="picking-the-best-model.html"><a href="picking-the-best-model.html"><i class="fa fa-check"></i><b>7</b> Picking The Best Model</a><ul>
-<li class="chapter" data-level="7.1" data-path="picking-the-best-model.html"><a href="picking-the-best-model.html#using-the-resamples-function"><i class="fa fa-check"></i><b>7.1</b> Using the resamples() function</a></li>
-<li class="chapter" data-level="7.2" data-path="picking-the-best-model.html"><a href="picking-the-best-model.html#model-performance"><i class="fa fa-check"></i><b>7.2</b> Model Performance</a></li>
-<li class="chapter" data-level="7.3" data-path="picking-the-best-model.html"><a href="picking-the-best-model.html#feature-selection"><i class="fa fa-check"></i><b>7.3</b> Feature Selection</a><ul>
-<li class="chapter" data-level="7.3.1" data-path="picking-the-best-model.html"><a href="picking-the-best-model.html#recursive-feature-elimination"><i class="fa fa-check"></i><b>7.3.1</b> Recursive Feature Elimination</a></li>
-<li class="chapter" data-level="7.3.2" data-path="picking-the-best-model.html"><a href="picking-the-best-model.html#redundant-feature-removal"><i class="fa fa-check"></i><b>7.3.2</b> Redundant Feature Removal</a></li>
-<li class="chapter" data-level="7.3.3" data-path="picking-the-best-model.html"><a href="picking-the-best-model.html#feature-importance"><i class="fa fa-check"></i><b>7.3.3</b> Feature Importance</a></li>
+<li class="chapter" data-level="5" data-path="training-test-data.html"><a href="training-test-data.html"><i class="fa fa-check"></i><b>5</b> Training / Test Data</a><ul>
+<li class="chapter" data-level="5.1" data-path="training-test-data.html"><a href="training-test-data.html#cross-fold-validation-continued"><i class="fa fa-check"></i><b>5.1</b> Cross Fold Validation Continued</a></li>
+<li class="chapter" data-level="5.2" data-path="training-test-data.html"><a href="training-test-data.html#create-a-function-to-automate-things"><i class="fa fa-check"></i><b>5.2</b> Create A Function To Automate Things</a></li>
+<li class="chapter" data-level="5.3" data-path="training-test-data.html"><a href="training-test-data.html#repeated-cross-validation"><i class="fa fa-check"></i><b>5.3</b> Repeated Cross Validation</a></li>
+<li class="chapter" data-level="5.4" data-path="training-test-data.html"><a href="training-test-data.html#bootstrap"><i class="fa fa-check"></i><b>5.4</b> Bootstrap</a></li>
 </ul></li>
+<li class="chapter" data-level="6" data-path="using-methods-other-than-lm.html"><a href="using-methods-other-than-lm.html"><i class="fa fa-check"></i><b>6</b> Using Methods Other Than lm</a><ul>
+<li class="chapter" data-level="6.1" data-path="using-methods-other-than-lm.html"><a href="using-methods-other-than-lm.html#parameters-vs-hyperparameters-1"><i class="fa fa-check"></i><b>6.1</b> Parameters vs Hyperparameters</a></li>
+<li class="chapter" data-level="6.2" data-path="using-methods-other-than-lm.html"><a href="using-methods-other-than-lm.html#hyperparameter-tuning"><i class="fa fa-check"></i><b>6.2</b> Hyperparameter Tuning</a></li>
 </ul></li>
-<li class="chapter" data-level="8" data-path="data-pre-processing.html"><a href="data-pre-processing.html"><i class="fa fa-check"></i><b>8</b> Data Pre Processing</a><ul>
-<li class="chapter" data-level="8.1" data-path="data-pre-processing.html"><a href="data-pre-processing.html#look-for-highly-correlated-variables"><i class="fa fa-check"></i><b>8.1</b> Look for Highly Correlated Variables</a></li>
-<li class="chapter" data-level="8.2" data-path="data-pre-processing.html"><a href="data-pre-processing.html#scaling-considerations"><i class="fa fa-check"></i><b>8.2</b> Scaling Considerations</a></li>
+<li class="chapter" data-level="7" data-path="caret-package.html"><a href="caret-package.html"><i class="fa fa-check"></i><b>7</b> Caret Package</a><ul>
+<li class="chapter" data-level="7.1" data-path="caret-package.html"><a href="caret-package.html#putting-caret-to-work"><i class="fa fa-check"></i><b>7.1</b> Putting caret To Work</a></li>
+<li class="chapter" data-level="7.2" data-path="caret-package.html"><a href="caret-package.html#back-to-the-beginning"><i class="fa fa-check"></i><b>7.2</b> Back To The Beginning</a></li>
+<li class="chapter" data-level="7.3" data-path="caret-package.html"><a href="caret-package.html#splitting"><i class="fa fa-check"></i><b>7.3</b> Splitting</a></li>
+<li class="chapter" data-level="7.4" data-path="caret-package.html"><a href="caret-package.html#one-size-fits-all"><i class="fa fa-check"></i><b>7.4</b> One Size Fits All</a></li>
 </ul></li>
-<li class="chapter" data-level="9" data-path="classification-problems.html"><a href="classification-problems.html"><i class="fa fa-check"></i><b>9</b> Classification Problems</a><ul>
-<li class="chapter" data-level="9.1" data-path="classification-problems.html"><a href="classification-problems.html#hypothesis-testing"><i class="fa fa-check"></i><b>9.1</b> Hypothesis Testing</a><ul>
-<li class="chapter" data-level="9.1.1" data-path="classification-problems.html"><a href="classification-problems.html#type-i-and-ii-errors"><i class="fa fa-check"></i><b>9.1.1</b> Type I and II Errors</a></li>
-</ul></li>
-<li class="chapter" data-level="9.2" data-path="classification-problems.html"><a href="classification-problems.html#performance-measures"><i class="fa fa-check"></i><b>9.2</b> Performance Measures</a></li>
-<li class="chapter" data-level="9.3" data-path="classification-problems.html"><a href="classification-problems.html#table-of-outcomes"><i class="fa fa-check"></i><b>9.3</b> Table of Outcomes</a><ul>
-<li class="chapter" data-level="9.3.1" data-path="classification-problems.html"><a href="classification-problems.html#computing-performance-metrics"><i class="fa fa-check"></i><b>9.3.1</b> Computing Performance Metrics</a></li>
-</ul></li>
-<li class="chapter" data-level="9.4" data-path="classification-problems.html"><a href="classification-problems.html#picking-the-right-metric"><i class="fa fa-check"></i><b>9.4</b> Picking the Right Metric</a><ul>
-<li class="chapter" data-level="9.4.1" data-path="classification-problems.html"><a href="classification-problems.html#working-with-prediction-probabilities"><i class="fa fa-check"></i><b>9.4.1</b> Working With Prediction Probabilities</a></li>
-<li class="chapter" data-level="9.4.2" data-path="classification-problems.html"><a href="classification-problems.html#creating-a-roc-curve"><i class="fa fa-check"></i><b>9.4.2</b> Creating a ROC Curve</a></li>
+<li class="chapter" data-level="8" data-path="picking-the-best-model.html"><a href="picking-the-best-model.html"><i class="fa fa-check"></i><b>8</b> Picking The Best Model</a><ul>
+<li class="chapter" data-level="8.1" data-path="picking-the-best-model.html"><a href="picking-the-best-model.html#using-the-resamples-function"><i class="fa fa-check"></i><b>8.1</b> Using the resamples() function</a></li>
+<li class="chapter" data-level="8.2" data-path="picking-the-best-model.html"><a href="picking-the-best-model.html#model-performance"><i class="fa fa-check"></i><b>8.2</b> Model Performance</a></li>
+<li class="chapter" data-level="8.3" data-path="picking-the-best-model.html"><a href="picking-the-best-model.html#feature-selection"><i class="fa fa-check"></i><b>8.3</b> Feature Selection</a><ul>
+<li class="chapter" data-level="8.3.1" data-path="picking-the-best-model.html"><a href="picking-the-best-model.html#recursive-feature-elimination"><i class="fa fa-check"></i><b>8.3.1</b> Recursive Feature Elimination</a></li>
+<li class="chapter" data-level="8.3.2" data-path="picking-the-best-model.html"><a href="picking-the-best-model.html#redundant-feature-removal"><i class="fa fa-check"></i><b>8.3.2</b> Redundant Feature Removal</a></li>
+<li class="chapter" data-level="8.3.3" data-path="picking-the-best-model.html"><a href="picking-the-best-model.html#feature-importance"><i class="fa fa-check"></i><b>8.3.3</b> Feature Importance</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="10" data-path="classification-example.html"><a href="classification-example.html"><i class="fa fa-check"></i><b>10</b> Classification Example</a><ul>
-<li class="chapter" data-level="10.1" data-path="classification-example.html"><a href="classification-example.html#boxplots-and-densities"><i class="fa fa-check"></i><b>10.1</b> Boxplots And Densities</a></li>
-<li class="chapter" data-level="10.2" data-path="classification-example.html"><a href="classification-example.html#generalized-linear-models"><i class="fa fa-check"></i><b>10.2</b> Generalized Linear Models</a></li>
-<li class="chapter" data-level="10.3" data-path="classification-example.html"><a href="classification-example.html#random-forests"><i class="fa fa-check"></i><b>10.3</b> Random Forests</a></li>
+<li class="chapter" data-level="9" data-path="data-pre-processing.html"><a href="data-pre-processing.html"><i class="fa fa-check"></i><b>9</b> Data Pre Processing</a><ul>
+<li class="chapter" data-level="9.1" data-path="data-pre-processing.html"><a href="data-pre-processing.html#look-for-highly-correlated-variables"><i class="fa fa-check"></i><b>9.1</b> Look for Highly Correlated Variables</a></li>
+<li class="chapter" data-level="9.2" data-path="data-pre-processing.html"><a href="data-pre-processing.html#scaling-considerations"><i class="fa fa-check"></i><b>9.2</b> Scaling Considerations</a></li>
 </ul></li>
-<li class="chapter" data-level="11" data-path="using-external-ml-frameworks.html"><a href="using-external-ml-frameworks.html"><i class="fa fa-check"></i><b>11</b> Using External ML Frameworks</a><ul>
-<li class="chapter" data-level="11.1" data-path="using-external-ml-frameworks.html"><a href="using-external-ml-frameworks.html#using-h2o"><i class="fa fa-check"></i><b>11.1</b> Using h2o</a></li>
-<li class="chapter" data-level="11.2" data-path="using-external-ml-frameworks.html"><a href="using-external-ml-frameworks.html#create-some-h20-models"><i class="fa fa-check"></i><b>11.2</b> Create Some h20 Models</a></li>
-<li class="chapter" data-level="11.3" data-path="using-external-ml-frameworks.html"><a href="using-external-ml-frameworks.html#saving-a-model"><i class="fa fa-check"></i><b>11.3</b> Saving A Model</a></li>
-<li class="chapter" data-level="11.4" data-path="using-external-ml-frameworks.html"><a href="using-external-ml-frameworks.html#using-the-h2o-auto-ml-feature"><i class="fa fa-check"></i><b>11.4</b> Using The h2o Auto ML Feature</a></li>
-<li class="chapter" data-level="11.5" data-path="using-external-ml-frameworks.html"><a href="using-external-ml-frameworks.html#launching-a-job"><i class="fa fa-check"></i><b>11.5</b> Launching a Job</a></li>
+<li class="chapter" data-level="10" data-path="classification-problems.html"><a href="classification-problems.html"><i class="fa fa-check"></i><b>10</b> Classification Problems</a><ul>
+<li class="chapter" data-level="10.1" data-path="classification-problems.html"><a href="classification-problems.html#hypothesis-testing"><i class="fa fa-check"></i><b>10.1</b> Hypothesis Testing</a><ul>
+<li class="chapter" data-level="10.1.1" data-path="classification-problems.html"><a href="classification-problems.html#type-i-and-ii-errors"><i class="fa fa-check"></i><b>10.1.1</b> Type I and II Errors</a></li>
+</ul></li>
+<li class="chapter" data-level="10.2" data-path="classification-problems.html"><a href="classification-problems.html#performance-measures"><i class="fa fa-check"></i><b>10.2</b> Performance Measures</a></li>
+<li class="chapter" data-level="10.3" data-path="classification-problems.html"><a href="classification-problems.html#table-of-outcomes"><i class="fa fa-check"></i><b>10.3</b> Table of Outcomes</a><ul>
+<li class="chapter" data-level="10.3.1" data-path="classification-problems.html"><a href="classification-problems.html#computing-performance-metrics"><i class="fa fa-check"></i><b>10.3.1</b> Computing Performance Metrics</a></li>
+</ul></li>
+<li class="chapter" data-level="10.4" data-path="classification-problems.html"><a href="classification-problems.html#picking-the-right-metric"><i class="fa fa-check"></i><b>10.4</b> Picking the Right Metric</a><ul>
+<li class="chapter" data-level="10.4.1" data-path="classification-problems.html"><a href="classification-problems.html#working-with-prediction-probabilities"><i class="fa fa-check"></i><b>10.4.1</b> Working With Prediction Probabilities</a></li>
+<li class="chapter" data-level="10.4.2" data-path="classification-problems.html"><a href="classification-problems.html#creating-a-roc-curve"><i class="fa fa-check"></i><b>10.4.2</b> Creating a ROC Curve</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="classification-example.html"><a href="classification-example.html"><i class="fa fa-check"></i><b>11</b> Classification Example</a><ul>
+<li class="chapter" data-level="11.1" data-path="classification-example.html"><a href="classification-example.html#boxplots-and-densities"><i class="fa fa-check"></i><b>11.1</b> Boxplots And Densities</a></li>
+<li class="chapter" data-level="11.2" data-path="classification-example.html"><a href="classification-example.html#generalized-linear-models"><i class="fa fa-check"></i><b>11.2</b> Generalized Linear Models</a></li>
+<li class="chapter" data-level="11.3" data-path="classification-example.html"><a href="classification-example.html#random-forests-1"><i class="fa fa-check"></i><b>11.3</b> Random Forests</a></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="using-external-ml-frameworks.html"><a href="using-external-ml-frameworks.html"><i class="fa fa-check"></i><b>12</b> Using External ML Frameworks</a><ul>
+<li class="chapter" data-level="12.1" data-path="using-external-ml-frameworks.html"><a href="using-external-ml-frameworks.html#using-h2o"><i class="fa fa-check"></i><b>12.1</b> Using h2o</a></li>
+<li class="chapter" data-level="12.2" data-path="using-external-ml-frameworks.html"><a href="using-external-ml-frameworks.html#create-some-h20-models"><i class="fa fa-check"></i><b>12.2</b> Create Some h20 Models</a></li>
+<li class="chapter" data-level="12.3" data-path="using-external-ml-frameworks.html"><a href="using-external-ml-frameworks.html#saving-a-model"><i class="fa fa-check"></i><b>12.3</b> Saving A Model</a></li>
+<li class="chapter" data-level="12.4" data-path="using-external-ml-frameworks.html"><a href="using-external-ml-frameworks.html#using-the-h2o-auto-ml-feature"><i class="fa fa-check"></i><b>12.4</b> Using The h2o Auto ML Feature</a></li>
+<li class="chapter" data-level="12.5" data-path="using-external-ml-frameworks.html"><a href="using-external-ml-frameworks.html#launching-a-job"><i class="fa fa-check"></i><b>12.5</b> Launching a Job</a></li>
 </ul></li>
 </ul>
 
@@ -186,7 +201,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
             <section class="normal" id="section-">
 <div id="training-test-data" class="section level1">
-<h1><span class="header-section-number">Chapter 4</span> Training / Test Data</h1>
+<h1><span class="header-section-number">Chapter 5</span> Training / Test Data</h1>
 <p><a href="https://www.stat.berkeley.edu/~aldous/157/Papers/shmueli.pdf" class="uri">https://www.stat.berkeley.edu/~aldous/157/Papers/shmueli.pdf</a></p>
 <blockquote>
 <p>Predictive power is assessed using metrics computedfrom a holdout set or using cross-validation (Stone,1974; Geisser,1975)</p>
@@ -231,31 +246,31 @@ folds &lt;-<span class="st"> </span><span class="kw">split</span>(<span class="k
 <p>Check out the folds to get a better understanding of what is going on. Remember that each with K-fold</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">folds</code></pre></div>
 <pre><code>## $`1`
-## [1]  1 17 10  5
+## [1] 28  3 23 17
 ## 
 ## $`2`
-## [1] 14  9 21  4
+## [1] 32 25 10 27
 ## 
 ## $`3`
-## [1] 18 29 23 27
+## [1]  1 12  9 20
 ## 
 ## $`4`
-## [1] 19 22 28 30
+## [1] 15  7 26  2
 ## 
 ## $`5`
-## [1] 32 16 15  7
+## [1]  6 11 21 31
 ## 
 ## $`6`
-## [1] 11  6  8 13
+## [1] 13  8 16 14
 ## 
 ## $`7`
-## [1]  3 26 20 12
+## [1] 18 24 19 30
 ## 
 ## $`8`
-## [1] 24 25  2 31</code></pre>
+## [1] 22 29  5  4</code></pre>
 <p>Each list element has the indices of four unique observations from the data frame. We have eight folds with four elements each for a total of 32 numbers corresponding to row numbers from the mtcars data frame.</p>
 <div id="cross-fold-validation-continued" class="section level2">
-<h2><span class="header-section-number">4.1</span> Cross Fold Validation Continued</h2>
+<h2><span class="header-section-number">5.1</span> Cross Fold Validation Continued</h2>
 <p>To implement the cross validation, we will create a processing loop that will execute once for each of the 8 folds. During each execution of the loop we will create a model using data combined from all folds <strong>except</strong> the fold corresponding to the current loop number (e.g, 1, 2, .. 8).</p>
 <p>Once the model is built we then test it on the fold number corresponding to the current loop number.</p>
 <p>So now we can create some lists to contain the models that we make along withe the associated predictions, errors and computed RMSE. We we can inspect any of the intermediate results after the fact to validate our work or look more closely at any specific result.</p>
@@ -298,12 +313,12 @@ lattice<span class="op">::</span><span class="kw">dotplot</span>(rmse,
                  <span class="dt">main=</span><span class="st">&quot;RMSE Across Folds Using K-Fold CV&quot;</span>)</code></pre></div>
 <p><img src="biosml_files/figure-html/latticeplot-1.png" width="672" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">mean</span>(rmse)</code></pre></div>
-<pre><code>## [1] 3.041103</code></pre>
+<pre><code>## [1] 3.021514</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sd</span>(rmse)</code></pre></div>
-<pre><code>## [1] 0.9252901</code></pre>
+<pre><code>## [1] 1.089556</code></pre>
 </div>
 <div id="create-a-function-to-automate-things" class="section level2">
-<h2><span class="header-section-number">4.2</span> Create A Function To Automate Things</h2>
+<h2><span class="header-section-number">5.2</span> Create A Function To Automate Things</h2>
 <p>Since we have gone to the trouble of creating a loop structure to process the folds, we could easily turn this into a function to automate the splitting of the data frame across some arbitrary number of folds just to get an idea of how the RMSE looks for different numbers of folds. We could even have our function accommodate different formula if we wanted but we won’t focus on that right now. You will soon discover that the <strong>caret</strong> package does these kinds of things for you but we aren’t quite there yet.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">make_mtcars_model &lt;-<span class="st"> </span><span class="cf">function</span>(<span class="dt">formula=</span>myform, <span class="dt">num_of_folds=</span><span class="dv">8</span>) {
   folds &lt;-<span class="st"> </span><span class="kw">split</span>(<span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(mtcars)),<span class="dv">1</span><span class="op">:</span>num_of_folds) 
@@ -348,17 +363,17 @@ title &lt;-<span class="st"> </span><span class="kw">paste</span>(<span class="s
 
 
 <span class="kw">print</span>(<span class="kw">mean</span>(rmse))</code></pre></div>
-<pre><code>## [1] 3.015993</code></pre>
+<pre><code>## [1] 3.065706</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">lattice<span class="op">::</span><span class="kw">dotplot</span>(rmse,
                  <span class="dt">main=</span><span class="st">&quot;RMSE Across Folds Using K-Fold CV&quot;</span>)</code></pre></div>
 <p><img src="biosml_files/figure-html/fourfold-1.png" width="672" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sd</span>(rmse)</code></pre></div>
-<pre><code>## [1] 1.050131</code></pre>
+<pre><code>## [1] 1.105896</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">boxplot</span>(rmse,<span class="dt">main=</span>title)</code></pre></div>
 <p><img src="biosml_files/figure-html/fourfold-2.png" width="672" /></p>
 </div>
 <div id="repeated-cross-validation" class="section level2">
-<h2><span class="header-section-number">4.3</span> Repeated Cross Validation</h2>
+<h2><span class="header-section-number">5.3</span> Repeated Cross Validation</h2>
 <p>Since we already have an existing function we can up the ante by repeating the cross validation. This will provide more data on how the RMSE might be distributed across multiple runs, each of which does Cross Fold validation. This example will repeat a 4 Fold Cross Validation , 20 times.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">num_of_folds &lt;-<span class="st"> </span><span class="dv">4</span>
 
@@ -366,7 +381,7 @@ title &lt;-<span class="st"> </span><span class="kw">paste</span>(<span class="s
 <span class="co"># once. We get back 4 RMSE values - one for each fold</span>
 
 (rmse &lt;-<span class="st"> </span><span class="kw">make_mtcars_model</span>(num_of_folds))</code></pre></div>
-<pre><code>## [1] 3.448481 3.267544 2.060182 5.167788 1.594241 4.156353 1.764347 2.376151</code></pre>
+<pre><code>## [1] 3.916496 2.504094 1.473652 5.182321 2.125961 4.353108 3.032338 2.382515</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Now we repeat this some number of times - like 10. So we get back</span>
 <span class="co"># 80 RMSE values </span>
 
@@ -374,19 +389,19 @@ repeated_cv_rmse &lt;-<span class="st"> </span><span class="kw">sapply</span>(<s
 
 <span class="kw">boxplot</span>(repeated_cv_rmse, 
         <span class="dt">main=</span><span class="st">&quot;RMSE Across 20 Repeats of 4 CV Folds&quot;</span>)</code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-40-1.png" width="672" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">title &lt;-<span class="st"> </span><span class="kw">paste</span>(<span class="st">&quot;RMSE Across&quot;</span>,num_of_folds,
                <span class="st">&quot;folds - &quot;</span>,<span class="kw">as.character</span>(<span class="kw">deparse</span>(myform)),<span class="dt">sep=</span><span class="st">&quot; &quot;</span>)
 
 repeated_cv_rmse &lt;-<span class="st"> </span><span class="kw">as.vector</span>(repeated_cv_rmse)
 <span class="kw">boxplot</span>(repeated_cv_rmse)</code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-8-2.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-40-2.png" width="672" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(repeated_cv_rmse)</code></pre></div>
 <pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-##  0.8215  2.2031  2.7533  3.0285  3.9571  6.3161</code></pre>
+##  0.8665  2.1211  2.7089  3.0141  4.0634  6.1182</code></pre>
 </div>
 <div id="bootstrap" class="section level2">
-<h2><span class="header-section-number">4.4</span> Bootstrap</h2>
+<h2><span class="header-section-number">5.4</span> Bootstrap</h2>
 <p>An alternative to K-Fold Cross Validation is to use the bootstrap sampling approach which will produce training data sets the same size as the original data set although some observations might be repeated as the sampling process is done with replacement. The observations that do not appear in each of the training sets are then used as a test set. These observations are known as “out of bag samples”. We’ll make a function to do bootstrap sampling.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">make_mtcars_boot &lt;-<span class="st"> </span><span class="cf">function</span>(<span class="dt">formula=</span>myform, <span class="dt">num_of_folds=</span><span class="dv">8</span>) {
 
@@ -427,20 +442,20 @@ repeated_cv_rmse &lt;-<span class="st"> </span><span class="kw">as.vector</span>
 <span class="co"># Just to be clear - here is what happens when we call the function</span>
 <span class="co"># once. We get back 8 RMSE values - one for each fold</span>
 (rmse &lt;-<span class="st"> </span><span class="kw">make_mtcars_boot</span>(num_of_folds))</code></pre></div>
-<pre><code>## [1] 4.445223 3.526152 3.582255 3.925954 4.332675 2.777316 3.337475 3.579188</code></pre>
+<pre><code>## [1] 3.119174 2.414302 4.645848 2.976377 2.588440 3.407563 2.854666 4.638947</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Now we repeat this some number of times - like 10. So we get back</span>
 <span class="co"># 80 RMSE values </span>
 
 repeated_rmse &lt;-<span class="st"> </span><span class="kw">sapply</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">20</span>,make_mtcars_boot)
 
 <span class="kw">boxplot</span>(repeated_rmse,<span class="dt">main=</span><span class="st">&quot;RMSE Across 20 Repeats of 4 Boostrap Folds&quot;</span>)</code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-42-1.png" width="672" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">title &lt;-<span class="st"> </span><span class="kw">paste</span>(<span class="st">&quot;RMSE Across&quot;</span>,num_of_folds,
                <span class="st">&quot;folds - &quot;</span>,<span class="kw">as.character</span>(<span class="kw">deparse</span>(myform)),<span class="dt">sep=</span><span class="st">&quot; &quot;</span>)
 
 boot_repeated_rmse &lt;-<span class="st"> </span><span class="kw">as.vector</span>(repeated_rmse)
 <span class="kw">boxplot</span>(boot_repeated_rmse)</code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-10-2.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-42-2.png" width="672" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># How does the RMSE from the boostrap approach compare to the </span>
 <span class="co"># K-Fold CV approach ? </span>
 
@@ -448,12 +463,12 @@ boot_repeated_rmse &lt;-<span class="st"> </span><span class="kw">as.vector</spa
 <pre><code>## [1] &quot;Summary of Bootstrap RMSE&quot;</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(boot_repeated_rmse)</code></pre></div>
 <pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-##   2.022   2.892   3.234   3.266   3.618   6.115</code></pre>
+##   1.681   2.917   3.246   3.273   3.576   5.595</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">print</span>(<span class="st">&quot;Summary of CV&quot;</span>)</code></pre></div>
 <pre><code>## [1] &quot;Summary of CV&quot;</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(repeated_cv_rmse)</code></pre></div>
 <pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-##  0.8215  2.2031  2.7533  3.0285  3.9571  6.3161</code></pre>
+##  0.8665  2.1211  2.7089  3.0141  4.0634  6.1182</code></pre>
 </div>
 </div>
             </section>
@@ -461,7 +476,7 @@ boot_repeated_rmse &lt;-<span class="st"> </span><span class="kw">as.vector</spa
           </div>
         </div>
       </div>
-<a href="a-motivating-example-linear-regression.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="decision-trees.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
 <a href="using-methods-other-than-lm.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>

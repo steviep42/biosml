@@ -271,6 +271,567 @@ test_pred  <- predict(
 What we have done here is to sample some portion of the original data frame to use as a training set while holding out the rest of the data to use as a test data  to see how well our model performed. We could repeat this (re)sampling activity multiple times to better train our data over different segments or "folds" of data so any model we ultimately generate will "learn" as much from the data as it can without modeling any "noise". There are various methods for doing this including K-Fold Cross Validation and Bootstrap Resampling. Let's dig in a little deeper into these methods because they help us build models that might offer more robust performance when applied to new data. 
 
 
+
+
+
+# Decision Trees
+
+
+```{r dtinit,echo=FALSE}
+library(readr)
+library(rpart)
+library(rpart.plot)
+```
+
+You might also know about the topic of Classification Trees under the name of **CART** which stands for **C**lassification **A**nd **R**egression Trees. Decision trees can be used to predict numeric outcomes or to classify binary outcomes such as a disease result "yes" or "now", "positive or negative". 
+
+The theme common to both types of trees is that you are trying to predict some outcome variable as a function of some number and combination of predictor variables from the same data set. The outcome will be a "tree" that can usually be easily understood and interrpeted. As an example, a very simple decision tree can be generated  that predicts / classifies the transmission type of cars in the mtcars data frame. 
+
+```{r}
+data(mtcars)
+rpart_class_mtcars <- rpart(am~.,data=mtcars,method="class")
+rpart.plot(rpart_class_mtcars,yesno = 2, type = 0, extra = 0)
+```
+
+If the weight of the car is greater than 3.2 tons then the tree would classify it as having a manual (1) transmission. How well did we do here ? Not too bad actually. We'll talk more about measuring performance of a classifier in a bit. 
+
+```{r}
+preds <- ifelse(mtcars$wt >= 3,0,1)
+table(predicted=preds,actual=mtcars$am)
+
+```
+
+
+If, however, we wanted to predict the MPG of a car from the mtcars data frame we could still use the **rpart** function but we would adjust some arguments - notably the "method" argument. In any case, we get a prediction for MPG based on some criteria.
+
+```{r}
+data(mtcars)
+rpart_regress_mtcars <- rpart(mpg~.,data=mtcars,method="anova")
+rpart.plot(rpart_regress_mtcars,yesno = 2, type = 0, extra = 0)
+```
+
+
+## Advantages
+
+The advantages of tree-based methods include that 1
+ - The model is generally easy to interpret
+ - The path to a decision is plainly spelled out (assuming that the number of tree splits is easy enough to trace). 
+ - The method can handle numeric and cartegorical 
+ - One does not generally need to pre process or normalize data
+ - Missing data is less of a big deal
+
+Disadvantages include:
+
+ - Large trees are hard to follow - variance can be high
+ - Trees can be overly complex 
+ - Overfitting can be a problem 
+
+## A Classification Example 
+
+Let's use the Pima Indians data set as it relates to predicting whether someone has diabetes. This data is provided by the **mlbench** package. The relevant variables are:
+
+    pregnant - Number of times pregnant
+    glucose	 - Plasma glucose concentration (glucose tolerance test)
+    pressure - Diastolic blood pressure (mm Hg)
+    triceps	 - Triceps skin fold thickness (mm)
+    insulin	 - 2-Hour serum insulin (mu U/ml)
+    mass	   - Body mass index (weight in kg/(height in m)\^2)
+    pedigree - Diabetes pedigree function
+    age	     - Age (years)
+    diabetes - Class variable (test for diabetes)
+
+
+
+```{r}
+library(mlbench)
+data(PimaIndiansDiabetes)
+pm <- PimaIndiansDiabetes
+
+diabetes_mod <- rpart(diabetes ~ .,pm,method="class")
+rpart.plot(x = diabetes_mod, yesno = 2, type = 0, extra = 0)
+```
+ 
+That's pretty understandable but it starts to border on being a bit hard to follow by hand. Nonethless, you could show this to someone who does not know (or care) about the underlying mathematics of decision trees and they would be able to understand the path to a classification of someone having diabetes or not. 
+
+It's common in these scenarios to create what is known as a test / training split so that we can train our model on a test set that we can then use on a test or hold out data set to see how well the model performs. There is much more to say about this but we'll keep it simple here. We can create a training set that comprises %80 of the data with a holdout set of 20%. This easy to do. 
+
+Let's create a Train / Test Split
+
+```{r}
+set.seed(123)
+percent <- .80
+train_idx <- sample(1:nrow(pm),
+                      round(percent*nrow(pm)))
+
+train_idx[1:10]
+
+# Subset the pm data frame to training indices only
+pm_train <- pm[train_idx, ]  
+  
+# Exclude the training indices to create the test set
+pm_test <- pm[-train_idx, ]  
+```
+
+
+```{r}
+# Train the model (to predict 'default')
+pm_class_tree <- rpart(formula = diabetes ~ ., 
+                      data = pm_train, 
+                      method = "class")
+
+# Look at the model output                      
+pm_class_tree
+```
+
+### Evaluating performance
+
+So this is where things get interesting. We'll use a confusion matrix to help us figure some things out about this model.
+
+```{r}
+# Generate predicted classes using the model object
+pm_class_pred <- predict(object = pm_class_tree,  
+                        newdata = pm_test,   
+                        type = "class")  
+                            
+# Calculate the confusion matrix for the test set
+caret::confusionMatrix(pm_class_pred,       
+                       pm_test$diabetes,
+                       positive="pos")  
+```
+
+We can also look at the Area Under the ROC Curve. 
+
+```{r}
+library(Metrics)
+dt_pred <- predict(pm_class_tree,
+                       newdata = pm_test, type="prob")
+
+converted <- ifelse(pm_test$diabetes == "pos",1,0)
+
+aucval    <- auc(actual = converted,
+                    predicted = dt_pred[,2])
+
+aucval
+```
+
+### Tree Splitting
+
+The resulting tree can be thought of as an upside down tree with the root at the top. The "trunk" proceeds downward and splits into subsets based on some decision (hence the word "decision" in the title). When classifying data the idea is to segment or partition data into groups/regions where each group contains or represents a single class ("yes/no", "positive/negative"). 
+
+These groups or regions would represent a "pure" region. This is not always possible so a best effort is made. These regions are separated by decision boundaries which are used to make decisions. We'll plot some example data to illustrate the case. 
+
+```{r echo=FALSE}
+col="black"
+plot(1:20,1:20,type="n",main="Some Cool Data")
+points(c(2,1,3,5,7),c(2,7,3,5,7),col=col,pch=19,cex=1.5)
+points(c(11,13,15,17,19),c(1,9,4,5,7),col=col,pch=19,cex=1.5)
+points(c(1,3,5,7,9),c(12,18,12,19,170),col=col,pch=19,cex=1.5)
+points(c(11,13,15,17,19),c(13,18,14,19,17),col=col,pch=19,cex=1.5)
+```
+
+
+```{r echo=FALSE}
+plot(1:20,1:20,type="n",main="Some Cool Data - Perfectly Classified")
+points(c(2,1,3,5,7),c(2,7,3,5,7),col="red",pch=19,cex=1.5)
+points(c(11,13,15,17,19),c(1,9,4,5,7),col="green",pch=19,cex=1.5)
+points(c(1,3,5,7,9),c(12,18,12,19,170),col="green",pch=19,cex=1.5)
+points(c(11,13,15,17,19),c(13,18,14,19,17),col="red",pch=19,cex=1.5)
+
+abline(h=10,lty=2)
+segments(7.5,0,7.5,10,lty=2)
+segments(10.5,10,10.5,21,lty=2)
+
+```
+
+```{r echo=FALSE}
+plot(1:20,1:20,type="n",main="Some Cool Data - Imperfectly Classified")
+points(c(2,1,3,5,7),c(2,7,3,5,7),col="red",pch=19,cex=1.5)
+points(c(11,13,15,17,19),c(1,9,4,5,7),col="green",pch=19,cex=1.5)
+points(c(1,3,5,7,9),c(12,18,12,19,170),col="green",pch=19,cex=1.5)
+points(c(11,13,15,17,19),c(13,18,14,19,17),col="red",pch=19,cex=1.5)
+
+abline(h=10,lty=2)
+segments(5.5,0,5.5,10,lty=2)
+segments(12,10,12,21,lty=2)
+
+```
+
+## Gini Index
+
+So we have to find a way to make the descisons such that the resulting regions are as pure as possible. This could be measuring the degree of impurity or purity - so we are either maximinizng purity or minimizing impurity The so called "Gini index"" gives us the degree or measure of impurity. 
+
+The lower the Gini index, the lower the degree of impurity (this higher purity). The higher the Gini index the higher the degree of impurity (this lower purity). The decision tree will select the split that minimizes or lowers the Gini index. There are other measures or indices that can be used such as the "information" measure. 
+
+Let's train two models that use a different splitting criterion ("gini" and "information") and then use the test set to choose a "best" model. To do this you'll use the **parms** argument of the **rpart** function. This argument takes a named list that contains values of different parameters to influence how the model is trained. Finally, to assess the models we'll use the **ce** function from the **Metrics** package to show the proportion of elements in actual that are not equal to the corresponding element in predicted.
+
+```{r}
+# Train a gini-based model
+pm_gini_mod <- rpart(formula = diabetes ~ ., 
+                       data = pm_train, 
+                       method = "class",
+                       parms = list(split = "gini"))
+
+# Train an information-based model
+pm_info_mod <- rpart(formula = diabetes ~ ., 
+                       data = pm_train, 
+                       method = "class",
+                       parms = list(split = "information"))
+
+# Create some predictions
+gini_pred <- predict(object = pm_gini_mod, 
+             newdata = pm_test,
+             type = "class")    
+
+# Generate predictions on the validation set using the information model
+info_pred <- predict(object = pm_info_mod, 
+             newdata = pm_test,
+             type = "class")
+
+# Compare classification error
+
+Metrics::ce(actual = pm_test$diabetes, 
+   predicted = gini_pred)
+Metrics::ce(actual = pm_test$diabetes, 
+   predicted = info_pred)  
+```
+
+## Regression Trees
+
+Predicting numeric outcomes can also be of interest. Given some patient characteristics relative to a disease, we might want to predict a viral load quanitity. A gambler might want to predict a final score for a team. Unlike, classification problems, we are looking at estimating a numeric outcome. R has a built in function for this called "lm" which can be used but we can also use Trees to do this since, after, all, it does some nice things for us like not having to worry about normlalizing data (not that that is hard) or the mixture of quantitaitve and categorigcal data.  
+
+### Performance Measure
+
+Since we are predicting a numeric outcome we would like to come up with a metric to help us fogure out if the model we havbe is good or not. With classification situations we canconfusion matrices and ROC curves. Here we will ue something more simplistic but effective - Root Mean Square Error. The formula looks like the following where P represents a vector of predictions and O represents a vector of the observed (true) values.
+
+\[
+RMSE = \sqrt\frac{\sum_i^n(P_i-O_i)^2}{n}
+\]
+
+We could even write our own function for this although the **Metrics** package has a function called **rmse** to do this:
+
+```{r}
+# Lets define a rmse function for future use
+compute_rmse <- function(preds,known) {
+  errors <- preds-known
+  rmse   <- sqrt(mean(errors^2))
+  return(rmse)
+}
+```
+
+
+
+```{r echo=FALSE,eval=FALSE}
+grade <- read.csv("/Users/esteban/Dropbox/ML/grade.csv",
+                  stringsAsFactors = FALSE)
+```
+
+
+Let's build a classification tree model on the Pima Indians data to predict the body mass of a participant.
+
+```{r}
+# Train the model
+mass_pima_mod <- rpart(formula = mass ~ ., 
+                     data = pm_train, 
+                     method = "anova")
+
+# Look at the model output                      
+print(mass_pima_mod)
+
+# Plot the tree model
+rpart.plot(x = mass_pima_mod, 
+           yesno = 2, type = 0, extra = 0)
+```
+
+Let's compute the RMSE for this model. 
+
+```{r}
+# Generate predictions on a test set
+pred <- predict(object = mass_pima_mod,   # model object 
+                newdata = pm_test)  # test dataset
+
+# Compute the RMSE
+Metrics::rmse(actual = pm_test$mass, 
+     predicted = pred)
+```
+
+Is this Good ? Bad ? Okay ? We don't know. We'll need to do some things like Cross Validation. And then there are additional arguments to the **rpart** function that we could use to influence how the model does its job. These are referred to as "hyperparamters".
+
+## Parameters vs Hyperparameters
+
+**Model parameters** are things that are generated as part of the modeling process. These might be things like slope and intercept from a linear model or, in the case of an rpart model, the number of splits in the final tree or the total number of leaves. 
+
+**Hyper parameters** (sometimes called **metaparameters**) represent information that is supplied in the form of an argument prior the call to the method to generate results. These parameters might not be something one can intelligently set without some experimentation. 
+
+Of course, most modeling functions one would call in R have default values for various arguments but this does not mean that the defaults are appropriate for all cases. To see the hyper parameters of the **rpart** function, check the help page for **rpart.control**. 
+
+![](/Users/esteban/Dropbox/ML/biosml/pics/rpartctrol2.png)
+
+Tuning the hyperparameters for **rpart** would involve adjusting the following hyper parameters or using some post processing function to refine the model relative to these parameters:
+
+  - **cp** which is the complexity parameter (default is .01) - smaller values means more complexity
+  - **minsplit** the minimum number of observations that must exist in a node before a split is attempted (default is 20)
+  - **maxdepth** maximum number of nodes between a final node and root node 
+  
+There are other hyper parameters but we can start with these. The **rpart.control** function will do something called cross validation which involves repeatedly running the **rpart** some number of times (10 by default) while internally specifying different values for the above mentioned hyper parameters. 
+
+In effect, it is doing some work for you so you don't have to. At the end of the run it will produce a table for inspection. The results of this table can then be used to "prune" the tree model to get a "better" tree - one that performs better than an "un pruned" tree. Let's look at the pima mass model:
+
+```{r}
+# You can plot the modelling object
+plot(mass_pima_mod)
+
+# You can inspect the table manually
+mass_pima_mod$cptable
+```
+
+
+We want to pick the value of CP from the table that corresponds to the minimum **xerror** value. This can also be deduced from the plot but let's work with the table:
+
+```{r}
+cpt <- as.data.frame.matrix(mass_pima_mod$cptable) 
+cpt_val <- cpt[order(cpt$xerror),][1,]$CP
+```
+
+We'll use the CP value associated with the minimum xerror which in this case turns out to be 0.01. This is now passed to the **prune** function. 
+
+```{r}
+mass_pima_mod_opt <- prune(mass_pima_mod, 
+                           cp = cpt_val)
+                          
+# Plot the optimized model
+rpart.plot(mass_pima_mod_opt, yesno = 2, type = 0, extra = 0)
+```
+
+
+Does this optimized model perform any better ? Not really, because the optimal CP value turned out to be 0.01 which is actually the same as the default. 
+
+```{r}
+# Generate predictions on a test set
+pred <- predict(object = mass_pima_mod_opt,   # model object 
+                newdata = pm_test)  # test dataset
+
+# Compute the RMSE
+Metrics::rmse(actual = pm_test$mass, 
+     predicted = pred)
+```
+
+## Grid Searching
+
+We might want to review several different models that correspond to various hyperparamter sets. Our goal is to find the best performing model based on a systematic approach that allows us to assess each model in a fair way. There are functions that can help us build a "grid" of hyperparameter values that can then "feed" the function arguments. So we train models on a combination of these values and compare them using the RMSE for regression or ROC / Confusion Matrix for classification setups. 
+
+Setting up the grid involves a manual process (although as we will eventually see) the **caret** package can help automate this for us. Knowing about the valid values for a hyperparameter is critical so some experimentation is important. The following process sets up a data frame of two columns each of which corresponds to a hyperparamter of the **rpart** function. The intent here is to call **rpart** a number of times using each row of the below data frame to supply the values for the respective arguments in **rpart**.
+
+```{r}
+mysplits <- seq(1, 35, 5)
+mydepths <- seq(5,40, 10)
+
+my_cool_grid <- expand.grid(minsplit = mysplits,
+                            maxdepth = mydepths)
+
+head(my_cool_grid)
+```
+
+We'll generate models, predictions, and RMSE values and stash them for later review. Once agian, we'll be predicting the mass variable in the Pima Indians dataframe.
+
+```{r}
+do_grid_search <- function(minsplit,maxdepth) {
+  
+  # Setup some book keeping structures
+  
+  mods  <- list()
+  preds <- list()
+  myrmse  <- vector()
+  
+  mygrid <- expand.grid(minsplit=minsplit,
+                        maxdepth=maxdepth)
+  
+  for (ii in 1:nrow(mygrid)) {
+    minsplit <- mygrid[ii,]$minsplit
+    maxdepth <- mygrid[ii,]$maxdepth
+    
+    # Build the Model
+    mods[[ii]] <- rpart(mass ~ ., 
+                        data = pm_train,
+                        method = "anova",
+                        minsplit = minsplit,
+                        maxdepth = maxdepth)
+    
+    # Now predict against the test data
+    preds[[ii]] <- predict(mods[[ii]],
+                           newdata = pm_test)
+    
+    # Get RMSE
+    myrmse[ii] <- Metrics::rmse(actual = pm_test$mass, 
+                                predicted = preds[[ii]])
+  }
+  
+  # Find the model that has the lowest rmse
+  idx <- which.min(myrmse)
+  
+  # Get the control parameters for the best model
+  optimal_model <- mods[[idx]]
+  rmseval <- myrmse[idx]
+  
+  return(list(optimal_model=optimal_model,optim_rmse=rmseval))
+}
+```
+
+Now run the function and get the parameters corresponding to the optimal model. 
+
+```{r}
+results <- do_grid_search(seq(1, 4, 1),seq(1, 6, 1))
+results$optim_rmse
+
+results$optimal_model$control
+```
+
+## Bagged Trees
+
+Now we look at bagged trees which involves looking at looks at many trees in average - this is an ensemble method. It helps to reduce the variance associated with decision trees which can be highly sensitive to changes in data. The term bagging refers to "boostrap aggregation". To review, the Decision Tree process can be represented like this:
+
+![](/Users/esteban/Dropbox/ML/biosml/pics/tree2.png)
+
+The bootstrap method of sampling will resample the training data some number of times (with replacement) and retrain a number of models on the resampled data to average out the error. This looks something like:
+
+
+This is what happens:
+
+ - The input data set is resampled with replacement some number of times (e.g. 10,50, 100)
+ - The resampled data is usually a subset of the data which leaves some portion of the data avaialble to use a mini test set for prediction ("out of bag data"")
+ - Get the RMSE from the prediction
+ - Average out the RMSE 
+ 
+ ![](/Users/esteban/Dropbox/ML/biosml/pics/bagged.png)
+ 
+ 
+So you get a lot of different trees whose performance can be averaged over boostrapped data sets which might include observations several times or not at all. This should result in less variance. 
+
+A reason NOT to use bagged trees involves the idea that a collection of trees is not nearly as easy to look at as a single decision tree. We can actually write our own version of bagged trees using a for loop. Sort of like what we did above. First, let's get our test / train pair for the Pima Indians data. 
+
+```{r}
+set.seed(123)
+percent <- .80
+train_idx <- sample(1:nrow(pm),
+                      round(percent*nrow(pm)))
+
+train_idx[1:10]
+
+# Subset the pm data frame to training indices only
+pm_train <- pm[train_idx, ]  
+  
+# Exclude the training indices to create the test set
+pm_test <- pm[-train_idx, ]  
+```
+
+Next, well create 50 different trees based on 50 boostrapped samples of the training data. We will sample WITH replacement. This means that some of the rows from the data will be repeated and some will be left out all together. We can figure out what rows were not included and use them to create a test set referred to as "out of bag" samples. 
+
+
+```{r}
+training_boot_idx <- sample(1:nrow(pm),replace=TRUE)
+test_boot_idx <- !(1:32 %in% training_boot_idx)
+    
+```
+
+Let's start looping
+
+```{r}
+library(Metrics)
+
+modl   <- list()
+predl  <- list()
+aucval <- vector()
+acc    <- vector()
+
+number_of_boostraps <- 50
+
+for (ii in 1:number_of_boostraps) {
+  
+  training_boot_idx <- sample(1:nrow(pm),replace=TRUE)
+  test_boot_idx <- !(1:32 %in% training_boot_idx)
+  
+  modl[[ii]] <- rpart(diabetes ~ ., 
+                   data = pm[training_boot_idx,],
+                   method = "class"
+                )
+  
+  # This list will contain / hold the models build on the bootstrap
+  
+  predl[[ii]]  <- predict(modl[[ii]],
+                          newdata=pm[test_boot_idx,],
+                          type="prob")
+  
+  converted <- ifelse(pm[test_boot_idx,]$diabetes == "pos",1,0)
+  
+  # Let's create an estimate of the AUC
+  
+  aucval[ii] <- auc(actual = converted,
+                    predicted = predl[[ii]][,2])
+}
+  
+```
+
+Now check all of the accuracy estimates and then average them. Remember this is supposed to help us to better estimate the out of sample error. 
+
+```{r}
+
+boxplot(aucval)
+
+mean(aucval)
+```
+
+Now we'll compare this to the function called "bagging" from the **ipred** package which does bagged trees directly.
+
+![](/Users/esteban/Dropbox/ML/biosml/pics/bagging2.png)
+
+```{r}
+library(ipred)
+bagged_pm <- bagging(diabetes ~ .,
+                     data = pm_train, coob = TRUE)
+
+bagged_pred <- predict(bagged_pm,
+                       newdata = pm_test, type="prob")
+```
+
+```{r}
+converted <- ifelse(pm_test$diabetes == "pos",1,0)
+
+aucval    <- auc(actual = converted,
+                    predicted = bagged_pred[,2])
+
+aucval
+
+```
+
+This is better than the 0.7804305 we got when using a single Decision tree.
+
+
+## Random Forests
+
+In Random Forest, only a subset of features are selected at random at each split in a decision tree. In bagging, all features are used.
+
+```{r}
+library(randomForest)
+```
+
+```{r}
+# Train a Random Forest
+set.seed(1)  # for reproducibility
+pm_rf_model <- randomForest(formula = diabetes ~ ., 
+                             data =pm_train)
+                             
+# Print the model output                             
+print(pm_rf_model)
+```
+
+Let's look at the out of bag error matrix
+
+```{r}
+head(pm_rf_model$err.rate)
+```
+
+
+
+
 # Training / Test Data
 
 https://www.stat.berkeley.edu/~aldous/157/Papers/shmueli.pdf
