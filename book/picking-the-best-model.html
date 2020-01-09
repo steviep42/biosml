@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 7 Picking The Best Model | Predictive Learning in R - BIOS 534</title>
-  <meta name="description" content="Chapter 7 Picking The Best Model | Predictive Learning in R - BIOS 534" />
+  <title>Chapter 7 Picking The Best Model | Predictive Learning in R</title>
+  <meta name="description" content="Chapter 7 Picking The Best Model | Predictive Learning in R" />
   <meta name="generator" content="bookdown 0.14 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 7 Picking The Best Model | Predictive Learning in R - BIOS 534" />
+  <meta property="og:title" content="Chapter 7 Picking The Best Model | Predictive Learning in R" />
   <meta property="og:type" content="book" />
   
   
@@ -16,7 +16,7 @@
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 7 Picking The Best Model | Predictive Learning in R - BIOS 534" />
+  <meta name="twitter:title" content="Chapter 7 Picking The Best Model | Predictive Learning in R" />
   
   
   
@@ -177,7 +177,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
       <div class="body-inner">
         <div class="book-header" role="navigation">
           <h1>
-            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Predictive Learning in R - BIOS 534</a>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Predictive Learning in R</a>
           </h1>
         </div>
 
@@ -230,21 +230,21 @@ mod_ranger &lt;-<span class="st"> </span><span class="kw">train</span>(mpg <span
 ## 
 ## MAE 
 ##            Min.  1st Qu.   Median     Mean  3rd Qu.     Max. NA&#39;s
-## lm     1.715960 2.596568 3.477176 2.938645 3.549988 3.622799    0
-## rf     1.565843 1.817639 2.069435 1.954523 2.148863 2.228291    0
-## ranger 1.522576 1.797004 2.071432 1.957130 2.174407 2.277382    0
+## lm     2.706305 3.022169 3.338032 3.298089 3.593980 3.849928    0
+## rf     1.733174 1.804104 1.875034 2.170713 2.389482 2.903931    0
+## ranger 1.894366 1.956146 2.017926 2.238975 2.411279 2.804632    0
 ## 
 ## RMSE 
 ##            Min.  1st Qu.   Median     Mean  3rd Qu.     Max. NA&#39;s
-## lm     2.466304 3.039126 3.611947 3.688942 4.300261 4.988576    0
-## rf     2.075357 2.383257 2.691157 2.516076 2.736435 2.781714    0
-## ranger 2.092412 2.397888 2.703364 2.517252 2.729672 2.755981    0
+## lm     3.102517 3.698906 4.295295 4.057366 4.534791 4.774286    0
+## rf     2.092665 2.184151 2.275637 2.689199 2.987466 3.699295    0
+## ranger 2.321989 2.330396 2.338802 2.745317 2.956981 3.575160    0
 ## 
 ## Rsquared 
 ##             Min.   1st Qu.    Median      Mean   3rd Qu.      Max. NA&#39;s
-## lm     0.4022978 0.5098904 0.6174830 0.6123940 0.7174421 0.8174011    0
-## rf     0.8229797 0.8628195 0.9026594 0.8864065 0.9181199 0.9335804    0
-## ranger 0.8410808 0.8688931 0.8967055 0.8830953 0.9041025 0.9114995    0</code></pre>
+## lm     0.5817345 0.6428118 0.7038891 0.6746504 0.7211084 0.7383277    0
+## rf     0.8485247 0.8726299 0.8967352 0.8977693 0.9223916 0.9480480    0
+## ranger 0.8318355 0.8527880 0.8737405 0.8949069 0.9264425 0.9791446    0</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">bwplot</span>(results)</code></pre></div>
 <p><img src="biosml_files/figure-html/unnamed-chunk-27-1.png" width="672" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">dotplot</span>(results)</code></pre></div>
@@ -254,11 +254,11 @@ mod_ranger &lt;-<span class="st"> </span><span class="kw">train</span>(mpg <span
 <h2><span class="header-section-number">7.2</span> Model Performance</h2>
 <p>Of course, we can now use the Test data frame to see how the RMSE looks on the holdout data frame.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">compute_rmse</span>(<span class="kw">predict</span>(mod_lm,Test),Test<span class="op">$</span>mpg)</code></pre></div>
-<pre><code>## [1] 3.605451</code></pre>
+<pre><code>## [1] 3.337871</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">compute_rmse</span>(<span class="kw">predict</span>(mod_rf,Test),Test<span class="op">$</span>mpg)</code></pre></div>
-<pre><code>## [1] 2.82427</code></pre>
+<pre><code>## [1] 2.257001</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">compute_rmse</span>(<span class="kw">predict</span>(mod_ranger,Test),Test<span class="op">$</span>mpg)</code></pre></div>
-<pre><code>## [1] 2.914956</code></pre>
+<pre><code>## [1] 2.861241</code></pre>
 <p>Another way to look at these models is to use the <strong>diff</strong> function.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">(difs &lt;-<span class="st"> </span><span class="kw">diff</span>(results))</code></pre></div>
 <pre><code>## 
@@ -281,46 +281,46 @@ mod_ranger &lt;-<span class="st"> </span><span class="kw">train</span>(mpg <span
 ## Lower diagonal: p-value for H0: difference = 0
 ## 
 ## MAE 
-##        lm     rf        ranger   
-## lm             0.984122  0.981515
-## rf     0.4267           -0.002607
-## ranger 0.3918 1.0000             
+##        lm      rf       ranger  
+## lm              1.12738  1.05911
+## rf     0.06448          -0.06826
+## ranger 0.05607 1.00000          
 ## 
 ## RMSE 
-##        lm     rf        ranger   
-## lm             1.172866  1.171690
-## rf     0.5365           -0.001176
-## ranger 0.5040 1.0000             
+##        lm     rf       ranger  
+## lm             1.36817  1.31205
+## rf     0.1573          -0.05612
+## ranger 0.1873 1.0000           
 ## 
 ## Rsquared 
 ##        lm     rf        ranger   
-## lm            -0.274013 -0.270701
-## rf     0.5280            0.003311
-## ranger 0.4961 1.0000</code></pre>
+## lm            -0.223119 -0.220256
+## rf     0.2689            0.002862
+## ranger 0.3924 1.0000</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">compare_models</span>(mod_lm,mod_rf)</code></pre></div>
 <pre><code>## 
 ##  One Sample t-test
 ## 
 ## data:  x
-## t = 2.0348, df = 2, p-value = 0.1788
+## t = 4.1931, df = 2, p-value = 0.05244
 ## alternative hypothesis: true mean is not equal to 0
 ## 95 percent confidence interval:
-##  -1.307177  3.652910
+##  -0.03573646  2.77207046
 ## sample estimates:
 ## mean of x 
-##  1.172866</code></pre>
+##  1.368167</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">compare_models</span>(mod_ranger,mod_lm)</code></pre></div>
 <pre><code>## 
 ##  One Sample t-test
 ## 
 ## data:  x
-## t = -2.1209, df = 2, p-value = 0.168
+## t = -3.8126, df = 2, p-value = 0.06242
 ## alternative hypothesis: true mean is not equal to 0
 ## 95 percent confidence interval:
-##  -3.548703  1.205322
+##  -2.7927437  0.1686459
 ## sample estimates:
 ## mean of x 
-##  -1.17169</code></pre>
+## -1.312049</code></pre>
 </div>
 <div id="feature-selection" class="section level2">
 <h2><span class="header-section-number">7.3</span> Feature Selection</h2>

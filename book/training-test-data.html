@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 4 Training / Test Data | Predictive Learning in R - BIOS 534</title>
-  <meta name="description" content="Chapter 4 Training / Test Data | Predictive Learning in R - BIOS 534" />
+  <title>Chapter 4 Training / Test Data | Predictive Learning in R</title>
+  <meta name="description" content="Chapter 4 Training / Test Data | Predictive Learning in R" />
   <meta name="generator" content="bookdown 0.14 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 4 Training / Test Data | Predictive Learning in R - BIOS 534" />
+  <meta property="og:title" content="Chapter 4 Training / Test Data | Predictive Learning in R" />
   <meta property="og:type" content="book" />
   
   
@@ -16,7 +16,7 @@
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 4 Training / Test Data | Predictive Learning in R - BIOS 534" />
+  <meta name="twitter:title" content="Chapter 4 Training / Test Data | Predictive Learning in R" />
   
   
   
@@ -177,7 +177,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
       <div class="body-inner">
         <div class="book-header" role="navigation">
           <h1>
-            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Predictive Learning in R - BIOS 534</a>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Predictive Learning in R</a>
           </h1>
         </div>
 
@@ -231,28 +231,28 @@ folds &lt;-<span class="st"> </span><span class="kw">split</span>(<span class="k
 <p>Check out the folds to get a better understanding of what is going on. Remember that each with K-fold</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">folds</code></pre></div>
 <pre><code>## $`1`
-## [1] 14 26  6  9
+## [1]  1 17 10  5
 ## 
 ## $`2`
-## [1] 28  2 27  8
+## [1] 14  9 21  4
 ## 
 ## $`3`
-## [1] 32 29 30 19
+## [1] 18 29 23 27
 ## 
 ## $`4`
-## [1] 15 18  3  1
+## [1] 19 22 28 30
 ## 
 ## $`5`
-## [1]  5 12 21 20
+## [1] 32 16 15  7
 ## 
 ## $`6`
-## [1] 10 25 31 23
+## [1] 11  6  8 13
 ## 
 ## $`7`
-## [1] 16  4 13 17
+## [1]  3 26 20 12
 ## 
 ## $`8`
-## [1] 11 22  7 24</code></pre>
+## [1] 24 25  2 31</code></pre>
 <p>Each list element has the indices of four unique observations from the data frame. We have eight folds with four elements each for a total of 32 numbers corresponding to row numbers from the mtcars data frame.</p>
 <div id="cross-fold-validation-continued" class="section level2">
 <h2><span class="header-section-number">4.1</span> Cross Fold Validation Continued</h2>
@@ -298,9 +298,9 @@ lattice<span class="op">::</span><span class="kw">dotplot</span>(rmse,
                  <span class="dt">main=</span><span class="st">&quot;RMSE Across Folds Using K-Fold CV&quot;</span>)</code></pre></div>
 <p><img src="biosml_files/figure-html/latticeplot-1.png" width="672" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">mean</span>(rmse)</code></pre></div>
-<pre><code>## [1] 3.22306</code></pre>
+<pre><code>## [1] 3.041103</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sd</span>(rmse)</code></pre></div>
-<pre><code>## [1] 1.04363</code></pre>
+<pre><code>## [1] 0.9252901</code></pre>
 </div>
 <div id="create-a-function-to-automate-things" class="section level2">
 <h2><span class="header-section-number">4.2</span> Create A Function To Automate Things</h2>
@@ -348,12 +348,12 @@ title &lt;-<span class="st"> </span><span class="kw">paste</span>(<span class="s
 
 
 <span class="kw">print</span>(<span class="kw">mean</span>(rmse))</code></pre></div>
-<pre><code>## [1] 2.97316</code></pre>
+<pre><code>## [1] 3.015993</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">lattice<span class="op">::</span><span class="kw">dotplot</span>(rmse,
                  <span class="dt">main=</span><span class="st">&quot;RMSE Across Folds Using K-Fold CV&quot;</span>)</code></pre></div>
 <p><img src="biosml_files/figure-html/fourfold-1.png" width="672" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sd</span>(rmse)</code></pre></div>
-<pre><code>## [1] 1.298379</code></pre>
+<pre><code>## [1] 1.050131</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">boxplot</span>(rmse,<span class="dt">main=</span>title)</code></pre></div>
 <p><img src="biosml_files/figure-html/fourfold-2.png" width="672" /></p>
 </div>
@@ -366,8 +366,7 @@ title &lt;-<span class="st"> </span><span class="kw">paste</span>(<span class="s
 <span class="co"># once. We get back 4 RMSE values - one for each fold</span>
 
 (rmse &lt;-<span class="st"> </span><span class="kw">make_mtcars_model</span>(num_of_folds))</code></pre></div>
-<pre><code>## [1] 4.9617740 2.0864410 3.2247340 1.8952980 3.5607341 0.8841107 3.8665179
-## [8] 2.8499211</code></pre>
+<pre><code>## [1] 3.448481 3.267544 2.060182 5.167788 1.594241 4.156353 1.764347 2.376151</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Now we repeat this some number of times - like 10. So we get back</span>
 <span class="co"># 80 RMSE values </span>
 
@@ -384,7 +383,7 @@ repeated_cv_rmse &lt;-<span class="st"> </span><span class="kw">as.vector</span>
 <p><img src="biosml_files/figure-html/unnamed-chunk-8-2.png" width="672" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(repeated_cv_rmse)</code></pre></div>
 <pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-##  0.4963  2.2170  2.7966  3.0130  3.9729  5.9316</code></pre>
+##  0.8215  2.2031  2.7533  3.0285  3.9571  6.3161</code></pre>
 </div>
 <div id="bootstrap" class="section level2">
 <h2><span class="header-section-number">4.4</span> Bootstrap</h2>
@@ -428,7 +427,7 @@ repeated_cv_rmse &lt;-<span class="st"> </span><span class="kw">as.vector</span>
 <span class="co"># Just to be clear - here is what happens when we call the function</span>
 <span class="co"># once. We get back 8 RMSE values - one for each fold</span>
 (rmse &lt;-<span class="st"> </span><span class="kw">make_mtcars_boot</span>(num_of_folds))</code></pre></div>
-<pre><code>## [1] 3.922680 2.783290 2.381852 1.843525 2.438038 3.184776 4.099410 3.537778</code></pre>
+<pre><code>## [1] 4.445223 3.526152 3.582255 3.925954 4.332675 2.777316 3.337475 3.579188</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Now we repeat this some number of times - like 10. So we get back</span>
 <span class="co"># 80 RMSE values </span>
 
@@ -449,12 +448,12 @@ boot_repeated_rmse &lt;-<span class="st"> </span><span class="kw">as.vector</spa
 <pre><code>## [1] &quot;Summary of Bootstrap RMSE&quot;</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(boot_repeated_rmse)</code></pre></div>
 <pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-##   1.866   2.925   3.328   3.340   3.749   4.843</code></pre>
+##   2.022   2.892   3.234   3.266   3.618   6.115</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">print</span>(<span class="st">&quot;Summary of CV&quot;</span>)</code></pre></div>
 <pre><code>## [1] &quot;Summary of CV&quot;</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(repeated_cv_rmse)</code></pre></div>
 <pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-##  0.4963  2.2170  2.7966  3.0130  3.9729  5.9316</code></pre>
+##  0.8215  2.2031  2.7533  3.0285  3.9571  6.3161</code></pre>
 </div>
 </div>
             </section>

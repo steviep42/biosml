@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 3 A Motivating Example - Linear Regression | Predictive Learning in R - BIOS 534</title>
-  <meta name="description" content="Chapter 3 A Motivating Example - Linear Regression | Predictive Learning in R - BIOS 534" />
+  <title>Chapter 3 A Motivating Example - Linear Regression | Predictive Learning in R</title>
+  <meta name="description" content="Chapter 3 A Motivating Example - Linear Regression | Predictive Learning in R" />
   <meta name="generator" content="bookdown 0.14 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 3 A Motivating Example - Linear Regression | Predictive Learning in R - BIOS 534" />
+  <meta property="og:title" content="Chapter 3 A Motivating Example - Linear Regression | Predictive Learning in R" />
   <meta property="og:type" content="book" />
   
   
@@ -16,7 +16,7 @@
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 3 A Motivating Example - Linear Regression | Predictive Learning in R - BIOS 534" />
+  <meta name="twitter:title" content="Chapter 3 A Motivating Example - Linear Regression | Predictive Learning in R" />
   
   
   
@@ -177,7 +177,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
       <div class="body-inner">
         <div class="book-header" role="navigation">
           <h1>
-            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Predictive Learning in R - BIOS 534</a>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Predictive Learning in R</a>
           </h1>
         </div>
 
@@ -334,8 +334,8 @@ test_preds &lt;-<span class="st"> </span><span class="kw">predict</span>(
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Shuffle the row numbers of the data frame</span>
 
 (train_index &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(mtcars),<span class="kw">nrow</span>(mtcars)<span class="op">*</span>.<span class="dv">80</span>))</code></pre></div>
-<pre><code>##  [1]  8 17  3 29 14 30  6 31 23 15 16 12 28 11 10  1 18 24  4  7 13 21  5
-## [24] 22  2</code></pre>
+<pre><code>##  [1] 12 24 20  6  7 11 19 26 10  2 30 18  8 17 27 32 16 14 25 31  4 23  5
+## [24] 28  1</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Get 80% of the records from the data frame</span>
 train_df &lt;-<span class="st"> </span>mtcars[train_index,]
 
@@ -358,7 +358,7 @@ test_pred  &lt;-<span class="st"> </span><span class="kw">predict</span>(
 )
 
 (test_rmse &lt;-<span class="st"> </span><span class="kw">compute_rmse</span>(test_pred,test_df<span class="op">$</span>mpg))</code></pre></div>
-<pre><code>## [1] 3.704105</code></pre>
+<pre><code>## [1] 2.84484</code></pre>
 <p>What we have done here is to sample some portion of the original data frame to use as a training set while holding out the rest of the data to use as a test data to see how well our model performed. We could repeat this (re)sampling activity multiple times to better train our data over different segments or “folds” of data so any model we ultimately generate will “learn” as much from the data as it can without modeling any “noise”. There are various methods for doing this including K-Fold Cross Validation and Bootstrap Resampling. Let’s dig in a little deeper into these methods because they help us build models that might offer more robust performance when applied to new data.</p>
 </div>
 </div>

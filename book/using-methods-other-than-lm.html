@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 5 Using Methods Other Than lm | Predictive Learning in R - BIOS 534</title>
-  <meta name="description" content="Chapter 5 Using Methods Other Than lm | Predictive Learning in R - BIOS 534" />
+  <title>Chapter 5 Using Methods Other Than lm | Predictive Learning in R</title>
+  <meta name="description" content="Chapter 5 Using Methods Other Than lm | Predictive Learning in R" />
   <meta name="generator" content="bookdown 0.14 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 5 Using Methods Other Than lm | Predictive Learning in R - BIOS 534" />
+  <meta property="og:title" content="Chapter 5 Using Methods Other Than lm | Predictive Learning in R" />
   <meta property="og:type" content="book" />
   
   
@@ -16,7 +16,7 @@
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 5 Using Methods Other Than lm | Predictive Learning in R - BIOS 534" />
+  <meta name="twitter:title" content="Chapter 5 Using Methods Other Than lm | Predictive Learning in R" />
   
   
   
@@ -177,7 +177,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
       <div class="body-inner">
         <div class="book-header" role="navigation">
           <h1>
-            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Predictive Learning in R - BIOS 534</a>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Predictive Learning in R</a>
           </h1>
         </div>
 
@@ -210,15 +210,15 @@ my_rf &lt;-<span class="st"> </span><span class="kw">randomForest</span>(mpg<spa
 <span class="co"># Check out the predictions</span>
 
 (test_pred_forest &lt;-<span class="st"> </span><span class="kw">predict</span>(my_rf,test))</code></pre></div>
-<pre><code>##  Hornet Sportabout         Merc 450SE         Merc 450SL 
-##           16.73762           15.82096           15.72948 
-## Cadillac Fleetwood   Dodge Challenger          Fiat X1-9 
-##           13.04762           16.26073           30.88757</code></pre>
+<pre><code>##            Merc 280         Merc 450SLC Lincoln Continental 
+##            18.76857            16.63669            12.94205 
+##      Toyota Corolla       Toyota Corona      Ford Pantera L 
+##            29.08069            23.28071            17.71726</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">(rmse_rf &lt;-<span class="st"> </span><span class="kw">compute_rmse</span>(test_pred_forest,test<span class="op">$</span>mpg))</code></pre></div>
-<pre><code>## [1] 2.125718</code></pre>
+<pre><code>## [1] 2.542466</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#</span>
 <span class="kw">mean</span>(rmse_rf)</code></pre></div>
-<pre><code>## [1] 2.125718</code></pre>
+<pre><code>## [1] 2.542466</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">imp &lt;-<span class="st"> </span><span class="kw">importance</span>(my_rf)
 imp.features &lt;-<span class="st"> </span><span class="kw">tibble</span>(<span class="dt">variables =</span> <span class="kw">row.names</span>(imp), 
                        <span class="dt">importance =</span> imp[, <span class="dv">1</span>])
@@ -251,7 +251,7 @@ imp.features &lt;-<span class="st"> </span><span class="kw">tibble</span>(<span 
 }</code></pre></div>
 <p>So now we could check out RMSE for varying values of <strong>mtry</strong>. The following will call the <strong>randomForest</strong> package 5 times. Starting with the first iteration, the value of <strong>mtry</strong> will be 3, the next time it will be 4, and so on until the last iteration where it will be 8. This is just an experiment to see if varying <strong>mtry</strong> will help minimize the RMSE of our model. We also have to be careful not to pick incorrect values for <strong>mtry</strong> so reading the help page for the <strong>randomForest</strong> package would be helpful. For now, let’s assume that what we are doing is okay.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sapply</span>(<span class="dv">3</span><span class="op">:</span><span class="dv">8</span>,make_mtcars_rf)</code></pre></div>
-<pre><code>## [1] 2.124840 2.142105 2.146157 2.147666 2.202205 2.110491</code></pre>
+<pre><code>## [1] 2.502555 2.589071 2.455806 2.449451 2.335752 2.415285</code></pre>
 <p>While this is fine, it would be nice if there were an easier way to handle this process. Besides, if we pick another method (e.g. the <strong>ranger</strong> function) then we have to deal with whatever arguments that method requires. This leads to a more general discussion on <strong>model parameters</strong> vs <strong>hyperparameters</strong>.</p>
 <div id="parameters-vs-hyperparameters" class="section level2">
 <h2><span class="header-section-number">5.1</span> Parameters vs Hyperparameters</h2>
