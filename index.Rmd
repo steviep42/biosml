@@ -20,15 +20,21 @@ suppressMessages(library(mlbench))
 
 NOTE: This document is a work in progress and should be considered to be in *"draft status"*
 
-This content exists to motivate use of the **caret** package. Much of the first part (well all of it really) is designed to show how one would use various modeling methods in the R language to build predictive models. Another way to say this is that I'm trying to "scare" you into using **caret** because it provides conveniences and capabilities that help you focus on building models over trying to understand the sometimes arcane syntax associated with the individual modeling functions in R. There is nothing wrong with being able to go deep into a specific method in terms of parameter tuning though you should first start learning how to build models after which we'll discuss appropriate assessment strategies.
+This content exists for two main reasons:
 
-Of course, there is absolutely no requirement for anyone to use the **caret** package but it provides a uniform interface (for the most part) to over 200 modeling methods. All one needs to do is have some data, a metric by which to score (e.g. RMSE, AUC, logloss), and a method of interest. 
+1) I wish to motivate use of the **caret** package. Another way to say this is that I'm trying to "scare" you into using **caret** because it provides conveniences and capabilities that help you focus on building models over trying to understand the sometimes arcane syntax associated with the individual modeling functions in R. There is nothing wrong with being able to go deep into a specific method in terms of parameter tuning though you should first start learning how to build models after which we'll discuss appropriate assessment strategies.
 
-The **caret** package will handle the underlying interaction with the corresponding R method and return results in an object. It's "reason for being" is to show you how well your selected model might apply to "out of sample" data. For now, though, take a tour through the "old school" way of doing predictive modeling in R after which I'll introduce **caret** (You can always skip to Section 6).
+Of course, there is absolutely no requirement for anyone to use the **caret** package but it does provide uniform access to over 200 modeling methods. All one needs to do is have some data, a metric by which to score (e.g. RMSE, AUC, logloss), and a method of interest. 
+
+A cool feature of the **caret** package is that it provides methods for helping identify how well your selected model might apply to "out of sample" data. Additionally, you can see how well it comapres to other models. 
+
+2) A second reason this content exists is to provide a rapid intro to Machine Learning with R. It's better to get up and running with building some models than it is to sit back and read how to do it. The process of assessing models and diagnosing them can be an in depth process thus I don't wish to understate what it takes to do that. However, moving forward with some of the basic mechanics and concepts is good. One can always work with the individual methods or go to Section 6 to start with caret. The larger message is to get busy getting your hands dirty. 
+
 
 # Predictive / Supervised Learning
 
 In Predictive Learning it is customary to apply methods to build  models on existing data to help you 
+
   1) understand the data at hand and 
   2) maybe build a model to predict outcomes on related information  
 
@@ -44,9 +50,16 @@ Sometimes you just want to build a model (apply a method) to **explain** the dat
 
 Given a data set, there might be some variable therein that you would like to predict in terms of other variables. Ideally you would like to automate this process but not at the expense of understanding the underlying statistical considerations. The process should also be done in a way that allows one to define a specific performance measure / metric that can then be used to compare performance across a number of "models".
 
+### Differences 
+
+Relative to explanatory work you wish to drill down into the data to better understand it and are less concerned about how any resulting model might apply to unseen or new data. In this case you might not look at other data sets or permutated versions of the data in which case you just build different models against the same data while trying out different features to arrive a the "best" model. 
+
+In predictive work, we typically use techniques such as cross fold validation and boostrapping to provide us with different versions of the data to "train" a model after which we validate it on some "test" data that has been held out. So in this context, you will probably be looking at multiple versions of the original data set which adds to the overhead somewhat. 
+
+
 ## Two Types of Predictive Models:
 
-In this lecture we'll be focusing on the following situations. In Supervised Learning we have known outcomes that can be leveraged in the creation of a model(s) that can then be used to predict labels for new data sets. 
+In Supervised Learning we have known outcomes that can be leveraged in the creation of a model(s) that can then be used to predict labels for new data sets. This also includes numeric predictions.
 
    - For Quantitative Data, we'll consider Regression
    - For Qualitative Data, we'll consider Classification 
@@ -58,15 +71,28 @@ RMSE = \sqrt\frac{\sum_i^n(P_i-O_i)^2}{n}
 \]
 
 
-For Classification, we'll use measures derived from a  **Confusion Matrix** in conjunction with a **ROC Curve**. We'll discuss this in greater detail in a later section. 
+For Classification, we'll use measures derived from a  **Confusion Matrix** in conjunction with a **ROC Curve**. We'll discuss performance measures this in greater detail in a later section although it's intuitive that to compare a model to another model will involve the selection of some objective metric that can be used to "score" or rate them. 
 
 ## Bias vs Variance
 
 See [this blog](https://thatdatatho.com/2018/08/08/explaining-bias-variance-trade-off-machine-learning/) for more information.
 
+### Bias
+
 Think of the term **bias** as meaning **deviation from the truth or reality**. If a model fits some data very well then deviations from the actual values will be small which is what you might expect when applying the model to the very data used to produce it. You are able to **explain** the data but not then be able to use it to predict outcomes without experiencing large variance. 
 
-Any performance metric that is computed on the data "as is" will typically be somewhat optimistic in the context of predictive utility. The model you build on some data might fit the data very well (low bias) but then does not do very well when applied to a new data set wherein the model exhibits large variance. 
+Any performance metric that is computed on the data "as is" will typically be somewhat optimistic in the context of predictive utility. The model you build on some data might fit the data very well (low bias) but then does not do very well when applied to a new data set wherein the model exhibits large variance. A model might not, on average, fit some existing data very well (high bias) but results in more predictable results (lower variance) when applied to new data.
+
+### Variance
+
+The concept of **variance** generally refers to a given algorithm's sensitivity to unfamiliar or new data. An algorithm that has been well-trained, or even over trained, on a data set might exhibit low bias in that it "knows" or "hugs" the data very well. However, when given new data that might not be from the same distribution as the "training" data then large and/or unpredictable variance might result. 
+
+If you flip this around a bit, an algorithm whose bias is high generally means that it deviates from the "truth" perhaps to a signifciant degree. Correspondingly, when the resulting model is applied to new or unseen data it will behave in a more predictable manner, generally resulting in lower variance. This isn't always a bad thing. Maybe a more biased model is quick and easy to compute and it's estimated performance (as determind by some metric such as RMSE) might be acceptable when applied to new data. 
+
+The general conclusion is that there is a tradeoff between Bias and Variance. The higher the bias, the lower the variane and the higher the variance, the lower the bias. 
+
+![](./pics/targets.png)
+
 
 ## Overfitting and Underfitting
 
@@ -501,7 +527,7 @@ Predicting numeric outcomes can also be of interest. Given some patient characte
 
 ### Performance Measure
 
-Since we are predicting a numeric outcome we would like to come up with a metric to help us fogure out if the model we havbe is good or not. With classification situations we canconfusion matrices and ROC curves. Here we will ue something more simplistic but effective - Root Mean Square Error. The formula looks like the following where P represents a vector of predictions and O represents a vector of the observed (true) values.
+Since we are predicting a numeric outcome we would like to come up with a metric to help us fogure out if the model we havbe is good or not. With classification situations we can employ confusion matrices and ROC curves. Here we will ue something more simplistic but effective - Root Mean Square Error. The formula looks like the following where P represents a vector of predictions and O represents a vector of the observed (true) values.
 
 \[
 RMSE = \sqrt\frac{\sum_i^n(P_i-O_i)^2}{n}
@@ -687,14 +713,11 @@ results$optimal_model$control
 
 ## Bagged Trees
 
-Now we look at bagged trees which involves looking at looks at many trees in average - this is an ensemble method. It helps to reduce the variance associated with decision trees which can be highly sensitive to changes in data. The term bagging refers to "boostrap aggregation". To review, the Decision Tree process can be represented like this:
+Now we look at bagged trees which involves looking at many trees in aggregate - this is an ensemble method. It helps to reduce the variance associated with a single decision tree which can be highly sensitive to changes in data. The term bagging refers to "boostrap aggregation". To review, the Decision Tree process can be represented like this:
 
 ![](/Users/esteban/Dropbox/ML/biosml/pics/tree2.png)
 
 The bootstrap method of sampling will resample the training data some number of times (with replacement) and retrain a number of models on the resampled data to average out the error. This looks something like:
-
-
-This is what happens:
 
  - The input data set is resampled with replacement some number of times (e.g. 10,50, 100)
  - The resampled data is usually a subset of the data which leaves some portion of the data avaialble to use a mini test set for prediction ("out of bag data"")
@@ -1675,11 +1698,168 @@ mtcars[,-1][,highcorr]
 
 # Data Pre Processing
 
-*Note: This section is in development* 
+## Types of Pre Processing 
 
-In an earlier section we looked at the correlations between the variables in the mtcars data frame. 
+Data rarely arrives in a form that is directly suitable for use with a modeling method. There are a number of considerations to make such as how to handle missing data, highly correlated variables, and class imbalances - some categories are over or under represented. Additionally, some variables, also known as "features", will require transformation or will need to be used to create new variables. Consider the case where the measured data (the numeric data) might be on different scales (e.g. height vs weight). This might result in the need to scale and center the data. Some methods take this into consideration whereas others do not. Suffice it to say that data prep can be an ongoing process that requires a number of experiments before arriving at the best form of data. 
+
+## Scaling 
+
+In terms of what methods benefit (or require) you to scale data prior to use, consider that any method that uses the idea of "distance". This helps avoid large scale features dominating others. The following approaches benefit from scaling:
+
+Linear/non-linear regression, logistic regression, KNN, SVM, Neural Networks, clustering algorithms like k-means clustering. Methods that employ PCA and dimensionality reduction should use scaled data. In R and Python, many of the functions to employ these methods might have arguements to activate the scaling as part of the process. Some will do it for you.
+
+Methods that don't require scaling (or whose results don't rely upon it) include rule-based algorithms such as Decision trees and more generally CART - Random Forests, Gradient Boosted Decision  Even if you scale the data the relative relationships will be preserved post scaling so the decision to split a tree won't be impacted. 
+
+## Missing Data
+
+This is a frequent situation in real life. Think of patients checking in for clinic vists over time. Sometimes they come, sometimes they don't. Sometimes when they do come, their information has changed or some diagnostic test is repeated with a new result which is entered or not. Or, whomever maintains the patient database, decides to add in some new variables to measure for all patients moving forward. This means that all existing patients will have missing values for those new variables. To see how this manifests practically in predictive learning consider the following version of the mtcars data frame which has some missing values:
+
+```{r}
+library(readr)
+url <- "https://raw.githubusercontent.com/steviep42/utilities/master/data/mtcars_na.csv"
+mtcars_na <- read_csv(url)
+```
+
+### Finding Rows with Missing Data
+
+Ar first glance it looks like all fearures have valid variable values but we can look for missing values which, in R, are indicated by **NA** Base R provides a number of commands to do this. First let's see how many rows there are in the data frame.
+
+```{r}
+nrow(mtcars_na)
+```
+
+Now let's see how many rows have at least one column with a missing value. So we have eight rows in the data frame that contain one or more missing values.
+
+```{r}
+sum(complete.cases(mtcars_na))
+```
+
+### Finding Columns With Missing Data
+
+What columns have missing values ? Here we leverage the use of the apply family of functions along with the ability to create **anonymous** functions on the fly. Both R and Python provide this capability. We see that the **wt** column has three missing values and the **carb** feature has six missing values.
+
+```{r}
+sapply(mtcars_na,function(x) sum(is.na(x)))
+```
+
+If we actually wanted to see all rows with missing values:
+
+```{r}
+mtcars_na[!complete.cases(mtcars_na),]
+```
+
+What do we do with these ? It depends on a number of things. How hard is it to get this type of data ? If it's rare information then we probably want to keep all of it because there isn't that much of it and not all columns are missing for any row. In fact most of the data in a given row is present so maybe one strategy is to tell whatever modeling method we use to ignore the missing values - they might do this by default without you even asking. 
+
+We could just filter out any row from the data frame that contains any missing values but in doing so we would lose eight rows of data. This is low stakes data but if this were rare or hard to obtain information then we wouldn't want to do this. 
+
+```{r}
+mtcars_no_na <- mtcars_na[complete.cases(mtcars_na),]
+nrow(mtcars_no_na)
+```
+
+### Use the Median Approach
+
+What could we do ? Well we could keep all rows even if they contains NAs and then use **imputation** methods to supply values for the missing information. There are R packages that do this but one quick way to do this without going that route is to replace the missing value in the **wt** column with the **median** value for the entire column. We could first look at a boxplot of this feature to see how those values are distributed:
+
+```{r}
+boxplot(mtcars_na$wt,na.rm=TRUE,main="Distribution of the wt feature")
+grid()
+```
+
+To make the substitution would involve the following. First we need to find out which row numbers have missing values for the **wt** feature. 
+
+```{r}
+(missing_wt_indices <- which(is.na(mtcars_na$wt)))
+```
+
+Use this information with the data frame bracket notation see the rows where the NAs occur for the **wt** feature
+
+```{r}
+mtcars_na[missing_wt_indices,]
+```
+
+Now do the replacement
+
+```{r}
+mtcars_na[missing_wt_indices,]$wt <- median(mtcars_na$wt,na.rm=TRUE)
+```
+
+Verify that the replacement was done successfully. If so, then we should see the value of 3.44 in palce of the previous NA values. 
+
+```{r}
+mtcars_na[missing_wt_indices,]
+```
+
+### Package-based Approach
+
+This seems like a lot of work and maybe it is if you aren't up to date with your R skills although, conceptually, this is straightforward and simple. The **Hmisc** package provides an easy way to do this:
+
+
+```{r}
+library(Hmisc)
+# Reload the versio of mtcars with missing values
+url <- "https://raw.githubusercontent.com/steviep42/utilities/master/data/mtcars_na.csv"
+mtcars_na <- read_csv(url)
+```
+
+The **Hmisc** package provides and **impute** function to do the work for us. Check it out. Notice how if finds the rows for which the **wt** feature is missing. 
+
+```{r}
+impute(mtcars_na$wt, median)
+```
+
+To do the replacement is straightforward. 
+
+```{r}
+mtcars_na$wt <- impute(mtcars_na$wt,median)
+```
+
+Another imputation approach is to use the K-Nearest Neighbors method to find observations that are similar to the ones that contain missing data. The missing values can then be filled using information from the most similar observations. We won't go into that choosing rather to use the convenience offered by the **caret** package to help us. 
+
+```{r}
+# Make sure caret is loaded
+# library(caret)
+```
+
+So if we choose to use caret we'll need to use the **preProcess** function to signal our intent to use imputation - in this case the K-Nearest Neighbors technique.
+
+```{r}
+processed_mtcars <- preProcess(mtcars_na,
+                               method = "knnImpute")
+```
+
+This returns an object that has lots of information in it:
+
+```{r}
+names(processed_mtcars)
+```
+
+The processed data can be accessed as follows. Note that it is also scaled and centered.
+
+```{r}
+processed_mtcars$data
+```
+
+Now we could then use this processed data to do some training. We'll use the **predict** function to give us the mtcars_na data with the imputed values. 
+
+```{r}
+train_data <- predict(processed_mtcars,mtcars_na)
+```
+
+Now pass this to the **train** function. 
+
+```{r}
+lmFit <- train(mpg~wt,
+              data = train_data,
+              method = "lm",
+              metric = "RMSE"
+        )
+```
+
 
 ## Look for Highly Correlated Variables
+
+In an earlier section we looked at the correlations between the variables in the mtcars data frame. 
 
 ```{r}
 data(mtcars)
@@ -2113,7 +2293,6 @@ library(caTools)
 colAUC(pm_model_fitpreds,test$diabetes,plotROC=TRUE)
 
 ```
-
 
 But wait, why would we do this if we have the **caret** package readily available. We can explore any number methods, implement K Fold Cross Validation,and get feedback on the performance measures at the same time. Let's reframe our above work using the caret package conveniences. 
 
