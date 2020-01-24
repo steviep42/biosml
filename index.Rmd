@@ -1884,11 +1884,11 @@ In R and Python, some of the individual functions might have arguements to activ
 
 Methods that don't require scaling (or whose results don't rely upon it) include rule-based algorithms such as Decision trees and more generally CART - Random Forests, Gradient Boosted Decision  Even if you scale the data the relative relationships will be preserved post scaling so the decision to split a tree won't be impacted. 
 
-## How To Scale
+### How To Scale
 
 You could do your own scaling and centering which might be helpful to understand what is going on. First, when we say "scaling" we typically mean "centering" and "scaling". 
 
-### Centering
+#### Centering
 
 Take a vector (or column) of numeric data and find the mean. Then subtract the computed mean value from each element of the vector / column. We will use the **wt** column from mtcars as an example.
 
@@ -1897,7 +1897,7 @@ Take a vector (or column) of numeric data and find the mean. Then subtract the c
 #center <- apply(mtcars,2,function(x) (x - mean(x)))
 ```
 
-### Scaling
+#### Scaling
 
 This step involves taking the standard deviation of the vector / column. Then divide each valuein the vector / column by this computed standard deviation. We'll process the **centered** data from the previous computation.
 
@@ -1906,7 +1906,7 @@ This step involves taking the standard deviation of the vector / column. Then di
 ```
 
  
-### Scaling a Data frame
+#### Scaling a Data frame
 
 We could do this on a data frame by using the **apply** function. The problme with this "do it yourself approach" is that we don't have an easy way to reverse the scaling and centering. 
 
@@ -1924,7 +1924,7 @@ There is a function called **scale** which will do this for us and in a way that
 If you look at the bottom of the above operation, there are two **attributes** that contain the information necessary to **reverse scale** the scaled data. Soif you do this yourself then you have to reverse scaled yourself. 
 
 
-## caret and preprocess
+#### caret and preprocess
 
 but the **caret** package will help you do this using the **preProcess** function. Here we can actually request that the data is "centered" and "scaled" as part of the model assembly process. We could do this before the call to the **Train** function but then we would also have to convert the training and test data ourselves. In the following situation, the data will be centered and scaled thoug the returned RMSE will be in terms of the unscaled data. 
 

@@ -172,22 +172,16 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="9.3" data-path="data-pre-processing.html"><a href="data-pre-processing.html#scaling"><i class="fa fa-check"></i><b>9.3</b> Scaling</a><ul>
 <li class="chapter" data-level="9.3.1" data-path="data-pre-processing.html"><a href="data-pre-processing.html#methods-that-benefit-from-scaling"><i class="fa fa-check"></i><b>9.3.1</b> Methods That Benefit From Scaling</a></li>
 <li class="chapter" data-level="9.3.2" data-path="data-pre-processing.html"><a href="data-pre-processing.html#methods-that-do-not-require-scaling"><i class="fa fa-check"></i><b>9.3.2</b> Methods That Do Not Require Scaling</a></li>
+<li class="chapter" data-level="9.3.3" data-path="data-pre-processing.html"><a href="data-pre-processing.html#how-to-scale"><i class="fa fa-check"></i><b>9.3.3</b> How To Scale</a></li>
+<li class="chapter" data-level="9.3.4" data-path="data-pre-processing.html"><a href="data-pre-processing.html#order-of-processing"><i class="fa fa-check"></i><b>9.3.4</b> Order of Processing</a></li>
 </ul></li>
-<li class="chapter" data-level="9.4" data-path="data-pre-processing.html"><a href="data-pre-processing.html#how-to-scale"><i class="fa fa-check"></i><b>9.4</b> How To Scale</a><ul>
-<li class="chapter" data-level="9.4.1" data-path="data-pre-processing.html"><a href="data-pre-processing.html#centering"><i class="fa fa-check"></i><b>9.4.1</b> Centering</a></li>
-<li class="chapter" data-level="9.4.2" data-path="data-pre-processing.html"><a href="data-pre-processing.html#scaling-1"><i class="fa fa-check"></i><b>9.4.2</b> Scaling</a></li>
-<li class="chapter" data-level="9.4.3" data-path="data-pre-processing.html"><a href="data-pre-processing.html#scaling-a-data-frame"><i class="fa fa-check"></i><b>9.4.3</b> Scaling a Data frame</a></li>
+<li class="chapter" data-level="9.4" data-path="data-pre-processing.html"><a href="data-pre-processing.html#low-variance-variables"><i class="fa fa-check"></i><b>9.4</b> Low Variance Variables</a></li>
+<li class="chapter" data-level="9.5" data-path="data-pre-processing.html"><a href="data-pre-processing.html#order-of-pre-processing"><i class="fa fa-check"></i><b>9.5</b> Order of Pre-Processing</a></li>
+<li class="chapter" data-level="9.6" data-path="data-pre-processing.html"><a href="data-pre-processing.html#identifying-redundant-features"><i class="fa fa-check"></i><b>9.6</b> Identifying Redundant Features</a><ul>
+<li class="chapter" data-level="9.6.1" data-path="data-pre-processing.html"><a href="data-pre-processing.html#highly-correlated-variables"><i class="fa fa-check"></i><b>9.6.1</b> Highly Correlated Variables</a></li>
 </ul></li>
-<li class="chapter" data-level="9.5" data-path="data-pre-processing.html"><a href="data-pre-processing.html#caret-and-preprocess"><i class="fa fa-check"></i><b>9.5</b> caret and preprocess</a><ul>
-<li class="chapter" data-level="9.5.1" data-path="data-pre-processing.html"><a href="data-pre-processing.html#order-of-processing"><i class="fa fa-check"></i><b>9.5.1</b> Order of Processing</a></li>
-</ul></li>
-<li class="chapter" data-level="9.6" data-path="data-pre-processing.html"><a href="data-pre-processing.html#low-variance-variables"><i class="fa fa-check"></i><b>9.6</b> Low Variance Variables</a></li>
-<li class="chapter" data-level="9.7" data-path="data-pre-processing.html"><a href="data-pre-processing.html#order-of-pre-processing"><i class="fa fa-check"></i><b>9.7</b> Order of Pre-Processing</a></li>
-<li class="chapter" data-level="9.8" data-path="data-pre-processing.html"><a href="data-pre-processing.html#identifying-redundant-features"><i class="fa fa-check"></i><b>9.8</b> Identifying Redundant Features</a><ul>
-<li class="chapter" data-level="9.8.1" data-path="data-pre-processing.html"><a href="data-pre-processing.html#highly-correlated-variables"><i class="fa fa-check"></i><b>9.8.1</b> Highly Correlated Variables</a></li>
-</ul></li>
-<li class="chapter" data-level="9.9" data-path="data-pre-processing.html"><a href="data-pre-processing.html#ranking-features"><i class="fa fa-check"></i><b>9.9</b> Ranking Features</a></li>
-<li class="chapter" data-level="9.10" data-path="data-pre-processing.html"><a href="data-pre-processing.html#feature-selection-1"><i class="fa fa-check"></i><b>9.10</b> Feature Selection</a></li>
+<li class="chapter" data-level="9.7" data-path="data-pre-processing.html"><a href="data-pre-processing.html#ranking-features"><i class="fa fa-check"></i><b>9.7</b> Ranking Features</a></li>
+<li class="chapter" data-level="9.8" data-path="data-pre-processing.html"><a href="data-pre-processing.html#feature-selection-1"><i class="fa fa-check"></i><b>9.8</b> Feature Selection</a></li>
 </ul></li>
 <li class="chapter" data-level="10" data-path="classification-problems.html"><a href="classification-problems.html"><i class="fa fa-check"></i><b>10</b> Classification Problems</a><ul>
 <li class="chapter" data-level="10.1" data-path="classification-problems.html"><a href="classification-problems.html#hypothesis-testing"><i class="fa fa-check"></i><b>10.1</b> Hypothesis Testing</a><ul>
@@ -353,7 +347,7 @@ caret<span class="op">::</span><span class="kw">confusionMatrix</span>(fitpreds,
 ## </code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(caTools)
 <span class="kw">colAUC</span>(pm_model_fitpreds,test<span class="op">$</span>diabetes,<span class="dt">plotROC=</span><span class="ot">TRUE</span>)</code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-201-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-126-1.png" width="672" /></p>
 <pre><code>##                  [,1]
 ## neg vs. pos 0.8296226</code></pre>
 <p>But wait, why would we do this if we have the <strong>caret</strong> package readily available. We can explore any number methods, implement K Fold Cross Validation,and get feedback on the performance measures at the same time. Let’s reframe our above work using the caret package conveniences.</p>
@@ -502,7 +496,7 @@ pm_ranger_mod &lt;-<span class="st"> </span><span class="kw">train</span>(<span 
                     )</code></pre></div>
 <p>The object can be plotted. Here we see that the max AUC of .825 occurs when mtry is 3 and the Gini criterion is used to evaluate a tree.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(pm_ranger_mod)</code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-208-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-133-1.png" width="672" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">max</span>(pm_ranger_mod[[<span class="st">&quot;results&quot;</span>]]<span class="op">$</span>ROC)</code></pre></div>
 <pre><code>## [1] 0.8190116</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">preds &lt;-<span class="st"> </span><span class="kw">predict</span>(pm_ranger_mod,test)

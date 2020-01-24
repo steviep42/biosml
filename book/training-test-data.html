@@ -172,22 +172,16 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="9.3" data-path="data-pre-processing.html"><a href="data-pre-processing.html#scaling"><i class="fa fa-check"></i><b>9.3</b> Scaling</a><ul>
 <li class="chapter" data-level="9.3.1" data-path="data-pre-processing.html"><a href="data-pre-processing.html#methods-that-benefit-from-scaling"><i class="fa fa-check"></i><b>9.3.1</b> Methods That Benefit From Scaling</a></li>
 <li class="chapter" data-level="9.3.2" data-path="data-pre-processing.html"><a href="data-pre-processing.html#methods-that-do-not-require-scaling"><i class="fa fa-check"></i><b>9.3.2</b> Methods That Do Not Require Scaling</a></li>
+<li class="chapter" data-level="9.3.3" data-path="data-pre-processing.html"><a href="data-pre-processing.html#how-to-scale"><i class="fa fa-check"></i><b>9.3.3</b> How To Scale</a></li>
+<li class="chapter" data-level="9.3.4" data-path="data-pre-processing.html"><a href="data-pre-processing.html#order-of-processing"><i class="fa fa-check"></i><b>9.3.4</b> Order of Processing</a></li>
 </ul></li>
-<li class="chapter" data-level="9.4" data-path="data-pre-processing.html"><a href="data-pre-processing.html#how-to-scale"><i class="fa fa-check"></i><b>9.4</b> How To Scale</a><ul>
-<li class="chapter" data-level="9.4.1" data-path="data-pre-processing.html"><a href="data-pre-processing.html#centering"><i class="fa fa-check"></i><b>9.4.1</b> Centering</a></li>
-<li class="chapter" data-level="9.4.2" data-path="data-pre-processing.html"><a href="data-pre-processing.html#scaling-1"><i class="fa fa-check"></i><b>9.4.2</b> Scaling</a></li>
-<li class="chapter" data-level="9.4.3" data-path="data-pre-processing.html"><a href="data-pre-processing.html#scaling-a-data-frame"><i class="fa fa-check"></i><b>9.4.3</b> Scaling a Data frame</a></li>
+<li class="chapter" data-level="9.4" data-path="data-pre-processing.html"><a href="data-pre-processing.html#low-variance-variables"><i class="fa fa-check"></i><b>9.4</b> Low Variance Variables</a></li>
+<li class="chapter" data-level="9.5" data-path="data-pre-processing.html"><a href="data-pre-processing.html#order-of-pre-processing"><i class="fa fa-check"></i><b>9.5</b> Order of Pre-Processing</a></li>
+<li class="chapter" data-level="9.6" data-path="data-pre-processing.html"><a href="data-pre-processing.html#identifying-redundant-features"><i class="fa fa-check"></i><b>9.6</b> Identifying Redundant Features</a><ul>
+<li class="chapter" data-level="9.6.1" data-path="data-pre-processing.html"><a href="data-pre-processing.html#highly-correlated-variables"><i class="fa fa-check"></i><b>9.6.1</b> Highly Correlated Variables</a></li>
 </ul></li>
-<li class="chapter" data-level="9.5" data-path="data-pre-processing.html"><a href="data-pre-processing.html#caret-and-preprocess"><i class="fa fa-check"></i><b>9.5</b> caret and preprocess</a><ul>
-<li class="chapter" data-level="9.5.1" data-path="data-pre-processing.html"><a href="data-pre-processing.html#order-of-processing"><i class="fa fa-check"></i><b>9.5.1</b> Order of Processing</a></li>
-</ul></li>
-<li class="chapter" data-level="9.6" data-path="data-pre-processing.html"><a href="data-pre-processing.html#low-variance-variables"><i class="fa fa-check"></i><b>9.6</b> Low Variance Variables</a></li>
-<li class="chapter" data-level="9.7" data-path="data-pre-processing.html"><a href="data-pre-processing.html#order-of-pre-processing"><i class="fa fa-check"></i><b>9.7</b> Order of Pre-Processing</a></li>
-<li class="chapter" data-level="9.8" data-path="data-pre-processing.html"><a href="data-pre-processing.html#identifying-redundant-features"><i class="fa fa-check"></i><b>9.8</b> Identifying Redundant Features</a><ul>
-<li class="chapter" data-level="9.8.1" data-path="data-pre-processing.html"><a href="data-pre-processing.html#highly-correlated-variables"><i class="fa fa-check"></i><b>9.8.1</b> Highly Correlated Variables</a></li>
-</ul></li>
-<li class="chapter" data-level="9.9" data-path="data-pre-processing.html"><a href="data-pre-processing.html#ranking-features"><i class="fa fa-check"></i><b>9.9</b> Ranking Features</a></li>
-<li class="chapter" data-level="9.10" data-path="data-pre-processing.html"><a href="data-pre-processing.html#feature-selection-1"><i class="fa fa-check"></i><b>9.10</b> Feature Selection</a></li>
+<li class="chapter" data-level="9.7" data-path="data-pre-processing.html"><a href="data-pre-processing.html#ranking-features"><i class="fa fa-check"></i><b>9.7</b> Ranking Features</a></li>
+<li class="chapter" data-level="9.8" data-path="data-pre-processing.html"><a href="data-pre-processing.html#feature-selection-1"><i class="fa fa-check"></i><b>9.8</b> Feature Selection</a></li>
 </ul></li>
 <li class="chapter" data-level="10" data-path="classification-problems.html"><a href="classification-problems.html"><i class="fa fa-check"></i><b>10</b> Classification Problems</a><ul>
 <li class="chapter" data-level="10.1" data-path="classification-problems.html"><a href="classification-problems.html#hypothesis-testing"><i class="fa fa-check"></i><b>10.1</b> Hypothesis Testing</a><ul>
@@ -420,13 +414,13 @@ repeated_cv_rmse &lt;-<span class="st"> </span><span class="kw">sapply</span>(<s
 
 <span class="kw">boxplot</span>(repeated_cv_rmse, 
         <span class="dt">main=</span><span class="st">&quot;RMSE Across 20 Repeats of 4 CV Folds&quot;</span>)</code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-115-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-40-1.png" width="672" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">title &lt;-<span class="st"> </span><span class="kw">paste</span>(<span class="st">&quot;RMSE Across&quot;</span>,num_of_folds,
                <span class="st">&quot;folds - &quot;</span>,<span class="kw">as.character</span>(<span class="kw">deparse</span>(myform)),<span class="dt">sep=</span><span class="st">&quot; &quot;</span>)
 
 repeated_cv_rmse &lt;-<span class="st"> </span><span class="kw">as.vector</span>(repeated_cv_rmse)
 <span class="kw">boxplot</span>(repeated_cv_rmse)</code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-115-2.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-40-2.png" width="672" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(repeated_cv_rmse)</code></pre></div>
 <pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
 ##  0.8665  2.1211  2.7089  3.0141  4.0634  6.1182</code></pre>
@@ -480,13 +474,13 @@ repeated_cv_rmse &lt;-<span class="st"> </span><span class="kw">as.vector</span>
 repeated_rmse &lt;-<span class="st"> </span><span class="kw">sapply</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">20</span>,make_mtcars_boot)
 
 <span class="kw">boxplot</span>(repeated_rmse,<span class="dt">main=</span><span class="st">&quot;RMSE Across 20 Repeats of 4 Boostrap Folds&quot;</span>)</code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-117-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-42-1.png" width="672" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">title &lt;-<span class="st"> </span><span class="kw">paste</span>(<span class="st">&quot;RMSE Across&quot;</span>,num_of_folds,
                <span class="st">&quot;folds - &quot;</span>,<span class="kw">as.character</span>(<span class="kw">deparse</span>(myform)),<span class="dt">sep=</span><span class="st">&quot; &quot;</span>)
 
 boot_repeated_rmse &lt;-<span class="st"> </span><span class="kw">as.vector</span>(repeated_rmse)
 <span class="kw">boxplot</span>(boot_repeated_rmse)</code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-117-2.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-42-2.png" width="672" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># How does the RMSE from the boostrap approach compare to the </span>
 <span class="co"># K-Fold CV approach ? </span>
 

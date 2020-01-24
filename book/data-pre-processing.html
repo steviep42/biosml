@@ -172,22 +172,16 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="9.3" data-path="data-pre-processing.html"><a href="data-pre-processing.html#scaling"><i class="fa fa-check"></i><b>9.3</b> Scaling</a><ul>
 <li class="chapter" data-level="9.3.1" data-path="data-pre-processing.html"><a href="data-pre-processing.html#methods-that-benefit-from-scaling"><i class="fa fa-check"></i><b>9.3.1</b> Methods That Benefit From Scaling</a></li>
 <li class="chapter" data-level="9.3.2" data-path="data-pre-processing.html"><a href="data-pre-processing.html#methods-that-do-not-require-scaling"><i class="fa fa-check"></i><b>9.3.2</b> Methods That Do Not Require Scaling</a></li>
+<li class="chapter" data-level="9.3.3" data-path="data-pre-processing.html"><a href="data-pre-processing.html#how-to-scale"><i class="fa fa-check"></i><b>9.3.3</b> How To Scale</a></li>
+<li class="chapter" data-level="9.3.4" data-path="data-pre-processing.html"><a href="data-pre-processing.html#order-of-processing"><i class="fa fa-check"></i><b>9.3.4</b> Order of Processing</a></li>
 </ul></li>
-<li class="chapter" data-level="9.4" data-path="data-pre-processing.html"><a href="data-pre-processing.html#how-to-scale"><i class="fa fa-check"></i><b>9.4</b> How To Scale</a><ul>
-<li class="chapter" data-level="9.4.1" data-path="data-pre-processing.html"><a href="data-pre-processing.html#centering"><i class="fa fa-check"></i><b>9.4.1</b> Centering</a></li>
-<li class="chapter" data-level="9.4.2" data-path="data-pre-processing.html"><a href="data-pre-processing.html#scaling-1"><i class="fa fa-check"></i><b>9.4.2</b> Scaling</a></li>
-<li class="chapter" data-level="9.4.3" data-path="data-pre-processing.html"><a href="data-pre-processing.html#scaling-a-data-frame"><i class="fa fa-check"></i><b>9.4.3</b> Scaling a Data frame</a></li>
+<li class="chapter" data-level="9.4" data-path="data-pre-processing.html"><a href="data-pre-processing.html#low-variance-variables"><i class="fa fa-check"></i><b>9.4</b> Low Variance Variables</a></li>
+<li class="chapter" data-level="9.5" data-path="data-pre-processing.html"><a href="data-pre-processing.html#order-of-pre-processing"><i class="fa fa-check"></i><b>9.5</b> Order of Pre-Processing</a></li>
+<li class="chapter" data-level="9.6" data-path="data-pre-processing.html"><a href="data-pre-processing.html#identifying-redundant-features"><i class="fa fa-check"></i><b>9.6</b> Identifying Redundant Features</a><ul>
+<li class="chapter" data-level="9.6.1" data-path="data-pre-processing.html"><a href="data-pre-processing.html#highly-correlated-variables"><i class="fa fa-check"></i><b>9.6.1</b> Highly Correlated Variables</a></li>
 </ul></li>
-<li class="chapter" data-level="9.5" data-path="data-pre-processing.html"><a href="data-pre-processing.html#caret-and-preprocess"><i class="fa fa-check"></i><b>9.5</b> caret and preprocess</a><ul>
-<li class="chapter" data-level="9.5.1" data-path="data-pre-processing.html"><a href="data-pre-processing.html#order-of-processing"><i class="fa fa-check"></i><b>9.5.1</b> Order of Processing</a></li>
-</ul></li>
-<li class="chapter" data-level="9.6" data-path="data-pre-processing.html"><a href="data-pre-processing.html#low-variance-variables"><i class="fa fa-check"></i><b>9.6</b> Low Variance Variables</a></li>
-<li class="chapter" data-level="9.7" data-path="data-pre-processing.html"><a href="data-pre-processing.html#order-of-pre-processing"><i class="fa fa-check"></i><b>9.7</b> Order of Pre-Processing</a></li>
-<li class="chapter" data-level="9.8" data-path="data-pre-processing.html"><a href="data-pre-processing.html#identifying-redundant-features"><i class="fa fa-check"></i><b>9.8</b> Identifying Redundant Features</a><ul>
-<li class="chapter" data-level="9.8.1" data-path="data-pre-processing.html"><a href="data-pre-processing.html#highly-correlated-variables"><i class="fa fa-check"></i><b>9.8.1</b> Highly Correlated Variables</a></li>
-</ul></li>
-<li class="chapter" data-level="9.9" data-path="data-pre-processing.html"><a href="data-pre-processing.html#ranking-features"><i class="fa fa-check"></i><b>9.9</b> Ranking Features</a></li>
-<li class="chapter" data-level="9.10" data-path="data-pre-processing.html"><a href="data-pre-processing.html#feature-selection-1"><i class="fa fa-check"></i><b>9.10</b> Feature Selection</a></li>
+<li class="chapter" data-level="9.7" data-path="data-pre-processing.html"><a href="data-pre-processing.html#ranking-features"><i class="fa fa-check"></i><b>9.7</b> Ranking Features</a></li>
+<li class="chapter" data-level="9.8" data-path="data-pre-processing.html"><a href="data-pre-processing.html#feature-selection-1"><i class="fa fa-check"></i><b>9.8</b> Feature Selection</a></li>
 </ul></li>
 <li class="chapter" data-level="10" data-path="classification-problems.html"><a href="classification-problems.html"><i class="fa fa-check"></i><b>10</b> Classification Problems</a><ul>
 <li class="chapter" data-level="10.1" data-path="classification-problems.html"><a href="classification-problems.html#hypothesis-testing"><i class="fa fa-check"></i><b>10.1</b> Hypothesis Testing</a><ul>
@@ -281,7 +275,7 @@ mtcars_na &lt;-<span class="st"> </span><span class="kw">read.csv</span>(url, <s
 <p>Let’s look at a boxplot of the <strong>wt</strong> feature.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">boxplot</span>(mtcars_na<span class="op">$</span>wt,<span class="dt">na.rm=</span><span class="ot">TRUE</span>,<span class="dt">main=</span><span class="st">&quot;Distribution of the wt feature&quot;</span>)
 <span class="kw">grid</span>()</code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-148-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-73-1.png" width="672" /></p>
 <p>To make the substitution would involve the following. First we need to find out which row numbers have missing values for the <strong>wt</strong> feature.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">(missing_wt_indices &lt;-<span class="st"> </span><span class="kw">which</span>(<span class="kw">is.na</span>(mtcars_na<span class="op">$</span>wt)))</code></pre></div>
 <pre><code>## [1]  2  9 23</code></pre>
@@ -390,12 +384,11 @@ Metrics<span class="op">::</span><span class="kw">rmse</span>(test<span class="o
 <h3><span class="header-section-number">9.3.2</span> Methods That Do Not Require Scaling</h3>
 <p>Methods that don’t require scaling (or whose results don’t rely upon it) include rule-based algorithms such as Decision trees and more generally CART - Random Forests, Gradient Boosted Decision Even if you scale the data the relative relationships will be preserved post scaling so the decision to split a tree won’t be impacted.</p>
 </div>
-</div>
-<div id="how-to-scale" class="section level2">
-<h2><span class="header-section-number">9.4</span> How To Scale</h2>
+<div id="how-to-scale" class="section level3">
+<h3><span class="header-section-number">9.3.3</span> How To Scale</h3>
 <p>You could do your own scaling and centering which might be helpful to understand what is going on. First, when we say “scaling” we typically mean “centering” and “scaling”.</p>
-<div id="centering" class="section level3">
-<h3><span class="header-section-number">9.4.1</span> Centering</h3>
+<div id="centering" class="section level4">
+<h4><span class="header-section-number">9.3.3.1</span> Centering</h4>
 <p>Take a vector (or column) of numeric data and find the mean. Then subtract the computed mean value from each element of the vector / column. We will use the <strong>wt</strong> column from mtcars as an example.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">(centered &lt;-<span class="st"> </span>mtcars<span class="op">$</span>wt <span class="op">-</span><span class="st"> </span><span class="kw">mean</span>(mtcars<span class="op">$</span>wt))</code></pre></div>
 <pre><code>##  [1] -0.59725 -0.34225 -0.89725 -0.00225  0.22275  0.24275  0.35275
@@ -405,8 +398,8 @@ Metrics<span class="op">::</span><span class="kw">rmse</span>(test<span class="o
 ## [29] -0.04725 -0.44725  0.35275 -0.43725</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#center &lt;- apply(mtcars,2,function(x) (x - mean(x)))</span></code></pre></div>
 </div>
-<div id="scaling-1" class="section level3">
-<h3><span class="header-section-number">9.4.2</span> Scaling</h3>
+<div id="scaling-1" class="section level4">
+<h4><span class="header-section-number">9.3.3.2</span> Scaling</h4>
 <p>This step involves taking the standard deviation of the vector / column. Then divide each valuein the vector / column by this computed standard deviation. We’ll process the <strong>centered</strong> data from the previous computation.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">(scaled &lt;-<span class="st"> </span>centered<span class="op">/</span><span class="kw">sd</span>(centered))</code></pre></div>
 <pre><code>##  [1] -0.610399567 -0.349785269 -0.917004624 -0.002299538  0.227654255
@@ -417,8 +410,8 @@ Metrics<span class="op">::</span><span class="kw">rmse</span>(test<span class="o
 ## [26] -1.310481114 -1.100967659 -1.741772228 -0.048290296 -0.457097039
 ## [31]  0.360516446 -0.446876870</code></pre>
 </div>
-<div id="scaling-a-data-frame" class="section level3">
-<h3><span class="header-section-number">9.4.3</span> Scaling a Data frame</h3>
+<div id="scaling-a-data-frame" class="section level4">
+<h4><span class="header-section-number">9.3.3.3</span> Scaling a Data frame</h4>
 <p>We could do this on a data frame by using the <strong>apply</strong> function. The problme with this “do it yourself approach” is that we don’t have an easy way to reverse the scaling and centering.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">centered &lt;-<span class="st"> </span><span class="kw">apply</span>(mtcars,<span class="dv">2</span>,<span class="cf">function</span>(x) (x <span class="op">-</span><span class="st"> </span><span class="kw">mean</span>(x)))
 scaled &lt;-<span class="st"> </span><span class="kw">apply</span>(centered,<span class="dv">2</span>,<span class="cf">function</span>(x) x<span class="op">/</span><span class="kw">sd</span>(x))</code></pre></div>
@@ -535,9 +528,8 @@ scaled &lt;-<span class="st"> </span><span class="kw">apply</span>(centered,<spa
 ##   1.7869432   0.5040161   0.4989909   0.7378041   1.6152000</code></pre>
 <p>If you look at the bottom of the above operation, there are two <strong>attributes</strong> that contain the information necessary to <strong>reverse scale</strong> the scaled data. Soif you do this yourself then you have to reverse scaled yourself.</p>
 </div>
-</div>
-<div id="caret-and-preprocess" class="section level2">
-<h2><span class="header-section-number">9.5</span> caret and preprocess</h2>
+<div id="caret-and-preprocess" class="section level4">
+<h4><span class="header-section-number">9.3.3.4</span> caret and preprocess</h4>
 <p>but the <strong>caret</strong> package will help you do this using the <strong>preProcess</strong> function. Here we can actually request that the data is “centered” and “scaled” as part of the model assembly process. We could do this before the call to the <strong>Train</strong> function but then we would also have to convert the training and test data ourselves. In the following situation, the data will be centered and scaled thoug the returned RMSE will be in terms of the unscaled data.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">training_idx &lt;-<span class="st"> </span><span class="kw">createDataPartition</span>(mtcars<span class="op">$</span>mpg, <span class="dt">p =</span>.<span class="dv">80</span>, <span class="dt">list=</span><span class="ot">FALSE</span>)
 training &lt;-<span class="st"> </span>mtcars[training_idx,]
@@ -591,8 +583,10 @@ myLm<span class="op">$</span>finalModel<span class="op">$</span>model[<span clas
 ## Valiant        -1.0824926</code></pre>
 <p>This is convenient because if we now wish to use the <strong>predict</strong> function, it will scale the <strong>test</strong> data that we provide on our behalf. What we get back will be in terms of the uncenter and unscaled predicted variable (mpg).</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">preds &lt;-<span class="st"> </span><span class="kw">predict</span>(myLm,test)</code></pre></div>
+</div>
+</div>
 <div id="order-of-processing" class="section level3">
-<h3><span class="header-section-number">9.5.1</span> Order of Processing</h3>
+<h3><span class="header-section-number">9.3.4</span> Order of Processing</h3>
 <p>Note that the order of processing is important. You should center and then scale. Underneath the hood, the centering operation finds the mean of a feature (column) and then subtracts it from each value therein. So the following are equivalent:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">(mt_center &lt;-<span class="st"> </span>mtcars<span class="op">$</span>wt <span class="op">-</span><span class="st"> </span><span class="kw">mean</span>(mtcars<span class="op">$</span>wt))</code></pre></div>
 <pre><code>##  [1] -0.59725 -0.34225 -0.89725 -0.00225  0.22275  0.24275  0.35275
@@ -628,7 +622,7 @@ myLm &lt;-<span class="st">  </span><span class="kw">train</span>(X, Y,
 </div>
 </div>
 <div id="low-variance-variables" class="section level2">
-<h2><span class="header-section-number">9.6</span> Low Variance Variables</h2>
+<h2><span class="header-section-number">9.4</span> Low Variance Variables</h2>
 <p>Some variables exhibit low variance and might be nearly constant. Such variables can be detected by using some basic functions in R before you begin to build a model. As an example, we’ll use the mtcars data frame and introduce a low variance variable - actually, we’ll make it a constant.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(mtcars)
 <span class="kw">set.seed</span>(<span class="dv">123</span>)
@@ -713,7 +707,7 @@ mtcars_nzv[<span class="kw">nearZeroVar</span>(mtcars_nzv)]</code></pre></div>
 ## [5] &quot;vsa_acid&quot;     &quot;frac.anion7.&quot; &quot;alert&quot;</code></pre>
 </div>
 <div id="order-of-pre-processing" class="section level2">
-<h2><span class="header-section-number">9.7</span> Order of Pre-Processing</h2>
+<h2><span class="header-section-number">9.5</span> Order of Pre-Processing</h2>
 <p>In reality, if we wanted to line up the order in which to pre process data it would read something like the following:</p>
 <ul>
 <li>Remove Near Zero Variance Features</li>
@@ -728,10 +722,10 @@ mtcars_nzv[<span class="kw">nearZeroVar</span>(mtcars_nzv)]</code></pre></div>
   )</code></pre></div>
 </div>
 <div id="identifying-redundant-features" class="section level2">
-<h2><span class="header-section-number">9.8</span> Identifying Redundant Features</h2>
+<h2><span class="header-section-number">9.6</span> Identifying Redundant Features</h2>
 <p>Lots of Data Scientists and model builders would like to know which features are important and which are redundant - BEFORE building the model. Many times, people just include all features and rely upon post model statistics to diagnose the model. This is fine though there are automated methods to help. Some statisticians do not like this approach (e.g. Step Wise Regression) because it emphasizes a scoring metric that is computed as a function of other measures though that process itself might be incomplete in some way. Ideally, you would have some up front idea about the data.</p>
 <div id="highly-correlated-variables" class="section level3">
-<h3><span class="header-section-number">9.8.1</span> Highly Correlated Variables</h3>
+<h3><span class="header-section-number">9.6.1</span> Highly Correlated Variables</h3>
 <p>In an earlier section we looked at the correlations between the variables in the mtcars data frame. When there are a number of strongly correlated variables the issue of multicollinerarity might exist. One variable might be sufficient to represent the information of one or more other variables which is useful when building models because it would allow us to leave out comparatively low information variables.</p>
 <p>Techniques like PCA Principal Components Analysis can be used to recombine features in a way that explains most of the variation of data set. A simpler way might be to look for highly correlated sets of variables and remove those over a certain threshold of correlation from the data frame.</p>
 <p>Let’s look at the mtcars data frame again to see what variables are correlated.</p>
@@ -757,7 +751,7 @@ correlations[<span class="dv">1</span><span class="op">:</span><span class="dv">
 ## a graphical parameter</code></pre>
 <pre><code>## Warning in box(...): &quot;order&quot; is not a graphical parameter</code></pre>
 <pre><code>## Warning in title(...): &quot;order&quot; is not a graphical parameter</code></pre>
-<p><img src="biosml_files/figure-html/unnamed-chunk-172-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-97-1.png" width="672" /></p>
 <p>The <strong>caret</strong> package has some functions that can help us identify highly correlated variables that might be a candidates for removal prior to use in building a model. One of the variables that is highly correlated with others is <strong>mpg</strong> Since that is the one we are trying to predict, we’ll keep it around. The following columns from mtcars have a correlation of .75 (or higher) with some other variable(s)</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">(highcorr &lt;-<span class="st"> </span><span class="kw">findCorrelation</span>(correlations, <span class="dt">cutoff=</span>.<span class="dv">75</span>))</code></pre></div>
 <pre><code>## [1]  2  3  1 10</code></pre>
@@ -781,7 +775,7 @@ decorrel_lm &lt;-<span class="st"> </span><span class="kw">train</span>(mpg<span
 </div>
 </div>
 <div id="ranking-features" class="section level2">
-<h2><span class="header-section-number">9.9</span> Ranking Features</h2>
+<h2><span class="header-section-number">9.7</span> Ranking Features</h2>
 <p>Another approach would be to identify the imporant variables as determined by a rigorous, reliable and statistically aware process. Some models will report this information as part of the computation. The <strong>caret</strong> package has a function called <strong>varImp</strong> which helps to calculate relative variable importance within an object produced by the <strong>train</strong> function. What this means for us is that we can take most models built with <strong>train</strong> and pass it to the <strong>varImp</strong> function.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">idx &lt;-<span class="st"> </span><span class="kw">createDataPartition</span>(mtcars<span class="op">$</span>mpg, <span class="dt">p =</span> .<span class="dv">8</span>, 
                                   <span class="dt">list =</span> <span class="ot">FALSE</span>, 
@@ -826,7 +820,7 @@ myLm &lt;-<span class="st"> </span><span class="kw">train</span>(mpg<span class=
 <p>If you look at the summary of the model it looks pretty bleak because mot of the coefficients aren’t significant. You wouldn’t want to take your career on this model.</p>
 <p>Now let’s see what variables are considered to be important by using <strong>varImp</strong>. Remember that this might lead us to use a subset of the more prominent variables in the formation of a new model in case, for example, the coefficients in the exisitng model weren’t significant.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(<span class="kw">varImp</span>(myLm))</code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-177-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-102-1.png" width="672" /></p>
 <p>How do things look in the model if we limit the formula to some of the “important” (allegedly) features ? Well, it expliains more of the variance with fewer predictors (the R^2 value). Both <strong>wt</strong> and <strong>hp</strong> are significant. That’s a start.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">myLm &lt;-<span class="st"> </span><span class="kw">train</span>(mpg<span class="op">~</span>wt<span class="op">+</span>disp<span class="op">+</span>hp,
                      <span class="dt">data =</span> train,
@@ -857,7 +851,7 @@ myLm &lt;-<span class="st"> </span><span class="kw">train</span>(mpg<span class=
 ## F-statistic: 36.33 on 3 and 24 DF,  p-value: 4.39e-09</code></pre>
 </div>
 <div id="feature-selection-1" class="section level2">
-<h2><span class="header-section-number">9.10</span> Feature Selection</h2>
+<h2><span class="header-section-number">9.8</span> Feature Selection</h2>
 <p>Being able to automatically include only the most important features is desireable (again an example might be Step Wise Regression). Caret provides its own function to do a simple backwards selection to recursively eliminate features based on how they contribute (or not) to the model. You could do all of this by hand yourself of course.</p>
 <p>Automatic feature selection methods can be used to build many models with different subsets of a dataset and identify those attributes that are and are not required to build an accurate model. The <strong>caret</strong> package has a function called *rfe** to implement this. However, it involves some additional setup:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">rfeControl &lt;-<span class="st"> </span><span class="kw">rfeControl</span>(<span class="dt">functions=</span>lmFuncs, <span class="dt">method=</span><span class="st">&quot;cv&quot;</span>, <span class="dt">number=</span><span class="dv">10</span>)
@@ -889,7 +883,7 @@ results &lt;-<span class="st"> </span><span class="kw">rfe</span>(mtcars[,<span 
 ## The top 3 variables (out of 3):
 ##    wt, am, drat</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(results,<span class="dt">type=</span><span class="kw">c</span>(<span class="st">&quot;g&quot;</span>,<span class="st">&quot;o&quot;</span>))</code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-179-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-104-1.png" width="672" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">myLm &lt;-<span class="st"> </span><span class="kw">train</span>(mpg<span class="op">~</span>wt<span class="op">+</span>am<span class="op">+</span>qsec,
                      <span class="dt">data =</span> train,
                      <span class="dt">method =</span> <span class="st">&quot;lm&quot;</span>,
