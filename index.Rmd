@@ -18,7 +18,7 @@ suppressMessages(library(mlbench))
 
 # Preface
 
-NOTE: This document is a work in progress and should be considered to be in *"draft status"*
+NOTE: This document is in progress and is in *"draft status"*
 
 This content exists for two main reasons:
 
@@ -26,25 +26,25 @@ This content exists for two main reasons:
 
 Of course, there is absolutely no requirement for anyone to use the **caret** package but it does provide uniform access to over 200 modeling methods. All one needs to do is have some data, a metric by which to score (e.g. RMSE, AUC, logloss), and a method of interest. 
 
-A cool feature of the **caret** package is that it provides methods for helping identify how well your selected model might apply to "out of sample" data. Additionally, you can see how well it comapres to other models. 
+A cool feature of the **caret** package is that it provides access to methods for helping identify how well your selected model might apply to "out of sample" data. Additionally, you can see how well it comapres to other models. 
 
-2) A second reason this content exists is to provide a rapid intro to Machine Learning with R. It's better to get up and running with building some models than it is to sit back and read how to do it. The process of assessing models and diagnosing them can be an in depth process thus I don't wish to understate what it takes to do that. However, moving forward with some of the basic mechanics and concepts is good. One can always work with the individual methods or go to Section 6 to start with caret. The larger message is to get busy getting your hands dirty. 
+2) A second reason this content exists is to provide a rapid introduction to Machine Learning with R. It's better to get up and running with building some models than it is to sit back and read how to do it. The process of assessing models and diagnosing them can be an in depth process thus I don't wish to understate what it takes to do that. However, moving forward with some of the basic mechanics and concepts is good. One can always work with the individual methods or go to Section 6 to start with caret. The larger message is to get busy getting your hands dirty. 
 
 
 # Predictive / Supervised Learning
 
-In Predictive Learning it is customary to apply methods to build  models on existing data to help you 
+In Predictive Learning it is customary to apply methods to build models on existing data to help you 
 
-  1) understand the data at hand and 
-  2) maybe build a model to predict outcomes on related information  
+  1) Understand the data at hand and 
+  2) Build a model to predict outcomes on related information  
 
-Of course, number 2 assumes that what you already know is suitable for application to a more general situation when this might not be the case. 
+Of course, number 2 assumes that what you already know in terms of the data and model is suitable for application to a more general situation when this might not be the case. 
 
 ## Explanation vs Prediction
 
 Sometimes you just want to build a model (apply a method) to **explain** the data at hand as opposed to using it to predict outcomes for incoming data of a related nature. Not all models need to be predictive and in fact it might be useful to first get a basic understanding of the data before attempting to extend it to new information. 
 
-> "A common misconception in various scientific fieldsis that predictive power can be inferred from explana-tory power. However, the two are different and should be assessed separately."
+> "A common misconception in various scientific fields is that predictive power can be inferred from explanatory power. However, the two are different and should be assessed separately."
 >
 > --- Gamit Shmueli - "To Explain or Predict"
 
@@ -108,9 +108,16 @@ Simpler models, such as linear regression, can be like this - easy to understand
 
 Models that are biased generally have less variability when applied to new data whereas less biased models generally have higher variability when applied to new data. Obviously, striking a balance between the two is desirable. There are techniques to help with this. 
 
-# A Motivating Example - Linear Regression
+# A Motivating Example 
 
-Thus far we haven't gotten our hands dirty but we'll need to do that if we want an experiential approach to any of this. Let's start out with what is probably the most (over)used data set in R Education - the "mtcars" data frame. 
+## Suggested Workflow
+
+Thus far we haven't gotten our hands dirty but we'll need to do that if we want an experiential approach to any of this. It's useful to have a schematic that outlines the general process. Consider the following workflow. In general this is a solid representation of what one might do as part of building a predictive model. 
+
+![](./pics/workflow.jpg)
+
+
+Let's start out with a basic example involving the most (over)used data set in R Education - the "mtcars" data frame. 
 
 ```{r mtcarshelp,eval=FALSE}
 Motor Trend Car Road Tests
@@ -1702,22 +1709,14 @@ mtcars[,-1][,highcorr]
 
 Data rarely arrives in a form that is directly suitable for use with a modeling method. There are a number of considerations to make such as how to handle missing data, highly correlated variables, and class imbalances - some categories are over or under represented. Additionally, some variables, also known as "features", will require transformation or will need to be used to create new variables. Consider the case where the measured data (the numeric data) might be on different scales (e.g. height vs weight). This might result in the need to scale and center the data. Some methods take this into consideration whereas others do not. Suffice it to say that data prep can be an ongoing process that requires a number of experiments before arriving at the best form of data. 
 
-## Scaling 
+## Missing Values
 
-In terms of what methods benefit (or require) you to scale data prior to use, consider that any method that uses the idea of "distance". This helps avoid large scale features dominating others. The following approaches benefit from scaling:
-
-Linear/non-linear regression, logistic regression, KNN, SVM, Neural Networks, clustering algorithms like k-means clustering. Methods that employ PCA and dimensionality reduction should use scaled data. In R and Python, many of the functions to employ these methods might have arguements to activate the scaling as part of the process. Some will do it for you.
-
-Methods that don't require scaling (or whose results don't rely upon it) include rule-based algorithms such as Decision trees and more generally CART - Random Forests, Gradient Boosted Decision  Even if you scale the data the relative relationships will be preserved post scaling so the decision to split a tree won't be impacted. 
-
-## Missing Data
-
-This is a frequent situation in real life. Think of patients checking in for clinic vists over time. Sometimes they come, sometimes they don't. Sometimes when they do come, their information has changed or some diagnostic test is repeated with a new result which is entered or not. Or, whomever maintains the patient database, decides to add in some new variables to measure for all patients moving forward. This means that all existing patients will have missing values for those new variables. To see how this manifests practically in predictive learning consider the following version of the mtcars data frame which has some missing values:
+This is a frequent situation in real life. Think of patients checking in for clinic visits over time. Sometimes they come for their appointments, sometimes they don't. Sometimes when they do come, their information has changed or some diagnostic test is repeated with a new result which is entered or not. Or, whomever maintains the patient database, decides to add in some new variables to measure for all patients moving forward. This means that all existing patients will have missing values for those new variables. To see how this manifests practically in predictive learning consider the following version of the mtcars data frame which has some missing values:
 
 ```{r}
 library(readr)
 url <- "https://raw.githubusercontent.com/steviep42/utilities/master/data/mtcars_na.csv"
-mtcars_na <- read_csv(url)
+mtcars_na <- read.csv(url, stringsAsFactors = FALSE)
 ```
 
 ### Finding Rows with Missing Data
@@ -1759,7 +1758,9 @@ nrow(mtcars_no_na)
 
 ### Use the Median Approach
 
-What could we do ? Well we could keep all rows even if they contains NAs and then use **imputation** methods to supply values for the missing information. There are R packages that do this but one quick way to do this without going that route is to replace the missing value in the **wt** column with the **median** value for the entire column. We could first look at a boxplot of this feature to see how those values are distributed:
+What could we do ? Well we could keep all rows even if they contains NAs and then use **imputation** methods to supply values for the missing information. There are R packages that do this but one quick way to do this without going that route is to replace the missing value in the **wt** column with the **median** value for the entire column. Using median is appropriate when the missing values are of the "missing at random" variety. There might some bias in the data that introduces a "not at random" situation. We'll look at that case momentarily.
+
+Let's look at a boxplot of the **wt** feature.
 
 ```{r}
 boxplot(mtcars_na$wt,na.rm=TRUE,main="Distribution of the wt feature")
@@ -1796,13 +1797,13 @@ This seems like a lot of work and maybe it is if you aren't up to date with your
 
 
 ```{r}
-library(Hmisc)
+suppressMessages(library(Hmisc))
 # Reload the versio of mtcars with missing values
 url <- "https://raw.githubusercontent.com/steviep42/utilities/master/data/mtcars_na.csv"
-mtcars_na <- read_csv(url)
+mtcars_na <- read.csv(url, strip.white = FALSE)
 ```
 
-The **Hmisc** package provides and **impute** function to do the work for us. Check it out. Notice how if finds the rows for which the **wt** feature is missing. 
+The **Hmisc** package provides and **impute** function to do the work for us. Check it out. Notice how it finds the rows for which the **wt** feature is missing. 
 
 ```{r}
 impute(mtcars_na$wt, median)
@@ -1814,6 +1815,8 @@ To do the replacement is straightforward.
 mtcars_na$wt <- impute(mtcars_na$wt,median)
 ```
 
+### Using caret
+
 Another imputation approach is to use the K-Nearest Neighbors method to find observations that are similar to the ones that contain missing data. The missing values can then be filled using information from the most similar observations. We won't go into that choosing rather to use the convenience offered by the **caret** package to help us. 
 
 ```{r}
@@ -1821,45 +1824,280 @@ Another imputation approach is to use the K-Nearest Neighbors method to find obs
 # library(caret)
 ```
 
-So if we choose to use caret we'll need to use the **preProcess** function to signal our intent to use imputation - in this case the K-Nearest Neighbors technique.
+So if we choose to use caret we can use the **preProcess** function to signal our intent to use imputation - in this case the K-Nearest Neighbors technique. KNN imputation is particularly useful for dealing with the "not at random" situation where there could be bias in the way missing values occur. This approach looks at similar observations to those containing missing values which means that it will attempt to fill in missing values as a function of a number of variables as opposed to just one. 
+
+One subtlety here is that **caret** requires us to use an alternative to the forumla interface (e.g. mpg ~ .) approach when using the **train** function - at least the version of **caret** that I am currently using.
 
 ```{r}
-processed_mtcars <- preProcess(mtcars_na,
-                               method = "knnImpute")
-```
 
-This returns an object that has lots of information in it:
+# Get a fresh copy of the mtcars_na data frame
+mtcars_na <- read.csv(url,stringsAsFactors = FALSE)
 
-```{r}
-names(processed_mtcars)
-```
+# Set the seed for reproducibility
+set.seed(123)
 
-The processed data can be accessed as follows. Note that it is also scaled and centered.
+# Get the indices for a 70/30 split
+train_idx <- createDataPartition(mtcars_na$mpg, p=.70, list = FALSE)
 
-```{r}
-processed_mtcars$data
-```
+# Split into a test / train pair
+train <- mtcars[ train_idx,]
+test  <- mtcars[-train_idx,]
 
-Now we could then use this processed data to do some training. We'll use the **predict** function to give us the mtcars_na data with the imputed values. 
+# Note how we specify knnImpute. Another other option includes
+# medianImpute 
 
-```{r}
-train_data <- predict(processed_mtcars,mtcars_na)
-```
+X <- train[,-1]  # Use Every column EXCEPT mpg
+Y <- train$mpg   # This is what we want to predict
 
-Now pass this to the **train** function. 
-
-```{r}
-lmFit <- train(mpg~wt,
-              data = train_data,
+lmFit <- train(X,Y,
               method = "lm",
-              metric = "RMSE"
-        )
+              metric = "RMSE",
+              preProcess = "knnImpute")
+
+lmFit
+
+# See the RMSE for the test data
+preds <- predict(lmFit, test)
+Metrics::rmse(test$mpg,preds)
+
 ```
 
 
-## Look for Highly Correlated Variables
+## Scaling 
 
-In an earlier section we looked at the correlations between the variables in the mtcars data frame. 
+In terms of what methods benefit (or require) you to scale data prior to use, consider that any method that uses the idea of "distance" will require this. This helps address the situation wherein one the size and range of one feature might overshadow another. For example, look at the range of features in the **mtcars** dataframe. Not only are the variables on different scales (e.g. MPG vs Weight vs Horse Power), a feature such as displacement might over influence a distance calculation when compared to qsec. 
+
+
+```{r}
+sapply(mtcars,range)
+```
+
+### Methods That Benefit From Scaling
+
+The following approaches benefit from scaling:
+
+Linear/non-linear regression, logistic regression, KNN, SVM, Neural Networks, clustering algorithms like k-means clustering. Methods that employ PCA and dimensionality reduction should use scaled data. 
+
+In R and Python, some of the individual functions might have arguements to activate the scaling as part of the process. 
+
+### Methods That Do Not Require Scaling
+
+Methods that don't require scaling (or whose results don't rely upon it) include rule-based algorithms such as Decision trees and more generally CART - Random Forests, Gradient Boosted Decision  Even if you scale the data the relative relationships will be preserved post scaling so the decision to split a tree won't be impacted. 
+
+## How To Scale
+
+You could do your own scaling and centering which might be helpful to understand what is going on. First, when we say "scaling" we typically mean "centering" and "scaling". 
+
+### Centering
+
+Take a vector (or column) of numeric data and find the mean. Then subtract the computed mean value from each element of the vector / column. We will use the **wt** column from mtcars as an example.
+
+```{r}
+(centered <- mtcars$wt - mean(mtcars$wt))
+#center <- apply(mtcars,2,function(x) (x - mean(x)))
+```
+
+### Scaling
+
+This step involves taking the standard deviation of the vector / column. Then divide each valuein the vector / column by this computed standard deviation. We'll process the **centered** data from the previous computation.
+
+```{r}
+(scaled <- centered/sd(centered))
+```
+
+ 
+### Scaling a Data frame
+
+We could do this on a data frame by using the **apply** function. The problme with this "do it yourself approach" is that we don't have an easy way to reverse the scaling and centering. 
+
+```{r}
+centered <- apply(mtcars,2,function(x) (x - mean(x)))
+scaled <- apply(centered,2,function(x) x/sd(x))
+```
+
+There is a function called **scale** which will do this for us and in a way that will allow us to reverse those operations.
+
+```{r}
+(center_scaled <- scale(mtcars,center=TRUE,scale=TRUE))
+```
+
+If you look at the bottom of the above operation, there are two **attributes** that contain the information necessary to **reverse scale** the scaled data. Soif you do this yourself then you have to reverse scaled yourself. 
+
+
+## caret and preprocess
+
+but the **caret** package will help you do this using the **preProcess** function. Here we can actually request that the data is "centered" and "scaled" as part of the model assembly process. We could do this before the call to the **Train** function but then we would also have to convert the training and test data ourselves. In the following situation, the data will be centered and scaled thoug the returned RMSE will be in terms of the unscaled data. 
+
+```{r}
+
+training_idx <- createDataPartition(mtcars$mpg, p =.80, list=FALSE)
+training <- mtcars[training_idx,]
+test <- mtcars[-training_idx,]
+
+myLm <-  train(mpg ~ .,
+               data = training,
+               method = "lm",
+               preProcess = c("center","scale")
+          )
+
+```
+
+To verify that the data is being centered and scaled, checkout the **myLm** object:
+
+```{r}
+# This 
+myLm$finalModel$model[1:5,]
+
+# matches this
+scale(training)[1:5,]
+```
+
+
+
+This is convenient because if we now wish to use the **predict** function, it will scale the **test** data that we provide on our behalf. What we get back will be in terms of the uncenter and unscaled predicted variable (mpg).
+
+```{r}
+preds <- predict(myLm,test)
+```
+
+
+
+### Order of Processing
+
+Note that the order of processing is important. You should center and then scale. Underneath the hood, the centering operation finds the mean of a feature (column) and then subtracts it from each value therein. So the following are equivalent:
+
+```{r}
+(mt_center <- mtcars$wt - mean(mtcars$wt))
+
+#
+
+as.vector(scale(mtcars$wt,center=T,scale=F))
+
+```
+
+After centering, the scaling is done by dividing the (centered) columns of the data frame by their respective standard deviations. In terms of dealing with missing data and scaling, one should first do imputation followed by centering and scaling. In a call to the **train** function, this would look like the following. We'll use our version of mtcars that has missing data.
+
+```{r}
+url <- "https://raw.githubusercontent.com/steviep42/utilities/master/data/mtcars_na.csv"
+
+mtcars_na <- read.csv(url,stringsAsFactors = FALSE)
+```
+
+```{r}
+training_idx <- createDataPartition(mtcars_na$mpg, p =.80, list=FALSE)
+training <- mtcars_na[training_idx,]
+test <- mtcars_na[-training_idx,]
+
+X <- training[,-1]
+Y <- training$mpg 
+
+myLm <-  train(X, Y,
+                method = "lm",
+                preProcess = c("knnImpute","center","scale")
+          )
+```
+
+## Low Variance Variables
+
+Some variables exhibit low variance and might be nearly constant. Such variables can be detected by using some basic functions in R before you begin to build a model. As an example, we'll use the mtcars data frame and introduce a low variance variable - actually, we'll make it a constant.
+
+```{r}
+data(mtcars)
+set.seed(123)
+
+mtcars_nzv <- mtcars
+
+# Make drat low variance
+mtcars_nzv$drat <- 3.0
+
+# Pretty low isn't it ?
+var(mtcars_nzv$drat)
+```
+
+What if we use this variable when making a model. We'll get a lot of problems. While this is a contrived exqmple, it is possible to get this situation when using cross fold validation where the data is segemented into smaller subsets where a variable can be zero variance. 
+
+```{r nearo,eval=FALSE}
+x <- mtcars_nzv[,-1]
+y <- mtcars_nzv[,1]
+
+lowVarLm <- train(
+  x,y,
+  method="lm",
+  preProcess=c("center","scale")
+  )
+
+
+```
+
+The **caret** package has an option to the **preProcess** argument that allows us to remove such variables so it won't impact the resulting model. Notice that we remove the near zero variance variables before we center which happens before scaling. This is the recommended order. 
+
+```{r zv}
+x <- mtcars_nzv[,-1]
+y <- mtcars_nzv[,1]
+
+lowVarLm <- train(
+  x,y,
+  method="lm",
+  preProcess=c("nzv","center","scale")
+  )
+```
+
+The above now works. There is a subtle consideration at work here. We could pre process the data with **nzv** or **zv** where the former removes "near" zero variance features and the latter removes constant-valued features. With near zero variance features there is a way to specify tolerance for deciding whether a feature has near zero variance. Think of **nzv** as being slightly more premissive and flexible whereas **zv** eliminates zero variance variables. Sometimes you might want to keep near zero variance features around simply because there could be some interesting information therein. 
+
+In general we could remove the constant or near zero variance features **before** passing the data to the **train** function. Caret has a standalone function called **nearZeroVariance** to do this. We'll it doesn't actually remove the feature but it will tell us which column(s) exhibit very low variance or have a constant value. In this case it is column number 5 which corresponds to **drat**. We already knew that. 
+
+```{r nearzerf}
+nearZeroVar(mtcars_nzv)
+
+# Find the nzv columns
+
+mtcars_nzv[nearZeroVar(mtcars_nzv)]
+```
+
+There is a data frame in the **caret** package which exhibits this behavior in a more organic fashion - that is the data measurements of a number of features are near zero variance. 
+
+```{r bbb}
+data(BloodBrain)
+str(bbbDescr,0)
+
+# Which columns are suspected of having near zero variance ? 
+
+nearZeroVar(bbbDescr)
+
+# What are their names ?
+names(bbbDescr[,nearZeroVar(bbbDescr)])
+
+```
+
+
+## Order of Pre-Processing
+
+In reality, if we wanted to line up the order in which to pre process data it would read something like the following:
+
+ - Remove Near Zero Variance Features
+ - Do Imputation (knn or median)
+ - Center 
+ - Scale
+
+```{r}
+lowVarLm <- train(
+  mtcars[,-1],mtcars$mpg,
+  method="lm",
+  preProcess=c("nzv","medianImpute","center","scale")
+  )
+```
+
+## Identifying Redundant Features
+
+Lots of Data Scientists and model builders would like to know which features are important and which are redundant - BEFORE building the model. Many times, people just include all features and rely upon post model statistics to diagnose the model. This is fine though there are automated methods to help. Some statisticians do not like this approach (e.g. Step Wise Regression) because it emphasizes a scoring metric that is computed as a function of other measures though that process itself might be incomplete in some way. Ideally, you would have some up front idea about the data. 
+
+### Highly Correlated Variables
+
+In an earlier section we looked at the correlations between the variables in the mtcars data frame. When there are a number of strongly correlated variables the issue of multicollinerarity might exist. One variable might be sufficient to represent the information of one or more other variables which is useful when building models because it would allow us to leave out comparatively low information variables. 
+
+Techniques like PCA Principal Components Analysis can be used to recombine features in a way that explains most of the variation of data set. A simpler way might be to look for highly correlated sets of variables and remove those over a certain threshold of correlation from the data frame. 
+
+Let's look at the mtcars data frame again to see what variables are correlated. 
 
 ```{r}
 data(mtcars)
@@ -1867,89 +2105,116 @@ correlations <- cor(mtcars)
 correlations[1:6, 1:6]
 ```
 
+It turns out that there are lots of strong correlations going on here. The darker the circle the stronger the correlation. 
 
 ```{r}
 suppressMessages(library(corrplot))
 corrplot(correlations, order="hclust")
 ```
 
-The **caret** package has some functions that can help us identify highly correlated variables that might be a candidates for removal prior to use in building a model. Let's go back to the mtcars data set as it exists by default. One of the variables that is highly correlated with others is **mpg** Since that is the one we are trying to predict, we'll keep it around.
+The **caret** package has some functions that can help us identify highly correlated variables that might be a candidates for removal prior to use in building a model. One of the variables that is highly correlated with others is **mpg** Since that is the one we are trying to predict, we'll keep it around. The following columns from mtcars have a correlation of .75 (or higher) with some other variable(s)
 
 
 ```{r}
 (highcorr <- findCorrelation(correlations, cutoff=.75))
+names(mtcars[,highcorr])
+```
+
+So let's remove those variables from consideration although we'll keep the **mpg** variable since that is what we will be predicting. 
+
+```{r}
+data(mtcars)
+decorrel_mtcars <- mtcars[,-highcorr[highcorr != 1]]
+```
+
+This might yield a better model though it's tough to tell.
+
+```{r}
+idx <- createDataPartition(decorrel_mtcars$mpg, p = .8, 
+                                  list = FALSE, 
+                                  times = 1)
+train <- decorrel_mtcars[ idx,]
+test  <- decorrel_mtcars[-idx,]
+
+decorrel_lm <- train(mpg~.,
+                     data = train,
+                     method = "lm",
+                     metric = "RMSE"
+                     )
+
+```
+
+## Ranking Features 
+
+Another approach would be to identify the imporant variables as determined by a rigorous, reliable and statistically aware process. Some models will report this information as part of the computation. The **caret** package has a function called **varImp** which helps to calculate relative variable importance within an object produced by the **train** function. What this means for us is that we can take most models built with **train** and pass it to the **varImp** function.
+
+```{r}
+idx <- createDataPartition(mtcars$mpg, p = .8, 
+                                  list = FALSE, 
+                                  times = 1)
+train <- mtcars[ idx,]
+test  <- mtcars[-idx,]
+
+myLm <- train(mpg~.,
+                     data = train,
+                     method = "lm",
+                     metric = "RMSE"
+                     )
+
+summary(myLm)
+```
+
+If you look at the summary of the model it looks pretty bleak because mot of the coefficients aren't significant. You wouldn't want to take your career on this model. 
+
+Now let's see what variables are considered to be important by using **varImp**.  Remember that this might lead us to use a subset of the more prominent variables in the formation of a new model in case, for example, the coefficients in the exisitng model weren't significant. 
+
+```{r}
+plot(varImp(myLm))
+```
+
+How do things look in the model if we limit the formula to some of the "important" (allegedly) features ? Well, it expliains more of the variance with fewer predictors (the R^2 value). Both **wt** and **hp** are significant. That's a start. 
+
+```{r}
+myLm <- train(mpg~wt+disp+hp,
+                     data = train,
+                     method = "lm",
+                     metric = "RMSE"
+                     )
+
+summary(myLm)
+```
+
+## Feature Selection
+
+Being able to automatically include only the most important features is desireable (again an example might be Step Wise Regression). Caret provides its own function to do a simple backwards selection to recursively eliminate features based on how they contribute (or not) to the model. You could do all of this by hand yourself of course.
+
+
+Automatic feature selection methods can be used to build many models with different subsets of a dataset and identify those attributes that are and are not required to build an accurate model. The **caret** package has a function called *rfe** to implement this. However, it involves some additional setup:
+
+```{r}
+
+rfeControl <- rfeControl(functions=lmFuncs, method="cv", number=10)
+
+results <- rfe(mtcars[,2:11], 
+               mtcars[,1], 
+               sizes=c(2:11), 
+               rfeControl=rfeControl)
+
+print(results)
+plot(results,type=c("g","o"))
+
 ```
 
 ```{r}
-new_mtcars <- mtcars[,-highcorr[highcorr != 1]]
+myLm <- train(mpg~wt+am+qsec,
+                     data = train,
+                     method = "lm",
+                     metric = "RMSE"
+                     )
+
+summary(myLm)
 ```
 
-
-## Scaling Considerations
-
-One thing we skipped over entirely is the issue of data scale. Well, actually, I did mention it at the beginning but then moved on. This is actually a big deal since the data we have been working on has variables measures on different scales. In fact, some of them are actually not continuous quantities. The columns of mtcars that might be categories or factors include cyl, am, vs, gear, and carb. Why do I say this ? We'll they only take on a specific set of values over all observations
-
-```{r}
-sapply(new_mtcars,function(x) length(unique(x)))
-```
-
-So, technically, we could turn these into factors before doing anything with the data. We'll handle these types of variables momentarily. But for now let's look at a pairs plot of the new_mtcars data frame.
-
-```{r}
-pairs(new_mtcars)
-```
-
-```{r}
-sapply(new_mtcars,range)
-```
-
-Anyway, the caret package provides a way to easily scale the data prior to the processing of it. We can do this as we call the **train** function. Note that the scaling happens underneath the covers. First, let's create a Train / Test pair.
-
-```{r createmoredata}
-idx <- createDataPartition(new_mtcars$mpg, p = .8, 
-                                           list = FALSE, 
-                                           times = 1)
-Train <- mtcars[ idx,]
-Test  <- mtcars[-idx,]
-```
-
-
-```{r rfctrol}
-my_ctrl <- trainControl(
-    method = "cv", 
-    number = 3
-  )
-
-# Check the preProcess argument below
-
-mod_rf <- train(mpg ~ ., 
-                data=Train, 
-                method = "rf", 
-                preProcess = c("center","scale"),
-                trControl = my_ctrl
-                )
-
-compute_rmse(predict(mod_rf,Train),Train$mpg)
-```
-
-Another possibility exists in that we could use the **preProcess** function in advance of calling the **train** function. We'll work with the Train and Test data from above.
-
-```{r protrain}
-proc_train <- preProcess(Train,method = c("center","scale"))
-scaled_train <- predict(proc_train, Train)
-
-# Then we would use the data along with the train function
-
-mod_lm_sc <- train(mpg~.,data=scaled_train,method="lm")
-```
-
-If we wanted to then predict against a new data set we would then need to scale the new data.
-
-```{r testscale}
-Test_sc <- data.frame(scale(Test))
-predict(mod_lm_sc,Test_sc)
-compute_rmse(predict(mod_lm_sc,Test_sc),Test_sc$mpg)
-```
 
 # Classification Problems
 

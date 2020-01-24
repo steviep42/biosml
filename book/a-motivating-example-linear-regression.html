@@ -162,11 +162,12 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="9" data-path="data-pre-processing.html"><a href="data-pre-processing.html"><i class="fa fa-check"></i><b>9</b> Data Pre Processing</a><ul>
 <li class="chapter" data-level="9.1" data-path="data-pre-processing.html"><a href="data-pre-processing.html#types-of-pre-processing"><i class="fa fa-check"></i><b>9.1</b> Types of Pre Processing</a></li>
 <li class="chapter" data-level="9.2" data-path="data-pre-processing.html"><a href="data-pre-processing.html#scaling"><i class="fa fa-check"></i><b>9.2</b> Scaling</a></li>
-<li class="chapter" data-level="9.3" data-path="data-pre-processing.html"><a href="data-pre-processing.html#missing-data"><i class="fa fa-check"></i><b>9.3</b> Missing Data</a><ul>
+<li class="chapter" data-level="9.3" data-path="data-pre-processing.html"><a href="data-pre-processing.html#missing-values"><i class="fa fa-check"></i><b>9.3</b> Missing Values</a><ul>
 <li class="chapter" data-level="9.3.1" data-path="data-pre-processing.html"><a href="data-pre-processing.html#finding-rows-with-missing-data"><i class="fa fa-check"></i><b>9.3.1</b> Finding Rows with Missing Data</a></li>
 <li class="chapter" data-level="9.3.2" data-path="data-pre-processing.html"><a href="data-pre-processing.html#finding-columns-with-missing-data"><i class="fa fa-check"></i><b>9.3.2</b> Finding Columns With Missing Data</a></li>
 <li class="chapter" data-level="9.3.3" data-path="data-pre-processing.html"><a href="data-pre-processing.html#use-the-median-approach"><i class="fa fa-check"></i><b>9.3.3</b> Use the Median Approach</a></li>
 <li class="chapter" data-level="9.3.4" data-path="data-pre-processing.html"><a href="data-pre-processing.html#package-based-approach"><i class="fa fa-check"></i><b>9.3.4</b> Package-based Approach</a></li>
+<li class="chapter" data-level="9.3.5" data-path="data-pre-processing.html"><a href="data-pre-processing.html#using-caret"><i class="fa fa-check"></i><b>9.3.5</b> Using caret</a></li>
 </ul></li>
 <li class="chapter" data-level="9.4" data-path="data-pre-processing.html"><a href="data-pre-processing.html#look-for-highly-correlated-variables"><i class="fa fa-check"></i><b>9.4</b> Look for Highly Correlated Variables</a></li>
 <li class="chapter" data-level="9.5" data-path="data-pre-processing.html"><a href="data-pre-processing.html#scaling-considerations"><i class="fa fa-check"></i><b>9.5</b> Scaling Considerations</a></li>
@@ -362,8 +363,8 @@ test_preds &lt;-<span class="st"> </span><span class="kw">predict</span>(
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Shuffle the row numbers of the data frame</span>
 
 (train_index &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(mtcars),<span class="kw">nrow</span>(mtcars)<span class="op">*</span>.<span class="dv">80</span>))</code></pre></div>
-<pre><code>##  [1] 14 10  6 21 15 19 11 24 18 28 31 17 23  8 25  9 27  7 26 12 22 32 13
-## [24] 16 20</code></pre>
+<pre><code>##  [1] 27 22 24  5 11  7 26 25  8 30 20 19 10 13 18  2 29 17 28 21 12  3  6
+## [24] 23  4</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Get 80% of the records from the data frame</span>
 train_df &lt;-<span class="st"> </span>mtcars[train_index,]
 
@@ -386,7 +387,7 @@ test_pred  &lt;-<span class="st"> </span><span class="kw">predict</span>(
 )
 
 (test_rmse &lt;-<span class="st"> </span><span class="kw">compute_rmse</span>(test_pred,test_df<span class="op">$</span>mpg))</code></pre></div>
-<pre><code>## [1] 2.821592</code></pre>
+<pre><code>## [1] 2.290971</code></pre>
 <p>What we have done here is to sample some portion of the original data frame to use as a training set while holding out the rest of the data to use as a test data to see how well our model performed. We could repeat this (re)sampling activity multiple times to better train our data over different segments or “folds” of data so any model we ultimately generate will “learn” as much from the data as it can without modeling any “noise”. There are various methods for doing this including K-Fold Cross Validation and Bootstrap Resampling. Let’s dig in a little deeper into these methods because they help us build models that might offer more robust performance when applied to new data.</p>
 </div>
 </div>
