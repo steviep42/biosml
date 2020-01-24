@@ -275,7 +275,7 @@ mtcars_na &lt;-<span class="st"> </span><span class="kw">read.csv</span>(url, <s
 <p>Let’s look at a boxplot of the <strong>wt</strong> feature.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">boxplot</span>(mtcars_na<span class="op">$</span>wt,<span class="dt">na.rm=</span><span class="ot">TRUE</span>,<span class="dt">main=</span><span class="st">&quot;Distribution of the wt feature&quot;</span>)
 <span class="kw">grid</span>()</code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-73-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-87-1.png" width="672" /></p>
 <p>To make the substitution would involve the following. First we need to find out which row numbers have missing values for the <strong>wt</strong> feature.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">(missing_wt_indices &lt;-<span class="st"> </span><span class="kw">which</span>(<span class="kw">is.na</span>(mtcars_na<span class="op">$</span>wt)))</code></pre></div>
 <pre><code>## [1]  2  9 23</code></pre>
@@ -400,7 +400,7 @@ Metrics<span class="op">::</span><span class="kw">rmse</span>(test<span class="o
 </div>
 <div id="scaling-1" class="section level4">
 <h4><span class="header-section-number">9.3.3.2</span> Scaling</h4>
-<p>This step involves taking the standard deviation of the vector / column. Then divide each valuein the vector / column by this computed standard deviation. We’ll process the <strong>centered</strong> data from the previous computation.</p>
+<p>This step involves taking the standard deviation of the vector / column. Then divide each value in the vector / column by this computed standard deviation. We’ll process the <strong>centered</strong> data from the previous computation.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">(scaled &lt;-<span class="st"> </span>centered<span class="op">/</span><span class="kw">sd</span>(centered))</code></pre></div>
 <pre><code>##  [1] -0.610399567 -0.349785269 -0.917004624 -0.002299538  0.227654255
 ##  [6]  0.248094592  0.360516446 -0.027849959 -0.068730634  0.227654255
@@ -412,11 +412,12 @@ Metrics<span class="op">::</span><span class="kw">rmse</span>(test<span class="o
 </div>
 <div id="scaling-a-data-frame" class="section level4">
 <h4><span class="header-section-number">9.3.3.3</span> Scaling a Data frame</h4>
-<p>We could do this on a data frame by using the <strong>apply</strong> function. The problme with this “do it yourself approach” is that we don’t have an easy way to reverse the scaling and centering.</p>
+<p>We could continue to do this by hand</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">centered &lt;-<span class="st"> </span><span class="kw">apply</span>(mtcars,<span class="dv">2</span>,<span class="cf">function</span>(x) (x <span class="op">-</span><span class="st"> </span><span class="kw">mean</span>(x)))
 scaled &lt;-<span class="st"> </span><span class="kw">apply</span>(centered,<span class="dv">2</span>,<span class="cf">function</span>(x) x<span class="op">/</span><span class="kw">sd</span>(x))</code></pre></div>
-<p>There is a function called <strong>scale</strong> which will do this for us and in a way that will allow us to reverse those operations.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">(center_scaled &lt;-<span class="st"> </span><span class="kw">scale</span>(mtcars,<span class="dt">center=</span><span class="ot">TRUE</span>,<span class="dt">scale=</span><span class="ot">TRUE</span>))</code></pre></div>
+<p>However, there is a function in R called <strong>scale</strong> which will do this for us. It has the added benefit of providing some atttributes in the output that we could later use to <strong>de-scale</strong> the scaled data. This is useful if we build a model with scaled data because the predictions will be in terms of the scaled data which might not make sense to a third party. So you would then need to scale the predictions back into the units of the original data.</p>
+<p>Here is how the scale function works:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">(smtcars &lt;-<span class="st"> </span><span class="kw">scale</span>(mtcars))</code></pre></div>
 <pre><code>##                             mpg        cyl        disp          hp
 ## Mazda RX4            0.15088482 -0.1049878 -0.57061982 -0.53509284
 ## Mazda RX4 Wag        0.15088482 -0.1049878 -0.57061982 -0.53509284
@@ -526,12 +527,109 @@ scaled &lt;-<span class="st"> </span><span class="kw">apply</span>(centered,<spa
 ##   6.0269481   1.7859216 123.9386938  68.5628685   0.5346787   0.9784574 
 ##        qsec          vs          am        gear        carb 
 ##   1.7869432   0.5040161   0.4989909   0.7378041   1.6152000</code></pre>
-<p>If you look at the bottom of the above operation, there are two <strong>attributes</strong> that contain the information necessary to <strong>reverse scale</strong> the scaled data. Soif you do this yourself then you have to reverse scaled yourself.</p>
+<p>The last rows make reference to <strong>attributes</strong> which can be considered as “meta information”. The presence of this informtation does not prevent you from using the scaled data for other operations. But if you needed to de-scaled the data you would need the standard deviation for each column and the mean of each column to reverse the centering and scaling process. That info is stashed in the attributes:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">attr</span>(smtcars,<span class="st">&quot;scaled:scale&quot;</span>)</code></pre></div>
+<pre><code>##         mpg         cyl        disp          hp        drat          wt 
+##   6.0269481   1.7859216 123.9386938  68.5628685   0.5346787   0.9784574 
+##        qsec          vs          am        gear        carb 
+##   1.7869432   0.5040161   0.4989909   0.7378041   1.6152000</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">attr</span>(smtcars,<span class="st">&quot;scaled:center&quot;</span>)</code></pre></div>
+<pre><code>##        mpg        cyl       disp         hp       drat         wt 
+##  20.090625   6.187500 230.721875 146.687500   3.596563   3.217250 
+##       qsec         vs         am       gear       carb 
+##  17.848750   0.437500   0.406250   3.687500   2.812500</code></pre>
+<p>If we wanted to de-scaled the scaled data frame:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">unscaledmt &lt;-<span class="st"> </span><span class="kw">sweep</span>(smtcars,<span class="dv">2</span>,<span class="kw">attr</span>(smtcars,<span class="st">&quot;scaled:scale&quot;</span>),<span class="st">&quot;*&quot;</span>)
+uncentermt &lt;-<span class="st"> </span><span class="kw">sweep</span>(unscaledmt,<span class="dv">2</span>,<span class="kw">attr</span>(smtcars,<span class="st">&quot;scaled:center&quot;</span>),<span class="st">&quot;+&quot;</span>)
+
+<span class="co"># Comapre them</span>
+
+uncentermt[<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>,]</code></pre></div>
+<pre><code>##                mpg cyl disp  hp drat    wt  qsec vs am gear carb
+## Mazda RX4     21.0   6  160 110 3.90 2.620 16.46  0  1    4    4
+## Mazda RX4 Wag 21.0   6  160 110 3.90 2.875 17.02  0  1    4    4
+## Datsun 710    22.8   4  108  93 3.85 2.320 18.61  1  1    4    1</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mtcars[<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>,]</code></pre></div>
+<pre><code>##                mpg cyl disp  hp drat    wt  qsec vs am gear carb
+## Mazda RX4     21.0   6  160 110 3.90 2.620 16.46  0  1    4    4
+## Mazda RX4 Wag 21.0   6  160 110 3.90 2.875 17.02  0  1    4    4
+## Datsun 710    22.8   4  108  93 3.85 2.320 18.61  1  1    4    1</code></pre>
+<p>Ugh. What a pain ! But, if we wanted to use the scaled data to build a model, here is what we would do:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">smtcars &lt;-<span class="st"> </span><span class="kw">scale</span>(mtcars)
+mtcars_center_scaled &lt;-<span class="st"> </span><span class="kw">data.frame</span>(smtcars)
+myLm &lt;-<span class="st"> </span><span class="kw">lm</span>(mpg<span class="op">~</span>.,
+           <span class="dt">data =</span> mtcars_center_scaled)
+
+<span class="co"># Do some predicting. </span>
+preds &lt;-<span class="st"> </span><span class="kw">predict</span>(myLm,mtcars_center_scaled)
+
+<span class="co"># The results are scaled. How to get them back to unscaled</span>
+preds[<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>]</code></pre></div>
+<pre><code>##         Mazda RX4     Mazda RX4 Wag        Datsun 710    Hornet 4 Drive 
+##         0.4162772         0.3353706         1.0220793         0.1902753 
+## Hornet Sportabout 
+##        -0.3977454</code></pre>
+<p>So how would we re express this information in terms of the unscaled data ? It’s tedious but doable. We leverage the fact that the scaled version of the data has attributes we can use to conver the predictions back to their unscaled form.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">(unscaled_preds &lt;-<span class="st"> </span>
+<span class="st">   </span>preds <span class="op">*</span><span class="st"> </span><span class="kw">attr</span>(smtcars,<span class="st">&quot;scaled:scale&quot;</span>)[<span class="st">&#39;mpg&#39;</span>] <span class="op">+</span><span class="st"> </span><span class="kw">attr</span>(smtcars,<span class="st">&quot;scaled:center&quot;</span>)[<span class="st">&#39;mpg&#39;</span>])</code></pre></div>
+<pre><code>##           Mazda RX4       Mazda RX4 Wag          Datsun 710 
+##            22.59951            22.11189            26.25064 
+##      Hornet 4 Drive   Hornet Sportabout             Valiant 
+##            21.23740            17.69343            20.38304 
+##          Duster 360           Merc 240D            Merc 230 
+##            14.38626            22.49601            24.41909 
+##            Merc 280           Merc 280C          Merc 450SE 
+##            18.69903            19.19165            14.17216 
+##          Merc 450SL         Merc 450SLC  Cadillac Fleetwood 
+##            15.59957            15.74222            12.03401 
+## Lincoln Continental   Chrysler Imperial            Fiat 128 
+##            10.93644            10.49363            27.77291 
+##         Honda Civic      Toyota Corolla       Toyota Corona 
+##            29.89674            29.51237            23.64310 
+##    Dodge Challenger         AMC Javelin          Camaro Z28 
+##            16.94305            17.73218            13.30602 
+##    Pontiac Firebird           Fiat X1-9       Porsche 914-2 
+##            16.69168            28.29347            26.15295 
+##        Lotus Europa      Ford Pantera L        Ferrari Dino 
+##            27.63627            18.87004            19.69383 
+##       Maserati Bora          Volvo 142E 
+##            13.94112            24.36827</code></pre>
+<p>Does this match what we would get had we not scaled the data in the first place ?</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">myLm &lt;-<span class="st"> </span><span class="kw">lm</span>(mpg<span class="op">~</span>.,
+           <span class="dt">data =</span> mtcars)
+
+<span class="co"># Do some predicting. </span>
+(preds &lt;-<span class="st"> </span><span class="kw">predict</span>(myLm,mtcars))</code></pre></div>
+<pre><code>##           Mazda RX4       Mazda RX4 Wag          Datsun 710 
+##            22.59951            22.11189            26.25064 
+##      Hornet 4 Drive   Hornet Sportabout             Valiant 
+##            21.23740            17.69343            20.38304 
+##          Duster 360           Merc 240D            Merc 230 
+##            14.38626            22.49601            24.41909 
+##            Merc 280           Merc 280C          Merc 450SE 
+##            18.69903            19.19165            14.17216 
+##          Merc 450SL         Merc 450SLC  Cadillac Fleetwood 
+##            15.59957            15.74222            12.03401 
+## Lincoln Continental   Chrysler Imperial            Fiat 128 
+##            10.93644            10.49363            27.77291 
+##         Honda Civic      Toyota Corolla       Toyota Corona 
+##            29.89674            29.51237            23.64310 
+##    Dodge Challenger         AMC Javelin          Camaro Z28 
+##            16.94305            17.73218            13.30602 
+##    Pontiac Firebird           Fiat X1-9       Porsche 914-2 
+##            16.69168            28.29347            26.15295 
+##        Lotus Europa      Ford Pantera L        Ferrari Dino 
+##            27.63627            18.87004            19.69383 
+##       Maserati Bora          Volvo 142E 
+##            13.94112            24.36827</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">all.equal</span>(preds,unscaled_preds)</code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
 </div>
 <div id="caret-and-preprocess" class="section level4">
 <h4><span class="header-section-number">9.3.3.4</span> caret and preprocess</h4>
-<p>but the <strong>caret</strong> package will help you do this using the <strong>preProcess</strong> function. Here we can actually request that the data is “centered” and “scaled” as part of the model assembly process. We could do this before the call to the <strong>Train</strong> function but then we would also have to convert the training and test data ourselves. In the following situation, the data will be centered and scaled thoug the returned RMSE will be in terms of the unscaled data.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">training_idx &lt;-<span class="st"> </span><span class="kw">createDataPartition</span>(mtcars<span class="op">$</span>mpg, <span class="dt">p =</span>.<span class="dv">80</span>, <span class="dt">list=</span><span class="ot">FALSE</span>)
+<p>But the <strong>caret</strong> package will help you do this using the <strong>preProcess</strong> function. Here we can actually request that the data is “centered” and “scaled” as part of the model assembly process. We could do this before the call to the <strong>Train</strong> function but then we would also have to convert the training and test data ourselves. In the following situation, the data will be centered and scaled thoug the returned RMSE will be in terms of the unscaled data.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">training_idx &lt;-<span class="st"> </span><span class="kw">createDataPartition</span>(mtcars<span class="op">$</span>mpg, 
+                                    <span class="dt">p =</span>.<span class="dv">80</span>, <span class="dt">list=</span><span class="ot">FALSE</span>)
 training &lt;-<span class="st"> </span>mtcars[training_idx,]
 test &lt;-<span class="st"> </span>mtcars[<span class="op">-</span>training_idx,]
 
@@ -540,7 +638,7 @@ myLm &lt;-<span class="st">  </span><span class="kw">train</span>(mpg <span clas
                <span class="dt">method =</span> <span class="st">&quot;lm&quot;</span>,
                <span class="dt">preProcess =</span> <span class="kw">c</span>(<span class="st">&quot;center&quot;</span>,<span class="st">&quot;scale&quot;</span>)
           )</code></pre></div>
-<p>To verify that the data is being centered and scaled, checkout the <strong>myLm</strong> object:</p>
+<p>To verify that the data is being centered and scaled within the call the <strong>train</strong> function, checkout the <strong>myLm</strong> object:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># This </span>
 myLm<span class="op">$</span>finalModel<span class="op">$</span>model[<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>,]</code></pre></div>
 <pre><code>##                .outcome         cyl        disp         hp       drat
@@ -581,8 +679,10 @@ myLm<span class="op">$</span>finalModel<span class="op">$</span>model[<span clas
 ## Datsun 710     -1.0824926
 ## Hornet 4 Drive -1.0824926
 ## Valiant        -1.0824926</code></pre>
-<p>This is convenient because if we now wish to use the <strong>predict</strong> function, it will scale the <strong>test</strong> data that we provide on our behalf. What we get back will be in terms of the uncenter and unscaled predicted variable (mpg).</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">preds &lt;-<span class="st"> </span><span class="kw">predict</span>(myLm,test)</code></pre></div>
+<p>This is convenient because if we now wish to use the <strong>predict</strong> function, it will scale the <strong>test</strong> data that we provide for use with the <strong>predict</strong> function. What we get back will be in terms of the uncenter and unscaled predicted variable (mpg). We do not have to suffer through the conversion reverse scaling process ourselves.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">(preds &lt;-<span class="st"> </span><span class="kw">predict</span>(myLm,test))</code></pre></div>
+<pre><code>## Hornet Sportabout        Camaro Z28     Porsche 914-2      Ferrari Dino 
+##          17.43943          13.21591          26.36199          19.87765</code></pre>
 </div>
 </div>
 <div id="order-of-processing" class="section level3">
@@ -751,7 +851,7 @@ correlations[<span class="dv">1</span><span class="op">:</span><span class="dv">
 ## a graphical parameter</code></pre>
 <pre><code>## Warning in box(...): &quot;order&quot; is not a graphical parameter</code></pre>
 <pre><code>## Warning in title(...): &quot;order&quot; is not a graphical parameter</code></pre>
-<p><img src="biosml_files/figure-html/unnamed-chunk-97-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-111-1.png" width="672" /></p>
 <p>The <strong>caret</strong> package has some functions that can help us identify highly correlated variables that might be a candidates for removal prior to use in building a model. One of the variables that is highly correlated with others is <strong>mpg</strong> Since that is the one we are trying to predict, we’ll keep it around. The following columns from mtcars have a correlation of .75 (or higher) with some other variable(s)</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">(highcorr &lt;-<span class="st"> </span><span class="kw">findCorrelation</span>(correlations, <span class="dt">cutoff=</span>.<span class="dv">75</span>))</code></pre></div>
 <pre><code>## [1]  2  3  1 10</code></pre>
@@ -820,7 +920,7 @@ myLm &lt;-<span class="st"> </span><span class="kw">train</span>(mpg<span class=
 <p>If you look at the summary of the model it looks pretty bleak because mot of the coefficients aren’t significant. You wouldn’t want to take your career on this model.</p>
 <p>Now let’s see what variables are considered to be important by using <strong>varImp</strong>. Remember that this might lead us to use a subset of the more prominent variables in the formation of a new model in case, for example, the coefficients in the exisitng model weren’t significant.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(<span class="kw">varImp</span>(myLm))</code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-102-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-116-1.png" width="672" /></p>
 <p>How do things look in the model if we limit the formula to some of the “important” (allegedly) features ? Well, it expliains more of the variance with fewer predictors (the R^2 value). Both <strong>wt</strong> and <strong>hp</strong> are significant. That’s a start.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">myLm &lt;-<span class="st"> </span><span class="kw">train</span>(mpg<span class="op">~</span>wt<span class="op">+</span>disp<span class="op">+</span>hp,
                      <span class="dt">data =</span> train,
@@ -883,7 +983,7 @@ results &lt;-<span class="st"> </span><span class="kw">rfe</span>(mtcars[,<span 
 ## The top 3 variables (out of 3):
 ##    wt, am, drat</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(results,<span class="dt">type=</span><span class="kw">c</span>(<span class="st">&quot;g&quot;</span>,<span class="st">&quot;o&quot;</span>))</code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-104-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-118-1.png" width="672" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">myLm &lt;-<span class="st"> </span><span class="kw">train</span>(mpg<span class="op">~</span>wt<span class="op">+</span>am<span class="op">+</span>qsec,
                      <span class="dt">data =</span> train,
                      <span class="dt">method =</span> <span class="st">&quot;lm&quot;</span>,

@@ -414,13 +414,13 @@ repeated_cv_rmse &lt;-<span class="st"> </span><span class="kw">sapply</span>(<s
 
 <span class="kw">boxplot</span>(repeated_cv_rmse, 
         <span class="dt">main=</span><span class="st">&quot;RMSE Across 20 Repeats of 4 CV Folds&quot;</span>)</code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-40-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-54-1.png" width="672" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">title &lt;-<span class="st"> </span><span class="kw">paste</span>(<span class="st">&quot;RMSE Across&quot;</span>,num_of_folds,
                <span class="st">&quot;folds - &quot;</span>,<span class="kw">as.character</span>(<span class="kw">deparse</span>(myform)),<span class="dt">sep=</span><span class="st">&quot; &quot;</span>)
 
 repeated_cv_rmse &lt;-<span class="st"> </span><span class="kw">as.vector</span>(repeated_cv_rmse)
 <span class="kw">boxplot</span>(repeated_cv_rmse)</code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-40-2.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-54-2.png" width="672" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(repeated_cv_rmse)</code></pre></div>
 <pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
 ##  0.8665  2.1211  2.7089  3.0141  4.0634  6.1182</code></pre>
@@ -474,13 +474,13 @@ repeated_cv_rmse &lt;-<span class="st"> </span><span class="kw">as.vector</span>
 repeated_rmse &lt;-<span class="st"> </span><span class="kw">sapply</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">20</span>,make_mtcars_boot)
 
 <span class="kw">boxplot</span>(repeated_rmse,<span class="dt">main=</span><span class="st">&quot;RMSE Across 20 Repeats of 4 Boostrap Folds&quot;</span>)</code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-42-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-56-1.png" width="672" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">title &lt;-<span class="st"> </span><span class="kw">paste</span>(<span class="st">&quot;RMSE Across&quot;</span>,num_of_folds,
                <span class="st">&quot;folds - &quot;</span>,<span class="kw">as.character</span>(<span class="kw">deparse</span>(myform)),<span class="dt">sep=</span><span class="st">&quot; &quot;</span>)
 
 boot_repeated_rmse &lt;-<span class="st"> </span><span class="kw">as.vector</span>(repeated_rmse)
 <span class="kw">boxplot</span>(boot_repeated_rmse)</code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-42-2.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-56-2.png" width="672" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># How does the RMSE from the boostrap approach compare to the </span>
 <span class="co"># K-Fold CV approach ? </span>
 
