@@ -252,10 +252,10 @@ mod_ranger &lt;-<span class="st"> </span><span class="kw">train</span>(mpg <span
                     <span class="dt">trControl =</span> my_ctrl)</code></pre></div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Look at the results of the hyperparameter tuning</span>
 <span class="kw">plot</span>(mod_rf)</code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-71-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-57-1.png" width="672" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#</span>
 <span class="kw">plot</span>(mod_ranger)</code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-71-2.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-57-2.png" width="672" /></p>
 <div id="using-the-resamples-function" class="section level2">
 <h2><span class="header-section-number">8.1</span> Using the resamples() function</h2>
 <p>Now, here comes the “magic”. Because we built three different modeling objects on the same data set, we can now use the <strong>resamples</strong> function to collect, analyze, and visualize a set of results. This is pretty powerful.</p>
@@ -286,9 +286,9 @@ mod_ranger &lt;-<span class="st"> </span><span class="kw">train</span>(mpg <span
 ## rf     0.8229357 0.8735251 0.9241145 0.9002715 0.9389394 0.9537643    0
 ## ranger 0.8211654 0.8719278 0.9226903 0.8998230 0.9391519 0.9556135    0</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">bwplot</span>(results)</code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-73-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-59-1.png" width="672" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">dotplot</span>(results)</code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-74-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-60-1.png" width="672" /></p>
 </div>
 <div id="model-performance" class="section level2">
 <h2><span class="header-section-number">8.2</span> Model Performance</h2>
@@ -403,7 +403,7 @@ results</code></pre></div>
 ## The top 5 variables (out of 5):
 ##    wt, am, drat, qsec, vs</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(results,<span class="dt">type=</span><span class="kw">c</span>(<span class="st">&quot;o&quot;</span>,<span class="st">&quot;g&quot;</span>))</code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-78-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-64-1.png" width="672" /></p>
 <p>What we get back is some idea about the important features. We could then build a model with caret that uses only these features to see if the suggested RMSE value mentioned in the rfe process matches.</p>
 </div>
 </div>

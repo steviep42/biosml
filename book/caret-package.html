@@ -547,7 +547,7 @@ my_rf &lt;-<span class="st"> </span><span class="kw">train</span>(
 <pre><code>## [1] 2.13996</code></pre>
 <p>We can get a plot of how the RMSE and R squared value varied with different values of <strong>mtry</strong>. Here we see that an mtry value of 6 randomly selected columns / variables provides the lowest RMSE.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(my_rf) <span class="op">+</span><span class="st"> </span><span class="kw">theme</span>(<span class="dt">legend.position =</span> <span class="st">&quot;top&quot;</span>)</code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-63-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-49-1.png" width="672" /></p>
 <p>We can use the <strong>tuneLength</strong> argument to tell the <strong>train</strong> function to use N different values of <strong>mtry</strong> which is a <strong>hyperparameter</strong> to the randomForest package. The value relates to the number of columns in the data frame. We have 11 total and we are trying to predict one of them (mpg). So we can tell the <strong>train</strong> function to randomly select N variables (up to 10) when a tree is split.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">my_ctrl &lt;-<span class="st"> </span><span class="kw">trainControl</span>(
     <span class="dt">method =</span> <span class="st">&quot;cv&quot;</span>, 
@@ -680,7 +680,7 @@ my_rf &lt;-<span class="st"> </span><span class="kw">train</span>(
 ## RMSE was used to select the optimal model using the smallest value.
 ## The final value used for the model was mtry = 9.</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(my_rf)</code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-64-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-50-1.png" width="672" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">compute_rmse</span>(<span class="kw">predict</span>(my_rf,Test),Test<span class="op">$</span>mpg)</code></pre></div>
 <pre><code>## [1] 2.278819</code></pre>
 <p>If you have a questions about what hyper parameters can be tuned for a given method then you can refer to the online <a href="https://topepo.github.io/caret/available-models.html">caret documentation</a> Here is a screenshot of the table of supported models and associated tuning parameters.</p>
@@ -762,7 +762,7 @@ my_ranger</code></pre></div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">compute_rmse</span>(<span class="kw">predict</span>(my_ranger,Test),Test<span class="op">$</span>mpg)</code></pre></div>
 <pre><code>## [1] 2.136304</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(my_ranger)</code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-68-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-54-1.png" width="672" /></p>
 </div>
 </div>
             </section>
