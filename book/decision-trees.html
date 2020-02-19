@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 5 Decision Trees | Predictive Learning in R</title>
-  <meta name="description" content="Chapter 5 Decision Trees | Predictive Learning in R" />
+  <title>Chapter 6 Decision Trees | Predictive Learning in R</title>
+  <meta name="description" content="Chapter 6 Decision Trees | Predictive Learning in R" />
   <meta name="generator" content="bookdown 0.14 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 5 Decision Trees | Predictive Learning in R" />
+  <meta property="og:title" content="Chapter 6 Decision Trees | Predictive Learning in R" />
   <meta property="og:type" content="book" />
   
   
@@ -16,7 +16,7 @@
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 5 Decision Trees | Predictive Learning in R" />
+  <meta name="twitter:title" content="Chapter 6 Decision Trees | Predictive Learning in R" />
   
   
   
@@ -30,7 +30,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="training-test-data.html"/>
+<link rel="prev" href="caret-package.html"/>
 <link rel="next" href="using-methods-other-than-lm.html"/>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -129,35 +129,37 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="3.7" data-path="a-motivating-example.html"><a href="a-motivating-example.html#summary"><i class="fa fa-check"></i><b>3.7</b> Summary</a></li>
 </ul></li>
 <li class="chapter" data-level="4" data-path="training-test-data.html"><a href="training-test-data.html"><i class="fa fa-check"></i><b>4</b> Training / Test Data</a><ul>
-<li class="chapter" data-level="4.1" data-path="training-test-data.html"><a href="training-test-data.html#cross-fold-validation-continued"><i class="fa fa-check"></i><b>4.1</b> Cross Fold Validation Continued</a></li>
+<li class="chapter" data-level="4.1" data-path="training-test-data.html"><a href="training-test-data.html#cross-fold-validation"><i class="fa fa-check"></i><b>4.1</b> Cross Fold Validation</a></li>
 <li class="chapter" data-level="4.2" data-path="training-test-data.html"><a href="training-test-data.html#create-a-function-to-automate-things"><i class="fa fa-check"></i><b>4.2</b> Create A Function To Automate Things</a></li>
 <li class="chapter" data-level="4.3" data-path="training-test-data.html"><a href="training-test-data.html#repeated-cross-validation"><i class="fa fa-check"></i><b>4.3</b> Repeated Cross Validation</a></li>
 <li class="chapter" data-level="4.4" data-path="training-test-data.html"><a href="training-test-data.html#bootstrap"><i class="fa fa-check"></i><b>4.4</b> Bootstrap</a></li>
 </ul></li>
-<li class="chapter" data-level="5" data-path="decision-trees.html"><a href="decision-trees.html"><i class="fa fa-check"></i><b>5</b> Decision Trees</a><ul>
-<li class="chapter" data-level="5.1" data-path="decision-trees.html"><a href="decision-trees.html#advantages"><i class="fa fa-check"></i><b>5.1</b> Advantages</a></li>
-<li class="chapter" data-level="5.2" data-path="decision-trees.html"><a href="decision-trees.html#a-classification-example"><i class="fa fa-check"></i><b>5.2</b> A Classification Example</a><ul>
-<li class="chapter" data-level="5.2.1" data-path="decision-trees.html"><a href="decision-trees.html#evaluating-performance"><i class="fa fa-check"></i><b>5.2.1</b> Evaluating performance</a></li>
-<li class="chapter" data-level="5.2.2" data-path="decision-trees.html"><a href="decision-trees.html#tree-splitting"><i class="fa fa-check"></i><b>5.2.2</b> Tree Splitting</a></li>
+<li class="chapter" data-level="5" data-path="caret-package.html"><a href="caret-package.html"><i class="fa fa-check"></i><b>5</b> Caret Package</a><ul>
+<li class="chapter" data-level="5.1" data-path="caret-package.html"><a href="caret-package.html#putting-caret-to-work"><i class="fa fa-check"></i><b>5.1</b> Putting caret To Work</a></li>
+<li class="chapter" data-level="5.2" data-path="caret-package.html"><a href="caret-package.html#back-to-the-beginning"><i class="fa fa-check"></i><b>5.2</b> Back To The Beginning</a></li>
+<li class="chapter" data-level="5.3" data-path="caret-package.html"><a href="caret-package.html#splitting"><i class="fa fa-check"></i><b>5.3</b> Splitting</a></li>
+<li class="chapter" data-level="5.4" data-path="caret-package.html"><a href="caret-package.html#calling-the-train-function"><i class="fa fa-check"></i><b>5.4</b> Calling The train() Function</a></li>
+<li class="chapter" data-level="5.5" data-path="caret-package.html"><a href="caret-package.html#one-size-fits-all"><i class="fa fa-check"></i><b>5.5</b> One Size Fits All</a></li>
+<li class="chapter" data-level="5.6" data-path="caret-package.html"><a href="caret-package.html#hyperparameters-make-an-appearance"><i class="fa fa-check"></i><b>5.6</b> Hyperparameters Make An Appearance</a></li>
 </ul></li>
-<li class="chapter" data-level="5.3" data-path="decision-trees.html"><a href="decision-trees.html#gini-index"><i class="fa fa-check"></i><b>5.3</b> Gini Index</a></li>
-<li class="chapter" data-level="5.4" data-path="decision-trees.html"><a href="decision-trees.html#regression-trees"><i class="fa fa-check"></i><b>5.4</b> Regression Trees</a><ul>
-<li class="chapter" data-level="5.4.1" data-path="decision-trees.html"><a href="decision-trees.html#performance-measure"><i class="fa fa-check"></i><b>5.4.1</b> Performance Measure</a></li>
+<li class="chapter" data-level="6" data-path="decision-trees.html"><a href="decision-trees.html"><i class="fa fa-check"></i><b>6</b> Decision Trees</a><ul>
+<li class="chapter" data-level="6.1" data-path="decision-trees.html"><a href="decision-trees.html#advantages"><i class="fa fa-check"></i><b>6.1</b> Advantages</a></li>
+<li class="chapter" data-level="6.2" data-path="decision-trees.html"><a href="decision-trees.html#a-classification-example"><i class="fa fa-check"></i><b>6.2</b> A Classification Example</a><ul>
+<li class="chapter" data-level="6.2.1" data-path="decision-trees.html"><a href="decision-trees.html#evaluating-performance"><i class="fa fa-check"></i><b>6.2.1</b> Evaluating performance</a></li>
+<li class="chapter" data-level="6.2.2" data-path="decision-trees.html"><a href="decision-trees.html#tree-splitting"><i class="fa fa-check"></i><b>6.2.2</b> Tree Splitting</a></li>
 </ul></li>
-<li class="chapter" data-level="5.5" data-path="decision-trees.html"><a href="decision-trees.html#parameters-vs-hyperparameters"><i class="fa fa-check"></i><b>5.5</b> Parameters vs Hyperparameters</a></li>
-<li class="chapter" data-level="5.6" data-path="decision-trees.html"><a href="decision-trees.html#grid-searching"><i class="fa fa-check"></i><b>5.6</b> Grid Searching</a></li>
-<li class="chapter" data-level="5.7" data-path="decision-trees.html"><a href="decision-trees.html#bagged-trees"><i class="fa fa-check"></i><b>5.7</b> Bagged Trees</a></li>
-<li class="chapter" data-level="5.8" data-path="decision-trees.html"><a href="decision-trees.html#random-forests"><i class="fa fa-check"></i><b>5.8</b> Random Forests</a></li>
+<li class="chapter" data-level="6.3" data-path="decision-trees.html"><a href="decision-trees.html#gini-index"><i class="fa fa-check"></i><b>6.3</b> Gini Index</a></li>
+<li class="chapter" data-level="6.4" data-path="decision-trees.html"><a href="decision-trees.html#regression-trees"><i class="fa fa-check"></i><b>6.4</b> Regression Trees</a><ul>
+<li class="chapter" data-level="6.4.1" data-path="decision-trees.html"><a href="decision-trees.html#performance-measure"><i class="fa fa-check"></i><b>6.4.1</b> Performance Measure</a></li>
 </ul></li>
-<li class="chapter" data-level="6" data-path="using-methods-other-than-lm.html"><a href="using-methods-other-than-lm.html"><i class="fa fa-check"></i><b>6</b> Using Methods Other Than lm</a><ul>
-<li class="chapter" data-level="6.1" data-path="using-methods-other-than-lm.html"><a href="using-methods-other-than-lm.html#parameters-vs-hyperparameters-1"><i class="fa fa-check"></i><b>6.1</b> Parameters vs Hyperparameters</a></li>
-<li class="chapter" data-level="6.2" data-path="using-methods-other-than-lm.html"><a href="using-methods-other-than-lm.html#hyperparameter-tuning"><i class="fa fa-check"></i><b>6.2</b> Hyperparameter Tuning</a></li>
+<li class="chapter" data-level="6.5" data-path="decision-trees.html"><a href="decision-trees.html#parameters-vs-hyperparameters"><i class="fa fa-check"></i><b>6.5</b> Parameters vs Hyperparameters</a></li>
+<li class="chapter" data-level="6.6" data-path="decision-trees.html"><a href="decision-trees.html#grid-searching"><i class="fa fa-check"></i><b>6.6</b> Grid Searching</a></li>
+<li class="chapter" data-level="6.7" data-path="decision-trees.html"><a href="decision-trees.html#bagged-trees"><i class="fa fa-check"></i><b>6.7</b> Bagged Trees</a></li>
+<li class="chapter" data-level="6.8" data-path="decision-trees.html"><a href="decision-trees.html#random-forests"><i class="fa fa-check"></i><b>6.8</b> Random Forests</a></li>
 </ul></li>
-<li class="chapter" data-level="7" data-path="caret-package.html"><a href="caret-package.html"><i class="fa fa-check"></i><b>7</b> Caret Package</a><ul>
-<li class="chapter" data-level="7.1" data-path="caret-package.html"><a href="caret-package.html#putting-caret-to-work"><i class="fa fa-check"></i><b>7.1</b> Putting caret To Work</a></li>
-<li class="chapter" data-level="7.2" data-path="caret-package.html"><a href="caret-package.html#back-to-the-beginning"><i class="fa fa-check"></i><b>7.2</b> Back To The Beginning</a></li>
-<li class="chapter" data-level="7.3" data-path="caret-package.html"><a href="caret-package.html#splitting"><i class="fa fa-check"></i><b>7.3</b> Splitting</a></li>
-<li class="chapter" data-level="7.4" data-path="caret-package.html"><a href="caret-package.html#one-size-fits-all"><i class="fa fa-check"></i><b>7.4</b> One Size Fits All</a></li>
+<li class="chapter" data-level="7" data-path="using-methods-other-than-lm.html"><a href="using-methods-other-than-lm.html"><i class="fa fa-check"></i><b>7</b> Using Methods Other Than lm</a><ul>
+<li class="chapter" data-level="7.1" data-path="using-methods-other-than-lm.html"><a href="using-methods-other-than-lm.html#parameters-vs-hyperparameters-1"><i class="fa fa-check"></i><b>7.1</b> Parameters vs Hyperparameters</a></li>
+<li class="chapter" data-level="7.2" data-path="using-methods-other-than-lm.html"><a href="using-methods-other-than-lm.html#hyperparameter-tuning"><i class="fa fa-check"></i><b>7.2</b> Hyperparameter Tuning</a></li>
 </ul></li>
 <li class="chapter" data-level="8" data-path="picking-the-best-model.html"><a href="picking-the-best-model.html"><i class="fa fa-check"></i><b>8</b> Picking The Best Model</a><ul>
 <li class="chapter" data-level="8.1" data-path="picking-the-best-model.html"><a href="picking-the-best-model.html#using-the-resamples-function"><i class="fa fa-check"></i><b>8.1</b> Using the resamples() function</a></li>
@@ -234,13 +236,13 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
             <section class="normal" id="section-">
 <div id="decision-trees" class="section level1">
-<h1><span class="header-section-number">Chapter 5</span> Decision Trees</h1>
+<h1><span class="header-section-number">Chapter 6</span> Decision Trees</h1>
 <p>You might also know about the topic of Classification Trees under the name of <strong>CART</strong> which stands for <strong>C</strong>lassification <strong>A</strong>nd <strong>R</strong>egression Trees. Decision trees can be used to predict numeric outcomes or to classify binary outcomes such as a disease result “yes” or “now”, “positive or negative”.</p>
 <p>The theme common to both types of trees is that you are trying to predict some outcome variable as a function of some number and combination of predictor variables from the same data set. The outcome will be a “tree” that can usually be easily understood and interrpeted. As an example, a very simple decision tree can be generated that predicts / classifies the transmission type of cars in the mtcars data frame.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(mtcars)
 rpart_class_mtcars &lt;-<span class="st"> </span><span class="kw">rpart</span>(am<span class="op">~</span>.,<span class="dt">data=</span>mtcars,<span class="dt">method=</span><span class="st">&quot;class&quot;</span>)
 <span class="kw">rpart.plot</span>(rpart_class_mtcars,<span class="dt">yesno =</span> <span class="dv">2</span>, <span class="dt">type =</span> <span class="dv">0</span>, <span class="dt">extra =</span> <span class="dv">0</span>)</code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-24-1.png" width="672" /></p>
 <p>If the weight of the car is greater than 3.2 tons then the tree would classify it as having a manual (1) transmission. How well did we do here ? Not too bad actually. We’ll talk more about measuring performance of a classifier in a bit.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">preds &lt;-<span class="st"> </span><span class="kw">ifelse</span>(mtcars<span class="op">$</span>wt <span class="op">&gt;=</span><span class="st"> </span><span class="dv">3</span>,<span class="dv">0</span>,<span class="dv">1</span>)
 <span class="kw">table</span>(<span class="dt">predicted=</span>preds,<span class="dt">actual=</span>mtcars<span class="op">$</span>am)</code></pre></div>
@@ -252,9 +254,9 @@ rpart_class_mtcars &lt;-<span class="st"> </span><span class="kw">rpart</span>(a
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(mtcars)
 rpart_regress_mtcars &lt;-<span class="st"> </span><span class="kw">rpart</span>(mpg<span class="op">~</span>.,<span class="dt">data=</span>mtcars,<span class="dt">method=</span><span class="st">&quot;anova&quot;</span>)
 <span class="kw">rpart.plot</span>(rpart_regress_mtcars,<span class="dt">yesno =</span> <span class="dv">2</span>, <span class="dt">type =</span> <span class="dv">0</span>, <span class="dt">extra =</span> <span class="dv">0</span>)</code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-26-1.png" width="672" /></p>
 <div id="advantages" class="section level2">
-<h2><span class="header-section-number">5.1</span> Advantages</h2>
+<h2><span class="header-section-number">6.1</span> Advantages</h2>
 <p>The advantages of tree-based methods include that 1 - The model is generally easy to interpret - The path to a decision is plainly spelled out (assuming that the number of tree splits is easy enough to trace). - The method can handle numeric and cartegorical - One does not generally need to pre process or normalize data - Missing data is less of a big deal</p>
 <p>Disadvantages include:</p>
 <ul>
@@ -264,7 +266,7 @@ rpart_regress_mtcars &lt;-<span class="st"> </span><span class="kw">rpart</span>
 </ul>
 </div>
 <div id="a-classification-example" class="section level2">
-<h2><span class="header-section-number">5.2</span> A Classification Example</h2>
+<h2><span class="header-section-number">6.2</span> A Classification Example</h2>
 <p>Let’s use the Pima Indians data set as it relates to predicting whether someone has diabetes. This data is provided by the <strong>mlbench</strong> package. The relevant variables are:</p>
 <pre><code>pregnant - Number of times pregnant
 glucose  - Plasma glucose concentration (glucose tolerance test)
@@ -281,7 +283,7 @@ pm &lt;-<span class="st"> </span>PimaIndiansDiabetes
 
 diabetes_mod &lt;-<span class="st"> </span><span class="kw">rpart</span>(diabetes <span class="op">~</span><span class="st"> </span>.,pm,<span class="dt">method=</span><span class="st">&quot;class&quot;</span>)
 <span class="kw">rpart.plot</span>(<span class="dt">x =</span> diabetes_mod, <span class="dt">yesno =</span> <span class="dv">2</span>, <span class="dt">type =</span> <span class="dv">0</span>, <span class="dt">extra =</span> <span class="dv">0</span>)</code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-27-1.png" width="672" /></p>
 <p>That’s pretty understandable but it starts to border on being a bit hard to follow by hand. Nonethless, you could show this to someone who does not know (or care) about the underlying mathematics of decision trees and they would be able to understand the path to a classification of someone having diabetes or not.</p>
 <p>It’s common in these scenarios to create what is known as a test / training split so that we can train our model on a test set that we can then use on a test or hold out data set to see how well the model performs. There is much more to say about this but we’ll keep it simple here. We can create a training set that comprises %80 of the data with a holdout set of 20%. This easy to do.</p>
 <p>Let’s create a Train / Test Split</p>
@@ -339,7 +341,7 @@ pm_class_tree</code></pre></div>
 ##            59) age&gt;=42.5 21   3 pos (0.14285714 0.85714286) *
 ##        15) glucose&gt;=155.5 73   9 pos (0.12328767 0.87671233) *</code></pre>
 <div id="evaluating-performance" class="section level3">
-<h3><span class="header-section-number">5.2.1</span> Evaluating performance</h3>
+<h3><span class="header-section-number">6.2.1</span> Evaluating performance</h3>
 <p>So this is where things get interesting. We’ll use a confusion matrix to help us figure some things out about this model.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Generate predicted classes using the model object</span>
 pm_class_pred &lt;-<span class="st"> </span><span class="kw">predict</span>(<span class="dt">object =</span> pm_class_tree,  
@@ -391,16 +393,16 @@ aucval</code></pre></div>
 <pre><code>## [1] 0.7804305</code></pre>
 </div>
 <div id="tree-splitting" class="section level3">
-<h3><span class="header-section-number">5.2.2</span> Tree Splitting</h3>
+<h3><span class="header-section-number">6.2.2</span> Tree Splitting</h3>
 <p>The resulting tree can be thought of as an upside down tree with the root at the top. The “trunk” proceeds downward and splits into subsets based on some decision (hence the word “decision” in the title). When classifying data the idea is to segment or partition data into groups/regions where each group contains or represents a single class (“yes/no”, “positive/negative”).</p>
 <p>These groups or regions would represent a “pure” region. This is not always possible so a best effort is made. These regions are separated by decision boundaries which are used to make decisions. We’ll plot some example data to illustrate the case.</p>
-<p><img src="biosml_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
-<p><img src="biosml_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
-<p><img src="biosml_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-32-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-33-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-34-1.png" width="672" /></p>
 </div>
 </div>
 <div id="gini-index" class="section level2">
-<h2><span class="header-section-number">5.3</span> Gini Index</h2>
+<h2><span class="header-section-number">6.3</span> Gini Index</h2>
 <p>So we have to find a way to make the descisons such that the resulting regions are as pure as possible. This could be measuring the degree of impurity or purity - so we are either maximinizng purity or minimizing impurity The so called “Gini index”&quot; gives us the degree or measure of impurity.</p>
 <p>The lower the Gini index, the lower the degree of impurity (this higher purity). The higher the Gini index the higher the degree of impurity (this lower purity). The decision tree will select the split that minimizes or lowers the Gini index. There are other measures or indices that can be used such as the “information” measure.</p>
 <p>Let’s train two models that use a different splitting criterion (“gini” and “information”) and then use the test set to choose a “best” model. To do this you’ll use the <strong>parms</strong> argument of the <strong>rpart</strong> function. This argument takes a named list that contains values of different parameters to influence how the model is trained. Finally, to assess the models we’ll use the <strong>ce</strong> function from the <strong>Metrics</strong> package to show the proportion of elements in actual that are not equal to the corresponding element in predicted.</p>
@@ -436,10 +438,10 @@ Metrics<span class="op">::</span><span class="kw">ce</span>(<span class="dt">act
 <pre><code>## [1] 0.2922078</code></pre>
 </div>
 <div id="regression-trees" class="section level2">
-<h2><span class="header-section-number">5.4</span> Regression Trees</h2>
+<h2><span class="header-section-number">6.4</span> Regression Trees</h2>
 <p>Predicting numeric outcomes can also be of interest. Given some patient characteristics relative to a disease, we might want to predict a viral load quanitity. A gambler might want to predict a final score for a team. Unlike, classification problems, we are looking at estimating a numeric outcome. R has a built in function for this called “lm” which can be used but we can also use Trees to do this since, after, all, it does some nice things for us like not having to worry about normlalizing data (not that that is hard) or the mixture of quantitaitve and categorigcal data.</p>
 <div id="performance-measure" class="section level3">
-<h3><span class="header-section-number">5.4.1</span> Performance Measure</h3>
+<h3><span class="header-section-number">6.4.1</span> Performance Measure</h3>
 <p>Since we are predicting a numeric outcome we would like to come up with a metric to help us fogure out if the model we havbe is good or not. With classification situations we can employ confusion matrices and ROC curves. Here we will ue something more simplistic but effective - Root Mean Square Error. The formula looks like the following where P represents a vector of predictions and O represents a vector of the observed (true) values.</p>
 <p><span class="math display">\[
 RMSE = \sqrt\frac{\sum_i^n(P_i-O_i)^2}{n}
@@ -494,7 +496,7 @@ mass_pima_mod &lt;-<span class="st"> </span><span class="kw">rpart</span>(<span 
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Plot the tree model</span>
 <span class="kw">rpart.plot</span>(<span class="dt">x =</span> mass_pima_mod, 
            <span class="dt">yesno =</span> <span class="dv">2</span>, <span class="dt">type =</span> <span class="dv">0</span>, <span class="dt">extra =</span> <span class="dv">0</span>)</code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-26-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-38-1.png" width="672" /></p>
 <p>Let’s compute the RMSE for this model.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Generate predictions on a test set</span>
 pred &lt;-<span class="st"> </span><span class="kw">predict</span>(<span class="dt">object =</span> mass_pima_mod,   <span class="co"># model object </span>
@@ -508,7 +510,7 @@ Metrics<span class="op">::</span><span class="kw">rmse</span>(<span class="dt">a
 </div>
 </div>
 <div id="parameters-vs-hyperparameters" class="section level2">
-<h2><span class="header-section-number">5.5</span> Parameters vs Hyperparameters</h2>
+<h2><span class="header-section-number">6.5</span> Parameters vs Hyperparameters</h2>
 <p><strong>Model parameters</strong> are things that are generated as part of the modeling process. These might be things like slope and intercept from a linear model or, in the case of an rpart model, the number of splits in the final tree or the total number of leaves.</p>
 <p><strong>Hyper parameters</strong> (sometimes called <strong>metaparameters</strong>) represent information that is supplied in the form of an argument prior the call to the method to generate results. These parameters might not be something one can intelligently set without some experimentation.</p>
 <p>Of course, most modeling functions one would call in R have default values for various arguments but this does not mean that the defaults are appropriate for all cases. To see the hyper parameters of the <strong>rpart</strong> function, check the help page for <strong>rpart.control</strong>.</p>
@@ -526,7 +528,7 @@ Metrics<span class="op">::</span><span class="kw">rmse</span>(<span class="dt">a
 <p>In effect, it is doing some work for you so you don’t have to. At the end of the run it will produce a table for inspection. The results of this table can then be used to “prune” the tree model to get a “better” tree - one that performs better than an “un pruned” tree. Let’s look at the pima mass model:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># You can plot the modelling object</span>
 <span class="kw">plot</span>(mass_pima_mod)</code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-28-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-40-1.png" width="672" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># You can inspect the table manually</span>
 mass_pima_mod<span class="op">$</span>cptable</code></pre></div>
 <pre><code>##            CP nsplit rel error    xerror       xstd
@@ -552,7 +554,7 @@ cpt_val &lt;-<span class="st"> </span>cpt[<span class="kw">order</span>(cpt<span
                           
 <span class="co"># Plot the optimized model</span>
 <span class="kw">rpart.plot</span>(mass_pima_mod_opt, <span class="dt">yesno =</span> <span class="dv">2</span>, <span class="dt">type =</span> <span class="dv">0</span>, <span class="dt">extra =</span> <span class="dv">0</span>)</code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-30-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-42-1.png" width="672" /></p>
 <p>Does this optimized model perform any better ? Not really, because the optimal CP value turned out to be 0.01 which is actually the same as the default.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Generate predictions on a test set</span>
 pred &lt;-<span class="st"> </span><span class="kw">predict</span>(<span class="dt">object =</span> mass_pima_mod_opt,   <span class="co"># model object </span>
@@ -564,7 +566,7 @@ Metrics<span class="op">::</span><span class="kw">rmse</span>(<span class="dt">a
 <pre><code>## [1] 6.529925</code></pre>
 </div>
 <div id="grid-searching" class="section level2">
-<h2><span class="header-section-number">5.6</span> Grid Searching</h2>
+<h2><span class="header-section-number">6.6</span> Grid Searching</h2>
 <p>We might want to review several different models that correspond to various hyperparamter sets. Our goal is to find the best performing model based on a systematic approach that allows us to assess each model in a fair way. There are functions that can help us build a “grid” of hyperparameter values that can then “feed” the function arguments. So we train models on a combination of these values and compare them using the RMSE for regression or ROC / Confusion Matrix for classification setups.</p>
 <p>Setting up the grid involves a manual process (although as we will eventually see) the <strong>caret</strong> package can help automate this for us. Knowing about the valid values for a hyperparameter is critical so some experimentation is important. The following process sets up a data frame of two columns each of which corresponds to a hyperparamter of the <strong>rpart</strong> function. The intent here is to call <strong>rpart</strong> a number of times using each row of the below data frame to supply the values for the respective arguments in <strong>rpart</strong>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mysplits &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="dv">1</span>, <span class="dv">35</span>, <span class="dv">5</span>)
@@ -655,7 +657,7 @@ results<span class="op">$</span>optim_rmse</code></pre></div>
 ## [1] 10</code></pre>
 </div>
 <div id="bagged-trees" class="section level2">
-<h2><span class="header-section-number">5.7</span> Bagged Trees</h2>
+<h2><span class="header-section-number">6.7</span> Bagged Trees</h2>
 <p>Now we look at bagged trees which involves looking at many trees in aggregate - this is an ensemble method. It helps to reduce the variance associated with a single decision tree which can be highly sensitive to changes in data. The term bagging refers to “boostrap aggregation”. To review, the Decision Tree process can be represented like this:</p>
 <div class="figure">
 <img src="pics/tree2.png" />
@@ -724,7 +726,7 @@ number_of_boostraps &lt;-<span class="st"> </span><span class="dv">50</span>
 }</code></pre></div>
 <p>Now check all of the accuracy estimates and then average them. Remember this is supposed to help us to better estimate the out of sample error.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">boxplot</span>(aucval)</code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-38-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-50-1.png" width="672" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">mean</span>(aucval)</code></pre></div>
 <pre><code>## [1] 0.8240443</code></pre>
 <p>Now we’ll compare this to the function called “bagging” from the <strong>ipred</strong> package which does bagged trees directly.</p>
@@ -748,7 +750,7 @@ aucval</code></pre></div>
 <p>This is better than the 0.7804305 we got when using a single Decision tree.</p>
 </div>
 <div id="random-forests" class="section level2">
-<h2><span class="header-section-number">5.8</span> Random Forests</h2>
+<h2><span class="header-section-number">6.8</span> Random Forests</h2>
 <p>In Random Forest, only a subset of features are selected at random at each split in a decision tree. In bagging, all features are used.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(randomForest)</code></pre></div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Train a Random Forest</span>
@@ -786,7 +788,7 @@ pm_rf_model &lt;-<span class="st"> </span><span class="kw">randomForest</span>(<
           </div>
         </div>
       </div>
-<a href="training-test-data.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="caret-package.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
 <a href="using-methods-other-than-lm.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>

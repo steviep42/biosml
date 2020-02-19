@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 7 Caret Package | Predictive Learning in R</title>
-  <meta name="description" content="Chapter 7 Caret Package | Predictive Learning in R" />
+  <title>Chapter 5 Caret Package | Predictive Learning in R</title>
+  <meta name="description" content="Chapter 5 Caret Package | Predictive Learning in R" />
   <meta name="generator" content="bookdown 0.14 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 7 Caret Package | Predictive Learning in R" />
+  <meta property="og:title" content="Chapter 5 Caret Package | Predictive Learning in R" />
   <meta property="og:type" content="book" />
   
   
@@ -16,7 +16,7 @@
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 7 Caret Package | Predictive Learning in R" />
+  <meta name="twitter:title" content="Chapter 5 Caret Package | Predictive Learning in R" />
   
   
   
@@ -30,8 +30,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="using-methods-other-than-lm.html"/>
-<link rel="next" href="picking-the-best-model.html"/>
+<link rel="prev" href="training-test-data.html"/>
+<link rel="next" href="decision-trees.html"/>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -129,35 +129,37 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="3.7" data-path="a-motivating-example.html"><a href="a-motivating-example.html#summary"><i class="fa fa-check"></i><b>3.7</b> Summary</a></li>
 </ul></li>
 <li class="chapter" data-level="4" data-path="training-test-data.html"><a href="training-test-data.html"><i class="fa fa-check"></i><b>4</b> Training / Test Data</a><ul>
-<li class="chapter" data-level="4.1" data-path="training-test-data.html"><a href="training-test-data.html#cross-fold-validation-continued"><i class="fa fa-check"></i><b>4.1</b> Cross Fold Validation Continued</a></li>
+<li class="chapter" data-level="4.1" data-path="training-test-data.html"><a href="training-test-data.html#cross-fold-validation"><i class="fa fa-check"></i><b>4.1</b> Cross Fold Validation</a></li>
 <li class="chapter" data-level="4.2" data-path="training-test-data.html"><a href="training-test-data.html#create-a-function-to-automate-things"><i class="fa fa-check"></i><b>4.2</b> Create A Function To Automate Things</a></li>
 <li class="chapter" data-level="4.3" data-path="training-test-data.html"><a href="training-test-data.html#repeated-cross-validation"><i class="fa fa-check"></i><b>4.3</b> Repeated Cross Validation</a></li>
 <li class="chapter" data-level="4.4" data-path="training-test-data.html"><a href="training-test-data.html#bootstrap"><i class="fa fa-check"></i><b>4.4</b> Bootstrap</a></li>
 </ul></li>
-<li class="chapter" data-level="5" data-path="decision-trees.html"><a href="decision-trees.html"><i class="fa fa-check"></i><b>5</b> Decision Trees</a><ul>
-<li class="chapter" data-level="5.1" data-path="decision-trees.html"><a href="decision-trees.html#advantages"><i class="fa fa-check"></i><b>5.1</b> Advantages</a></li>
-<li class="chapter" data-level="5.2" data-path="decision-trees.html"><a href="decision-trees.html#a-classification-example"><i class="fa fa-check"></i><b>5.2</b> A Classification Example</a><ul>
-<li class="chapter" data-level="5.2.1" data-path="decision-trees.html"><a href="decision-trees.html#evaluating-performance"><i class="fa fa-check"></i><b>5.2.1</b> Evaluating performance</a></li>
-<li class="chapter" data-level="5.2.2" data-path="decision-trees.html"><a href="decision-trees.html#tree-splitting"><i class="fa fa-check"></i><b>5.2.2</b> Tree Splitting</a></li>
+<li class="chapter" data-level="5" data-path="caret-package.html"><a href="caret-package.html"><i class="fa fa-check"></i><b>5</b> Caret Package</a><ul>
+<li class="chapter" data-level="5.1" data-path="caret-package.html"><a href="caret-package.html#putting-caret-to-work"><i class="fa fa-check"></i><b>5.1</b> Putting caret To Work</a></li>
+<li class="chapter" data-level="5.2" data-path="caret-package.html"><a href="caret-package.html#back-to-the-beginning"><i class="fa fa-check"></i><b>5.2</b> Back To The Beginning</a></li>
+<li class="chapter" data-level="5.3" data-path="caret-package.html"><a href="caret-package.html#splitting"><i class="fa fa-check"></i><b>5.3</b> Splitting</a></li>
+<li class="chapter" data-level="5.4" data-path="caret-package.html"><a href="caret-package.html#calling-the-train-function"><i class="fa fa-check"></i><b>5.4</b> Calling The train() Function</a></li>
+<li class="chapter" data-level="5.5" data-path="caret-package.html"><a href="caret-package.html#one-size-fits-all"><i class="fa fa-check"></i><b>5.5</b> One Size Fits All</a></li>
+<li class="chapter" data-level="5.6" data-path="caret-package.html"><a href="caret-package.html#hyperparameters-make-an-appearance"><i class="fa fa-check"></i><b>5.6</b> Hyperparameters Make An Appearance</a></li>
 </ul></li>
-<li class="chapter" data-level="5.3" data-path="decision-trees.html"><a href="decision-trees.html#gini-index"><i class="fa fa-check"></i><b>5.3</b> Gini Index</a></li>
-<li class="chapter" data-level="5.4" data-path="decision-trees.html"><a href="decision-trees.html#regression-trees"><i class="fa fa-check"></i><b>5.4</b> Regression Trees</a><ul>
-<li class="chapter" data-level="5.4.1" data-path="decision-trees.html"><a href="decision-trees.html#performance-measure"><i class="fa fa-check"></i><b>5.4.1</b> Performance Measure</a></li>
+<li class="chapter" data-level="6" data-path="decision-trees.html"><a href="decision-trees.html"><i class="fa fa-check"></i><b>6</b> Decision Trees</a><ul>
+<li class="chapter" data-level="6.1" data-path="decision-trees.html"><a href="decision-trees.html#advantages"><i class="fa fa-check"></i><b>6.1</b> Advantages</a></li>
+<li class="chapter" data-level="6.2" data-path="decision-trees.html"><a href="decision-trees.html#a-classification-example"><i class="fa fa-check"></i><b>6.2</b> A Classification Example</a><ul>
+<li class="chapter" data-level="6.2.1" data-path="decision-trees.html"><a href="decision-trees.html#evaluating-performance"><i class="fa fa-check"></i><b>6.2.1</b> Evaluating performance</a></li>
+<li class="chapter" data-level="6.2.2" data-path="decision-trees.html"><a href="decision-trees.html#tree-splitting"><i class="fa fa-check"></i><b>6.2.2</b> Tree Splitting</a></li>
 </ul></li>
-<li class="chapter" data-level="5.5" data-path="decision-trees.html"><a href="decision-trees.html#parameters-vs-hyperparameters"><i class="fa fa-check"></i><b>5.5</b> Parameters vs Hyperparameters</a></li>
-<li class="chapter" data-level="5.6" data-path="decision-trees.html"><a href="decision-trees.html#grid-searching"><i class="fa fa-check"></i><b>5.6</b> Grid Searching</a></li>
-<li class="chapter" data-level="5.7" data-path="decision-trees.html"><a href="decision-trees.html#bagged-trees"><i class="fa fa-check"></i><b>5.7</b> Bagged Trees</a></li>
-<li class="chapter" data-level="5.8" data-path="decision-trees.html"><a href="decision-trees.html#random-forests"><i class="fa fa-check"></i><b>5.8</b> Random Forests</a></li>
+<li class="chapter" data-level="6.3" data-path="decision-trees.html"><a href="decision-trees.html#gini-index"><i class="fa fa-check"></i><b>6.3</b> Gini Index</a></li>
+<li class="chapter" data-level="6.4" data-path="decision-trees.html"><a href="decision-trees.html#regression-trees"><i class="fa fa-check"></i><b>6.4</b> Regression Trees</a><ul>
+<li class="chapter" data-level="6.4.1" data-path="decision-trees.html"><a href="decision-trees.html#performance-measure"><i class="fa fa-check"></i><b>6.4.1</b> Performance Measure</a></li>
 </ul></li>
-<li class="chapter" data-level="6" data-path="using-methods-other-than-lm.html"><a href="using-methods-other-than-lm.html"><i class="fa fa-check"></i><b>6</b> Using Methods Other Than lm</a><ul>
-<li class="chapter" data-level="6.1" data-path="using-methods-other-than-lm.html"><a href="using-methods-other-than-lm.html#parameters-vs-hyperparameters-1"><i class="fa fa-check"></i><b>6.1</b> Parameters vs Hyperparameters</a></li>
-<li class="chapter" data-level="6.2" data-path="using-methods-other-than-lm.html"><a href="using-methods-other-than-lm.html#hyperparameter-tuning"><i class="fa fa-check"></i><b>6.2</b> Hyperparameter Tuning</a></li>
+<li class="chapter" data-level="6.5" data-path="decision-trees.html"><a href="decision-trees.html#parameters-vs-hyperparameters"><i class="fa fa-check"></i><b>6.5</b> Parameters vs Hyperparameters</a></li>
+<li class="chapter" data-level="6.6" data-path="decision-trees.html"><a href="decision-trees.html#grid-searching"><i class="fa fa-check"></i><b>6.6</b> Grid Searching</a></li>
+<li class="chapter" data-level="6.7" data-path="decision-trees.html"><a href="decision-trees.html#bagged-trees"><i class="fa fa-check"></i><b>6.7</b> Bagged Trees</a></li>
+<li class="chapter" data-level="6.8" data-path="decision-trees.html"><a href="decision-trees.html#random-forests"><i class="fa fa-check"></i><b>6.8</b> Random Forests</a></li>
 </ul></li>
-<li class="chapter" data-level="7" data-path="caret-package.html"><a href="caret-package.html"><i class="fa fa-check"></i><b>7</b> Caret Package</a><ul>
-<li class="chapter" data-level="7.1" data-path="caret-package.html"><a href="caret-package.html#putting-caret-to-work"><i class="fa fa-check"></i><b>7.1</b> Putting caret To Work</a></li>
-<li class="chapter" data-level="7.2" data-path="caret-package.html"><a href="caret-package.html#back-to-the-beginning"><i class="fa fa-check"></i><b>7.2</b> Back To The Beginning</a></li>
-<li class="chapter" data-level="7.3" data-path="caret-package.html"><a href="caret-package.html#splitting"><i class="fa fa-check"></i><b>7.3</b> Splitting</a></li>
-<li class="chapter" data-level="7.4" data-path="caret-package.html"><a href="caret-package.html#one-size-fits-all"><i class="fa fa-check"></i><b>7.4</b> One Size Fits All</a></li>
+<li class="chapter" data-level="7" data-path="using-methods-other-than-lm.html"><a href="using-methods-other-than-lm.html"><i class="fa fa-check"></i><b>7</b> Using Methods Other Than lm</a><ul>
+<li class="chapter" data-level="7.1" data-path="using-methods-other-than-lm.html"><a href="using-methods-other-than-lm.html#parameters-vs-hyperparameters-1"><i class="fa fa-check"></i><b>7.1</b> Parameters vs Hyperparameters</a></li>
+<li class="chapter" data-level="7.2" data-path="using-methods-other-than-lm.html"><a href="using-methods-other-than-lm.html#hyperparameter-tuning"><i class="fa fa-check"></i><b>7.2</b> Hyperparameter Tuning</a></li>
 </ul></li>
 <li class="chapter" data-level="8" data-path="picking-the-best-model.html"><a href="picking-the-best-model.html"><i class="fa fa-check"></i><b>8</b> Picking The Best Model</a><ul>
 <li class="chapter" data-level="8.1" data-path="picking-the-best-model.html"><a href="picking-the-best-model.html#using-the-resamples-function"><i class="fa fa-check"></i><b>8.1</b> Using the resamples() function</a></li>
@@ -234,31 +236,41 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
             <section class="normal" id="section-">
 <div id="caret-package" class="section level1">
-<h1><span class="header-section-number">Chapter 7</span> Caret Package</h1>
+<h1><span class="header-section-number">Chapter 5</span> Caret Package</h1>
 <p>By now you are probably fatigued with understanding the details of writing the code to split data, doing Cross Validation, storing the results, and looking at descriptive stats associated with the resulting RMSE. And this is all before considering the various parameters associated with whatever method we wish to implement. Each function has its own set of requirements which may not extend to other functions. What we need (well, what we would like) is a framework to streamline this process and automate it as much as possible but not at the expense of understanding the results.</p>
-<p>The <a href="https://topepo.github.io/caret/index.html"><strong>caret</strong></a> (<strong>C</strong>lassification <strong>A</strong>nd <strong>R</strong>egression <strong>T</strong>raining) package provides a uniform interface for calling different algorithms while simplifying the data splitting and RMSE calculation. It supports many different model types and also provides the ability to tune hyper parameters.</p>
-<p>While being able to understand how to work with each specific function individually is a worthy goal, you might consider using caret to help you get up and running quickly. It is still your responsibility to know what the results are telling you - there is no magic here though the process of running different models and managing data is greatly simplified by using this package (at least I think so).</p>
+<p>The <a href="https://topepo.github.io/caret/index.html"><strong>caret</strong></a> (<strong>C</strong>lassification <strong>A</strong>nd <strong>R</strong>egression <strong>T</strong>raining) package provides a uniform interface for calling different algorithms while simplifying the data splitting and RMSE calculation. It supports many different model types and also provides the ability to tune hyper parameters. Here are some of the features:</p>
+<ul>
+<li>Streamlined and consistent syntax for more than 200 different models</li>
+<li>Can implement any of the 238 different methods using a single function</li>
+<li>Easy data splitting to simplify the creation of train / test pairs</li>
+<li>Realistic model estimates through built-in resampling</li>
+<li>Convenient feature importance determination</li>
+<li>Easy selection of different performance metrics (e.g. “ROC”,“Accuracy”, “Sensitivity”)</li>
+<li>Automated and semi-automated parameter tuning</li>
+<li>Simplifed comparison of different models</li>
+</ul>
 <p>Note that <strong>caret</strong> provides a nice wrapper around the various modeling functions. Since each underlying model is itself a standalone R package and associated set of functions you can always call them directly should you prefer that approach. That’s what we have been doing in the earlier part of this text.</p>
 <div id="putting-caret-to-work" class="section level2">
-<h2><span class="header-section-number">7.1</span> Putting caret To Work</h2>
+<h2><span class="header-section-number">5.1</span> Putting caret To Work</h2>
 <p>It’s easy to get lost in all that we have been doing so let’s review what the typical predictive modeling workflow will look like:</p>
 <ol style="list-style-type: decimal">
 <li>Data Import (.csv., extraction from a database, etc)</li>
-<li>Data Visualization</li>
-<li><p>Data Prep - Missing, imputation - Scaling - Create dummy variables / one hot encoding - Dimensionality Reduction</p></li>
+<li>Some Data Visualization</li>
+<li><p>Data Prep (We haven’t done any of this yet) - Missing, imputation - Scaling - Create dummy variables / one hot encoding - Dimensionality Reduction</p></li>
 <li><p>Data Splitting (training / test) - Determine split ration - K-Fold Cross Validation (repeated)</p></li>
-<li><p>Modeling</p></li>
-<li><p>Model Evaluation</p></li>
+<li><p>Modeling / Prediction</p></li>
+<li><p>Evaluation</p></li>
 </ol>
 <p>To do step 5 requires some predefined idea of a performance metric. We have been using RMSE and will continue to do so as we rework some of the previous examples using the caret package.</p>
 </div>
 <div id="back-to-the-beginning" class="section level2">
-<h2><span class="header-section-number">7.2</span> Back To The Beginning</h2>
+<h2><span class="header-section-number">5.2</span> Back To The Beginning</h2>
 <p>It is implied that in predictive modeling the ultimate goal is to generate a model that could be reasonably applied to new data. As we have learned, it is best to train any model on a data set that has been (re)sampled in some way (e.g. K Fold CV) which should help provide a more realistic estimate of “out of sample” error.</p>
-<p>In our earliest example we tried to predict the MPG from mtcars using a basic linear modeling function. The caret package provides a uniform way to do this which allows us to easily substitute in alternative functions without having to majorly change our code. We can call the <strong>train</strong> function in such a way as to pass in any arguments that are specific to a method though in a way that allows for minimal alteration. We can also tell the <strong>train</strong> function that we want to evaluate RMSE as a performance measure. That is, it will “know” that our primary performance measure for a model is RMSE. Before we do that, however, we’ll make a test / train pair. The <strong>caret</strong> package provides ways to do that.</p>
+<p>In our earliest example we tried to predict the MPG from mtcars using a basic linear modeling function. The caret package provides a uniform way to do this which allows us to easily substitute in alternative functions without having to majorly change our code.</p>
+<p>We can call the <strong>train</strong> function in such a way as to pass in any arguments that are specific to a given method though in a way we could do for other methods. We can also tell the <strong>train</strong> function that we want to evaluate RMSE as a performance measure. That is, it will “know” that our primary performance measure for a model is RMSE. Before we do that, however, we’ll make a test / train pair. The <strong>caret</strong> package provides ways to do that.</p>
 </div>
 <div id="splitting" class="section level2">
-<h2><span class="header-section-number">7.3</span> Splitting</h2>
+<h2><span class="header-section-number">5.3</span> Splitting</h2>
 <p><strong>createDataPartition</strong> can be used to create test and train data splits according to some proportion. There is a function called <strong>createFolds</strong> can be used to generate balanced cross–validation groupings from a set of data. <strong>createResample</strong> can be used to make simple bootstrap samples. For now, we’ll just stick with <strong>createDataPartition</strong> for creating a test/train pair.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">idx &lt;-<span class="st"> </span><span class="kw">createDataPartition</span>(mtcars<span class="op">$</span>mpg, <span class="dt">p =</span> .<span class="dv">8</span>, 
                                   <span class="dt">list =</span> <span class="ot">FALSE</span>, 
@@ -268,9 +280,9 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 ## [1,]         1
 ## [2,]         2
 ## [3,]         3
-## [4,]         5
-## [5,]         6
-## [6,]         7</code></pre>
+## [4,]         4
+## [5,]         5
+## [6,]         8</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">Train &lt;-<span class="st"> </span>mtcars[ idx,]
 Test  &lt;-<span class="st"> </span>mtcars[<span class="op">-</span>idx,]
 
@@ -279,11 +291,14 @@ Test  &lt;-<span class="st"> </span>mtcars[<span class="op">-</span>idx,]
 <pre><code>## [1] 28</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">nrow</span>(Test)</code></pre></div>
 <pre><code>## [1] 4</code></pre>
+</div>
+<div id="calling-the-train-function" class="section level2">
+<h2><span class="header-section-number">5.4</span> Calling The train() Function</h2>
 <p>To actually create a model involves use of the <strong>train</strong> function which is the premier function in the <strong>caret</strong> package. It does what it name suggests - train models. Note that we tell it:</p>
 <ol style="list-style-type: decimal">
 <li>What we are trying to predict (a formula)</li>
 <li>What our data set is (e.g. Train)</li>
-<li>The desired method (“ml”)
+<li>The desired method (“lm”)
 <ul>
 <li>Note that this method name MUST match an existing R modeling function</li>
 </ul></li>
@@ -305,8 +320,8 @@ Test  &lt;-<span class="st"> </span>mtcars[<span class="op">-</span>idx,]
 ## Summary of sample sizes: 28, 28, 28, 28, 28, 28, ... 
 ## Resampling results:
 ## 
-##   RMSE      Rsquared  MAE     
-##   3.488039  0.762069  2.795446
+##   RMSE      Rsquared   MAE     
+##   3.075415  0.7648391  2.460452
 ## 
 ## Tuning parameter &#39;intercept&#39; was held constant at a value of TRUE</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(lm_fit)</code></pre></div>
@@ -316,21 +331,21 @@ Test  &lt;-<span class="st"> </span>mtcars[<span class="op">-</span>idx,]
 ## 
 ## Residuals:
 ##     Min      1Q  Median      3Q     Max 
-## -4.5503 -2.5811 -0.1849  1.8421  6.9883 
+## -4.5468 -2.0936 -0.0176  1.4474  7.1933 
 ## 
 ## Coefficients:
 ##             Estimate Std. Error t value Pr(&gt;|t|)    
-## (Intercept)  36.8911     2.1283  17.333 8.36e-16 ***
-## wt           -5.2179     0.6275  -8.316 8.49e-09 ***
+## (Intercept)  36.2290     1.8548  19.532  &lt; 2e-16 ***
+## wt           -5.0102     0.5443  -9.205 1.16e-09 ***
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
-## Residual standard error: 3.223 on 26 degrees of freedom
-## Multiple R-squared:  0.7268, Adjusted R-squared:  0.7163 
-## F-statistic: 69.15 on 1 and 26 DF,  p-value: 8.491e-09</code></pre>
-<p>So let’s apply this model to the test data frame</p>
+## Residual standard error: 2.846 on 26 degrees of freedom
+## Multiple R-squared:  0.7652, Adjusted R-squared:  0.7562 
+## F-statistic: 84.73 on 1 and 26 DF,  p-value: 1.157e-09</code></pre>
+<p>Note that the summary of the model “summary(lm_fit)” returns the same information that would be returned had we used the <strong>lm</strong> function directly as we did in the previous section. The point is that the <strong>train</strong> function doesn’t not seek to replace or obscure the resulting model in any way. We can always get whatever information we need from it. So let’s apply this model to the test data frame</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">compute_rmse</span>(<span class="kw">predict</span>(lm_fit,Test),Test<span class="op">$</span>mpg)</code></pre></div>
-<pre><code>## [1] 1.482708</code></pre>
+<pre><code>## [1] 4.216757</code></pre>
 <p>There is more here than meets the eye.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">names</span>(lm_fit)</code></pre></div>
 <pre><code>##  [1] &quot;method&quot;       &quot;modelInfo&quot;    &quot;modelType&quot;    &quot;results&quot;     
@@ -368,7 +383,7 @@ Test  &lt;-<span class="st"> </span>mtcars[<span class="op">-</span>idx,]
 ##  $ adaptive         :List of 4
 ##  $ trim             : logi FALSE
 ##  $ allowParallel    : logi TRUE
-##  $ yLimits          : num [1:2] 9.22 35.07</code></pre>
+##  $ yLimits          : num [1:2] 9.3 33.5</code></pre>
 <p>Check out the some of the model characteristics</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(lm_fit)</code></pre></div>
 <pre><code>## 
@@ -377,20 +392,20 @@ Test  &lt;-<span class="st"> </span>mtcars[<span class="op">-</span>idx,]
 ## 
 ## Residuals:
 ##     Min      1Q  Median      3Q     Max 
-## -4.5503 -2.5811 -0.1849  1.8421  6.9883 
+## -4.5468 -2.0936 -0.0176  1.4474  7.1933 
 ## 
 ## Coefficients:
 ##             Estimate Std. Error t value Pr(&gt;|t|)    
-## (Intercept)  36.8911     2.1283  17.333 8.36e-16 ***
-## wt           -5.2179     0.6275  -8.316 8.49e-09 ***
+## (Intercept)  36.2290     1.8548  19.532  &lt; 2e-16 ***
+## wt           -5.0102     0.5443  -9.205 1.16e-09 ***
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
-## Residual standard error: 3.223 on 26 degrees of freedom
-## Multiple R-squared:  0.7268, Adjusted R-squared:  0.7163 
-## F-statistic: 69.15 on 1 and 26 DF,  p-value: 8.491e-09</code></pre>
+## Residual standard error: 2.846 on 26 degrees of freedom
+## Multiple R-squared:  0.7652, Adjusted R-squared:  0.7562 
+## F-statistic: 84.73 on 1 and 26 DF,  p-value: 1.157e-09</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(lm_fit<span class="op">$</span>finalModel)<span class="op">$</span>r.squared</code></pre></div>
-<pre><code>## [1] 0.7267614</code></pre>
+<pre><code>## [1] 0.7651856</code></pre>
 <p>We can go right to the final Model which contains the information for the</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">lm_fit<span class="op">$</span>finalModel</code></pre></div>
 <pre><code>## 
@@ -399,19 +414,19 @@ Test  &lt;-<span class="st"> </span>mtcars[<span class="op">-</span>idx,]
 ## 
 ## Coefficients:
 ## (Intercept)           wt  
-##      36.891       -5.218</code></pre>
-<p>So it looks like caret did some re sampling for us by default. However, we can specify cross fold validation if we wanted to. This requires a more involved form of the <strong>train</strong> function.</p>
-<p>You can influence the <strong>train</strong> function by passing a “special” list to it via the <strong>trControl</strong> argument. This gets a bit confusing because the primary function to train models is called <strong>train</strong> and the command used to create the special is called <strong>trainControl</strong> and the argument in the <strong>train</strong> function is called <strong>trControl</strong>. With use, it becomes easier to remember the difference though at first it’s confusing.</p>
+##       36.23        -5.01</code></pre>
+<p>So it looks like caret did some re sampling for us by default. Actually, it was boostrap sampling that we discussed earluer. However, we can specify cross fold validation if we wanted to. This requires a slightly more involved form of the <strong>train</strong> function.</p>
+<p>You can influence the <strong>train</strong> function by passing a “special” list / object to it via the <strong>trControl</strong> argument. This gets a bit confusing because the primary function to train models is called <strong>train</strong> and the command used to create the special is called <strong>trainControl</strong> and the argument in the <strong>train</strong> function is called <strong>trControl</strong>. With use, it becomes easier to remember the difference though at first it’s confusing.</p>
 <p>Here we train the model as before but specifically requesting a Cross Fold Validation method of 10 times. We are requesting verbose output.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">my_lm &lt;-<span class="st"> </span><span class="kw">train</span>(
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">control &lt;-<span class="st"> </span><span class="kw">trainControl</span>(<span class="dt">method =</span> <span class="st">&quot;cv&quot;</span>,       <span class="co"># Cross Fold</span>
+                        <span class="dt">number =</span> <span class="dv">5</span>,          <span class="co"># 5 Folds</span>
+                        <span class="dt">verboseIter =</span> <span class="ot">TRUE</span>)  <span class="co"># Verbose</span>
+<span class="co"># Train the model</span>
+my_lm &lt;-<span class="st"> </span><span class="kw">train</span>(
   mpg <span class="op">~</span><span class="st"> </span>., 
   Train,
   <span class="dt">method =</span> <span class="st">&quot;lm&quot;</span>,
-  <span class="dt">trControl =</span> <span class="kw">trainControl</span>(
-    <span class="dt">method =</span> <span class="st">&quot;cv&quot;</span>, 
-    <span class="dt">number =</span> <span class="dv">5</span>,
-    <span class="dt">verboseIter =</span> <span class="ot">TRUE</span>
-  )
+  <span class="dt">trControl =</span> control
 )</code></pre></div>
 <pre><code>## + Fold1: intercept=TRUE 
 ## - Fold1: intercept=TRUE 
@@ -434,106 +449,64 @@ Test  &lt;-<span class="st"> </span>mtcars[<span class="op">-</span>idx,]
 ## 
 ## No pre-processing
 ## Resampling: Cross-Validated (5 fold) 
-## Summary of sample sizes: 23, 22, 21, 22, 24 
+## Summary of sample sizes: 22, 23, 22, 23, 22 
 ## Resampling results:
 ## 
 ##   RMSE      Rsquared   MAE     
-##   3.487365  0.6987463  2.883091
+##   4.624314  0.6116787  3.550516
 ## 
 ## Tuning parameter &#39;intercept&#39; was held constant at a value of TRUE</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">compute_rmse</span>(<span class="kw">predict</span>(my_lm,Test),Test<span class="op">$</span>mpg)</code></pre></div>
-<pre><code>## [1] 3.12267</code></pre>
+<pre><code>## [1] 3.111961</code></pre>
 <p>We could also repeat the 5 times CV validation an arbitrary number of times to generate greater confidence in the RMSE estimates returned by the model. Remember, a major reason for using K Fold validation is to better estimate the out of sample error by holding out a portion of the data frame being trained upon.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">my_lm &lt;-<span class="st"> </span><span class="kw">train</span>(
-  mpg <span class="op">~</span><span class="st"> </span>., 
-  Train,
-  <span class="dt">method =</span> <span class="st">&quot;lm&quot;</span>,
-  <span class="dt">trControl =</span> <span class="kw">trainControl</span>(
-    <span class="dt">method =</span> <span class="st">&quot;repeatedcv&quot;</span>,    <span class="co"># Note &quot;rpeatedcv&quot;</span>
-    <span class="dt">number =</span> <span class="dv">5</span>,
-    <span class="dt">repeats =</span> <span class="dv">5</span>
-  )
-)
-
-<span class="kw">compute_rmse</span>(<span class="kw">predict</span>(my_lm,Test),Test<span class="op">$</span>mpg)</code></pre></div>
-<pre><code>## [1] 3.12267</code></pre>
-<p>As a matter of convenience, you can create a variable to hold the content of <strong>trainControl</strong> and then pass that to the function. This is subjective and either approach is fine.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">my_ctrl &lt;-<span class="st"> </span><span class="kw">trainControl</span>(
-    <span class="dt">method =</span> <span class="st">&quot;cv&quot;</span>, 
-    <span class="dt">number =</span> <span class="dv">5</span>,
-    <span class="dt">verboseIter =</span> <span class="ot">TRUE</span>
-  )
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">control &lt;-<span class="st"> </span><span class="kw">trainControl</span>(<span class="dt">method =</span> <span class="st">&quot;repeatedcv&quot;</span>,  <span class="co"># Repeated Cross Fold</span>
+                        <span class="dt">number  =</span> <span class="dv">3</span>,          <span class="co"># 5 Folds</span>
+                        <span class="dt">repeats =</span> <span class="dv">3</span>,         <span class="co"># Repeats</span>
+                        <span class="dt">verboseIter =</span> <span class="ot">TRUE</span>)  <span class="co"># Verbose</span>
 
 my_lm &lt;-<span class="st"> </span><span class="kw">train</span>(
   mpg <span class="op">~</span><span class="st"> </span>., 
   Train,
   <span class="dt">method =</span> <span class="st">&quot;lm&quot;</span>,
-  <span class="dt">trControl =</span> my_ctrl
+  <span class="dt">trControl =</span> control
 )</code></pre></div>
-<pre><code>## + Fold1: intercept=TRUE 
-## - Fold1: intercept=TRUE 
-## + Fold2: intercept=TRUE 
-## - Fold2: intercept=TRUE 
-## + Fold3: intercept=TRUE 
-## - Fold3: intercept=TRUE 
-## + Fold4: intercept=TRUE 
-## - Fold4: intercept=TRUE 
-## + Fold5: intercept=TRUE 
-## - Fold5: intercept=TRUE 
+<pre><code>## + Fold1.Rep1: intercept=TRUE 
+## - Fold1.Rep1: intercept=TRUE 
+## + Fold2.Rep1: intercept=TRUE 
+## - Fold2.Rep1: intercept=TRUE 
+## + Fold3.Rep1: intercept=TRUE 
+## - Fold3.Rep1: intercept=TRUE 
+## + Fold1.Rep2: intercept=TRUE 
+## - Fold1.Rep2: intercept=TRUE 
+## + Fold2.Rep2: intercept=TRUE 
+## - Fold2.Rep2: intercept=TRUE 
+## + Fold3.Rep2: intercept=TRUE 
+## - Fold3.Rep2: intercept=TRUE 
+## + Fold1.Rep3: intercept=TRUE 
+## - Fold1.Rep3: intercept=TRUE 
+## + Fold2.Rep3: intercept=TRUE 
+## - Fold2.Rep3: intercept=TRUE 
+## + Fold3.Rep3: intercept=TRUE 
+## - Fold3.Rep3: intercept=TRUE 
 ## Aggregating results
 ## Fitting final model on full training set</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">compute_rmse</span>(<span class="kw">predict</span>(my_lm,Test),Test<span class="op">$</span>mpg)</code></pre></div>
-<pre><code>## [1] 3.12267</code></pre>
+<pre><code>## [1] 3.111961</code></pre>
 </div>
 <div id="one-size-fits-all" class="section level2">
-<h2><span class="header-section-number">7.4</span> One Size Fits All</h2>
-<p>So this is where things get interesting. If we wanted to use another method such as Random Forests, we do NOT have to change much at all. We just provide the name of the desired method which in this case, is <strong>rf</strong>. Of course, there might be parameters specific to the new method but we’ll hold off that for now.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">my_ctrl &lt;-<span class="st"> </span><span class="kw">trainControl</span>(
-    <span class="dt">method =</span> <span class="st">&quot;cv&quot;</span>, 
-    <span class="dt">number =</span> <span class="dv">5</span>,
-    <span class="dt">verboseIter =</span> <span class="ot">TRUE</span>
-  )
+<h2><span class="header-section-number">5.5</span> One Size Fits All</h2>
+<p>So this is where things get interesting. If we wanted to use another method such as Random Forests, we do NOT have to change much at all. We just provide the name of the desired method which in this case, is <strong>ranger</strong> which is a function we’ve already seen.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">control &lt;-<span class="st"> </span><span class="kw">trainControl</span>(<span class="dt">method =</span> <span class="st">&quot;cv&quot;</span>, 
+                        <span class="dt">number =</span> <span class="dv">5</span>)
 
-my_rf &lt;-<span class="st"> </span><span class="kw">train</span>(
+my_ranger &lt;-<span class="st"> </span><span class="kw">train</span>(
   mpg <span class="op">~</span><span class="st"> </span>., 
   Train,
-  <span class="dt">method =</span> <span class="st">&quot;rf&quot;</span>,
-  <span class="dt">trControl =</span> my_ctrl
-)</code></pre></div>
-<pre><code>## + Fold1: mtry= 2 
-## - Fold1: mtry= 2 
-## + Fold1: mtry= 6 
-## - Fold1: mtry= 6 
-## + Fold1: mtry=10 
-## - Fold1: mtry=10 
-## + Fold2: mtry= 2 
-## - Fold2: mtry= 2 
-## + Fold2: mtry= 6 
-## - Fold2: mtry= 6 
-## + Fold2: mtry=10 
-## - Fold2: mtry=10 
-## + Fold3: mtry= 2 
-## - Fold3: mtry= 2 
-## + Fold3: mtry= 6 
-## - Fold3: mtry= 6 
-## + Fold3: mtry=10 
-## - Fold3: mtry=10 
-## + Fold4: mtry= 2 
-## - Fold4: mtry= 2 
-## + Fold4: mtry= 6 
-## - Fold4: mtry= 6 
-## + Fold4: mtry=10 
-## - Fold4: mtry=10 
-## + Fold5: mtry= 2 
-## - Fold5: mtry= 2 
-## + Fold5: mtry= 6 
-## - Fold5: mtry= 6 
-## + Fold5: mtry=10 
-## - Fold5: mtry=10 
-## Aggregating results
-## Selecting tuning parameters
-## Fitting mtry = 6 on full training set</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">my_rf</code></pre></div>
+  <span class="dt">method =</span> <span class="st">&quot;ranger&quot;</span>,
+  <span class="dt">trControl =</span> control
+)
+
+my_ranger</code></pre></div>
 <pre><code>## Random Forest 
 ## 
 ## 28 samples
@@ -541,21 +514,30 @@ my_rf &lt;-<span class="st"> </span><span class="kw">train</span>(
 ## 
 ## No pre-processing
 ## Resampling: Cross-Validated (5 fold) 
-## Summary of sample sizes: 24, 22, 22, 21, 23 
+## Summary of sample sizes: 23, 24, 22, 21, 22 
 ## Resampling results across tuning parameters:
 ## 
-##   mtry  RMSE      Rsquared   MAE     
-##    2    2.380513  0.9208454  1.965907
-##    6    2.258869  0.9142744  1.881514
-##   10    2.266975  0.9091238  1.915147
+##   mtry  splitrule   RMSE      Rsquared   MAE     
+##    2    variance    2.307508  0.8885744  1.972994
+##    2    extratrees  2.552300  0.8504258  2.194711
+##    6    variance    2.208583  0.8988506  1.901639
+##    6    extratrees  2.380295  0.8751517  2.022142
+##   10    variance    2.185796  0.9042507  1.883489
+##   10    extratrees  2.329819  0.8867546  1.974530
 ## 
+## Tuning parameter &#39;min.node.size&#39; was held constant at a value of 5
 ## RMSE was used to select the optimal model using the smallest value.
-## The final value used for the model was mtry = 6.</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">compute_rmse</span>(<span class="kw">predict</span>(my_rf,Test),Test<span class="op">$</span>mpg)</code></pre></div>
-<pre><code>## [1] 3.44277</code></pre>
+## The final values used for the model were mtry = 10, splitrule =
+##  variance and min.node.size = 5.</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">compute_rmse</span>(<span class="kw">predict</span>(my_ranger,Test),Test<span class="op">$</span>mpg)</code></pre></div>
+<pre><code>## [1] 2.439704</code></pre>
+</div>
+<div id="hyperparameters-make-an-appearance" class="section level2">
+<h2><span class="header-section-number">5.6</span> Hyperparameters Make An Appearance</h2>
+<p>This model returns more information than say the <strong>lm</strong> function because this method uses something called “hyperparameters” which are arguments to a given method that gets set before you call the method. In this case there are two hyperparameters called <strong>mtry</strong> and <strong>splitrule</strong> that assume default variables if we don’t supply values.</p>
 <p>We can get a plot of how the RMSE and R squared value varied with different values of <strong>mtry</strong>. Here we see that an mtry value of 6 randomly selected columns / variables provides the lowest RMSE.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(my_rf) <span class="op">+</span><span class="st"> </span><span class="kw">theme</span>(<span class="dt">legend.position =</span> <span class="st">&quot;top&quot;</span>)</code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-50-1.png" width="672" /></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(my_ranger) <span class="op">+</span><span class="st"> </span><span class="kw">theme</span>(<span class="dt">legend.position =</span> <span class="st">&quot;top&quot;</span>)</code></pre></div>
+<p><img src="biosml_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
 <p>We can use the <strong>tuneLength</strong> argument to tell the <strong>train</strong> function to use N different values of <strong>mtry</strong> which is a <strong>hyperparameter</strong> to the randomForest package. The value relates to the number of columns in the data frame. We have 11 total and we are trying to predict one of them (mpg). So we can tell the <strong>train</strong> function to randomly select N variables (up to 10) when a tree is split.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">my_ctrl &lt;-<span class="st"> </span><span class="kw">trainControl</span>(
     <span class="dt">method =</span> <span class="st">&quot;cv&quot;</span>, 
@@ -662,7 +644,7 @@ my_rf &lt;-<span class="st"> </span><span class="kw">train</span>(
 ## - Fold5: mtry=10 
 ## Aggregating results
 ## Selecting tuning parameters
-## Fitting mtry = 8 on full training set</code></pre>
+## Fitting mtry = 5 on full training set</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">my_rf</code></pre></div>
 <pre><code>## Random Forest 
 ## 
@@ -671,26 +653,26 @@ my_rf &lt;-<span class="st"> </span><span class="kw">train</span>(
 ## 
 ## No pre-processing
 ## Resampling: Cross-Validated (5 fold) 
-## Summary of sample sizes: 23, 23, 21, 22, 23 
+## Summary of sample sizes: 22, 22, 23, 22, 23 
 ## Resampling results across tuning parameters:
 ## 
 ##   mtry  RMSE      Rsquared   MAE     
-##    2    2.356152  0.9346119  1.976905
-##    3    2.275964  0.9464753  1.901069
-##    4    2.222505  0.9468536  1.862120
-##    5    2.212861  0.9546258  1.846312
-##    6    2.202764  0.9530616  1.815662
-##    7    2.157624  0.9557000  1.782531
-##    8    2.140429  0.9551711  1.787199
-##    9    2.206559  0.9529946  1.795828
-##   10    2.186624  0.9560952  1.809617
+##    2    2.674579  0.8735657  2.318528
+##    3    2.648948  0.8712631  2.286394
+##    4    2.558277  0.8773321  2.212995
+##    5    2.514843  0.8769915  2.159416
+##    6    2.571002  0.8731432  2.222589
+##    7    2.536004  0.8760797  2.174530
+##    8    2.601975  0.8688255  2.218778
+##    9    2.567251  0.8695273  2.205948
+##   10    2.624923  0.8633879  2.242223
 ## 
 ## RMSE was used to select the optimal model using the smallest value.
-## The final value used for the model was mtry = 8.</code></pre>
+## The final value used for the model was mtry = 5.</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(my_rf)</code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-51-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">compute_rmse</span>(<span class="kw">predict</span>(my_rf,Test),Test<span class="op">$</span>mpg)</code></pre></div>
-<pre><code>## [1] 3.528304</code></pre>
+<pre><code>## [1] 2.314032</code></pre>
 <p>If you have a questions about what hyper parameters can be tuned for a given method then you can refer to the online <a href="https://topepo.github.io/caret/available-models.html">caret documentation</a> Here is a screenshot of the table of supported models and associated tuning parameters.</p>
 <div class="figure">
 <img src="pics/avmodels.png" />
@@ -750,27 +732,27 @@ my_ranger</code></pre></div>
 ## Resampling results across tuning parameters:
 ## 
 ##   mtry  splitrule   RMSE      Rsquared   MAE     
-##    2    variance    2.587469  0.8725765  2.206936
-##    2    extratrees  2.760076  0.8527945  2.320561
-##    3    variance    2.433877  0.8902695  2.026890
-##    3    extratrees  2.769914  0.8483816  2.376498
-##    5    variance    2.371132  0.9110481  1.909088
-##    5    extratrees  2.636579  0.8651132  2.238023
-##    6    variance    2.447146  0.8977767  1.979690
-##    6    extratrees  2.592253  0.8709607  2.221722
-##    8    variance    2.410702  0.9039417  1.924918
-##    8    extratrees  2.567871  0.8737830  2.178298
-##   10    variance    2.407939  0.8996697  1.944316
-##   10    extratrees  2.576274  0.8755260  2.206755
+##    2    variance    2.527091  0.8572200  2.027040
+##    2    extratrees  2.759980  0.8360668  2.252826
+##    3    variance    2.447411  0.8582046  1.972413
+##    3    extratrees  2.679993  0.8423109  2.214838
+##    5    variance    2.384478  0.8600100  1.959830
+##    5    extratrees  2.605342  0.8372238  2.156159
+##    6    variance    2.396826  0.8576963  1.953060
+##    6    extratrees  2.640583  0.8334352  2.191248
+##    8    variance    2.360934  0.8615626  1.934302
+##    8    extratrees  2.618054  0.8356785  2.166459
+##   10    variance    2.404705  0.8520990  1.959866
+##   10    extratrees  2.494951  0.8501540  2.095189
 ## 
 ## Tuning parameter &#39;min.node.size&#39; was held constant at a value of 5
 ## RMSE was used to select the optimal model using the smallest value.
-## The final values used for the model were mtry = 5, splitrule =
+## The final values used for the model were mtry = 8, splitrule =
 ##  variance and min.node.size = 5.</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">compute_rmse</span>(<span class="kw">predict</span>(my_ranger,Test),Test<span class="op">$</span>mpg)</code></pre></div>
-<pre><code>## [1] 3.337241</code></pre>
+<pre><code>## [1] 2.471708</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(my_ranger)</code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-55-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-23-1.png" width="672" /></p>
 </div>
 </div>
             </section>
@@ -778,8 +760,8 @@ my_ranger</code></pre></div>
           </div>
         </div>
       </div>
-<a href="using-methods-other-than-lm.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="picking-the-best-model.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="training-test-data.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="decision-trees.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

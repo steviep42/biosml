@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 6 Using Methods Other Than lm | Predictive Learning in R</title>
-  <meta name="description" content="Chapter 6 Using Methods Other Than lm | Predictive Learning in R" />
+  <title>Chapter 7 Using Methods Other Than lm | Predictive Learning in R</title>
+  <meta name="description" content="Chapter 7 Using Methods Other Than lm | Predictive Learning in R" />
   <meta name="generator" content="bookdown 0.14 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 6 Using Methods Other Than lm | Predictive Learning in R" />
+  <meta property="og:title" content="Chapter 7 Using Methods Other Than lm | Predictive Learning in R" />
   <meta property="og:type" content="book" />
   
   
@@ -16,7 +16,7 @@
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 6 Using Methods Other Than lm | Predictive Learning in R" />
+  <meta name="twitter:title" content="Chapter 7 Using Methods Other Than lm | Predictive Learning in R" />
   
   
   
@@ -31,7 +31,7 @@
   
   
 <link rel="prev" href="decision-trees.html"/>
-<link rel="next" href="caret-package.html"/>
+<link rel="next" href="picking-the-best-model.html"/>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -129,35 +129,37 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="3.7" data-path="a-motivating-example.html"><a href="a-motivating-example.html#summary"><i class="fa fa-check"></i><b>3.7</b> Summary</a></li>
 </ul></li>
 <li class="chapter" data-level="4" data-path="training-test-data.html"><a href="training-test-data.html"><i class="fa fa-check"></i><b>4</b> Training / Test Data</a><ul>
-<li class="chapter" data-level="4.1" data-path="training-test-data.html"><a href="training-test-data.html#cross-fold-validation-continued"><i class="fa fa-check"></i><b>4.1</b> Cross Fold Validation Continued</a></li>
+<li class="chapter" data-level="4.1" data-path="training-test-data.html"><a href="training-test-data.html#cross-fold-validation"><i class="fa fa-check"></i><b>4.1</b> Cross Fold Validation</a></li>
 <li class="chapter" data-level="4.2" data-path="training-test-data.html"><a href="training-test-data.html#create-a-function-to-automate-things"><i class="fa fa-check"></i><b>4.2</b> Create A Function To Automate Things</a></li>
 <li class="chapter" data-level="4.3" data-path="training-test-data.html"><a href="training-test-data.html#repeated-cross-validation"><i class="fa fa-check"></i><b>4.3</b> Repeated Cross Validation</a></li>
 <li class="chapter" data-level="4.4" data-path="training-test-data.html"><a href="training-test-data.html#bootstrap"><i class="fa fa-check"></i><b>4.4</b> Bootstrap</a></li>
 </ul></li>
-<li class="chapter" data-level="5" data-path="decision-trees.html"><a href="decision-trees.html"><i class="fa fa-check"></i><b>5</b> Decision Trees</a><ul>
-<li class="chapter" data-level="5.1" data-path="decision-trees.html"><a href="decision-trees.html#advantages"><i class="fa fa-check"></i><b>5.1</b> Advantages</a></li>
-<li class="chapter" data-level="5.2" data-path="decision-trees.html"><a href="decision-trees.html#a-classification-example"><i class="fa fa-check"></i><b>5.2</b> A Classification Example</a><ul>
-<li class="chapter" data-level="5.2.1" data-path="decision-trees.html"><a href="decision-trees.html#evaluating-performance"><i class="fa fa-check"></i><b>5.2.1</b> Evaluating performance</a></li>
-<li class="chapter" data-level="5.2.2" data-path="decision-trees.html"><a href="decision-trees.html#tree-splitting"><i class="fa fa-check"></i><b>5.2.2</b> Tree Splitting</a></li>
+<li class="chapter" data-level="5" data-path="caret-package.html"><a href="caret-package.html"><i class="fa fa-check"></i><b>5</b> Caret Package</a><ul>
+<li class="chapter" data-level="5.1" data-path="caret-package.html"><a href="caret-package.html#putting-caret-to-work"><i class="fa fa-check"></i><b>5.1</b> Putting caret To Work</a></li>
+<li class="chapter" data-level="5.2" data-path="caret-package.html"><a href="caret-package.html#back-to-the-beginning"><i class="fa fa-check"></i><b>5.2</b> Back To The Beginning</a></li>
+<li class="chapter" data-level="5.3" data-path="caret-package.html"><a href="caret-package.html#splitting"><i class="fa fa-check"></i><b>5.3</b> Splitting</a></li>
+<li class="chapter" data-level="5.4" data-path="caret-package.html"><a href="caret-package.html#calling-the-train-function"><i class="fa fa-check"></i><b>5.4</b> Calling The train() Function</a></li>
+<li class="chapter" data-level="5.5" data-path="caret-package.html"><a href="caret-package.html#one-size-fits-all"><i class="fa fa-check"></i><b>5.5</b> One Size Fits All</a></li>
+<li class="chapter" data-level="5.6" data-path="caret-package.html"><a href="caret-package.html#hyperparameters-make-an-appearance"><i class="fa fa-check"></i><b>5.6</b> Hyperparameters Make An Appearance</a></li>
 </ul></li>
-<li class="chapter" data-level="5.3" data-path="decision-trees.html"><a href="decision-trees.html#gini-index"><i class="fa fa-check"></i><b>5.3</b> Gini Index</a></li>
-<li class="chapter" data-level="5.4" data-path="decision-trees.html"><a href="decision-trees.html#regression-trees"><i class="fa fa-check"></i><b>5.4</b> Regression Trees</a><ul>
-<li class="chapter" data-level="5.4.1" data-path="decision-trees.html"><a href="decision-trees.html#performance-measure"><i class="fa fa-check"></i><b>5.4.1</b> Performance Measure</a></li>
+<li class="chapter" data-level="6" data-path="decision-trees.html"><a href="decision-trees.html"><i class="fa fa-check"></i><b>6</b> Decision Trees</a><ul>
+<li class="chapter" data-level="6.1" data-path="decision-trees.html"><a href="decision-trees.html#advantages"><i class="fa fa-check"></i><b>6.1</b> Advantages</a></li>
+<li class="chapter" data-level="6.2" data-path="decision-trees.html"><a href="decision-trees.html#a-classification-example"><i class="fa fa-check"></i><b>6.2</b> A Classification Example</a><ul>
+<li class="chapter" data-level="6.2.1" data-path="decision-trees.html"><a href="decision-trees.html#evaluating-performance"><i class="fa fa-check"></i><b>6.2.1</b> Evaluating performance</a></li>
+<li class="chapter" data-level="6.2.2" data-path="decision-trees.html"><a href="decision-trees.html#tree-splitting"><i class="fa fa-check"></i><b>6.2.2</b> Tree Splitting</a></li>
 </ul></li>
-<li class="chapter" data-level="5.5" data-path="decision-trees.html"><a href="decision-trees.html#parameters-vs-hyperparameters"><i class="fa fa-check"></i><b>5.5</b> Parameters vs Hyperparameters</a></li>
-<li class="chapter" data-level="5.6" data-path="decision-trees.html"><a href="decision-trees.html#grid-searching"><i class="fa fa-check"></i><b>5.6</b> Grid Searching</a></li>
-<li class="chapter" data-level="5.7" data-path="decision-trees.html"><a href="decision-trees.html#bagged-trees"><i class="fa fa-check"></i><b>5.7</b> Bagged Trees</a></li>
-<li class="chapter" data-level="5.8" data-path="decision-trees.html"><a href="decision-trees.html#random-forests"><i class="fa fa-check"></i><b>5.8</b> Random Forests</a></li>
+<li class="chapter" data-level="6.3" data-path="decision-trees.html"><a href="decision-trees.html#gini-index"><i class="fa fa-check"></i><b>6.3</b> Gini Index</a></li>
+<li class="chapter" data-level="6.4" data-path="decision-trees.html"><a href="decision-trees.html#regression-trees"><i class="fa fa-check"></i><b>6.4</b> Regression Trees</a><ul>
+<li class="chapter" data-level="6.4.1" data-path="decision-trees.html"><a href="decision-trees.html#performance-measure"><i class="fa fa-check"></i><b>6.4.1</b> Performance Measure</a></li>
 </ul></li>
-<li class="chapter" data-level="6" data-path="using-methods-other-than-lm.html"><a href="using-methods-other-than-lm.html"><i class="fa fa-check"></i><b>6</b> Using Methods Other Than lm</a><ul>
-<li class="chapter" data-level="6.1" data-path="using-methods-other-than-lm.html"><a href="using-methods-other-than-lm.html#parameters-vs-hyperparameters-1"><i class="fa fa-check"></i><b>6.1</b> Parameters vs Hyperparameters</a></li>
-<li class="chapter" data-level="6.2" data-path="using-methods-other-than-lm.html"><a href="using-methods-other-than-lm.html#hyperparameter-tuning"><i class="fa fa-check"></i><b>6.2</b> Hyperparameter Tuning</a></li>
+<li class="chapter" data-level="6.5" data-path="decision-trees.html"><a href="decision-trees.html#parameters-vs-hyperparameters"><i class="fa fa-check"></i><b>6.5</b> Parameters vs Hyperparameters</a></li>
+<li class="chapter" data-level="6.6" data-path="decision-trees.html"><a href="decision-trees.html#grid-searching"><i class="fa fa-check"></i><b>6.6</b> Grid Searching</a></li>
+<li class="chapter" data-level="6.7" data-path="decision-trees.html"><a href="decision-trees.html#bagged-trees"><i class="fa fa-check"></i><b>6.7</b> Bagged Trees</a></li>
+<li class="chapter" data-level="6.8" data-path="decision-trees.html"><a href="decision-trees.html#random-forests"><i class="fa fa-check"></i><b>6.8</b> Random Forests</a></li>
 </ul></li>
-<li class="chapter" data-level="7" data-path="caret-package.html"><a href="caret-package.html"><i class="fa fa-check"></i><b>7</b> Caret Package</a><ul>
-<li class="chapter" data-level="7.1" data-path="caret-package.html"><a href="caret-package.html#putting-caret-to-work"><i class="fa fa-check"></i><b>7.1</b> Putting caret To Work</a></li>
-<li class="chapter" data-level="7.2" data-path="caret-package.html"><a href="caret-package.html#back-to-the-beginning"><i class="fa fa-check"></i><b>7.2</b> Back To The Beginning</a></li>
-<li class="chapter" data-level="7.3" data-path="caret-package.html"><a href="caret-package.html#splitting"><i class="fa fa-check"></i><b>7.3</b> Splitting</a></li>
-<li class="chapter" data-level="7.4" data-path="caret-package.html"><a href="caret-package.html#one-size-fits-all"><i class="fa fa-check"></i><b>7.4</b> One Size Fits All</a></li>
+<li class="chapter" data-level="7" data-path="using-methods-other-than-lm.html"><a href="using-methods-other-than-lm.html"><i class="fa fa-check"></i><b>7</b> Using Methods Other Than lm</a><ul>
+<li class="chapter" data-level="7.1" data-path="using-methods-other-than-lm.html"><a href="using-methods-other-than-lm.html#parameters-vs-hyperparameters-1"><i class="fa fa-check"></i><b>7.1</b> Parameters vs Hyperparameters</a></li>
+<li class="chapter" data-level="7.2" data-path="using-methods-other-than-lm.html"><a href="using-methods-other-than-lm.html#hyperparameter-tuning"><i class="fa fa-check"></i><b>7.2</b> Hyperparameter Tuning</a></li>
 </ul></li>
 <li class="chapter" data-level="8" data-path="picking-the-best-model.html"><a href="picking-the-best-model.html"><i class="fa fa-check"></i><b>8</b> Picking The Best Model</a><ul>
 <li class="chapter" data-level="8.1" data-path="picking-the-best-model.html"><a href="picking-the-best-model.html#using-the-resamples-function"><i class="fa fa-check"></i><b>8.1</b> Using the resamples() function</a></li>
@@ -234,7 +236,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
             <section class="normal" id="section-">
 <div id="using-methods-other-than-lm" class="section level1">
-<h1><span class="header-section-number">Chapter 6</span> Using Methods Other Than lm</h1>
+<h1><span class="header-section-number">Chapter 7</span> Using Methods Other Than lm</h1>
 <p>Let’s look at random forests for this to see if it improves the situation. Note that we aren’t, at least at this point, trying to understand the underlying details and subtleties of any of alternative functions we might use although that is ultimately very important. However, in the interest of motivating action, we’ll defer the conversation until later.</p>
 <p><a href="https://stats.stackexchange.com/questions/330153/predictors-in-random-forest#330154" class="uri">https://stats.stackexchange.com/questions/330153/predictors-in-random-forest#330154</a></p>
 <blockquote>
@@ -302,7 +304,7 @@ imp.features &lt;-<span class="st"> </span><span class="kw">tibble</span>(<span 
 <pre><code>## [1] 2.358311 2.284770 2.343154 2.227046 2.297799 2.377500</code></pre>
 <p>While this is fine, it would be nice if there were an easier way to handle this process. Besides, if we pick another method (e.g. the <strong>ranger</strong> function) then we have to deal with whatever arguments that method requires. This leads to a more general discussion on <strong>model parameters</strong> vs <strong>hyperparameters</strong>.</p>
 <div id="parameters-vs-hyperparameters-1" class="section level2">
-<h2><span class="header-section-number">6.1</span> Parameters vs Hyperparameters</h2>
+<h2><span class="header-section-number">7.1</span> Parameters vs Hyperparameters</h2>
 <p><strong>Model parameters</strong> are things that are generated as part of the modeling process. They are the product or result of model fitting. These might be things like slope and intercept from a linear model.</p>
 <p><strong>Hyperparameters</strong> (sometimes called <strong>metaparameters</strong>) represent information that is supplied in the form of an argument prior the call to the method to generate results. These parameters might not be something one can intelligently set without some experimentation.</p>
 <p>Of course most modeling functions one would call in R have default values for various arguments but this does not mean that the defaults are appropriate for all cases.</p>
@@ -314,7 +316,7 @@ imp.features &lt;-<span class="st"> </span><span class="kw">tibble</span>(<span 
 ## NULL</code></pre>
 </div>
 <div id="hyperparameter-tuning" class="section level2">
-<h2><span class="header-section-number">6.2</span> Hyperparameter Tuning</h2>
+<h2><span class="header-section-number">7.2</span> Hyperparameter Tuning</h2>
 <p>The process of finding the “right” values for these parameters is generally referred to as “hypermarket tuning”. Different values are supplied for each invocation of a method (as we did in the above example) to see the effect on the model. We might do this many times to arrive at the optimal parameter set to produce a model that offers the “best” explanatory and predictive power.</p>
 <p>Just to review - things like coefficients and residuals are parameters that are generated by a call to the <strong>lm</strong> function. They don’t actually exist until the function does some work. However, the “weights” parameter referred to in the help page for the <strong>lm</strong> function is a <strong>hyperparameter</strong> since one sets this (or accepts the default value) prior to running the command. So <strong>hyperparameters</strong> are specific to whatever algorithm (and supporting R function) you are using. Concepts such as coefficients and intercept, however, are parameters that would be generated by any method that implements linear regression.</p>
 <p>More generally, what if we wanted to use other functions to do some predicting ? There are some reasonable alternatives to the humble <strong>lm</strong> function. But they would require some investigation prior to use to understand what parameters are supported by those respective functions.</p>
@@ -355,7 +357,7 @@ imp.features &lt;-<span class="st"> </span><span class="kw">tibble</span>(<span 
         </div>
       </div>
 <a href="decision-trees.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="caret-package.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="picking-the-best-model.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

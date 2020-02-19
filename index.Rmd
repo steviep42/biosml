@@ -656,6 +656,286 @@ print("Summary of CV")
 summary(repeated_cv_rmse)
 ```
 
+# Caret Package
+
+By now you are probably fatigued with understanding the details of writing the code to split data, doing Cross Validation, storing the results, and looking at descriptive stats associated with the resulting RMSE. And this is all before considering the various parameters associated with whatever method we wish to implement. Each function has its own set of requirements which may not extend to other functions. What we need (well, what we would like) is a framework to streamline this process and automate it as much as possible but not at the expense of understanding the results. 
+
+The [**caret**](https://topepo.github.io/caret/index.html) (**C**lassification **A**nd **R**egression **T**raining) package provides a uniform interface for calling different algorithms while simplifying the data splitting and RMSE calculation. It supports many different model types and also provides the ability to tune hyper parameters. Here are some of the features:
+
+  - Streamlined and consistent syntax for more than 
+    200 different models
+  - Can implement any of the 238 different methods using a single function
+  - Easy data splitting to simplify the creation of train / test pairs
+  - Realistic model estimates through built-in resampling
+  - Convenient feature importance determination
+  - Easy selection of different performance metrics (e.g. "ROC","Accuracy", "Sensitivity")
+  - Automated and semi-automated parameter tuning
+  - Simplifed comparison of different models
+
+Note that **caret** provides a nice wrapper around the various modeling functions. Since each underlying model is itself a standalone R package and associated set of functions you can always call them directly should you prefer that approach. That's what we have been doing in the earlier part of this text. 
+
+
+## Putting caret To Work
+
+It's easy to get lost in all that we have been doing so let's review what the typical predictive modeling workflow will look like:
+
+ 1) Data Import (.csv., extraction from a database, etc)
+ 2) Some Data Visualization 
+ 3) Data Prep (We haven't done any of this yet)
+        - Missing, imputation
+        - Scaling 
+        - Create dummy variables / one hot encoding
+        - Dimensionality Reduction
+        
+ 3) Data Splitting (training / test)
+        - Determine split ration
+        - K-Fold Cross Validation (repeated)
+        
+ 4) Modeling / Prediction
+        
+ 5) Evaluation 
+ 
+To do step 5 requires some predefined idea of a performance metric. We have been using RMSE and will continue to do so as we rework some of the previous examples using the caret package. 
+
+## Back To The Beginning
+
+It is implied that in predictive modeling the ultimate goal is to generate a model that could be reasonably applied to new data. As we have learned, it is best to train any model on a data set that has been (re)sampled in some way (e.g. K Fold CV) which should help provide a more realistic estimate of "out of sample" error. 
+
+In our earliest example we tried to predict the MPG from mtcars using a basic linear modeling function. The caret package provides a uniform way to do this which allows us to easily substitute in alternative functions without having to majorly change our code. 
+
+We can call the **train** function in such a way as to pass in any arguments that are specific to a given method though in a way we could do for other methods. We can also tell the **train** function that we want to evaluate RMSE as a performance measure. That is, it will "know" that our primary performance measure for a model is RMSE. Before we do that, however, we'll make a test / train pair. The **caret** package provides ways to do that. 
+
+## Splitting
+
+**createDataPartition** can be used to create test and train data splits according to some proportion. There is a function called **createFolds** can be used to generate balanced cross–validation groupings from a set of data. **createResample** can be used to make simple bootstrap samples. For now, we'll just stick with **createDataPartition** for creating a test/train pair.
+
+```{r createdata}
+idx <- createDataPartition(mtcars$mpg, p = .8, 
+                                  list = FALSE, 
+                                  times = 1)
+head(idx)
+
+Train <- mtcars[ idx,]
+Test  <- mtcars[-idx,]
+
+#
+nrow(Train)
+nrow(Test)
+```
+
+## Calling The train() Function
+
+To actually create a model involves use of the **train** function which is the premier function in the **caret** package. It does what it name suggests - train models. Note that we tell it:
+
+  1) What we are trying to predict (a formula)
+  2) What our data set is (e.g. Train)
+  3) The desired method ("lm")
+     - Note that this method name MUST match an existing R modeling function
+  4) A desired scoring metric. In this case we seek to minimize RMSE on 
+     future predictions 
+
+```{r lmftrain}
+lm_fit <- train(mpg~wt,
+                data=Train,
+                method="lm",
+                metric="RMSE")
+```
+
+We get back a single object that contains a lot of information that could help us figure out if the model is worth anything. But first, just type the name of fit object to see what you can see. This shows us information that has been derived from some re sampling activity across a number of bootstrapped samples. 
+
+```{r printlmfit}
+lm_fit
+summary(lm_fit)
+```
+
+Note that the summary of the model "summary(lm_fit)" returns the same information that would be returned had we used the **lm** function directly as we did in the previous section. The point is that the **train** function doesn't not seek to replace or obscure the resulting model in any way. We can always get whatever information we need from it.  So let's apply this model to the test data frame
+
+```{r rmsef}
+compute_rmse(predict(lm_fit,Test),Test$mpg)
+```
+
+There is more here than meets the eye. 
+
+```{r nameslmfit}
+names(lm_fit)
+```
+
+
+```{r lmfitctrl}
+str(lm_fit$control,1)
+```
+
+Check out the some of the model characteristics
+
+```{r}
+summary(lm_fit)
+summary(lm_fit$finalModel)$r.squared
+```
+
+We can go right to the final Model which contains the information for the 
+
+```{r lmfit1}
+lm_fit$finalModel
+```
+
+So it looks like caret did some re sampling for us by default. Actually, it was boostrap sampling that we discussed earluer. However, we can specify cross fold validation if we wanted to. This requires a slightly more involved form of the **train** function.
+
+You can influence the **train** function by passing a "special" list / object to it via the **trControl** argument. This gets a bit confusing because the primary function to train models is called **train** and the command used to create the special is called **trainControl** and the argument in the **train** function is called **trControl**. With use, it becomes easier to remember the difference though at first it's confusing. 
+
+Here we train the model as before but specifically requesting a Cross Fold Validation method of 10 times. We are requesting verbose output. 
+
+
+```{r cvcon1}
+control <- trainControl(method = "cv",       # Cross Fold
+                        number = 5,          # 5 Folds
+                        verboseIter = TRUE)  # Verbose
+# Train the model
+my_lm <- train(
+  mpg ~ ., 
+  Train,
+  method = "lm",
+  trControl = control
+)
+```
+
+So the object returned from caret gives us an estimate of how well the model will perform (based on RMSE) for out of sample data. 
+
+```{r}
+my_lm
+compute_rmse(predict(my_lm,Test),Test$mpg)
+```
+
+We could also repeat the 5 times CV validation an arbitrary number of times to generate greater confidence in the RMSE estimates returned by the model. Remember, a major reason for using K Fold validation is to better estimate the out of sample error by holding out a portion of the data frame being trained upon. 
+
+
+```{r}
+control <- trainControl(method = "repeatedcv",  # Repeated Cross Fold
+                        number  = 3,          # 5 Folds
+                        repeats = 3,         # Repeats
+                        verboseIter = TRUE)  # Verbose
+
+my_lm <- train(
+  mpg ~ ., 
+  Train,
+  method = "lm",
+  trControl = control
+)
+
+compute_rmse(predict(my_lm,Test),Test$mpg)
+```
+
+## One Size Fits All
+
+So this is where things get interesting. If we wanted to use another method such as Random Forests, we do NOT have to change much at all. We just provide the name of the desired method which in this case, is **ranger** which is a function we've already seen. 
+
+
+```{r range11}
+control <- trainControl(method = "cv", 
+                        number = 5)
+
+my_ranger <- train(
+  mpg ~ ., 
+  Train,
+  method = "ranger",
+  trControl = control
+)
+
+my_ranger
+
+compute_rmse(predict(my_ranger,Test),Test$mpg)
+```
+
+## Hyperparameters Make An Appearance
+
+This model returns more information than say the **lm** function because this method uses something called "hyperparameters" which are arguments to a given method that gets set before you call the method. In this case there are two hyperparameters called **mtry** and **splitrule** that assume default variables if we don't supply values.
+
+We can get a plot of how the RMSE and R squared value varied with different values of **mtry**. Here we see that an mtry value of 6 randomly selected columns / variables provides the lowest RMSE. 
+
+```{r}
+ggplot(my_ranger) + theme(legend.position = "top")
+```
+
+
+We can use the **tuneLength** argument to tell the **train** function to use N different values of **mtry** which is a **hyperparameter** to the randomForest package. The value relates to the number of columns in the data frame. We have 11 total and we are trying to predict one of them (mpg). So we can tell the **train** function to randomly select N variables (up to 10) when a tree is split. 
+
+
+```{r}
+my_ctrl <- trainControl(
+    method = "cv", 
+    number = 5,
+    verboseIter = TRUE
+  )
+
+my_rf <- train(
+  mpg ~ ., 
+  Train,
+  method = "rf",
+  tuneLength = 9,    # We'll use 9 different values
+  trControl = my_ctrl
+)
+
+my_rf
+plot(my_rf)
+
+compute_rmse(predict(my_rf,Test),Test$mpg)
+```
+
+If you have a questions about what hyper parameters can be tuned for a given method then you can refer to the online [caret documentation](https://topepo.github.io/caret/available-models.html) Here is a screenshot of the table of supported models and associated tuning parameters. 
+
+![](./pics/avmodels.png)
+
+
+Another way to do this within the caret package itself is that if you already know the abbreviation for the specific method you wish to use (e.g. "rf") then you can use some built in functions to help you. Remember that **caret** does not replace or rewrite functions, it merely provides a nice wrapper around them. Since each underlying model is it a standalone R package and associated set of functions you can always call them directly. 
+
+```{r}
+modelLookup("rf")
+```
+
+Here we get the hyper parameters for the **ranger** function. We see that it has three hyper parameters that could be varied in some way to influence a final model.
+
+
+```{r}
+modelLookup("ranger")
+```
+
+If you just want a list of all the models supported by caret then do something like this:
+
+```{r}
+models <- modelLookup()[,1:3]
+nrow(models)
+
+# Search for a Model
+models[models$model=="rf",]
+models[models$model=="ranger",]
+
+```
+
+So in the case of the **ranger** function there are actually three hyper parameters that could be tuned. 
+
+```{r}
+my_ctrl <- trainControl(
+    method = "cv", 
+    number = 3,
+    verboseIter = FALSE 
+  )
+
+my_ranger <- train(
+  mpg ~ ., 
+  Train,
+  method = "ranger",
+  tuneLength = 6,    
+  trControl = my_ctrl
+)
+
+my_ranger
+
+compute_rmse(predict(my_ranger,Test),Test$mpg)
+
+plot(my_ranger)
+```
+
+
+
 
 # Decision Trees
 
@@ -1340,290 +1620,6 @@ print("random Forest arguments")
 args(randomForest)
 ```
 
-
-# Caret Package
-
-By now you are probably fatigued with understanding the details of writing the code to split data, doing Cross Validation, storing the results, and looking at descriptive stats associated with the resulting RMSE. And this is all before considering the various parameters associated with whatever method we wish to implement. Each function has its own set of requirements which may not extend to other functions. What we need (well, what we would like) is a framework to streamline this process and automate it as much as possible but not at the expense of understanding the results. 
-
-The [**caret**](https://topepo.github.io/caret/index.html) (**C**lassification **A**nd **R**egression **T**raining) package provides a uniform interface for calling different algorithms while simplifying the data splitting and RMSE calculation. It supports many different model types and also provides the ability to tune hyper parameters. 
-
-While being able to understand how to work with each specific function individually is a worthy goal, you might consider using caret to help you get up and running quickly. It is still your responsibility to know what the results are telling you - there is no magic here though the process of running different models and managing data is greatly simplified by using this package (at least I think so).
-
-Note that **caret** provides a nice wrapper around the various modeling functions. Since each underlying model is itself a standalone R package and associated set of functions you can always call them directly should you prefer that approach. That's what we have been doing in the earlier part of this text. 
-
-
-## Putting caret To Work
-
-It's easy to get lost in all that we have been doing so let's review what the typical predictive modeling workflow will look like:
-
- 1) Data Import (.csv., extraction from a database, etc)
- 2) Data Visualization 
- 3) Data Prep 
-        - Missing, imputation
-        - Scaling 
-        - Create dummy variables / one hot encoding
-        - Dimensionality Reduction
-        
- 3) Data Splitting (training / test)
-        - Determine split ration
-        - K-Fold Cross Validation (repeated)
-        
- 4) Modeling 
-        
- 5) Model Evaluation 
- 
-To do step 5 requires some predefined idea of a performance metric. We have been using RMSE and will continue to do so as we rework some of the previous examples using the caret package. 
-
-## Back To The Beginning
-
-It is implied that in predictive modeling the ultimate goal is to generate a model that could be reasonably applied to new data. As we have learned, it is best to train any model on a data set that has been (re)sampled in some way (e.g. K Fold CV) which should help provide a more realistic estimate of "out of sample" error. 
-
-In our earliest example we tried to predict the MPG from mtcars using a basic linear modeling function. The caret package provides a uniform way to do this which allows us to easily substitute in alternative functions without having to majorly change our code. We can call the **train** function in such a way as to pass in any arguments that are specific to a method though in a way that allows for minimal alteration. We can also tell the **train** function that we want to evaluate RMSE as a performance measure. That is, it will "know" that our primary performance measure for a model is RMSE. Before we do that, however, we'll make a test / train pair. The **caret** package provides ways to do that. 
-
-## Splitting
-
-**createDataPartition** can be used to create test and train data splits according to some proportion. There is a function called **createFolds** can be used to generate balanced cross–validation groupings from a set of data. **createResample** can be used to make simple bootstrap samples. For now, we'll just stick with **createDataPartition** for creating a test/train pair.
-
-```{r createdata}
-idx <- createDataPartition(mtcars$mpg, p = .8, 
-                                  list = FALSE, 
-                                  times = 1)
-head(idx)
-
-Train <- mtcars[ idx,]
-Test  <- mtcars[-idx,]
-
-#
-nrow(Train)
-nrow(Test)
-```
-To actually create a model involves use of the **train** function which is the premier function in the **caret** package. It does what it name suggests - train models. Note that we tell it:
-
-  1) What we are trying to predict (a formula)
-  2) What our data set is (e.g. Train)
-  3) The desired method ("ml")
-     - Note that this method name MUST match an existing R modeling function
-  4) A desired scoring metric. In this case we seek to minimize RMSE on 
-     future predictions 
-
-```{r lmftrain}
-lm_fit <- train(mpg~wt,
-                data=Train,
-                method="lm",
-                metric="RMSE")
-```
-
-We get back a single object that contains a lot of information that could help us figure out if the model is worth anything. But first, just type the name of fit object to see what you can see. This shows us information that has been derived from some re sampling activity across a number of bootstrapped samples. 
-
-```{r printlmfit}
-lm_fit
-summary(lm_fit)
-```
-
-So let's apply this model to the test data frame
-
-```{r rmsef}
-compute_rmse(predict(lm_fit,Test),Test$mpg)
-```
-
-There is more here than meets the eye. 
-
-```{r nameslmfit}
-names(lm_fit)
-```
-
-
-```{r lmfitctrl}
-str(lm_fit$control,1)
-```
-
-Check out the some of the model characteristics
-
-```{r}
-summary(lm_fit)
-summary(lm_fit$finalModel)$r.squared
-```
-
-We can go right to the final Model which contains the information for the 
-
-```{r lmfit1}
-lm_fit$finalModel
-```
-
-So it looks like caret did some re sampling for us by default. However, we can specify cross fold validation if we wanted to. This requires a more involved form of the **train** function.
-
-You can influence the **train** function by passing a "special" list to it via the **trControl** argument. This gets a bit confusing because the primary function to train models is called **train** and the command used to create the special is called **trainControl** and the argument in the **train** function is called **trControl**. With use, it becomes easier to remember the difference though at first it's confusing. 
-
-Here we train the model as before but specifically requesting a Cross Fold Validation method of 10 times. We are requesting verbose output. 
-
-
-```{r}
-my_lm <- train(
-  mpg ~ ., 
-  Train,
-  method = "lm",
-  trControl = trainControl(
-    method = "cv", 
-    number = 5,
-    verboseIter = TRUE
-  )
-)
-```
-
-So the object returned from caret gives us an estimate of how well the model will perform (based on RMSE) for out of sample data. 
-
-```{r}
-my_lm
-compute_rmse(predict(my_lm,Test),Test$mpg)
-```
-
-We could also repeat the 5 times CV validation an arbitrary number of times to generate greater confidence in the RMSE estimates returned by the model. Remember, a major reason for using K Fold validation is to better estimate the out of sample error by holding out a portion of the data frame being trained upon. 
-
-
-```{r}
-my_lm <- train(
-  mpg ~ ., 
-  Train,
-  method = "lm",
-  trControl = trainControl(
-    method = "repeatedcv",    # Note "rpeatedcv"
-    number = 5,
-    repeats = 5
-  )
-)
-
-compute_rmse(predict(my_lm,Test),Test$mpg)
-```
-
-As a matter of convenience, you can create a variable to hold
-the content of  **trainControl** and then pass that to the function. 
-This is subjective and either approach is fine. 
-
-```{r}
-my_ctrl <- trainControl(
-    method = "cv", 
-    number = 5,
-    verboseIter = TRUE
-  )
-
-my_lm <- train(
-  mpg ~ ., 
-  Train,
-  method = "lm",
-  trControl = my_ctrl
-)
-
-compute_rmse(predict(my_lm,Test),Test$mpg)
-```
-
-## One Size Fits All
-
-So this is where things get interesting. If we wanted to use another method such as Random Forests, we do NOT have to change much at all. We just provide the name of the desired method which in this case, is **rf**. Of course, there might be parameters specific to the new method but we'll hold off that for now.
-
-
-```{r}
-my_ctrl <- trainControl(
-    method = "cv", 
-    number = 5,
-    verboseIter = TRUE
-  )
-
-my_rf <- train(
-  mpg ~ ., 
-  Train,
-  method = "rf",
-  trControl = my_ctrl
-)
-
-my_rf
-
-compute_rmse(predict(my_rf,Test),Test$mpg)
-```
-
-We can get a plot of how the RMSE and R squared value varied with different values of **mtry**. Here we see that an mtry value of 6 randomly selected columns / variables provides the lowest RMSE. 
-
-```{r}
-ggplot(my_rf) + theme(legend.position = "top")
-```
-
-
-We can use the **tuneLength** argument to tell the **train** function to use N different values of **mtry** which is a **hyperparameter** to the randomForest package. The value relates to the number of columns in the data frame. We have 11 total and we are trying to predict one of them (mpg). So we can tell the **train** function to randomly select N variables (up to 10) when a tree is split. 
-
-
-```{r}
-my_ctrl <- trainControl(
-    method = "cv", 
-    number = 5,
-    verboseIter = TRUE
-  )
-
-my_rf <- train(
-  mpg ~ ., 
-  Train,
-  method = "rf",
-  tuneLength = 9,    # We'll use 9 different values
-  trControl = my_ctrl
-)
-
-my_rf
-plot(my_rf)
-
-compute_rmse(predict(my_rf,Test),Test$mpg)
-```
-
-If you have a questions about what hyper parameters can be tuned for a given method then you can refer to the online [caret documentation](https://topepo.github.io/caret/available-models.html) Here is a screenshot of the table of supported models and associated tuning parameters. 
-
-![](./pics/avmodels.png)
-
-
-Another way to do this within the caret package itself is that if you already know the abbreviation for the specific method you wish to use (e.g. "rf") then you can use some built in functions to help you. Remember that **caret** does not replace or rewrite functions, it merely provides a nice wrapper around them. Since each underlying model is it a standalone R package and associated set of functions you can always call them directly. 
-
-```{r}
-modelLookup("rf")
-```
-
-Here we get the hyper parameters for the **ranger** function. We see that it has three hyper parameters that could be varied in some way to influence a final model.
-
-
-```{r}
-modelLookup("ranger")
-```
-
-If you just want a list of all the models supported by caret then do something like this:
-
-```{r}
-models <- modelLookup()[,1:3]
-nrow(models)
-
-# Search for a Model
-models[models$model=="rf",]
-models[models$model=="ranger",]
-
-```
-
-So in the case of the **ranger** function there are actually three hyper parameters that could be tuned. 
-
-```{r}
-my_ctrl <- trainControl(
-    method = "cv", 
-    number = 3,
-    verboseIter = FALSE 
-  )
-
-my_ranger <- train(
-  mpg ~ ., 
-  Train,
-  method = "ranger",
-  tuneLength = 6,    
-  trControl = my_ctrl
-)
-
-my_ranger
-
-compute_rmse(predict(my_ranger,Test),Test$mpg)
-
-plot(my_ranger)
-```
 
 
 # Picking The Best Model
