@@ -8,32 +8,81 @@ output:
   #bookdown::pdf_book: default
 ---
 
-```{r initialload,echo=FALSE}
+```{r initialload,echo=FALSE,message=FALSE}
 suppressMessages(library(tidyverse))
 suppressMessages(library(rpart))
 suppressMessages(library(caret))
 suppressMessages(library(pls))
 suppressMessages(library(mlbench))
+library(DataExplorer)
 ```
 
 # Preface
 
-NOTE: This document is in progress and is in *"draft status"*
+Predictive Modeling is a type of Machine Learning which itself is a sub branch of Artifical Intelligence. The [following graphic](https://blogs.nvidia.com/blog/2016/07/29/whats-difference-artificial-intelligence-machine-learning-deep-learning-ai/
+) provides us with some history of these domains. This is helpful if you are trying to orient yourself in the world of analytics and machine learning. Note that AI has been around for squite some time. The Wikipedia definition of AI is:
 
-This content exists for two main reasons:
+> The study of "intelligent agents": any device that perceives its environment and takes 
+> actions that maximize its chance of successfully achieving its goals
 
-1) I wish to motivate use of the **caret** package. 
+![](./PICS/histofai.png)
 
-Another way to say this is that I'm trying to "scare" you into using **caret** because it provides conveniences and capabilities that help you focus on building models over trying to understand the sometimes arcane syntax associated with the individual modeling functions in R. There is nothing wrong with being able to go deep into a specific method in terms of parameter tuning though you should first start learning how to build models after which we'll discuss appropriate assessment strategies.
+## Machine Learning
 
-Of course, there is absolutely no requirement for anyone to use the **caret** package but it does provide uniform access to over 200 modeling methods. All one needs to do is have some data, a metric by which to score (e.g. RMSE, AUC, logloss), and a method of interest. 
+Machine Learning relies upon "patterns and inference"" to "perform a specific task without using explicit instructions". It is a form of Applied AI that attempts to automatically learn from experience without being explicitly programmed. Think of Preditive Modeling as a subset of this which falls into two categories:
 
-A cool feature of the **caret** package is that it provides access to methods for helping identify how well your selected model might apply to "out of sample" data. Additionally, you can see how well it comapres to other models. 
+**Supervised**
 
-2) This content exists is to provide a rapid introduction to Machine Learning with R. 
+Algorithms that build a model on a set of data containing both the inputs and the desired outputs (“labels” or known numeric values). When you want to map input to known output labels. Build a model that, when applied to “new” data, will hopefully predict the correct label. 
+
+![](./PICS/super_class_regress.png)
+
+Some common techniques for Supervised learning include: Generalized Linear Models (GLM),
+Logistic Regression, Random Forests, Decision Trees, Neural Networks, Multivariate Adaptive Regression Splines (MARS), and K Nearest Neighbors. 
+
+
+**Unsupervised**
+
+Algorithms that take a set of data that contains only inputs, and find structure in the data (e.g. clustering of data points) 
+
+![](./PICS/unsupervised_class.png){width=500}
+
+Some common techniques for unsupervised learning include: hierarchical clustering, k-means
+clustering, mixture models, DBSCAN, Association Rules, Neural Networks
+
+## Predictive Modeling
+
+This lecture is concerned primarily with Predictive Modeling. Some examples of Predictive Modeling include:
+
+  * Predict current CD4 cell count of an HIV-positive patient using genome sequences
+
+  * Predict Success of Grant Applications
+
+  * Use attributes of chemical compounds to predict likelihood of hepatic injury
+
+  * How many copies of a new book will sell ?
+
+  * Will a customer change Internet Service Providers ? 
+
+In this domain there are generally two types of predictive models.
+
+## In-Sample vs  Out-Of-Sample Data 
+
+The goal of predictive model is to generate models that can generalize to new data. It would be good if any model we generate could provide a good estimate of out of sample error. It's easy to generate a model on an entire data set (in sample data) and then turn around and use that data for prediction. But how will it perform on new data ? Haven't we just over trained our model ? 
+
+## Performance Metrics
+
+For either case (regression vs classification) we need some type of metric or measure to let us know how well a given model will work on new or unseen data - also known as "out of sample" data. for Classification problems we look at things like "sensitivity", "specificity", "accuracy", and "Area Under Curve". For Quantitative outcomes, we look at things like Root Mean Square Error (RMSE) or Mean Absolute Error (MAE). The selection of metric will frequently depend on your domain of interest. We'll use a couple of different methods. 
+
+## Black Box
+
+The good news is that you can treat building predictive models as a "Black Box".
+The bad news is that you can treat building predictive models as a "Black Box".
+
+![](./PICS/black_box.png)
+
 
 It's better to get up and running with building some models than it is to sit back and read how to do it. The process of assessing models and diagnosing them can be an in depth process thus I don't wish to understate what it takes to do that. However, moving forward with some of the basic mechanics and concepts is good. One can always work with the individual methods or go to Section 6 to start with caret. The larger message is to get busy getting your hands dirty. 
-
 
 # Predictive / Supervised Learning
 
@@ -158,27 +207,24 @@ pairs(mtcars[,c(1,3:7)])
 Let's look at some correlations to see how we might predict MPG as a function of other variables in the data set. Note that this isn't an in-depth modeling lecture so we will fast track over deep discussions on how to fully evaluate and diagnose a model emerging from a specific method - although that is important. But, in the interest of motivating a work flow, we'll simplify some of those discussions for now.
 
 
-```{r corrplot1}
-suppressMessages(library(corrplot))
-mydata.cor = cor(mtcars[,c(1,3:7)], method = c("spearman"))
-corrplot(mydata.cor)
+```{r corrplot1,message=FALSE}
+library(DataExplorer)
+plot_correlation(mtcars)
 ```
 
 There are some strong correlations here and perhaps a case could be made for collinearity but we aren't going to get into that right now. We also have variables on different measurement scales but, again, we'll hold off dealing with that for the moment. 
 
-```{r corrplot2}
-corr.df <- as.data.frame(as.table(mydata.cor))
-cdf <- corr.df %>% 
-  filter(Freq != 1.0 & abs(Freq) > 0.5) %>%
-  arrange(desc(abs(Freq)))
+As a preview of the **caret** package, we'll use the **findCorrelation** function to help identify variables that are correlated above a certain threshold. Here, we'll identify variables that are correlated at a level of 0.7 or above. This function takes a correlation matrix as input. We have a numer of variables we might consider removing but, again, we'll hold off on that for now. 
 
-cdf[seq(1,nrow(cdf),2),] %>%  
-  arrange(desc(abs(Freq)))
+```{r corrplot2}
+caret::findCorrelation(cor(mtcars),
+                       cutoff = 0.7,
+                       names = TRUE)
 ```
 
 ## Building A Model - In Sample Error
 
-So now we will use the above information to build a linear model using the mtcars data frame. We'll turn around and use the same exact data frame to test our model - Any resulting error we see will be **in sample** error and will not generalize well to new data. The model will not help us anticipate any **out of sample error**. 
+So now we will use the above information to build a linear model using the mtcars data frame. We'll turn around and use the same exact data frame to test our model - Any resulting error we see will be **in sample** error and will not generalize well to new data. However, the model will not help us anticipate any **out of sample error**. 
 
 ```{r mtcarslm}
 data(mtcars)
@@ -220,7 +266,7 @@ RMSE = \sqrt\frac{\sum_i^n(P_i-O_i)^2}{n}
 \]
 
 
-```{r}
+```{r rmsecal}
 errors <- training_preds-mtcars$mpg
 training_rmse   <- sqrt(mean(errors^2))
 print(training_rmse)
@@ -228,7 +274,7 @@ print(training_rmse)
 
 We might even want to create a function to do this for future use:
 
-```{r}
+```{r rmsedef}
 # Lets define a rmse function for future use
 compute_rmse <- function(preds,known) {
   errors <- preds-known
@@ -255,7 +301,7 @@ Remember - we want to minimize the RMSE. The first 21 rows are outlined in green
 ![](./pics/mtcars.png)
 
 
-```{r}
+```{r lmodmt1}
 lm_model_train <- lm(myform,data=mtcars[1:21,])
 
 # Do the prediction on the test set
@@ -272,7 +318,7 @@ We trained the model on the first 21 rows of the data frame which might contain 
 
 One thing we could do is to experiment with another split of the data, perhaps in a different proportion (e.g. 80/20) or maybe even a series of splits to see if we can get an idea of how widely the RMSE varies. Here we create a sample of 80% of mtcars to create a training set.  
 
-```{r}
+```{r lmodmt2}
 # Shuffle the row numbers of the data frame
 
 (train_index <- sample(1:nrow(mtcars),nrow(mtcars)*.80))
@@ -291,7 +337,7 @@ nrow(test_df)
 
 Now do the modeling
 
-```{r}
+```{r lmodmt3}
 train_model_lm <- lm(myform, data=train_df)
 
 # Test the model on the test / holdout data frame
@@ -305,10 +351,310 @@ test_pred  <- predict(
 (test_rmse <- compute_rmse(test_pred,test_df$mpg))
 ```
 
-What we have done here is to sample some portion of the original data frame to use as a training set while holding out the rest of the data to use as a test data  to see how well our model performed. We could repeat this (re)sampling activity multiple times to better train our data over different segments or "folds" of data so any model we ultimately generate will "learn" as much from the data as it can without modeling any "noise". There are various methods for doing this including K-Fold Cross Validation and Bootstrap Resampling. Let's dig in a little deeper into these methods because they help us build models that might offer more robust performance when applied to new data. 
+## Other Methods ? 
+
+Could we improve the situation by using another modeling method ? This would be something that we could try with out much effort. We just have to identify an appropriate method. Let's look at a Random Forest method called **ranger**. 
 
 
+```{r ranger1}
+library(ranger)
 
+# Call the ranger function 
+my_rpart <- ranger(mpg ~ ., data = train_df)
+
+# Make some Predictions
+pred <- predict(my_rpart, test_df)
+my_rpart_preds <- pred$predictions
+
+# What is the RMSE 
+compute_rmse(my_rpart_preds,test_df$mpg)
+```
+
+Well the computed RMSE with the **ranger** method seems to be better in the sense that it is smaller than with the **lm** function. We might be on to something or maybe we just got lucky. We need a better way to proceed - something with more rigor. 
+
+## Summary
+
+Aside from trying an alternative method to **lm** what we have done here is to sample some portion of the original mtcars data frame to use as a training set while holding out the rest of the data to use as a test data  to see how well our model performed. We could repeat this (re)sampling activity multiple times to better train our data over different segments or "folds" of data so any model we ultimately generate will "learn" as much from the data as it can without modeling any "noise". 
+
+There are various methods for doing this including K-Fold Cross Validation and Bootstrap Resampling. Let's dig in a little deeper into these methods because they help us build models that might offer more robust performance when applied to new data. 
+
+
+# Training / Test Data
+
+https://www.stat.berkeley.edu/~aldous/157/Papers/shmueli.pdf
+
+> Predictive power is assessed using metrics computedfrom  a  holdout  set  or  using  cross-validation  (Stone,1974; Geisser,1975)
+
+> Testing the procedure on the data that gaveit birth is almost certain to overestimate performance”(Mosteller  and  Tukey,1977).
+
+Let's extend this idea of training and test splits. Remember, our goal is to generate a robust model that better estimates out-of-sample error. We can do this by resampling our data set in a way that allows us to learn from the data but not so much so that it follows the data set too closely.
+
+We can take a single data set and partition / split it into a number of train / test subsets. We just did that in the earlier section but we only did it once. If we do this a number of times we hope we are training our model more effectively.
+
+What would the RMSE look like if we created say K number of subsets of the data frame and selectively held out each of the K subsets, built a model on the combined remaining subsets, and then tested the model on the holdout ? We would then average the RMSE to get an idea of its variation. The series of sequential steps would be as follows:
+
+    Subset the data frame into k groups 
+    For each subset:
+       Consider the subset as a "hold out"" or test data set
+       Combine the remaining subsets as a training data set
+       Fit a model on the combined training set 
+       Evaluate the model using the holdout test set
+       Save the evaluation score (e.g. RNSE)
+    
+    Summarize evaluation score (e.g. mean of RMSE)
+
+
+This is called K-Fold Cross Validation. Here is the general idea in illustrated form relative to mtcars. Assume we want 4 folds. We would divide the data frame into 4 folds of 8 records each. The first model would be built using Fold 1 as the holdout / test data set **after** first combining Folds 2,3 and 4 into a training set set
+
+
+![](./pics/cv1.png)
+
+So the second iteration would then take the second fold as the holdout / test data frame and combine Folds 1,3, and 4 into a training data frame.
+
+
+![](./pics/cv2.png)
+
+
+```{r}
+# Generates Some Folds
+
+num_of_folds <- 8
+
+# This generates 8 groups of 4 indices such that each
+# group has unique observations. No observation is used
+# more than once - although we could use bootstrapping
+
+folds <- split(sample(1:nrow(mtcars)),1:num_of_folds) 
+
+# We should have 32 indicies across the 8 groups 
+sum(sapply(folds,length))
+
+```
+
+Check out the folds to get a better understanding of what is going on. We generated a list that has 8 elements each of which holds a 4 element vector corresponding to indices for records in the mtcars data frame. 
+
+
+```{r}
+folds
+```
+
+Again, each list element has the indices of four unique observations from the data frame. We have eight folds with four elements each for a total of 32 numbers corresponding to row numbers from the mtcars data frame. 
+
+## Cross Fold Validation 
+
+To implement the cross validation, we will create a processing loop that will execute once for each of the 8 folds. During each execution of the loop we will create a model using data combined from all folds **except** the fold corresponding to the current loop number (e.g, 1, 2, .. 8).
+
+Once the model is built we then test it on the fold number corresponding to the current loop number. 
+
+So now we can create some lists to contain the models that we make along withe the associated predictions, errors and computed RMSE. We we can inspect any of the intermediate results after the fact to validate our work or look more closely at any specific result. 
+
+
+```{r modloop1}
+# Next we setup some blank lists to stash results
+folddf    <- list()  # Contains folds
+modl      <- list()  # Hold each of the K models
+predl     <- list()  # Hold rach of the K predictions
+rmse      <- list()  # Hold the computed rmse for a given model
+
+# Now, for each of the 8 subgroups of holdout data we will 
+# create a lda model based on all the data *except* the 
+# holdout group
+
+for (ii in 1:length(folds)) {
+  
+  # This list holds the actual model we create for each of the 
+  # 10 folds
+  
+  modl[[ii]] <- lm(formula = myform, 
+                   data = mtcars[-folds[[ii]],] 
+                )
+  
+  # This list will contain / hold the models build on the fold
+  
+  predl[[ii]]  <- predict(modl[[ii]],
+                          newdata=mtcars[folds[[ii]],],
+                          type="response")
+  
+  # This list will hold the results of the confusion matrix 
+  # function. This obkect will contain info on the 
+  # accuracy,  sensitivity/recall, specificity
+  # and so on for each model per fold
+  
+    errors <- predl[[ii]]-mtcars[folds[[ii]],]$mpg
+    rmse[[ii]] <- sqrt(mean(errors^2))
+}
+```
+
+The above list structures allow us to drill down into any aspect of the models and predictions we have made for each of the 8 folds. More importantly we can see how well the model works against each of the individual holdout / test data sets. In the end, we just want to be able to look at the average RMSE across the folds. This gives us clues as to how good the model might perform against new data. 
+
+```{r latticeplot}
+rmse <- unlist(rmse)
+lattice::dotplot(rmse,
+                 main="RMSE Across Folds Using K-Fold CV")
+mean(rmse)
+sd(rmse)
+```
+
+## Create A Function To Automate Things
+
+Since we have gone to the trouble of creating a loop structure to process the folds, we could easily turn this into a function to automate the splitting of the data frame across some arbitrary number of folds just to get an idea of how the RMSE looks for different numbers of folds. 
+
+We could even have our function accommodate different formula if we wanted but we won't focus on that right now. You will soon discover that the **caret** package does these kinds of things for you but we aren't quite there yet. 
+
+```{r mtcarsfunc}
+make_mtcars_model <- function(formula=myform, num_of_folds=8) {
+  folds <- split(sample(1:nrow(mtcars)),1:num_of_folds) 
+  
+  modl      <- list()
+  predl     <- list()
+  rmse      <- list()
+
+  # Now, for each of the 10 subgroups of holdout data we will 
+  # create a lda model based on all the data *except* the 
+  # holdout group
+
+  for (ii in 1:length(folds)) {
+  
+  # This list holds the actual model we create for each of the folds
+  
+  modl[[ii]] <- lm(formula = myform, 
+                   data = mtcars[-folds[[ii]],] 
+                )
+  
+  # This list will contain / hold the models build on the fold
+  
+  predl[[ii]]  <- predict(modl[[ii]],
+                          newdata=mtcars[folds[[ii]],],
+                          type="response")
+  
+  # Let's compute the RMSE and save it
+  
+    errors <- predl[[ii]]-mtcars[folds[[ii]],]$mpg
+    rmse[[ii]] <- sqrt(mean(errors^2))
+  }
+  return(rmse=unlist(rmse))
+}
+```
+
+Let's look at the average RMSE across 4 folds. 
+
+```{r fourfold}
+num_of_folds <- 4
+
+rmse <- make_mtcars_model(num_of_folds)
+
+title <- paste("RMSE Across",num_of_folds,
+               "folds - ",as.character(deparse(myform)),sep=" ")
+
+
+print(mean(rmse))
+lattice::dotplot(rmse,
+                 main="RMSE Across Folds Using K-Fold CV")
+sd(rmse)
+boxplot(rmse,main=title)
+```
+
+## Repeated Cross Validation
+
+Since we already have an existing function we can up the ante by repeating the cross validation. This will provide more data on how the RMSE might be distributed across multiple runs, each of which does Cross Fold validation. This example will repeat a 4 Fold Cross Validation , 20 times.  
+
+```{r rc1}
+num_of_folds <- 4
+
+# Just to be clear - here is what happens when we call the function
+# once. We get back 4 RMSE values - one for each fold
+
+(rmse <- make_mtcars_model(num_of_folds))
+
+# Now we repeat this some number of times - like 10. So we get back
+# 80 RMSE values 
+
+repeated_cv_rmse <- sapply(1:20,make_mtcars_model)
+
+boxplot(repeated_cv_rmse, 
+        main="RMSE Across 20 Repeats of 4 CV Folds")
+
+title <- paste("RMSE Across",num_of_folds,
+               "folds - ",as.character(deparse(myform)),sep=" ")
+
+(repeated_cv_rmse <- mean(as.vector(repeated_cv_rmse)))
+boxplot(repeated_cv_rmse)
+summary(repeated_cv_rmse)
+
+```
+
+
+## Bootstrap 
+
+An alternative to K-Fold Cross Validation is to use the bootstrap sampling approach which will produce training data sets the same size as the original data set although some observations might be repeated as the sampling process is done with replacement. The observations that do not appear in each of the training sets are then used as a test set. These observations are known as "out of bag samples". We'll make a function to do bootstrap sampling.  
+
+
+```{r bs1}
+make_mtcars_boot <- function(formula=myform, num_of_folds=8) {
+
+  modl      <- list()
+  predl     <- list()
+  rmse      <- list()
+
+  # Now, for each of the 10 subgroups of holdout data we will 
+  # create a lda model based on all the data *except* the 
+  # holdout group
+
+  for (ii in 1:length(folds)) {
+  
+    training_boot_idx <- sample(1:nrow(mtcars),replace=TRUE)
+    test_boot_idx <- !(1:32 %in% training_boot_idx)
+    
+  # This list holds the actual model we create for each of the folds
+  
+  modl[[ii]] <- lm(formula = myform, 
+                   data = mtcars[training_boot_idx,] 
+                )
+  
+  # This list will contain / hold the models build on the fold
+  
+  predl[[ii]]  <- predict(modl[[ii]],
+                          newdata=mtcars[test_boot_idx,],
+                          type="response")
+  
+  # Let's compute the RMSE and save it
+  
+    errors <- predl[[ii]]-mtcars[test_boot_idx,]$mpg
+    rmse[[ii]] <- sqrt(mean(errors^2))
+  }
+  return(rmse=unlist(rmse))
+}
+```
+
+
+```{r bs2}
+num_of_folds <- 8
+
+# Just to be clear - here is what happens when we call the function
+# once. We get back 8 RMSE values - one for each fold
+(rmse <- make_mtcars_boot(num_of_folds))
+
+# Now we repeat this some number of times - like 10. So we get back
+# 80 RMSE values 
+
+repeated_rmse <- sapply(1:20,make_mtcars_boot)
+
+boxplot(repeated_rmse,main="RMSE Across 20 Repeats of 4 Boostrap Folds")
+title <- paste("RMSE Across",num_of_folds,
+               "folds - ",as.character(deparse(myform)),sep=" ")
+
+boot_repeated_rmse <- as.vector(repeated_rmse)
+boxplot(boot_repeated_rmse)
+
+# How does the RMSE from the boostrap approach compare to the 
+# K-Fold CV approach ? 
+
+print("Summary of Bootstrap RMSE")
+summary(boot_repeated_rmse)
+
+print("Summary of CV")
+summary(repeated_cv_rmse)
+```
 
 
 # Decision Trees
@@ -866,285 +1212,6 @@ head(pm_rf_model$err.rate)
 
 
 
-# Training / Test Data
-
-https://www.stat.berkeley.edu/~aldous/157/Papers/shmueli.pdf
-
-> Predictive power is assessed using metrics computedfrom  a  holdout  set  or  using  cross-validation  (Stone,1974; Geisser,1975)
-
-> Testing the procedure on the data that gaveit birth is almost certain to overestimate performance”(Mosteller  and  Tukey,1977).
-
-Let's extend this idea of training and test splits. To increase the usefulness of a model we can take a single data set and partition / split it into a number of subsets. We just did that, but only once. We can then train the model on one of the splits (or combined splits) and then test it out on one of the unused subsets. This can help avoid over fitting.
-
-In our case - what would the RMSE look like if we created say K number of subsets of the data frame and selectively held out each of the K subsets, built a model on the combined remaining subsets, and then tested the model on the holdout ? We would then average the RMSE to get an idea of its variation. The series of sequential steps would be as follows:
-
-    Subset the data frame into k groups 
-    For each subset:
-       Consider the subset as a "hold out"" or test data set
-       Combine the remaining subsets as a training data set
-       Fit a model on the combined training set 
-       Evaluate the model using the holdout test set
-       Save the evaluation score (e.g. RNSE)
-    
-    Summarize evaluation score (e.g. mean of RMSE)
-
-
-This is called Cross Validation. Here is the general idea in illustrated form relative to mtcars. Assume we want 4 folds. We would divide the data frame into 4 folds of 8 records each. The first model would be built using Fold 1 as the holdout / test data set **after** first combining Folds 2,3 and 4 into a training set set
-
-
-![](./pics/cv1.png)
-
-So the second iteration would then take the second fold as the holdout / test data frame and combine Folds 1,3, and 4 into a training data frame.
-
-
-![](./pics/cv2.png)
-
-
-```{r}
-# Generates Some Folds
-
-num.of.folds <- 8
-
-# This generates 8 groups of 4 indices such that each
-# group has unique observations. No observation is used
-# more than once - although we could use bootstrapping
-
-folds <- split(sample(1:nrow(mtcars)),1:num.of.folds) 
-
-# We should have 32 indicies across the 8 groups 
-sum(sapply(folds,length))
-
-```
-
-Check out the folds to get a better understanding of what is going on.  Remember that each with K-fold
-
-
-```{r}
-folds
-```
-
-Each list element has the indices of four unique observations from the data frame. We have eight folds with four elements each for a total of 32 numbers corresponding to row numbers from the mtcars data frame. 
-
-## Cross Fold Validation Continued
-
-To implement the cross validation, we will create a processing loop that will execute once for each of the 8 folds. During each execution of the loop we will create a model using data combined from all folds **except** the fold corresponding to the current loop number (e.g, 1, 2, .. 8).
-
-Once the model is built we then test it on the fold number corresponding to the current loop number. 
-
-So now we can create some lists to contain the models that we make along withe the associated predictions, errors and computed RMSE. We we can inspect any of the intermediate results after the fact to validate our work or look more closely at any specific result. 
-
-
-```{r modloop1}
-# Next we setup some blank lists to stash results
-folddf    <- list()  # Contains folds
-modl      <- list()  # Hold each of the K models
-predl     <- list()  # Hold rach of the K predictions
-rmse      <- list()  # Hold the computed rmse for a given model
-
-# Now, for each of the 8 subgroups of holdout data we will 
-# create a lda model based on all the data *except* the 
-# holdout group
-
-for (ii in 1:length(folds)) {
-  
-  # This list holds the actual model we create for each of the 
-  # 10 folds
-  
-  modl[[ii]] <- lm(formula = myform, 
-                   data = mtcars[-folds[[ii]],] 
-                )
-  
-  # This list will contain / hold the models build on the fold
-  
-  predl[[ii]]  <- predict(modl[[ii]],
-                          newdata=mtcars[folds[[ii]],],
-                          type="response")
-  
-  # This list will hold the results of the confusion matrix 
-  # function. This obkect will contain info on the 
-  # accuracy,  sensitivity/recall, specificity
-  # and so on for each model per fold
-  
-    errors <- predl[[ii]]-mtcars[folds[[ii]],]$mpg
-    rmse[[ii]] <- sqrt(mean(errors^2))
-}
-```
-
-The above list structures allow us to drill down into any aspect of the models and predictions we have made for each of the 8 folds. More importantly we can see how well the model works against each of the individual holdout / test data sets. In the end, we just want to be able to look at the average RMSE across the folds. This gives us clues as to how good the model might perform against new data. 
-
-```{r latticeplot}
-rmse <- unlist(rmse)
-lattice::dotplot(rmse,
-                 main="RMSE Across Folds Using K-Fold CV")
-mean(rmse)
-sd(rmse)
-```
-
-## Create A Function To Automate Things
-
-Since we have gone to the trouble of creating a loop structure to process the folds, we could easily turn this into a function to automate the splitting of the data frame across some arbitrary number of folds just to get an idea of how the RMSE looks for different numbers of folds. We could even have our function accommodate different formula if we wanted but we won't focus on that right now. You will soon discover that the **caret** package does these kinds of things for you but we aren't quite there yet. 
-
-```{r mtcarsfunc}
-make_mtcars_model <- function(formula=myform, num_of_folds=8) {
-  folds <- split(sample(1:nrow(mtcars)),1:num_of_folds) 
-  
-  modl      <- list()
-  predl     <- list()
-  rmse      <- list()
-
-  # Now, for each of the 10 subgroups of holdout data we will 
-  # create a lda model based on all the data *except* the 
-  # holdout group
-
-  for (ii in 1:length(folds)) {
-  
-  # This list holds the actual model we create for each of the folds
-  
-  modl[[ii]] <- lm(formula = myform, 
-                   data = mtcars[-folds[[ii]],] 
-                )
-  
-  # This list will contain / hold the models build on the fold
-  
-  predl[[ii]]  <- predict(modl[[ii]],
-                          newdata=mtcars[folds[[ii]],],
-                          type="response")
-  
-  # Let's compute the RMSE and save it
-  
-    errors <- predl[[ii]]-mtcars[folds[[ii]],]$mpg
-    rmse[[ii]] <- sqrt(mean(errors^2))
-  }
-  return(rmse=unlist(rmse))
-}
-```
-
-HTTP://stat.cmu.edu/~brian/724/week11/lec27-bootstrap.pdf
-
-Let's look at the average RMSE across 4 folds. 
-
-```{r fourfold}
-num_of_folds <- 4
-
-rmse <- make_mtcars_model(num_of_folds)
-
-title <- paste("RMSE Across",num_of_folds,
-               "folds - ",as.character(deparse(myform)),sep=" ")
-
-
-print(mean(rmse))
-lattice::dotplot(rmse,
-                 main="RMSE Across Folds Using K-Fold CV")
-sd(rmse)
-boxplot(rmse,main=title)
-```
-
-## Repeated Cross Validation
-
-Since we already have an existing function we can up the ante by repeating the cross validation. This will provide more data on how the RMSE might be distributed across multiple runs, each of which does Cross Fold validation. This example will repeat a 4 Fold Cross Validation , 20 times.  
-
-```{r}
-num_of_folds <- 4
-
-# Just to be clear - here is what happens when we call the function
-# once. We get back 4 RMSE values - one for each fold
-
-(rmse <- make_mtcars_model(num_of_folds))
-
-# Now we repeat this some number of times - like 10. So we get back
-# 80 RMSE values 
-
-repeated_cv_rmse <- sapply(1:20,make_mtcars_model)
-
-boxplot(repeated_cv_rmse, 
-        main="RMSE Across 20 Repeats of 4 CV Folds")
-
-title <- paste("RMSE Across",num_of_folds,
-               "folds - ",as.character(deparse(myform)),sep=" ")
-
-repeated_cv_rmse <- as.vector(repeated_cv_rmse)
-boxplot(repeated_cv_rmse)
-summary(repeated_cv_rmse)
-
-```
-
-
-## Bootstrap 
-
-An alternative to K-Fold Cross Validation is to use the bootstrap sampling approach which will produce training data sets the same size as the original data set although some observations might be repeated as the sampling process is done with replacement. The observations that do not appear in each of the training sets are then used as a test set. These observations are known as "out of bag samples". We'll make a function to do bootstrap sampling.  
-
-
-```{r}
-make_mtcars_boot <- function(formula=myform, num_of_folds=8) {
-
-  modl      <- list()
-  predl     <- list()
-  rmse      <- list()
-
-  # Now, for each of the 10 subgroups of holdout data we will 
-  # create a lda model based on all the data *except* the 
-  # holdout group
-
-  for (ii in 1:length(folds)) {
-  
-    training_boot_idx <- sample(1:nrow(mtcars),replace=TRUE)
-    test_boot_idx <- !(1:32 %in% training_boot_idx)
-    
-  # This list holds the actual model we create for each of the folds
-  
-  modl[[ii]] <- lm(formula = myform, 
-                   data = mtcars[training_boot_idx,] 
-                )
-  
-  # This list will contain / hold the models build on the fold
-  
-  predl[[ii]]  <- predict(modl[[ii]],
-                          newdata=mtcars[test_boot_idx,],
-                          type="response")
-  
-  # Let's compute the RMSE and save it
-  
-    errors <- predl[[ii]]-mtcars[test_boot_idx,]$mpg
-    rmse[[ii]] <- sqrt(mean(errors^2))
-  }
-  return(rmse=unlist(rmse))
-}
-```
-
-
-```{r}
-num_of_folds <- 8
-
-# Just to be clear - here is what happens when we call the function
-# once. We get back 8 RMSE values - one for each fold
-(rmse <- make_mtcars_boot(num_of_folds))
-
-# Now we repeat this some number of times - like 10. So we get back
-# 80 RMSE values 
-
-repeated_rmse <- sapply(1:20,make_mtcars_boot)
-
-boxplot(repeated_rmse,main="RMSE Across 20 Repeats of 4 Boostrap Folds")
-title <- paste("RMSE Across",num_of_folds,
-               "folds - ",as.character(deparse(myform)),sep=" ")
-
-boot_repeated_rmse <- as.vector(repeated_rmse)
-boxplot(boot_repeated_rmse)
-
-# How does the RMSE from the boostrap approach compare to the 
-# K-Fold CV approach ? 
-
-print("Summary of Bootstrap RMSE")
-summary(boot_repeated_rmse)
-
-print("Summary of CV")
-summary(repeated_cv_rmse)
-```
-
-
-
-
-
 
 # Using Methods Other Than lm
 
@@ -1188,7 +1255,7 @@ mean(rmse_rf)
 
 
 ```{r rfimport}
-imp <- importance(my_rf)
+imp <- varImp(my_rf)
 imp.features <- tibble(variables = row.names(imp), 
                        importance = imp[, 1])
 #
