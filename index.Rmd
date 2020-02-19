@@ -710,6 +710,7 @@ We can call the **train** function in such a way as to pass in any arguments tha
 **createDataPartition** can be used to create test and train data splits according to some proportion. There is a function called **createFolds** can be used to generate balanced cross–validation groupings from a set of data. **createResample** can be used to make simple bootstrap samples. For now, we'll just stick with **createDataPartition** for creating a test/train pair.
 
 ```{r createdata}
+set.seed(123) # Make this example reproducible
 idx <- createDataPartition(mtcars$mpg, p = .8, 
                                   list = FALSE, 
                                   times = 1)
@@ -735,6 +736,8 @@ To actually create a model involves use of the **train** function which is the p
      future predictions 
 
 ```{r lmftrain}
+
+set.seed(123) # Make this example reproducible
 lm_fit <- train(mpg~wt,
                 data=Train,
                 method="lm",
@@ -790,6 +793,7 @@ control <- trainControl(method = "cv",       # Cross Fold
                         number = 5,          # 5 Folds
                         verboseIter = TRUE)  # Verbose
 # Train the model
+set.seed(123) # Make this example reproducible
 my_lm <- train(
   mpg ~ ., 
   Train,
@@ -812,7 +816,9 @@ We could also repeat the 5 times CV validation an arbitrary number of times to g
 control <- trainControl(method = "repeatedcv",  # Repeated Cross Fold
                         number  = 3,          # 5 Folds
                         repeats = 3,         # Repeats
-                        verboseIter = TRUE)  # Verbose
+                        verboseIter = FALSE)  # Verbose
+
+set.seed(123) # Make this example reproducible
 
 my_lm <- train(
   mpg ~ ., 
@@ -833,6 +839,8 @@ So this is where things get interesting. If we wanted to use another method such
 control <- trainControl(method = "cv", 
                         number = 5)
 
+set.seed(123) # Make this example reproducible
+
 my_ranger <- train(
   mpg ~ ., 
   Train,
@@ -845,11 +853,11 @@ my_ranger
 compute_rmse(predict(my_ranger,Test),Test$mpg)
 ```
 
-## Hyperparameters Make An Appearance
+## Hyperparameters 
 
 This model returns more information than say the **lm** function because this method uses something called "hyperparameters" which are arguments to a given method that gets set before you call the method. In this case there are two hyperparameters called **mtry** and **splitrule** that assume default variables if we don't supply values.
 
-We can get a plot of how the RMSE and R squared value varied with different values of **mtry**. Here we see that an mtry value of 6 randomly selected columns / variables provides the lowest RMSE. 
+We can get a plot of how the RMSE and R squared value varied with different values of **mtry** as well the **splitrule**. Here we see that an mtry value of 6 randomly selected columns / variables provides the lowest RMSE. 
 
 ```{r}
 ggplot(my_ranger) + theme(legend.position = "top")
@@ -865,6 +873,8 @@ my_ctrl <- trainControl(
     number = 5,
     verboseIter = TRUE
   )
+
+set.seed(123) # Make this example reproducible
 
 my_rf <- train(
   mpg ~ ., 
@@ -933,9 +943,6 @@ compute_rmse(predict(my_ranger,Test),Test$mpg)
 
 plot(my_ranger)
 ```
-
-
-
 
 # Decision Trees
 

@@ -140,7 +140,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="5.3" data-path="caret-package.html"><a href="caret-package.html#splitting"><i class="fa fa-check"></i><b>5.3</b> Splitting</a></li>
 <li class="chapter" data-level="5.4" data-path="caret-package.html"><a href="caret-package.html#calling-the-train-function"><i class="fa fa-check"></i><b>5.4</b> Calling The train() Function</a></li>
 <li class="chapter" data-level="5.5" data-path="caret-package.html"><a href="caret-package.html#one-size-fits-all"><i class="fa fa-check"></i><b>5.5</b> One Size Fits All</a></li>
-<li class="chapter" data-level="5.6" data-path="caret-package.html"><a href="caret-package.html#hyperparameters-make-an-appearance"><i class="fa fa-check"></i><b>5.6</b> Hyperparameters Make An Appearance</a></li>
+<li class="chapter" data-level="5.6" data-path="caret-package.html"><a href="caret-package.html#hyperparameters"><i class="fa fa-check"></i><b>5.6</b> Hyperparameters</a></li>
 </ul></li>
 <li class="chapter" data-level="6" data-path="decision-trees.html"><a href="decision-trees.html"><i class="fa fa-check"></i><b>6</b> Decision Trees</a><ul>
 <li class="chapter" data-level="6.1" data-path="decision-trees.html"><a href="decision-trees.html#advantages"><i class="fa fa-check"></i><b>6.1</b> Advantages</a></li>
@@ -242,7 +242,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(mtcars)
 rpart_class_mtcars &lt;-<span class="st"> </span><span class="kw">rpart</span>(am<span class="op">~</span>.,<span class="dt">data=</span>mtcars,<span class="dt">method=</span><span class="st">&quot;class&quot;</span>)
 <span class="kw">rpart.plot</span>(rpart_class_mtcars,<span class="dt">yesno =</span> <span class="dv">2</span>, <span class="dt">type =</span> <span class="dv">0</span>, <span class="dt">extra =</span> <span class="dv">0</span>)</code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-24-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
 <p>If the weight of the car is greater than 3.2 tons then the tree would classify it as having a manual (1) transmission. How well did we do here ? Not too bad actually. We’ll talk more about measuring performance of a classifier in a bit.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">preds &lt;-<span class="st"> </span><span class="kw">ifelse</span>(mtcars<span class="op">$</span>wt <span class="op">&gt;=</span><span class="st"> </span><span class="dv">3</span>,<span class="dv">0</span>,<span class="dv">1</span>)
 <span class="kw">table</span>(<span class="dt">predicted=</span>preds,<span class="dt">actual=</span>mtcars<span class="op">$</span>am)</code></pre></div>
@@ -254,7 +254,7 @@ rpart_class_mtcars &lt;-<span class="st"> </span><span class="kw">rpart</span>(a
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(mtcars)
 rpart_regress_mtcars &lt;-<span class="st"> </span><span class="kw">rpart</span>(mpg<span class="op">~</span>.,<span class="dt">data=</span>mtcars,<span class="dt">method=</span><span class="st">&quot;anova&quot;</span>)
 <span class="kw">rpart.plot</span>(rpart_regress_mtcars,<span class="dt">yesno =</span> <span class="dv">2</span>, <span class="dt">type =</span> <span class="dv">0</span>, <span class="dt">extra =</span> <span class="dv">0</span>)</code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-26-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
 <div id="advantages" class="section level2">
 <h2><span class="header-section-number">6.1</span> Advantages</h2>
 <p>The advantages of tree-based methods include that 1 - The model is generally easy to interpret - The path to a decision is plainly spelled out (assuming that the number of tree splits is easy enough to trace). - The method can handle numeric and cartegorical - One does not generally need to pre process or normalize data - Missing data is less of a big deal</p>
@@ -283,7 +283,7 @@ pm &lt;-<span class="st"> </span>PimaIndiansDiabetes
 
 diabetes_mod &lt;-<span class="st"> </span><span class="kw">rpart</span>(diabetes <span class="op">~</span><span class="st"> </span>.,pm,<span class="dt">method=</span><span class="st">&quot;class&quot;</span>)
 <span class="kw">rpart.plot</span>(<span class="dt">x =</span> diabetes_mod, <span class="dt">yesno =</span> <span class="dv">2</span>, <span class="dt">type =</span> <span class="dv">0</span>, <span class="dt">extra =</span> <span class="dv">0</span>)</code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-27-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
 <p>That’s pretty understandable but it starts to border on being a bit hard to follow by hand. Nonethless, you could show this to someone who does not know (or care) about the underlying mathematics of decision trees and they would be able to understand the path to a classification of someone having diabetes or not.</p>
 <p>It’s common in these scenarios to create what is known as a test / training split so that we can train our model on a test set that we can then use on a test or hold out data set to see how well the model performs. There is much more to say about this but we’ll keep it simple here. We can create a training set that comprises %80 of the data with a holdout set of 20%. This easy to do.</p>
 <p>Let’s create a Train / Test Split</p>
@@ -396,9 +396,9 @@ aucval</code></pre></div>
 <h3><span class="header-section-number">6.2.2</span> Tree Splitting</h3>
 <p>The resulting tree can be thought of as an upside down tree with the root at the top. The “trunk” proceeds downward and splits into subsets based on some decision (hence the word “decision” in the title). When classifying data the idea is to segment or partition data into groups/regions where each group contains or represents a single class (“yes/no”, “positive/negative”).</p>
 <p>These groups or regions would represent a “pure” region. This is not always possible so a best effort is made. These regions are separated by decision boundaries which are used to make decisions. We’ll plot some example data to illustrate the case.</p>
-<p><img src="biosml_files/figure-html/unnamed-chunk-32-1.png" width="672" /></p>
-<p><img src="biosml_files/figure-html/unnamed-chunk-33-1.png" width="672" /></p>
-<p><img src="biosml_files/figure-html/unnamed-chunk-34-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
 </div>
 </div>
 <div id="gini-index" class="section level2">
@@ -496,7 +496,7 @@ mass_pima_mod &lt;-<span class="st"> </span><span class="kw">rpart</span>(<span 
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Plot the tree model</span>
 <span class="kw">rpart.plot</span>(<span class="dt">x =</span> mass_pima_mod, 
            <span class="dt">yesno =</span> <span class="dv">2</span>, <span class="dt">type =</span> <span class="dv">0</span>, <span class="dt">extra =</span> <span class="dv">0</span>)</code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-38-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-26-1.png" width="672" /></p>
 <p>Let’s compute the RMSE for this model.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Generate predictions on a test set</span>
 pred &lt;-<span class="st"> </span><span class="kw">predict</span>(<span class="dt">object =</span> mass_pima_mod,   <span class="co"># model object </span>
@@ -528,7 +528,7 @@ Metrics<span class="op">::</span><span class="kw">rmse</span>(<span class="dt">a
 <p>In effect, it is doing some work for you so you don’t have to. At the end of the run it will produce a table for inspection. The results of this table can then be used to “prune” the tree model to get a “better” tree - one that performs better than an “un pruned” tree. Let’s look at the pima mass model:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># You can plot the modelling object</span>
 <span class="kw">plot</span>(mass_pima_mod)</code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-40-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-28-1.png" width="672" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># You can inspect the table manually</span>
 mass_pima_mod<span class="op">$</span>cptable</code></pre></div>
 <pre><code>##            CP nsplit rel error    xerror       xstd
@@ -554,7 +554,7 @@ cpt_val &lt;-<span class="st"> </span>cpt[<span class="kw">order</span>(cpt<span
                           
 <span class="co"># Plot the optimized model</span>
 <span class="kw">rpart.plot</span>(mass_pima_mod_opt, <span class="dt">yesno =</span> <span class="dv">2</span>, <span class="dt">type =</span> <span class="dv">0</span>, <span class="dt">extra =</span> <span class="dv">0</span>)</code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-42-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-30-1.png" width="672" /></p>
 <p>Does this optimized model perform any better ? Not really, because the optimal CP value turned out to be 0.01 which is actually the same as the default.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Generate predictions on a test set</span>
 pred &lt;-<span class="st"> </span><span class="kw">predict</span>(<span class="dt">object =</span> mass_pima_mod_opt,   <span class="co"># model object </span>
@@ -726,7 +726,7 @@ number_of_boostraps &lt;-<span class="st"> </span><span class="dv">50</span>
 }</code></pre></div>
 <p>Now check all of the accuracy estimates and then average them. Remember this is supposed to help us to better estimate the out of sample error.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">boxplot</span>(aucval)</code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-50-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-38-1.png" width="672" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">mean</span>(aucval)</code></pre></div>
 <pre><code>## [1] 0.8240443</code></pre>
 <p>Now we’ll compare this to the function called “bagging” from the <strong>ipred</strong> package which does bagged trees directly.</p>

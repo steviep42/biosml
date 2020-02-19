@@ -140,7 +140,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="5.3" data-path="caret-package.html"><a href="caret-package.html#splitting"><i class="fa fa-check"></i><b>5.3</b> Splitting</a></li>
 <li class="chapter" data-level="5.4" data-path="caret-package.html"><a href="caret-package.html#calling-the-train-function"><i class="fa fa-check"></i><b>5.4</b> Calling The train() Function</a></li>
 <li class="chapter" data-level="5.5" data-path="caret-package.html"><a href="caret-package.html#one-size-fits-all"><i class="fa fa-check"></i><b>5.5</b> One Size Fits All</a></li>
-<li class="chapter" data-level="5.6" data-path="caret-package.html"><a href="caret-package.html#hyperparameters-make-an-appearance"><i class="fa fa-check"></i><b>5.6</b> Hyperparameters Make An Appearance</a></li>
+<li class="chapter" data-level="5.6" data-path="caret-package.html"><a href="caret-package.html#hyperparameters"><i class="fa fa-check"></i><b>5.6</b> Hyperparameters</a></li>
 </ul></li>
 <li class="chapter" data-level="6" data-path="decision-trees.html"><a href="decision-trees.html"><i class="fa fa-check"></i><b>6</b> Decision Trees</a><ul>
 <li class="chapter" data-level="6.1" data-path="decision-trees.html"><a href="decision-trees.html#advantages"><i class="fa fa-check"></i><b>6.1</b> Advantages</a></li>
@@ -363,7 +363,7 @@ glm_model &lt;-<span class="st"> </span><span class="kw">glm</span>(diabetes <sp
 <span class="kw">boxplot</span>(glm_probs)
 <span class="kw">grid</span>()
 <span class="kw">hist</span>(glm_probs)</code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-118-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-106-1.png" width="672" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">par</span>(<span class="dt">mfrow=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">1</span>))</code></pre></div>
 <div id="working-with-prediction-probabilities" class="section level3">
 <h3><span class="header-section-number">10.4.1</span> Working With Prediction Probabilities</h3>
@@ -410,7 +410,7 @@ diabetes &lt;-<span class="st"> </span><span class="kw">ifelse</span>(glm_probs 
 <span class="co"># the right value to maximize the AUC (Area Under Curve)</span>
 
 <span class="kw">text</span>(metrics[,<span class="dv">2</span>],metrics[,<span class="dv">1</span>],<span class="dt">labels=</span><span class="kw">seq</span>(<span class="fl">0.05</span>,.<span class="dv">95</span>,.<span class="dv">05</span>),<span class="dt">cex=</span><span class="fl">0.9</span>)</code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-123-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-111-1.png" width="672" /></p>
 </div>
 </div>
 </div>

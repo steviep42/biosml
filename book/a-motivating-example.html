@@ -140,7 +140,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="5.3" data-path="caret-package.html"><a href="caret-package.html#splitting"><i class="fa fa-check"></i><b>5.3</b> Splitting</a></li>
 <li class="chapter" data-level="5.4" data-path="caret-package.html"><a href="caret-package.html#calling-the-train-function"><i class="fa fa-check"></i><b>5.4</b> Calling The train() Function</a></li>
 <li class="chapter" data-level="5.5" data-path="caret-package.html"><a href="caret-package.html#one-size-fits-all"><i class="fa fa-check"></i><b>5.5</b> One Size Fits All</a></li>
-<li class="chapter" data-level="5.6" data-path="caret-package.html"><a href="caret-package.html#hyperparameters-make-an-appearance"><i class="fa fa-check"></i><b>5.6</b> Hyperparameters Make An Appearance</a></li>
+<li class="chapter" data-level="5.6" data-path="caret-package.html"><a href="caret-package.html#hyperparameters"><i class="fa fa-check"></i><b>5.6</b> Hyperparameters</a></li>
 </ul></li>
 <li class="chapter" data-level="6" data-path="decision-trees.html"><a href="decision-trees.html"><i class="fa fa-check"></i><b>6</b> Decision Trees</a><ul>
 <li class="chapter" data-level="6.1" data-path="decision-trees.html"><a href="decision-trees.html#advantages"><i class="fa fa-check"></i><b>6.1</b> Advantages</a></li>
@@ -377,8 +377,8 @@ test_preds &lt;-<span class="st"> </span><span class="kw">predict</span>(
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Shuffle the row numbers of the data frame</span>
 
 (train_index &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(mtcars),<span class="kw">nrow</span>(mtcars)<span class="op">*</span>.<span class="dv">80</span>))</code></pre></div>
-<pre><code>##  [1] 24 11  2 30 19 22 32 20 18  8  7 13  6 31 16 27 21 15 14 25 26  4 10
-## [24] 28  9</code></pre>
+<pre><code>##  [1] 15 25 28 14  8  9 20 12 22  3 32  1 11 17  6 23 16  4 26 10 19 21 24
+## [24]  7 13</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Get 80% of the records from the data frame</span>
 train_df &lt;-<span class="st"> </span>mtcars[train_index,]
 
@@ -401,7 +401,7 @@ test_pred  &lt;-<span class="st"> </span><span class="kw">predict</span>(
 )
 
 (test_rmse &lt;-<span class="st"> </span><span class="kw">compute_rmse</span>(test_pred,test_df<span class="op">$</span>mpg))</code></pre></div>
-<pre><code>## [1] 3.918007</code></pre>
+<pre><code>## [1] 3.614527</code></pre>
 </div>
 <div id="other-methods" class="section level2">
 <h2><span class="header-section-number">3.6</span> Other Methods ?</h2>
@@ -417,7 +417,7 @@ my_rpart_preds &lt;-<span class="st"> </span>pred<span class="op">$</span>predic
 
 <span class="co"># What is the RMSE </span>
 <span class="kw">compute_rmse</span>(my_rpart_preds,test_df<span class="op">$</span>mpg)</code></pre></div>
-<pre><code>## [1] 1.896228</code></pre>
+<pre><code>## [1] 2.50198</code></pre>
 <p>Well the computed RMSE with the <strong>ranger</strong> method seems to be better in the sense that it is smaller than with the <strong>lm</strong> function. We might be on to something or maybe we just got lucky. We need a better way to proceed - something with more rigor.</p>
 </div>
 <div id="summary" class="section level2">

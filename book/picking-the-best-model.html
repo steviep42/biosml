@@ -140,7 +140,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="5.3" data-path="caret-package.html"><a href="caret-package.html#splitting"><i class="fa fa-check"></i><b>5.3</b> Splitting</a></li>
 <li class="chapter" data-level="5.4" data-path="caret-package.html"><a href="caret-package.html#calling-the-train-function"><i class="fa fa-check"></i><b>5.4</b> Calling The train() Function</a></li>
 <li class="chapter" data-level="5.5" data-path="caret-package.html"><a href="caret-package.html#one-size-fits-all"><i class="fa fa-check"></i><b>5.5</b> One Size Fits All</a></li>
-<li class="chapter" data-level="5.6" data-path="caret-package.html"><a href="caret-package.html#hyperparameters-make-an-appearance"><i class="fa fa-check"></i><b>5.6</b> Hyperparameters Make An Appearance</a></li>
+<li class="chapter" data-level="5.6" data-path="caret-package.html"><a href="caret-package.html#hyperparameters"><i class="fa fa-check"></i><b>5.6</b> Hyperparameters</a></li>
 </ul></li>
 <li class="chapter" data-level="6" data-path="decision-trees.html"><a href="decision-trees.html"><i class="fa fa-check"></i><b>6</b> Decision Trees</a><ul>
 <li class="chapter" data-level="6.1" data-path="decision-trees.html"><a href="decision-trees.html#advantages"><i class="fa fa-check"></i><b>6.1</b> Advantages</a></li>
@@ -262,10 +262,10 @@ mod_ranger &lt;-<span class="st"> </span><span class="kw">train</span>(mpg <span
                     <span class="dt">trControl =</span> my_ctrl)</code></pre></div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Look at the results of the hyperparameter tuning</span>
 <span class="kw">plot</span>(mod_rf)</code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-58-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-46-1.png" width="672" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#</span>
 <span class="kw">plot</span>(mod_ranger)</code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-58-2.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-46-2.png" width="672" /></p>
 <div id="using-the-resamples-function" class="section level2">
 <h2><span class="header-section-number">8.1</span> Using the resamples() function</h2>
 <p>Now, here comes the “magic”. Because we built three different modeling objects on the same data set, we can now use the <strong>resamples</strong> function to collect, analyze, and visualize a set of results. This is pretty powerful.</p>
@@ -280,35 +280,35 @@ mod_ranger &lt;-<span class="st"> </span><span class="kw">train</span>(mpg <span
 ## 
 ## MAE 
 ##            Min.  1st Qu.   Median     Mean  3rd Qu.     Max. NA&#39;s
-## lm     2.059162 2.229678 2.400194 3.517468 4.246621 6.093048    0
-## rf     1.614398 1.832241 2.050084 1.918098 2.069948 2.089811    0
-## ranger 1.571291 1.774103 1.976916 1.871166 2.021104 2.065291    0
+## lm     2.108278 3.042011 3.975743 4.587195 5.826653 7.677563    0
+## rf     1.661123 2.033094 2.405065 2.374357 2.730974 3.056882    0
+## ranger 1.606079 2.034722 2.463365 2.332690 2.695995 2.928626    0
 ## 
 ## RMSE 
-##            Min.  1st Qu.   Median     Mean  3rd Qu.     Max. NA&#39;s
-## lm     2.686755 2.803448 2.920140 4.457297 5.342568 7.764996    0
-## rf     1.948872 2.333215 2.717559 2.498411 2.773181 2.828803    0
-## ranger 1.957509 2.284558 2.611607 2.482322 2.744729 2.877852    0
+##            Min.  1st Qu.   Median     Mean  3rd Qu.      Max. NA&#39;s
+## lm     2.685681 3.469342 4.253003 5.965700 7.605709 10.958415    0
+## rf     2.146463 2.424040 2.701617 2.883135 3.251471  3.801326    0
+## ranger 2.099897 2.455332 2.810768 2.824033 3.186101  3.561434    0
 ## 
 ## Rsquared 
 ##             Min.   1st Qu.    Median      Mean   3rd Qu.      Max. NA&#39;s
-## lm     0.4048206 0.5926469 0.7804732 0.6604078 0.7882013 0.7959295    0
-## rf     0.7674781 0.7978547 0.8282314 0.8524722 0.8949692 0.9617071    0
-## ranger 0.7822620 0.8045040 0.8267460 0.8558926 0.8927080 0.9586699    0</code></pre>
+## lm     0.4196867 0.5508810 0.6820754 0.6488848 0.7634838 0.8448923    0
+## rf     0.8143481 0.8476955 0.8810429 0.8690576 0.8964124 0.9117819    0
+## ranger 0.8184058 0.8615926 0.9047795 0.8771623 0.9065406 0.9083017    0</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">bwplot</span>(results)</code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-60-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-48-1.png" width="672" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">dotplot</span>(results)</code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-61-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-49-1.png" width="672" /></p>
 </div>
 <div id="model-performance" class="section level2">
 <h2><span class="header-section-number">8.2</span> Model Performance</h2>
 <p>Of course, we can now use the Test data frame to see how the RMSE looks on the holdout data frame.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">compute_rmse</span>(<span class="kw">predict</span>(mod_lm,Test),Test<span class="op">$</span>mpg)</code></pre></div>
-<pre><code>## [1] 3.111961</code></pre>
+<pre><code>## [1] 2.456504</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">compute_rmse</span>(<span class="kw">predict</span>(mod_rf,Test),Test<span class="op">$</span>mpg)</code></pre></div>
-<pre><code>## [1] 2.477407</code></pre>
+<pre><code>## [1] 1.789079</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">compute_rmse</span>(<span class="kw">predict</span>(mod_ranger,Test),Test<span class="op">$</span>mpg)</code></pre></div>
-<pre><code>## [1] 2.354459</code></pre>
+<pre><code>## [1] 1.7951</code></pre>
 <p>Another way to look at these models is to use the <strong>diff</strong> function.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">(difs &lt;-<span class="st"> </span><span class="kw">diff</span>(results))</code></pre></div>
 <pre><code>## 
@@ -331,46 +331,46 @@ mod_ranger &lt;-<span class="st"> </span><span class="kw">train</span>(mpg <span
 ## Lower diagonal: p-value for H0: difference = 0
 ## 
 ## MAE 
-##        lm     rf      ranger 
-## lm            1.59937 1.64630
-## rf     1.0000         0.04693
-## ranger 1.0000 0.2411         
-## 
-## RMSE 
 ##        lm rf      ranger 
-## lm        1.95889 1.97497
-## rf     1          0.01609
+## lm        2.21284 2.25450
+## rf     1          0.04167
 ## ranger 1  1              
 ## 
+## RMSE 
+##        lm rf     ranger
+## lm        3.0826 3.1417
+## rf     1         0.0591
+## ranger 1  1            
+## 
 ## Rsquared 
-##        lm rf       ranger  
-## lm        -0.19206 -0.19548
-## rf     1           -0.00342
-## ranger 1  1</code></pre>
+##        lm     rf        ranger   
+## lm            -0.220173 -0.228278
+## rf     0.8482           -0.008105
+## ranger 0.7866 1.0000</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">compare_models</span>(mod_lm,mod_rf)</code></pre></div>
 <pre><code>## 
 ##  One Sample t-test
 ## 
 ## data:  x
-## t = 1.0143, df = 2, p-value = 0.4172
+## t = 1.0749, df = 2, p-value = 0.3949
 ## alternative hypothesis: true mean is not equal to 0
 ## 95 percent confidence interval:
-##  -6.350326 10.268097
+##  -9.256895 15.422024
 ## sample estimates:
 ## mean of x 
-##  1.958886</code></pre>
+##  3.082565</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">compare_models</span>(mod_ranger,mod_lm)</code></pre></div>
 <pre><code>## 
 ##  One Sample t-test
 ## 
 ## data:  x
-## t = -1.0277, df = 2, p-value = 0.4121
+## t = -1.0954, df = 2, p-value = 0.3877
 ## alternative hypothesis: true mean is not equal to 0
 ## 95 percent confidence interval:
-##  -10.243280   6.293332
+##  -15.482238   9.198905
 ## sample estimates:
 ## mean of x 
-## -1.974974</code></pre>
+## -3.141667</code></pre>
 </div>
 <div id="feature-selection" class="section level2">
 <h2><span class="header-section-number">8.3</span> Feature Selection</h2>
@@ -413,7 +413,7 @@ results</code></pre></div>
 ## The top 5 variables (out of 5):
 ##    wt, am, drat, qsec, vs</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(results,<span class="dt">type=</span><span class="kw">c</span>(<span class="st">&quot;o&quot;</span>,<span class="st">&quot;g&quot;</span>))</code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-65-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-53-1.png" width="672" /></p>
 <p>What we get back is some idea about the important features. We could then build a model with caret that uses only these features to see if the suggested RMSE value mentioned in the rfe process matches.</p>
 </div>
 </div>
