@@ -8,12 +8,12 @@ output:
   #bookdown::pdf_book: default
 ---
 
-```{r initialload,echo=FALSE,message=FALSE}
-suppressMessages(library(tidyverse))
-suppressMessages(library(rpart))
-suppressMessages(library(caret))
-suppressMessages(library(pls))
-suppressMessages(library(mlbench))
+```{r initialload,message=FALSE}
+library(tidyverse)
+library(rpart)
+library(caret)
+library(pls)
+library(mlbench)
 library(DataExplorer)
 ```
 
@@ -103,11 +103,18 @@ Sometimes you just want to build a model (apply a method) to **explain** the dat
 
 Given a data set, there might be some variable therein that you would like to predict in terms of other variables. Ideally you would like to automate this process but not at the expense of understanding the underlying statistical considerations. The process should also be done in a way that allows one to define a specific performance measure / metric that can then be used to compare performance across a number of "models".
 
-### Differences 
-
 Relative to explanatory work you wish to drill down into the data to better understand it and are less concerned about how any resulting model might apply to unseen or new data. In this case you might not look at other data sets or permutated versions of the data in which case you just build different models against the same data while trying out different features to arrive a the "best" model. 
 
 In predictive work, we typically use techniques such as cross fold validation and boostrapping to provide us with different versions of the data to "train" a model after which we validate it on some "test" data that has been held out. So in this context, you will probably be looking at multiple versions of the original data set which adds to the overhead somewhat. 
+
+A good example of explanatory work is the often referred to "Titanic" dataset that has lots of information on the passengers who travelled on the ill-fated Titanic ship. This data set is used in many Data Science type educational contexts to talk about building models.
+
+![](./pics/agedist.png)
+
+- While it is interesting, it’s doubtful we will save anyone’s life 
+- Conclusions won’t apply to modern ship travel
+- Can experiment with different algorithms without consequence
+- Useful for Educational Purposes
 
 
 ## Two Types of Predictive Models:
@@ -163,6 +170,18 @@ Models that are biased generally have less variability when applied to new data 
 
 # A Motivating Example 
 
+You will need to install and then load the following packages:
+
+```{r eval=FALSE}
+library(tidyverse)
+library(rpart)
+library(caret)
+library(pls)
+library(mlbench)
+library(DataExplorer)
+```
+
+
 ## Suggested Workflow
 
 Thus far we haven't gotten our hands dirty but we'll need to do that if we want an experiential approach to any of this. It's useful to have a schematic that outlines the general process. Consider the following workflow. In general this is a solid representation of what one might do as part of building a predictive model. 
@@ -217,6 +236,7 @@ There are some strong correlations here and perhaps a case could be made for col
 As a preview of the **caret** package, we'll use the **findCorrelation** function to help identify variables that are correlated above a certain threshold. Here, we'll identify variables that are correlated at a level of 0.7 or above. This function takes a correlation matrix as input. We have a numer of variables we might consider removing but, again, we'll hold off on that for now. 
 
 ```{r corrplot2}
+data(mtcars)
 caret::findCorrelation(cor(mtcars),
                        cutoff = 0.7,
                        names = TRUE)
@@ -658,7 +678,9 @@ summary(repeated_cv_rmse)
 
 # Caret Package
 
-By now you are probably fatigued with understanding the details of writing the code to split data, doing Cross Validation, storing the results, and looking at descriptive stats associated with the resulting RMSE. And this is all before considering the various parameters associated with whatever method we wish to implement. Each function has its own set of requirements which may not extend to other functions. What we need (well, what we would like) is a framework to streamline this process and automate it as much as possible but not at the expense of understanding the results. 
+By now you are probably fatigued with understanding the details of writing the code to split data, doing Cross Validation, storing the results, and looking at descriptive stats associated with the resulting RMSE. And this is all before considering the various parameters associated with whatever method we wish to implement. 
+
+Each function has its own set of requirements which may not extend to other functions. What we need (well, what we would like) is a framework to streamline this process and automate it as much as possible but not at the expense of understanding the results. 
 
 The [**caret**](https://topepo.github.io/caret/index.html) (**C**lassification **A**nd **R**egression **T**raining) package provides a uniform interface for calling different algorithms while simplifying the data splitting and RMSE calculation. It supports many different model types and also provides the ability to tune hyper parameters. Here are some of the features:
 
@@ -2347,62 +2369,140 @@ summary(myLm)
 
 # Classification Problems
 
-Next up we consider the issue of building a model to predict a binary (e.g. "yes" / "no" or "positive / "negative") outcome although we might also predict more than one class. For the sake of explanation we'll keep our attention to the "two class" situation. As an example, the mtcars data frame has a variable called **am** which indicates whether a car has an automatic or manual transmission. This is indicated, respectively, by a 0 and 1.
-
-```{r}
-head(mtcars)
-```
-
-We could build a classification model to predict whether a car had an automatic or manual transmission based on one or more variables from the data frame. A more general example might be predicting whether a patient has tested positive or negative for a condition. Unlike prediciting a continuous outcome, we would be classifying an outcome as one thing or another. Evaluating such a model involves more than just computing RMSE. Let's explore some considerations that need to be made. 
-
-## Hypothesis Testing 
-
-Now, before we dig into the details our classifier, remember that most things in statistics and classification revolves around the idea of a hypothesis. In this case, the "null" hypothesis is that a patient does NOT have the disease whereas the alternative hypothesis is that they do. Well, for a statistician that's a bit strong. Let's just say that if there is enough evidence to reject the null hypothesis then we will. 
-
-### Type I and II Errors 
-
-Anyway, the larger idea is that we might apply our test to someone and subsequently determine that they have a disease when in fact they don't. This would be an example of a "false positive" also known as a "Type I Error".  It is also possible that we apply the test to someone and we say that the do not have the disease when they actually do. This is known as a "false negative" also known as a Type II Error" wherein we fail to reject the null hypothesis for this person. A perfect test would have zero false positives and zero false negatives
+Next up we consider the issue of building a model to predict a binary (e.g. "yes" / "no" or "positive / "negative") outcome although we might also predict more than one class. For the sake of explanation we'll keep our attention to the "two class" situation. 
 
 ## Performance Measures 
 
 With Linear Regression we were predicting a continuous outcome with the goal of being able to minimize the RMSE (root mean square error). In classification problems we need a metric or "performance measure" that we can use to judge the effectivness of any model we create. 
 
-Let's say that we are predicting whether someone has a disease or not. Pretend we have a classifier that we use against a blood sample to make this determination. The outcome is either a 1 which means that the patient is positive for the condition whereas an outcome of 0 represents a negative. 
 
-## Table of Outcomes
+As an example, we'll spend some time with the *PimaIndiansDiabetes* dataframe that is part of the **mlbench** package. You can install this package via the **Tools -> Install Package** menu item within RStudio or type the following at the R console prompt:
 
-We'll generate two vectors here with one being named "actual" that represents the "truth" or "reality" of the situation. This is our reference against which we will compared our predictions. The second vector, imaginatively named "predicted", contains the predictions. 
-
-```{r}
-# Pretend that this vector represents the actual condition status for the patients
-set.seed(123)
-actual <- factor(sample(c(0,1),20,T),levels=c(1,0))
-
-# Pretend that we generated the following predictions using a really cool, highly-sophisticated model
-set.seed(321)
-predicted <- factor(sample(c(0,1),20,T),levels=c(1,0))
+```{r mlbench,eval=FALSE}
+install.packages("mlbench")
 ```
 
-We can now compare the predicted against the actual to see how "good" our model is. This table provdes the basis from which we can compute a number of performance measures 
+Once you have it installed then load it into the work space as follows:
 
-```{r}
-(myt <- table(predicted,actual))
-sum(myt)
+```{r loadpima}
+data("PimaIndiansDiabetes")
+
+# Get a shorter handle. I hate typing. 
+pm <- PimaIndiansDiabetes
 ```
 
-So first of all we notice that there are N = 20 people in this study. It might be helpful to view this table using some terminology:
+The description of the data set is as follows:
 
-![](pics/cm1.png){width=1200}
+![](./pics/pima_desc.png){width=475}
 
-True Positives - With respect to the first row - we predicted that 4 people have the disease that actually do have it. You could then say that the number of TRUE POSITIVES (abbreviated as "TP") is 4. 
+So we now have some data on which we can build a model.  Specifically, there is a variable in the data called "diabetes" which indicates the disease / diabetes status ("pos" or "neg") of the person. It would be good to come up with a model that we could use with incoming data to determine if someone has diabetes. 
 
-False Positives - We also predicted that 4 people have the condition when they in fact do not. We could then say that the number of FALSE POSITIVES, abbreviated as "FP", is 7. This is also known as a "Type 1" error. 
+## Important Terminology
 
-False Negatives - In the second row we predicted that 7 people do NOT have the disease/condition when they actually do. So you could say that the number of FALSE NEGATIVES (abbreviated as FN) is 7. 
+In predictive modeling there are some common terms to consider:
 
-True Negatives - We also predicted that 5 people do not have the condition and they do not. So then the number of TRUE NEGATIVES (abbreviated as TN) is also 5. 
+![](./pics/features2.png){width=475}
+
+## A Basic Model
+
+Since we are attmepting to predict a binary outcome here ("pos" or "neg") we'll need to use something other than linear regression which is used to predict numeric outcomes. We'll go with Logistic Regression as it is a tried and true method for doing this type of thing. 
+
+
+Let's use the native **glm** function to do this since it will motivate some important concepts. We'll split the data into a train / test pair using the **createDataPartition** function from caret. We'll go with an 80% / 20% split. You've seen this before with the linear modelling examples. 
+
+![](./PICS/crossvalid.png){width=500}
+
+
+```{r createdp}
+set.seed(891)
+idx <- createDataPartition(pm$diabetes, p=.80, list=FALSE)
+
+glm_train <- pm[idx,]
+glm_test  <- pm[-idx,]
+
+glm_model <- glm(diabetes ~ .,
+                 data = glm_train,
+                 family = "binomial")
+
+# Next well make some predictions using the test data
+
+glm_preds <- predict(glm_model,glm_test,type="response")
+glm_preds[1:10]
+```
+
+What do we get back from our prediction ? These are probabilities that, for each row in the test data frame, represent the likelihood of that person being positive for diabetes. The trick then is to figure out the threshold value (aka "alpha value") over which we would classify the person as being positive for diabetes. 
+
+To answer this question, we need to back up a bit and recall that we are dealing with a curve like the one below which is a sigmoid function. The idea is to take our probabilities, which range between 0 and 1, and then pick a threshold over which we would classify that person as being positive for diabetes. 
+
+
+```{r logitplot,echo=FALSE}
+myseq <- seq(-6,6,.1)
+myfunc <- function(x) {1/(1+exp(-x))}
+plot(myseq,myfunc(myseq),
+     type = "l",
+     main = "Standard Logistic Sigmoid Function",
+     ylab = "")
+abline(h=0.5,lty=2)
+abline(v=0,lty=2)
+text(-0.5,0.55,"0.5")
+grid()
+```
+
+## Selecting The Correct Alpha
+
+The temptation is to select 0.5 as the threshold such that if a returned probability exceeds 0.5 then we classify the associated subject as being "positive" for the disease. But then this assumes that the probabilities are distributed accordingly. This is frequently not the case though it doesn't stop people from using 0.5. 
+
+We might first wish to look at the distribution of the returned probabilities before making a decision about where to set the threshold. We can see clearly that selecting 0.5 in this case would not be appropriate. 
+
+```{r bxplotalpha}
+boxplot(glm_preds, 
+        main="Probabilities from our GLM Model")
+grid()
+```
+
+The median is somewhere around .25 so we could use that for now although we are just guessing.  
+
+```{r ifelse}
+glm_label_preds <- ifelse(glm_preds > 0.25,"pos","neg")
+
+# We have to make the labels into a factor since
+# the diabetes column is a factor in the original data dset
+
+glm_label_preds <- factor(glm_label_preds, 
+                  levels = levels(glm_test[["diabetes"]]))
+mypreds[1:10]
+```
+
+## Hypothesis Testing 
+
+Now, before we dig into the details our classifier, remember that most things in statistics and classification revolves around the idea of a hypothesis. In this case, the "null" hypothesis is that a patient does NOT have the disease whereas the alternative hypothesis is that they do. Well, for a statistician that's a bit strong. Let's just say that if there is enough evidence to reject the null hypothesis then we will. 
+
+Anyway, the larger idea is that we might apply our test to someone and subsequently determine that they have a disease when in fact they don't. This would be an example of a "false positive" also known as a "Type I Error".  It is also possible that we apply the test to someone and we say that the do not have the disease when they actually do. This is known as a "false negative" also known as a Type II Error" wherein we fail to reject the null hypothesis for this person. A perfect test would have zero false positives and zero false negatives
+
+## Confusion Matrix
+
+So now we have our predictions in terms of actual labels that we could then use to compare to the actual labels that are stored in the "diabetes" column of the test data frame. This table provdes the basis for computing a number of performance measures such as accuracy, precision, sensitivity, specificity and others. In predictive modeling we are always interested in how well any given model will perform on "new" data.
+
+
+```{r tablpredsb}
+# How does this compare to the truth ?
+my_confusion <- table(predicted = glm_label_preds,
+                      actual = glm_test$diabetes)
+```
+
+Let's break this down since it is really important to know how to use this construct. First, we notice that there are N = 153 people in this study. 
+
+![](./pics/2cm.png)
+
+True Positives - With respect to the second row - we predicted that 47 people have the disease that actually do have it. You could then say that the number of TRUE POSITIVES (abbreviated as "TP") is 47. 
+
+False Positives - We also predicted that 37 people have the condition when they in fact do not. We could then say that the number of FALSE POSITIVES, abbreviated as "FP", is 37. 
+
+False Negatives - In the first row we predicted that 6 people do NOT have the disease/condition when they actually do. So you could say that the number of FALSE NEGATIVES (abbreviated as FN) is 6. 
+
+True Negatives - We also predicted that 63 people do not have the condition and they do not. So then the number of TRUE NEGATIVES (abbreviated as TN) is also 63. 
  
-
+ 
 ### Computing Performance Metrics
 
 Now comes the fun part in that you might be concerned with specific metrics to assess the quality of your model in specific terms. Since our model, such as it is, seems to relate to the quality of a medical diagnostic we might be concerned with its accuracy, precision, and sensitivty. The first two terms in particular are frequently used synonymously when they are not the same thing. Remember that we have N = 20 patients. Below is a graphic from Wikipedia which presents many (if not all) of the metrics that can be computed against a confusion matrix. 
@@ -2413,28 +2513,30 @@ We'll focus on some specific metrics as they will assist our understanding of ho
 
 
 ```{r}
-myt
-sum(myt)
+my_confusion
+sum(my_confusion)
 ```
 
 #### Accuracy 
 
 So let's take the number of observed True Positives and True Negatives, add them together, and divide them by the total number of patients in the study group to arrive at what is known as the **Accuracy** of our model. Another way to think of the denominator is as the sum of all observed results, True and False. 
 
-Accuracy =  (TP + TN) / (TP + TN + FP + FN) = 9/20 = 0.45
+Accuracy =  (TP + TN) / (TP + TN + FP + FN) = (63 + 47)/153 = 0. 0.72
 
 ```{r}
-(accuracy <- (myt[1,1] + myt[2,2]) / sum(myt))
+accuracy <- (my_confusion[1,1] + my_confusion[2,2]) / sum(my_confusion)
+(accuracy %>% round(.,2))
 ```
 
 #### Precision
 
-How precise is the model ? This is computed in a different fashion. We take the number of True Postives (TP) and divide that by the sum of True Positives (TP) and False Positives (FP). The denominator is the sum of row 1 in our table myt.
+How precise is the model ? This is also known as Positive Predictive Value. We take the number of True Postives (TP) and divide that by the sum of True Positives (TP) and False Positives (FP). The denominator is the sum of row 2 in our matrix.
 
-Precision = TP / (TP + FP) = 4 / (4 + 4) = 0.5
+Precision = TP / (TP + FP) = 47 / (47 + 37) = 0.5
 
 ```{r}
-(precision <- myt[1,1]/(myt[1,1]+myt[1,2]))
+precision <- my_confusion[2,2]/(my_confusion[2,1]+my_confusion[2,2])
+precision %>% round(.,2)
 ```
 
 It is helpful to know that **Precision** is also known as the PPV "Positive Predictive Value" since it is concerened with the ratio of True Positives over the sum of all Positive related quantities including the False Positives. The larger the number of FP then the smaller the ratio which results in a lower precision. 
@@ -2443,10 +2545,11 @@ It is helpful to know that **Precision** is also known as the PPV "Positive Pred
 
 Sensitivity is related to Precision except the ratio we look at is the number of True Positives (TP) divided by the sum of True Positives and False Negatives (which are actually Positives). This tells us how frequently we find a positive case given that it is actually positive. 
 
-Sensitivity = TP / (TP + FN) = 5 / (5 + 4) = 0.5555
+Sensitivity = TP / (TP + FN) = 47 / (47 + 6) = 0.89
 
 ```{r}
-(sensitivity <- myt[1,1]/(myt[1,1]+myt[2,1]))
+sensitivity <- my_confusion[2,2]/(my_confusion[2,2]+my_confusion[1,2])
+sensitivity %>% round(.,2)
 ```
 
 Sensitivity also has synonyms: recall, hit rate, or True Positive Rate (TPR). For example, the concept of True Positive Rate might be more intutitive for you to understand although scientific medical literature might reference Sensitivity. 
@@ -2455,89 +2558,61 @@ Sensitivity also has synonyms: recall, hit rate, or True Positive Rate (TPR). Fo
 
 Specificity tells us how frequently we find a negative case given that it is actually negative. This is also known as the "True Negative Rate"
 
-Specificity = TN / (TN + FP) = 5 / (5 + 4) = 0.5555
+Specificity = TN / (TN + FP) = 63 / (63 + 37) = 0.63
 
 ```{r}
-(specificity <- myt[2,2]/(myt[2,2]+myt[1,2]))
+specificity <- my_confusion[1,1] / (my_confusion[1,1]+ my_confusion[2,1])
+(specificity %>% round(.,2))
 ```
 
 #### False Positive Rate
 
 We compute the FPR as follows:
 
-False Positive Rate = FP / FP + TN = 4 / 4 + 5 
+False Positive Rate = FP / (FP + TN) = 37 / (37 + 63) = .37
 
 
 ```{r}
-(fpr <- myt[1,2] / (myt[1,2] + myt[2,2]))
+fpr <- my_confusion[2,1] / (my_confusion[2,1] + my_confusion[1,1])
+(fpr %>% round(.,2))
 ```
 
 ## Picking the Right Metric
 
 There are more ratios we could compute some of which might be more relavant to our classification issue. In reality, picking the "right" metric is a function of your domain of study. Frequently, the sensitivity and specicity are used in medical testing scenarions as is the false positive rate. But you should search the literature in your area of interest to determine what is commonly used. We could say much more about these metrics but we'll keep it simple for now. 
 
-Where are we ? We compared some predictions against reality and computed some ratios. The problem with this is that we don't yet know from where the predictions came ? Well, we imagined that the predicted values came from some classification model we created though we didn't specify one. Let's take a real example here to illustrate some important points. 
+## Wait. Where Are We ? 
 
-Let's use the **PimaIndiansDiabetes** data frame from the **mlbench** package to predict whether a person has diabetes or not. This is just a basic example here, we aren't trying to create a sophisticated model.
+We've been doing a lot. We did the following:
 
-```{r}
-data("PimaIndiansDiabetes")
-pm <- PimaIndiansDiabetes
+1) Built a model against the training data
+2) Used the model to make a prediction against the test data
+3) Took the probabilities from Step #2 and
+4) Selected a threshold / alpha value (e.g. .3) and
+5) Decided that probabilities over that threshold would be "pos"
+6) Created a table of outcomes (confusion matrix) to compare predictions vs reality
+7) Computed some important ratios
 
-# Create a logistic regression model
-glm_model <- glm(diabetes ~ .,data=pm,family="binomial")
-```
+While this process was useful the resulting confusion matrix corresponded to just one specific value of alpha. What if we had picked another value of alpha ? We would then get a different confusion matrix as well as different performance measures. In effect we would have to repeat steps 1-6 all over again !!! 
 
-Now that we have a model, let's do some predictions. What we get back are probabilities (values between 0 and 1). We now have to figure out an appropriate threshold value that, if exceeded, will result in a classification of "positive" for diabetes.  
+Let's find a way to generalize these steps. First, let's create a function that allows us to compute the True Positive Rate (aka "Sensitivity") and the False Postive Rate ( 1 - Specificity). If we apply it to our predictions from our example in progress, the output would be as follows. 
 
-```{r}
-glm_probs <- predict(glm_model,pm,type="response")
-round(glm_probs,4)[1:20]
-```
-
-Let's create a boxplot of these probabilities. 
-
-```{r}
-par(mfrow=c(1,2))
-boxplot(glm_probs)
-grid()
-hist(glm_probs)
-par(mfrow=c(1,1))
-```
-
-### Working With Prediction Probabilities 
-
-So now we need to write some code to decide how to best use these probabilities to make the predictions. We'll start with 0.5. (That's what most people do anyway). If the predicted probability corresponding to that observation is >= 0.5 then we'll say that the person has diabetes. If not, then they will be classified as negative. 
-
-```{r}
-t <- 0.5
-diabetes <- ifelse(glm_probs >= t,0,1)
-```
-
-Next, let's make a table which compares these predictions against the actual values. It turns out that our classifier doesn't seem to be doing a good job here. There are lots of False Negatives and Positives here. 
-```{r}
-(myt <- table(predicted=diabetes,true=pm$diabetes))
-```
-
-So we could then compute the metrics corresponding to this particular confusion matrix. We could compute, for example, the True Positive Rate and False Positive Rate from this data. 
 
 ```{r}
 get_tprfpr <- function(pred,true) {
   myt <- table(pred,true)
-  tpr <- myt[1,1]/(myt[1,1]+myt[2,1])
-  fpr <- myt[1,2] / (myt[1,2] + myt[2,2])
+  tpr <- myt[2,2]/(myt[2,2]+myt[1,2])
+  fpr <- myt[2,1] / (myt[2,1] + myt[1,1])
   return(c(tpr=tpr,fpr=fpr))
 }
 
-get_tprfpr(diabetes,pm$diabetes)
+get_tprfpr(glm_label_preds,glm_test$diabetes)
 ```
 
-### Creating a ROC Curve 
+We could now use this function to compute these metrics for any set of predictions vs outcomes. We could generalize this function to accept an alpha so we could explore the full probability domain (0 - 1) and then plot the TPR vs FPR in effect creasting something known as a ROC Curve aka Receiver Operating Characteristic Curve.
 
-Let's look at the metrics associated with other threshold values. Even better let's just adjust our above function to do this for all values between 0 and 1. 
 
 ```{r}
-
 get_tprfpr <- function(thresh,probs=glm_probs) {
   diabetes <- ifelse(probs >= thresh,1,0)
   myt <- table(diabetes,pm$diabetes)
@@ -2548,23 +2623,67 @@ get_tprfpr <- function(thresh,probs=glm_probs) {
 ```
 
 
-So - This process has resulted in the creation of a ROC Curve that shows us TPR vs FPR across a large number of possible threshold values. For each selected threshold, we compute a confusion matrix from which we compute the associated tpr and fpr. When we are done, we plot tpr vs fpr. The idea with a ROC curve is to pick the threshold such that the area under the curve is maximized. While we have produced this ROC curve by hand, R provides packages to do this for us. 
+Let's look at a large number of threshold / alpha values:
 
 
 ```{r}
 metrics <- t(sapply(seq(0.05,.95,.05),function(x) get_tprfpr(x))) 
 plot(tpr~fpr,metrics,
-     main="Steve's ROC Curve",
+     ylim=c(0,1),
+     main="Steve's Super Cool ROC Curve",
      xlab="False Positve Rate (1-Specificity)",
      ylab="True Positive Rate",type="l")
 grid()
+abline(a=0, b=1,lty=2)
 
 # Put the associated threshold values on the plot to help you identify
 # the right value to maximize the AUC (Area Under Curve)
 
-text(metrics[,2],metrics[,1],labels=seq(0.05,.95,.05),cex=0.9)
+text(metrics[,2],metrics[,1],labels=seq(0.00,.95,.05),cex=0.8)
 ```
 
+It turns out that area under an ROC curve is a measure of the usefulness of a test in general, where a greater area means a more useful test. Ideally we would want the area under the curve (also known as "AUC") to be as close to 1 as possible. The dashed line above represents a classifier that basically "guesses" the outcome (pos vs neg) using a "coin flip" mentality. So, our classifier does much better than that but certainly not perfectly. 
+
+## Better Ways To Compute The ROC Curve
+
+So by now your head might be reeling from all the details and tedium associated with selecting alpha values, computing matrices, and plotting ROC cruves though I it should be no surprise that R (as well as Python) has a number of functions that can compute these things for you. As an example, if we wanted to plot the ROC curve we generated by hand we could use the ROCR package. It takes the probabilities returned by our first prediction object as well as the known labels in the glm_test data frame. 
+
+
+```{r}
+pred <- ROCR::prediction(predictions = glm_preds,
+                         labels = glm_test$diabetes)
+
+perf <- performance(pred,
+                    "tpr",
+                    "fpr")
+plot(perf,colorize=T,
+     print.cutoffs.at=seq(0,1,by=0.1),
+     lwd=3,las=1,main="Cool ROC Curve")
+abline(a = 0, b = 1)
+
+grid()
+```
+
+
+And while I'm at it, I might as well show you how easy it is to compute a confusion matrix which we did by hand earlier. Remember that we create a table called **my_confusion**
+
+```{r}
+# How does this compare to the truth ?
+my_confusion <- table(predicted = glm_label_preds,
+                      actual = glm_test$diabetes)
+```
+
+We could use a function from the **caret** package called **confusionMatrix** to show us the relevant metrics. Much better than doing it by hand. 
+
+```{r}
+caret::confusionMatrix(my_confusion,positive="pos")
+```
+
+We could also work directly with our labelled predictions and known labels. 
+
+```{r}
+caret::confusionMatrix(glm_label_preds,glm_test$diabetes,positive="pos")
+```
 
 # Classification Example
 
@@ -2590,57 +2709,27 @@ pm <- PimaIndiansDiabetes
 
 If this were more a talk on exploratory practices we might spend more time investigating the relationships between the variables. 
 
-```{r corrplot}
-library(corrplot)
-mydata.cor = cor(pm[,-9], method = c("spearman"))
-corrplot(mydata.cor)
+## Exploratory Plots
+
+We'll look use some stock plots from the [**DataExplorer**](https://github.com/elastacloud/automatic-data-explorer) package to get a feel for the data. Look at correlations between the variables to see if any are strongly correlated with the variable we wish to predict or any other variables. 
+
+```{r decorr}
+plot_correlation(pm, type="continuous")
 ```
 
 
-```{r heatmap}
-palette = colorRampPalette(c("green", "white", "red")) (20)
-heatmap(x = mydata.cor, col = palette, symm = TRUE)
+```{r debar}
+plot_bar(pm)
 ```
 
-## Boxplots And Densities
 
-So the object of this code is to see if there are any apparent differences for any of the variables in terms of the diabetes status of a given individual. 
-
-```{r basebox}
-par(mfrow=c(2,4))
-for (ii in 1:8) {
-  form <- as.formula(paste(names(pm)[ii]," ~ diabetes",sep=""))
-  boxplot(form,data=pm,main=names(pm)[ii])
-  grid()
-}
-par(mfrow=c(1,1))
+```{r phist}
+plot_histogram(pm)
 ```
 
-Same plot, though created by ggplot2 commands
 
-```{r ggplotbox}
-gather(pm,key="variable",val="value",-diabetes) %>% ggplot(aes(x=diabetes,y=value)) + geom_boxplot() + facet_wrap(~variable,scales="free") + theme_bw()
-```
-
-Let's look at how the densities differ in each group (positive vs
-negative).
-
-```{r density}
-splitdf <- split(pm,pm$diabetes)
-par(mfrow=c(2,4))
-
- for (ii in 1:8) {
-    a <- paste("splitdf[[1]]$",names(pm)[ii],sep="")
-    plot(density(eval(parse(text=a))),main=names(pm)[ii],col="red")
-    a <- paste("splitdf[[2]]$",names(pm)[ii],sep="")
-    lines(density(eval(parse(text=a))),col="blue")
-    legend("bottomright",
-           legend=c("neg","pos"),
-           col=c("red","blue"),lty=1:1,cex=0.8)
-    grid()
-
-}
-par(mfrow=c(1,1))
+```{r pbox}
+plot_boxplot(pm,by="diabetes")
 ```
 
 
