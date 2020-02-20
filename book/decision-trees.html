@@ -236,11 +236,11 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <div id="decision-trees" class="section level1">
 <h1><span class="header-section-number">Chapter 6</span> Decision Trees</h1>
 <p>You might also know about the topic of Classification Trees under the name of <strong>CART</strong> which stands for <strong>C</strong>lassification <strong>A</strong>nd <strong>R</strong>egression Trees. Decision trees can be used to predict numeric outcomes or to classify binary outcomes such as a disease result “yes” or “now”, “positive or negative”.</p>
-<p>The theme common to both types of trees is that you are trying to predict some outcome variable as a function of some number and combination of predictor variables from the same data set. The outcome will be a “tree” that can usually be easily understood and interrpeted. As an example, a very simple decision tree can be generated that predicts / classifies the transmission type of cars in the mtcars data frame.</p>
+<p>The theme common to both types of trees is that you are trying to predict some outcome variable as a function of some number and combination of predictor variables from the same data set. The outcome will be a “tree” that can usually be easily understood and interpreted. As an example, a very simple decision tree can be generated that predicts / classifies the transmission type of cars in the mtcars data frame.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(mtcars)
 rpart_class_mtcars &lt;-<span class="st"> </span><span class="kw">rpart</span>(am<span class="op">~</span>.,<span class="dt">data=</span>mtcars,<span class="dt">method=</span><span class="st">&quot;class&quot;</span>)
 <span class="kw">rpart.plot</span>(rpart_class_mtcars,<span class="dt">yesno =</span> <span class="dv">2</span>, <span class="dt">type =</span> <span class="dv">0</span>, <span class="dt">extra =</span> <span class="dv">0</span>)</code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-53-1.png" width="672" /></p>
 <p>If the weight of the car is greater than 3.2 tons then the tree would classify it as having a manual (1) transmission. How well did we do here ? Not too bad actually. We’ll talk more about measuring performance of a classifier in a bit.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">preds &lt;-<span class="st"> </span><span class="kw">ifelse</span>(mtcars<span class="op">$</span>wt <span class="op">&gt;=</span><span class="st"> </span><span class="dv">3</span>,<span class="dv">0</span>,<span class="dv">1</span>)
 <span class="kw">table</span>(<span class="dt">predicted=</span>preds,<span class="dt">actual=</span>mtcars<span class="op">$</span>am)</code></pre></div>
@@ -252,10 +252,10 @@ rpart_class_mtcars &lt;-<span class="st"> </span><span class="kw">rpart</span>(a
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(mtcars)
 rpart_regress_mtcars &lt;-<span class="st"> </span><span class="kw">rpart</span>(mpg<span class="op">~</span>.,<span class="dt">data=</span>mtcars,<span class="dt">method=</span><span class="st">&quot;anova&quot;</span>)
 <span class="kw">rpart.plot</span>(rpart_regress_mtcars,<span class="dt">yesno =</span> <span class="dv">2</span>, <span class="dt">type =</span> <span class="dv">0</span>, <span class="dt">extra =</span> <span class="dv">0</span>)</code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-55-1.png" width="672" /></p>
 <div id="advantages" class="section level2">
 <h2><span class="header-section-number">6.1</span> Advantages</h2>
-<p>The advantages of tree-based methods include that 1 - The model is generally easy to interpret - The path to a decision is plainly spelled out (assuming that the number of tree splits is easy enough to trace). - The method can handle numeric and cartegorical - One does not generally need to pre process or normalize data - Missing data is less of a big deal</p>
+<p>The advantages of tree-based methods include that 1 - The model is generally easy to interpret - The path to a decision is plainly spelled out (assuming that the number of tree splits is easy enough to trace). - The method can handle numeric and categorical - One does not generally need to pre process or normalize data - Missing data is less of a big deal</p>
 <p>Disadvantages include:</p>
 <ul>
 <li>Large trees are hard to follow - variance can be high</li>
@@ -281,8 +281,8 @@ pm &lt;-<span class="st"> </span>PimaIndiansDiabetes
 
 diabetes_mod &lt;-<span class="st"> </span><span class="kw">rpart</span>(diabetes <span class="op">~</span><span class="st"> </span>.,pm,<span class="dt">method=</span><span class="st">&quot;class&quot;</span>)
 <span class="kw">rpart.plot</span>(<span class="dt">x =</span> diabetes_mod, <span class="dt">yesno =</span> <span class="dv">2</span>, <span class="dt">type =</span> <span class="dv">0</span>, <span class="dt">extra =</span> <span class="dv">0</span>)</code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
-<p>That’s pretty understandable but it starts to border on being a bit hard to follow by hand. Nonethless, you could show this to someone who does not know (or care) about the underlying mathematics of decision trees and they would be able to understand the path to a classification of someone having diabetes or not.</p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-56-1.png" width="672" /></p>
+<p>That’s pretty understandable but it starts to border on being a bit hard to follow by hand. Nonetheless, you could show this to someone who does not know (or care) about the underlying mathematics of decision trees and they would be able to understand the path to a classification of someone having diabetes or not.</p>
 <p>It’s common in these scenarios to create what is known as a test / training split so that we can train our model on a test set that we can then use on a test or hold out data set to see how well the model performs. There is much more to say about this but we’ll keep it simple here. We can create a training set that comprises %80 of the data with a holdout set of 20%. This easy to do.</p>
 <p>Let’s create a Train / Test Split</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">set.seed</span>(<span class="dv">123</span>)
@@ -394,14 +394,14 @@ aucval</code></pre></div>
 <h3><span class="header-section-number">6.2.2</span> Tree Splitting</h3>
 <p>The resulting tree can be thought of as an upside down tree with the root at the top. The “trunk” proceeds downward and splits into subsets based on some decision (hence the word “decision” in the title). When classifying data the idea is to segment or partition data into groups/regions where each group contains or represents a single class (“yes/no”, “positive/negative”).</p>
 <p>These groups or regions would represent a “pure” region. This is not always possible so a best effort is made. These regions are separated by decision boundaries which are used to make decisions. We’ll plot some example data to illustrate the case.</p>
-<p><img src="biosml_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
-<p><img src="biosml_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
-<p><img src="biosml_files/figure-html/unnamed-chunk-23-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-61-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-62-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-63-1.png" width="672" /></p>
 </div>
 </div>
 <div id="gini-index" class="section level2">
 <h2><span class="header-section-number">6.3</span> Gini Index</h2>
-<p>So we have to find a way to make the descisons such that the resulting regions are as pure as possible. This could be measuring the degree of impurity or purity - so we are either maximinizng purity or minimizing impurity The so called “Gini index”&quot; gives us the degree or measure of impurity.</p>
+<p>So we have to find a way to make the decisions such that the resulting regions are as pure as possible. This could be measuring the degree of impurity or purity - so we are either maximinizng purity or minimizing impurity The so called “Gini index”&quot; gives us the degree or measure of impurity.</p>
 <p>The lower the Gini index, the lower the degree of impurity (this higher purity). The higher the Gini index the higher the degree of impurity (this lower purity). The decision tree will select the split that minimizes or lowers the Gini index. There are other measures or indices that can be used such as the “information” measure.</p>
 <p>Let’s train two models that use a different splitting criterion (“gini” and “information”) and then use the test set to choose a “best” model. To do this you’ll use the <strong>parms</strong> argument of the <strong>rpart</strong> function. This argument takes a named list that contains values of different parameters to influence how the model is trained. Finally, to assess the models we’ll use the <strong>ce</strong> function from the <strong>Metrics</strong> package to show the proportion of elements in actual that are not equal to the corresponding element in predicted.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Train a gini-based model</span>
@@ -437,10 +437,10 @@ Metrics<span class="op">::</span><span class="kw">ce</span>(<span class="dt">act
 </div>
 <div id="regression-trees" class="section level2">
 <h2><span class="header-section-number">6.4</span> Regression Trees</h2>
-<p>Predicting numeric outcomes can also be of interest. Given some patient characteristics relative to a disease, we might want to predict a viral load quanitity. A gambler might want to predict a final score for a team. Unlike, classification problems, we are looking at estimating a numeric outcome. R has a built in function for this called “lm” which can be used but we can also use Trees to do this since, after, all, it does some nice things for us like not having to worry about normlalizing data (not that that is hard) or the mixture of quantitaitve and categorigcal data.</p>
+<p>Predicting numeric outcomes can also be of interest. Given some patient characteristics relative to a disease, we might want to predict a viral load quantity. A gambler might want to predict a final score for a team. Unlike, classification problems, we are looking at estimating a numeric outcome. R has a built in function for this called “lm” which can be used but we can also use Trees to do this since, after, all, it does some nice things for us like not having to worry about normalizing data (not that that is hard) or the mixture of quantitative and categorical data.</p>
 <div id="performance-measure" class="section level3">
 <h3><span class="header-section-number">6.4.1</span> Performance Measure</h3>
-<p>Since we are predicting a numeric outcome we would like to come up with a metric to help us fogure out if the model we havbe is good or not. With classification situations we can employ confusion matrices and ROC curves. Here we will ue something more simplistic but effective - Root Mean Square Error. The formula looks like the following where P represents a vector of predictions and O represents a vector of the observed (true) values.</p>
+<p>Since we are predicting a numeric outcome we would like to come up with a metric to help us figure out if the model we have is good or not. With classification situations we can employ confusion matrices and ROC curves. Here we will use something more simplistic but effective - Root Mean Square Error. The formula looks like the following where P represents a vector of predictions and O represents a vector of the observed (true) values.</p>
 <p><span class="math display">\[
 RMSE = \sqrt\frac{\sum_i^n(P_i-O_i)^2}{n}
 \]</span></p>
@@ -494,7 +494,7 @@ mass_pima_mod &lt;-<span class="st"> </span><span class="kw">rpart</span>(<span 
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Plot the tree model</span>
 <span class="kw">rpart.plot</span>(<span class="dt">x =</span> mass_pima_mod, 
            <span class="dt">yesno =</span> <span class="dv">2</span>, <span class="dt">type =</span> <span class="dv">0</span>, <span class="dt">extra =</span> <span class="dv">0</span>)</code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-27-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-67-1.png" width="672" /></p>
 <p>Let’s compute the RMSE for this model.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Generate predictions on a test set</span>
 pred &lt;-<span class="st"> </span><span class="kw">predict</span>(<span class="dt">object =</span> mass_pima_mod,   <span class="co"># model object </span>
@@ -526,7 +526,7 @@ Metrics<span class="op">::</span><span class="kw">rmse</span>(<span class="dt">a
 <p>In effect, it is doing some work for you so you don’t have to. At the end of the run it will produce a table for inspection. The results of this table can then be used to “prune” the tree model to get a “better” tree - one that performs better than an “un pruned” tree. Let’s look at the pima mass model:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># You can plot the modelling object</span>
 <span class="kw">plot</span>(mass_pima_mod)</code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-29-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-69-1.png" width="672" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># You can inspect the table manually</span>
 mass_pima_mod<span class="op">$</span>cptable</code></pre></div>
 <pre><code>##            CP nsplit rel error    xerror       xstd
@@ -546,13 +546,13 @@ mass_pima_mod<span class="op">$</span>cptable</code></pre></div>
 <p>We want to pick the value of CP from the table that corresponds to the minimum <strong>xerror</strong> value. This can also be deduced from the plot but let’s work with the table:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">cpt &lt;-<span class="st"> </span><span class="kw">as.data.frame.matrix</span>(mass_pima_mod<span class="op">$</span>cptable) 
 cpt_val &lt;-<span class="st"> </span>cpt[<span class="kw">order</span>(cpt<span class="op">$</span>xerror),][<span class="dv">1</span>,]<span class="op">$</span>CP</code></pre></div>
-<p>We’ll use the CP value associated with the minimum xerror which in this case turns out to be 0.01. This is now passed to the <strong>prune</strong> function.</p>
+<p>We’ll use the CP value associated with the minimum error which in this case turns out to be 0.01. This is now passed to the <strong>prune</strong> function.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mass_pima_mod_opt &lt;-<span class="st"> </span><span class="kw">prune</span>(mass_pima_mod, 
                            <span class="dt">cp =</span> cpt_val)
                           
 <span class="co"># Plot the optimized model</span>
 <span class="kw">rpart.plot</span>(mass_pima_mod_opt, <span class="dt">yesno =</span> <span class="dv">2</span>, <span class="dt">type =</span> <span class="dv">0</span>, <span class="dt">extra =</span> <span class="dv">0</span>)</code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-31-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-71-1.png" width="672" /></p>
 <p>Does this optimized model perform any better ? Not really, because the optimal CP value turned out to be 0.01 which is actually the same as the default.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Generate predictions on a test set</span>
 pred &lt;-<span class="st"> </span><span class="kw">predict</span>(<span class="dt">object =</span> mass_pima_mod_opt,   <span class="co"># model object </span>
@@ -581,7 +581,7 @@ my_cool_grid &lt;-<span class="st"> </span><span class="kw">expand.grid</span>(<
 ## 4       16        5
 ## 5       21        5
 ## 6       26        5</code></pre>
-<p>We’ll generate models, predictions, and RMSE values and stash them for later review. Once agian, we’ll be predicting the mass variable in the Pima Indians dataframe.</p>
+<p>We’ll generate models, predictions, and RMSE values and stash them for later review. Once again, we’ll be predicting the mass variable in the Pima Indians data frame.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">do_grid_search &lt;-<span class="st"> </span><span class="cf">function</span>(minsplit,maxdepth) {
   
   <span class="co"># Setup some book keeping structures</span>
@@ -656,7 +656,7 @@ results<span class="op">$</span>optim_rmse</code></pre></div>
 </div>
 <div id="bagged-trees" class="section level2">
 <h2><span class="header-section-number">6.7</span> Bagged Trees</h2>
-<p>Now we look at bagged trees which involves looking at many trees in aggregate - this is an ensemble method. It helps to reduce the variance associated with a single decision tree which can be highly sensitive to changes in data. The term bagging refers to “boostrap aggregation”. To review, the Decision Tree process can be represented like this:</p>
+<p>Now we look at bagged trees which involves looking at many trees in aggregate - this is an ensemble method. It helps to reduce the variance associated with a single decision tree which can be highly sensitive to changes in data. The term bagging refers to “bootstrap aggregation”. To review, the Decision Tree process can be represented like this:</p>
 <div class="figure">
 <img src="pics/tree2.png" />
 
@@ -664,7 +664,7 @@ results<span class="op">$</span>optim_rmse</code></pre></div>
 <p>The bootstrap method of sampling will resample the training data some number of times (with replacement) and retrain a number of models on the resampled data to average out the error. This looks something like:</p>
 <ul>
 <li>The input data set is resampled with replacement some number of times (e.g. 10,50, 100)</li>
-<li>The resampled data is usually a subset of the data which leaves some portion of the data avaialble to use a mini test set for prediction (“out of bag data”“)</li>
+<li>The resampled data is usually a subset of the data which leaves some portion of the data available to use a mini test set for prediction (“out of bag data”“)</li>
 <li>Get the RMSE from the prediction</li>
 <li>Average out the RMSE</li>
 </ul>
@@ -724,7 +724,7 @@ number_of_boostraps &lt;-<span class="st"> </span><span class="dv">50</span>
 }</code></pre></div>
 <p>Now check all of the accuracy estimates and then average them. Remember this is supposed to help us to better estimate the out of sample error.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">boxplot</span>(aucval)</code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-39-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-79-1.png" width="672" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">mean</span>(aucval)</code></pre></div>
 <pre><code>## [1] 0.8240443</code></pre>
 <p>Now we’ll compare this to the function called “bagging” from the <strong>ipred</strong> package which does bagged trees directly.</p>

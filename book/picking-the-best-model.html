@@ -260,10 +260,10 @@ mod_ranger &lt;-<span class="st"> </span><span class="kw">train</span>(mpg <span
                     <span class="dt">trControl =</span> my_ctrl)</code></pre></div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Look at the results of the hyperparameter tuning</span>
 <span class="kw">plot</span>(mod_rf)</code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-47-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-87-1.png" width="672" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#</span>
 <span class="kw">plot</span>(mod_ranger)</code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-47-2.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-87-2.png" width="672" /></p>
 <div id="using-the-resamples-function" class="section level2">
 <h2><span class="header-section-number">8.1</span> Using the resamples() function</h2>
 <p>Now, here comes the “magic”. Because we built three different modeling objects on the same data set, we can now use the <strong>resamples</strong> function to collect, analyze, and visualize a set of results. This is pretty powerful.</p>
@@ -294,9 +294,9 @@ mod_ranger &lt;-<span class="st"> </span><span class="kw">train</span>(mpg <span
 ## rf     0.8143481 0.8476955 0.8810429 0.8690576 0.8964124 0.9117819    0
 ## ranger 0.8184058 0.8615926 0.9047795 0.8771623 0.9065406 0.9083017    0</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">bwplot</span>(results)</code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-49-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-89-1.png" width="672" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">dotplot</span>(results)</code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-50-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-90-1.png" width="672" /></p>
 </div>
 <div id="model-performance" class="section level2">
 <h2><span class="header-section-number">8.2</span> Model Performance</h2>
@@ -373,10 +373,10 @@ mod_ranger &lt;-<span class="st"> </span><span class="kw">train</span>(mpg <span
 <div id="feature-selection" class="section level2">
 <h2><span class="header-section-number">8.3</span> Feature Selection</h2>
 <p>Features are the columns in your data set. Up until now we have not been concerned with the formula being specified choosing rather to focus on how to run models with the caret package. However, knowing how to select the “best” subset of features is important since an overspcified formula might result in very long training times and, even then, it might not be that good of a model for predicting out of sample error. Of course, various methods have ways to deal with this problem.</p>
-<p>For example, Stepwise regression is one way to look at combinations of predictor variables to arrive at the optimal feature set according to some score (e.g. AIC, BIC). This process is implemented recursively. However, none of this should be a substitute for solid intution about the data or knowing how features vary with each other (if at all). Still, packages such as caret have ways to assist with feature selection. We’ll look at a few here:</p>
+<p>For example, Stepwise regression is one way to look at combinations of predictor variables to arrive at the optimal feature set according to some score (e.g. AIC, BIC). This process is implemented recursively. However, none of this should be a substitute for solid intuition about the data or knowing how features vary with each other (if at all). Still, packages such as caret have ways to assist with feature selection. We’ll look at a few here:</p>
 <div id="recursive-feature-elimination" class="section level3">
 <h3><span class="header-section-number">8.3.1</span> Recursive Feature Elimination</h3>
-<p>The general idea with this approach is to build models using combinations of predictors to arrive at the best model according to some metric such as RMSE. Some predictors might be discarded along the way resulting in a “leaner” feature set that would then hopefully be easier to defend than a more complex or fully specified feature set. There is no free lunch here in that blindly accepting the features handed to you by a recursive or automatic method should not be considered authoritative especially if you have a reason to believe that some key feature has been exlcuded. Many people, however, like to use these methods as a starting point. You would still need to review the diagnostics associated with a final model to determine if it is statistically sound.</p>
+<p>The general idea with this approach is to build models using combinations of predictors to arrive at the best model according to some metric such as RMSE. Some predictors might be discarded along the way resulting in a “leaner” feature set that would then hopefully be easier to defend than a more complex or fully specified feature set. There is no free lunch here in that blindly accepting the features handed to you by a recursive or automatic method should not be considered authoritative especially if you have a reason to believe that some key feature has been excluded. Many people, however, like to use these methods as a starting point. You would still need to review the diagnostics associated with a final model to determine if it is statistically sound.</p>
 <p>According to the <a href="https://topepo.github.io/caret/feature-selection-overview.html#models-with-built-in-feature-selection"><strong>caret</strong> documentation</a> there are a large number of supported models that contain some form of embedded or built-in feature selection. Such functions are doing you a favor (or not) by showing you the importance of contributing features.</p>
 <div class="figure">
 <img src="pics/feature_selection.png" />
@@ -411,7 +411,7 @@ results</code></pre></div>
 ## The top 5 variables (out of 5):
 ##    wt, am, drat, qsec, vs</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(results,<span class="dt">type=</span><span class="kw">c</span>(<span class="st">&quot;o&quot;</span>,<span class="st">&quot;g&quot;</span>))</code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-54-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-94-1.png" width="672" /></p>
 <p>What we get back is some idea about the important features. We could then build a model with caret that uses only these features to see if the suggested RMSE value mentioned in the rfe process matches.</p>
 </div>
 </div>

@@ -247,7 +247,7 @@ url &lt;-<span class="st"> &quot;https://raw.githubusercontent.com/steviep42/uti
 mtcars_na &lt;-<span class="st"> </span><span class="kw">read.csv</span>(url, <span class="dt">stringsAsFactors =</span> <span class="ot">FALSE</span>)</code></pre></div>
 <div id="finding-rows-with-missing-data" class="section level3">
 <h3><span class="header-section-number">9.2.1</span> Finding Rows with Missing Data</h3>
-<p>Ar first glance it looks like all fearures have valid variable values but we can look for missing values which, in R, are indicated by <strong>NA</strong> Base R provides a number of commands to do this. First let’s see how many rows there are in the data frame.</p>
+<p>Ar first glance it looks like all features have valid variable values but we can look for missing values which, in R, are indicated by <strong>NA</strong> Base R provides a number of commands to do this. First let’s see how many rows there are in the data frame.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">nrow</span>(mtcars_na)</code></pre></div>
 <pre><code>## [1] 32</code></pre>
 <p>Now let’s see how many rows have at least one column with a missing value. So we have eight rows in the data frame that contain one or more missing values.</p>
@@ -283,7 +283,7 @@ mtcars_na &lt;-<span class="st"> </span><span class="kw">read.csv</span>(url, <s
 <p>Let’s look at a boxplot of the <strong>wt</strong> feature.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">boxplot</span>(mtcars_na<span class="op">$</span>wt,<span class="dt">na.rm=</span><span class="ot">TRUE</span>,<span class="dt">main=</span><span class="st">&quot;Distribution of the wt feature&quot;</span>)
 <span class="kw">grid</span>()</code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-63-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-103-1.png" width="672" /></p>
 <p>To make the substitution would involve the following. First we need to find out which row numbers have missing values for the <strong>wt</strong> feature.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">(missing_wt_indices &lt;-<span class="st"> </span><span class="kw">which</span>(<span class="kw">is.na</span>(mtcars_na<span class="op">$</span>wt)))</code></pre></div>
 <pre><code>## [1]  2  9 23</code></pre>
@@ -295,7 +295,7 @@ mtcars_na &lt;-<span class="st"> </span><span class="kw">read.csv</span>(url, <s
 ## 23 15.2   8 304.0 150 3.15 NA 17.30  0  0    3   NA</code></pre>
 <p>Now do the replacement</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mtcars_na[missing_wt_indices,]<span class="op">$</span>wt &lt;-<span class="st"> </span><span class="kw">median</span>(mtcars_na<span class="op">$</span>wt,<span class="dt">na.rm=</span><span class="ot">TRUE</span>)</code></pre></div>
-<p>Verify that the replacement was done successfully. If so, then we should see the value of 3.44 in palce of the previous NA values.</p>
+<p>Verify that the replacement was done successfully. If so, then we should see the value of 3.44 in place of the previous NA values.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mtcars_na[missing_wt_indices,]</code></pre></div>
 <pre><code>##     mpg cyl  disp  hp drat   wt  qsec vs am gear carb
 ## 2  21.0   6 160.0 110 3.90 3.44 17.02  0  1    4    4
@@ -328,7 +328,7 @@ mtcars_na &lt;-<span class="st"> </span><span class="kw">read.csv</span>(url, <s
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Make sure caret is loaded</span>
 <span class="co"># library(caret)</span></code></pre></div>
 <p>So if we choose to use caret we can use the <strong>preProcess</strong> function to signal our intent to use imputation - in this case the K-Nearest Neighbors technique. KNN imputation is particularly useful for dealing with the “not at random” situation where there could be bias in the way missing values occur. This approach looks at similar observations to those containing missing values which means that it will attempt to fill in missing values as a function of a number of variables as opposed to just one.</p>
-<p>One subtlety here is that <strong>caret</strong> requires us to use an alternative to the forumla interface (e.g. mpg ~ .) approach when using the <strong>train</strong> function - at least the version of <strong>caret</strong> that I am currently using.</p>
+<p>One subtlety here is that <strong>caret</strong> requires us to use an alternative to the formula interface (e.g. mpg ~ .) approach when using the <strong>train</strong> function - at least the version of <strong>caret</strong> that I am currently using.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Get a fresh copy of the mtcars_na data frame</span>
 mtcars_na &lt;-<span class="st"> </span><span class="kw">read.csv</span>(url,<span class="dt">stringsAsFactors =</span> <span class="ot">FALSE</span>)
 
@@ -386,7 +386,7 @@ Metrics<span class="op">::</span><span class="kw">rmse</span>(test<span class="o
 <h3><span class="header-section-number">9.3.1</span> Methods That Benefit From Scaling</h3>
 <p>The following approaches benefit from scaling:</p>
 <p>Linear/non-linear regression, logistic regression, KNN, SVM, Neural Networks, clustering algorithms like k-means clustering. Methods that employ PCA and dimensionality reduction should use scaled data.</p>
-<p>In R and Python, some of the individual functions might have arguements to activate the scaling as part of the process.</p>
+<p>In R and Python, some of the individual functions might have arguments to activate the scaling as part of the process.</p>
 </div>
 <div id="methods-that-do-not-require-scaling" class="section level3">
 <h3><span class="header-section-number">9.3.2</span> Methods That Do Not Require Scaling</h3>
@@ -423,7 +423,7 @@ Metrics<span class="op">::</span><span class="kw">rmse</span>(test<span class="o
 <p>We could continue to do this by hand</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">centered &lt;-<span class="st"> </span><span class="kw">apply</span>(mtcars,<span class="dv">2</span>,<span class="cf">function</span>(x) (x <span class="op">-</span><span class="st"> </span><span class="kw">mean</span>(x)))
 scaled &lt;-<span class="st"> </span><span class="kw">apply</span>(centered,<span class="dv">2</span>,<span class="cf">function</span>(x) x<span class="op">/</span><span class="kw">sd</span>(x))</code></pre></div>
-<p>However, there is a function in R called <strong>scale</strong> which will do this for us. It has the added benefit of providing some atttributes in the output that we could later use to <strong>de-scale</strong> the scaled data. This is useful if we build a model with scaled data because the predictions will be in terms of the scaled data which might not make sense to a third party. So you would then need to scale the predictions back into the units of the original data.</p>
+<p>However, there is a function in R called <strong>scale</strong> which will do this for us. It has the added benefit of providing some attributes in the output that we could later use to <strong>de-scale</strong> the scaled data. This is useful if we build a model with scaled data because the predictions will be in terms of the scaled data which might not make sense to a third party. So you would then need to scale the predictions back into the units of the original data.</p>
 <p>Here is how the scale function works:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">(smtcars &lt;-<span class="st"> </span><span class="kw">scale</span>(mtcars))</code></pre></div>
 <pre><code>##                             mpg        cyl        disp          hp
@@ -535,7 +535,7 @@ scaled &lt;-<span class="st"> </span><span class="kw">apply</span>(centered,<spa
 ##   6.0269481   1.7859216 123.9386938  68.5628685   0.5346787   0.9784574 
 ##        qsec          vs          am        gear        carb 
 ##   1.7869432   0.5040161   0.4989909   0.7378041   1.6152000</code></pre>
-<p>The last rows make reference to <strong>attributes</strong> which can be considered as “meta information”. The presence of this informtation does not prevent you from using the scaled data for other operations. But if you needed to de-scaled the data you would need the standard deviation for each column and the mean of each column to reverse the centering and scaling process. That info is stashed in the attributes:</p>
+<p>The last rows make reference to <strong>attributes</strong> which can be considered as “meta information”. The presence of this information does not prevent you from using the scaled data for other operations. But if you needed to de-scaled the data you would need the standard deviation for each column and the mean of each column to reverse the centering and scaling process. That info is stashed in the attributes:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">attr</span>(smtcars,<span class="st">&quot;scaled:scale&quot;</span>)</code></pre></div>
 <pre><code>##         mpg         cyl        disp          hp        drat          wt 
 ##   6.0269481   1.7859216 123.9386938  68.5628685   0.5346787   0.9784574 
@@ -577,7 +577,7 @@ preds[<span class="dv">1</span><span class="op">:</span><span class="dv">5</span
 ##         0.4162772         0.3353706         1.0220793         0.1902753 
 ## Hornet Sportabout 
 ##        -0.3977454</code></pre>
-<p>So how would we re express this information in terms of the unscaled data ? It’s tedious but doable. We leverage the fact that the scaled version of the data has attributes we can use to conver the predictions back to their unscaled form.</p>
+<p>So how would we re express this information in terms of the unscaled data ? It’s tedious but doable. We leverage the fact that the scaled version of the data has attributes we can use to convert the predictions back to their unscaled form.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">(unscaled_preds &lt;-<span class="st"> </span>
 <span class="st">   </span>preds <span class="op">*</span><span class="st"> </span><span class="kw">attr</span>(smtcars,<span class="st">&quot;scaled:scale&quot;</span>)[<span class="st">&#39;mpg&#39;</span>] <span class="op">+</span><span class="st"> </span><span class="kw">attr</span>(smtcars,<span class="st">&quot;scaled:center&quot;</span>)[<span class="st">&#39;mpg&#39;</span>])</code></pre></div>
 <pre><code>##           Mazda RX4       Mazda RX4 Wag          Datsun 710 
@@ -635,7 +635,7 @@ preds[<span class="dv">1</span><span class="op">:</span><span class="dv">5</span
 </div>
 <div id="caret-and-preprocess" class="section level4">
 <h4><span class="header-section-number">9.3.3.4</span> caret and preprocess</h4>
-<p>But the <strong>caret</strong> package will help you do this using the <strong>preProcess</strong> function. Here we can actually request that the data is “centered” and “scaled” as part of the model assembly process. We could do this before the call to the <strong>Train</strong> function but then we would also have to convert the training and test data ourselves. In the following situation, the data will be centered and scaled thoug the returned RMSE will be in terms of the unscaled data.</p>
+<p>But the <strong>caret</strong> package will help you do this using the <strong>preProcess</strong> function. Here we can actually request that the data is “centered” and “scaled” as part of the model assembly process. We could do this before the call to the <strong>Train</strong> function but then we would also have to convert the training and test data ourselves. In the following situation, the data will be centered and scaled though the returned RMSE will be in terms of the unscaled data.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">training_idx &lt;-<span class="st"> </span><span class="kw">createDataPartition</span>(mtcars<span class="op">$</span>mpg, 
                                     <span class="dt">p =</span>.<span class="dv">80</span>, <span class="dt">list=</span><span class="ot">FALSE</span>)
 training &lt;-<span class="st"> </span>mtcars[training_idx,]
@@ -743,7 +743,7 @@ mtcars_nzv<span class="op">$</span>drat &lt;-<span class="st"> </span><span clas
 <span class="co"># Pretty low isn&#39;t it ?</span>
 <span class="kw">var</span>(mtcars_nzv<span class="op">$</span>drat)</code></pre></div>
 <pre><code>## [1] 0</code></pre>
-<p>What if we use this variable when making a model. We’ll get a lot of problems. While this is a contrived exqmple, it is possible to get this situation when using cross fold validation where the data is segemented into smaller subsets where a variable can be zero variance.</p>
+<p>What if we use this variable when making a model. We’ll get a lot of problems. While this is a contrived example, it is possible to get this situation when using cross fold validation where the data is segmented into smaller subsets where a variable can be zero variance.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">x &lt;-<span class="st"> </span>mtcars_nzv[,<span class="op">-</span><span class="dv">1</span>]
 y &lt;-<span class="st"> </span>mtcars_nzv[,<span class="dv">1</span>]
 
@@ -761,7 +761,7 @@ lowVarLm &lt;-<span class="st"> </span><span class="kw">train</span>(
   <span class="dt">method=</span><span class="st">&quot;lm&quot;</span>,
   <span class="dt">preProcess=</span><span class="kw">c</span>(<span class="st">&quot;nzv&quot;</span>,<span class="st">&quot;center&quot;</span>,<span class="st">&quot;scale&quot;</span>)
   )</code></pre></div>
-<p>The above now works. There is a subtle consideration at work here. We could pre process the data with <strong>nzv</strong> or <strong>zv</strong> where the former removes “near” zero variance features and the latter removes constant-valued features. With near zero variance features there is a way to specify tolerance for deciding whether a feature has near zero variance. Think of <strong>nzv</strong> as being slightly more premissive and flexible whereas <strong>zv</strong> eliminates zero variance variables. Sometimes you might want to keep near zero variance features around simply because there could be some interesting information therein.</p>
+<p>The above now works. There is a subtle consideration at work here. We could pre process the data with <strong>nzv</strong> or <strong>zv</strong> where the former removes “near” zero variance features and the latter removes constant-valued features. With near zero variance features there is a way to specify tolerance for deciding whether a feature has near zero variance. Think of <strong>nzv</strong> as being slightly more permissive and flexible whereas <strong>zv</strong> eliminates zero variance variables. Sometimes you might want to keep near zero variance features around simply because there could be some interesting information therein.</p>
 <p>In general we could remove the constant or near zero variance features <strong>before</strong> passing the data to the <strong>train</strong> function. Caret has a standalone function called <strong>nearZeroVariance</strong> to do this. We’ll it doesn’t actually remove the feature but it will tell us which column(s) exhibit very low variance or have a constant value. In this case it is column number 5 which corresponds to <strong>drat</strong>. We already knew that.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">nearZeroVar</span>(mtcars_nzv)</code></pre></div>
 <pre><code>## [1] 5</code></pre>
@@ -850,7 +850,7 @@ correlations[<span class="dv">1</span><span class="op">:</span><span class="dv">
 <p>It turns out that there are lots of strong correlations going on here. The darker the circle the stronger the correlation.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">suppressMessages</span>(<span class="kw">library</span>(corrplot))
 <span class="kw">corrplot</span>(correlations, <span class="dt">order=</span><span class="st">&quot;hclust&quot;</span>)</code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-87-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-127-1.png" width="672" /></p>
 <p>The <strong>caret</strong> package has some functions that can help us identify highly correlated variables that might be a candidates for removal prior to use in building a model. One of the variables that is highly correlated with others is <strong>mpg</strong> Since that is the one we are trying to predict, we’ll keep it around. The following columns from mtcars have a correlation of .75 (or higher) with some other variable(s)</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">(highcorr &lt;-<span class="st"> </span><span class="kw">findCorrelation</span>(correlations, <span class="dt">cutoff=</span>.<span class="dv">75</span>))</code></pre></div>
 <pre><code>## [1]  2  3  1 10</code></pre>
@@ -875,7 +875,7 @@ decorrel_lm &lt;-<span class="st"> </span><span class="kw">train</span>(mpg<span
 </div>
 <div id="ranking-features" class="section level2">
 <h2><span class="header-section-number">9.7</span> Ranking Features</h2>
-<p>Another approach would be to identify the imporant variables as determined by a rigorous, reliable and statistically aware process. Some models will report this information as part of the computation. The <strong>caret</strong> package has a function called <strong>varImp</strong> which helps to calculate relative variable importance within an object produced by the <strong>train</strong> function. What this means for us is that we can take most models built with <strong>train</strong> and pass it to the <strong>varImp</strong> function.</p>
+<p>Another approach would be to identify the important variables as determined by a rigorous, reliable and statistically aware process. Some models will report this information as part of the computation. The <strong>caret</strong> package has a function called <strong>varImp</strong> which helps to calculate relative variable importance within an object produced by the <strong>train</strong> function. What this means for us is that we can take most models built with <strong>train</strong> and pass it to the <strong>varImp</strong> function.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">idx &lt;-<span class="st"> </span><span class="kw">createDataPartition</span>(mtcars<span class="op">$</span>mpg, <span class="dt">p =</span> .<span class="dv">8</span>, 
                                   <span class="dt">list =</span> <span class="ot">FALSE</span>, 
                                   <span class="dt">times =</span> <span class="dv">1</span>)
@@ -917,10 +917,10 @@ myLm &lt;-<span class="st"> </span><span class="kw">train</span>(mpg<span class=
 ## Multiple R-squared:  0.8653, Adjusted R-squared:  0.786 
 ## F-statistic: 10.92 on 10 and 17 DF,  p-value: 1.427e-05</code></pre>
 <p>If you look at the summary of the model it looks pretty bleak because mot of the coefficients aren’t significant. You wouldn’t want to take your career on this model.</p>
-<p>Now let’s see what variables are considered to be important by using <strong>varImp</strong>. Remember that this might lead us to use a subset of the more prominent variables in the formation of a new model in case, for example, the coefficients in the exisitng model weren’t significant.</p>
+<p>Now let’s see what variables are considered to be important by using <strong>varImp</strong>. Remember that this might lead us to use a subset of the more prominent variables in the formation of a new model in case, for example, the coefficients in the existing model weren’t significant.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(<span class="kw">varImp</span>(myLm))</code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-92-1.png" width="672" /></p>
-<p>How do things look in the model if we limit the formula to some of the “important” (allegedly) features ? Well, it expliains more of the variance with fewer predictors (the R^2 value). Both <strong>wt</strong> and <strong>hp</strong> are significant. That’s a start.</p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-132-1.png" width="672" /></p>
+<p>How do things look in the model if we limit the formula to some of the “important” (allegedly) features ? Well, it explains more of the variance with fewer predictors (the R^2 value). Both <strong>wt</strong> and <strong>hp</strong> are significant. That’s a start.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">myLm &lt;-<span class="st"> </span><span class="kw">train</span>(mpg<span class="op">~</span>wt<span class="op">+</span>disp<span class="op">+</span>hp,
                      <span class="dt">data =</span> train,
                      <span class="dt">method =</span> <span class="st">&quot;lm&quot;</span>,
@@ -951,7 +951,7 @@ myLm &lt;-<span class="st"> </span><span class="kw">train</span>(mpg<span class=
 </div>
 <div id="feature-selection-1" class="section level2">
 <h2><span class="header-section-number">9.8</span> Feature Selection</h2>
-<p>Being able to automatically include only the most important features is desireable (again an example might be Step Wise Regression). Caret provides its own function to do a simple backwards selection to recursively eliminate features based on how they contribute (or not) to the model. You could do all of this by hand yourself of course.</p>
+<p>Being able to automatically include only the most important features is desirable (again an example might be Step Wise Regression). Caret provides its own function to do a simple backwards selection to recursively eliminate features based on how they contribute (or not) to the model. You could do all of this by hand yourself of course.</p>
 <p>Automatic feature selection methods can be used to build many models with different subsets of a dataset and identify those attributes that are and are not required to build an accurate model. The <strong>caret</strong> package has a function called *rfe** to implement this. However, it involves some additional setup:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">rfeControl &lt;-<span class="st"> </span><span class="kw">rfeControl</span>(<span class="dt">functions=</span>lmFuncs, <span class="dt">method=</span><span class="st">&quot;cv&quot;</span>, <span class="dt">number=</span><span class="dv">10</span>)
 
@@ -982,7 +982,7 @@ results &lt;-<span class="st"> </span><span class="kw">rfe</span>(mtcars[,<span 
 ## The top 3 variables (out of 3):
 ##    wt, am, drat</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(results,<span class="dt">type=</span><span class="kw">c</span>(<span class="st">&quot;g&quot;</span>,<span class="st">&quot;o&quot;</span>))</code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-94-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-134-1.png" width="672" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">myLm &lt;-<span class="st"> </span><span class="kw">train</span>(mpg<span class="op">~</span>wt<span class="op">+</span>am<span class="op">+</span>qsec,
                      <span class="dt">data =</span> train,
                      <span class="dt">method =</span> <span class="st">&quot;lm&quot;</span>,

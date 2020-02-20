@@ -250,8 +250,8 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </blockquote>
 <p>Given a data set, there might be some variable therein that you would like to predict in terms of other variables. Ideally you would like to automate this process but not at the expense of understanding the underlying statistical considerations. The process should also be done in a way that allows one to define a specific performance measure / metric that can then be used to compare performance across a number of “models”.</p>
 <p>Relative to explanatory work you wish to drill down into the data to better understand it and are less concerned about how any resulting model might apply to unseen or new data. In this case you might not look at other data sets or permutated versions of the data in which case you just build different models against the same data while trying out different features to arrive a the “best” model.</p>
-<p>In predictive work, we typically use techniques such as cross fold validation and boostrapping to provide us with different versions of the data to “train” a model after which we validate it on some “test” data that has been held out. So in this context, you will probably be looking at multiple versions of the original data set which adds to the overhead somewhat.</p>
-<p>A good example of explanatory work is the often referred to “Titanic” dataset that has lots of information on the passengers who travelled on the ill-fated Titanic ship. This data set is used in many Data Science type educational contexts to talk about building models.</p>
+<p>In predictive work, we typically use techniques such as cross fold validation and bootstrapping to provide us with different versions of the data to “train” a model after which we validate it on some “test” data that has been held out. So in this context, you will probably be looking at multiple versions of the original data set which adds to the overhead somewhat.</p>
+<p>A good example of explanatory work is the often referred to “Titanic” data set that has lots of information on the passengers who traveled on the ill-fated Titanic ship. This data set is used in many Data Science type educational contexts to talk about building models.</p>
 <div class="figure">
 <img src="pics/agedist.png" />
 
@@ -287,8 +287,8 @@ RMSE = \sqrt\frac{\sum_i^n(P_i-O_i)^2}{n}
 <div id="variance" class="section level3">
 <h3><span class="header-section-number">2.3.2</span> Variance</h3>
 <p>The concept of <strong>variance</strong> generally refers to a given algorithm’s sensitivity to unfamiliar or new data. An algorithm that has been well-trained, or even over trained, on a data set might exhibit low bias in that it “knows” or “hugs” the data very well. However, when given new data that might not be from the same distribution as the “training” data then large and/or unpredictable variance might result.</p>
-<p>If you flip this around a bit, an algorithm whose bias is high generally means that it deviates from the “truth” perhaps to a signifciant degree. Correspondingly, when the resulting model is applied to new or unseen data it will behave in a more predictable manner, generally resulting in lower variance. This isn’t always a bad thing. Maybe a more biased model is quick and easy to compute and it’s estimated performance (as determind by some metric such as RMSE) might be acceptable when applied to new data.</p>
-<p>The general conclusion is that there is a tradeoff between Bias and Variance. The higher the bias, the lower the variane and the higher the variance, the lower the bias.</p>
+<p>If you flip this around a bit, an algorithm whose bias is high generally means that it deviates from the “truth” perhaps to a significant degree. Correspondingly, when the resulting model is applied to new or unseen data it will behave in a more predictable manner, generally resulting in lower variance. This isn’t always a bad thing. Maybe a more biased model is quick and easy to compute and it’s estimated performance (as determined by some metric such as RMSE) might be acceptable when applied to new data.</p>
+<p>The general conclusion is that there is a trade off between Bias and Variance. The higher the bias, the lower the variance and the higher the variance, the lower the bias.</p>
 <div class="figure">
 <img src="pics/targets.png" />
 
