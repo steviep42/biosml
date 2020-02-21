@@ -2470,7 +2470,7 @@ glm_label_preds <- ifelse(glm_preds > 0.25,"pos","neg")
 
 glm_label_preds <- factor(glm_label_preds, 
                   levels = levels(glm_test[["diabetes"]]))
-mypreds[1:10]
+glm_label_preds[1:10]
 ```
 
 ## Hypothesis Testing 
@@ -2653,7 +2653,7 @@ So by now your head might be reeling from all the details and tedium associated 
 pred <- ROCR::prediction(predictions = glm_preds,
                          labels = glm_test$diabetes)
 
-perf <- performance(pred,
+perf <- ROCR::performance(pred,
                     "tpr",
                     "fpr")
 plot(perf,colorize=T,

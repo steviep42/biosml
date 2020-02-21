@@ -251,6 +251,29 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <h2><span class="header-section-number">12.1</span> Using h2o</h2>
 <p>The package must first be installed which can done using the <strong>install.packages</strong> function (or the menu in R Studio). Loading the library is done just as you would any other library.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(h2o)</code></pre></div>
+<pre><code>## 
+## ----------------------------------------------------------------------
+## 
+## Your next step is to start H2O:
+##     &gt; h2o.init()
+## 
+## For H2O package documentation, ask for help:
+##     &gt; ??h2o
+## 
+## After starting H2O, you can use the Web UI at http://localhost:54321
+## For more information visit http://docs.h2o.ai
+## 
+## ----------------------------------------------------------------------</code></pre>
+<pre><code>## 
+## Attaching package: &#39;h2o&#39;</code></pre>
+<pre><code>## The following objects are masked from &#39;package:stats&#39;:
+## 
+##     cor, sd, var</code></pre>
+<pre><code>## The following objects are masked from &#39;package:base&#39;:
+## 
+##     &amp;&amp;, %*%, %in%, ||, apply, as.factor, as.numeric, colnames,
+##     colnames&lt;-, ifelse, is.character, is.factor, is.numeric, log,
+##     log10, log1p, log2, round, signif, trunc</code></pre>
 <p>The goal of using this library is not to replace the methods available to you in R but, just like the <strong>caret</strong> package, seeks to provide a uniform interface for a variety of underlying methods. This includes common methods including an “Auto ML” service that picks methods for you. Let’s apply h2o to our work. The underlying h2o architecture uses a “running instance” concept that can be initialized and accessed from R. You initialize it once per interactive session.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">h2o.init</span>()
 

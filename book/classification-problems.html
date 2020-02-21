@@ -307,9 +307,9 @@ glm_preds[<span class="dv">1</span><span class="op">:</span><span class="dv">10<
 
 glm_label_preds &lt;-<span class="st"> </span><span class="kw">factor</span>(glm_label_preds, 
                   <span class="dt">levels =</span> <span class="kw">levels</span>(glm_test[[<span class="st">&quot;diabetes&quot;</span>]]))
-mypreds[<span class="dv">1</span><span class="op">:</span><span class="dv">10</span>]</code></pre></div>
-<pre><code>##  14  17  21  22  27  28  37  42  49  50 
-## pos pos pos pos pos neg pos pos pos neg 
+glm_label_preds[<span class="dv">1</span><span class="op">:</span><span class="dv">10</span>]</code></pre></div>
+<pre><code>##   4   8  13  14  19  35  42  48  49  52 
+## neg pos pos pos pos pos pos neg pos neg 
 ## Levels: neg pos</code></pre>
 </div>
 <div id="hypothesis-testing" class="section level2">
@@ -450,7 +450,7 @@ sensitivity <span class="op">%&gt;%</span><span class="st"> </span><span class="
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">pred &lt;-<span class="st"> </span>ROCR<span class="op">::</span><span class="kw">prediction</span>(<span class="dt">predictions =</span> glm_preds,
                          <span class="dt">labels =</span> glm_test<span class="op">$</span>diabetes)
 
-perf &lt;-<span class="st"> </span><span class="kw">performance</span>(pred,
+perf &lt;-<span class="st"> </span>ROCR<span class="op">::</span><span class="kw">performance</span>(pred,
                     <span class="st">&quot;tpr&quot;</span>,
                     <span class="st">&quot;fpr&quot;</span>)
 <span class="kw">plot</span>(perf,<span class="dt">colorize=</span>T,
