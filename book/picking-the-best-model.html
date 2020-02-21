@@ -264,7 +264,7 @@ control &lt;-<span class="st"> </span><span class="kw">trainControl</span>(<span
 
 <span class="co">#set.seed(123) # Make this example reproducible</span>
 my_lm &lt;-<span class="st"> </span><span class="kw">train</span>(
-  mpg <span class="op">~</span><span class="st"> </span>., 
+  mpg <span class="op">~</span><span class="st"> </span>wt, 
   example_Train,
   <span class="dt">method =</span> <span class="st">&quot;lm&quot;</span>,
   <span class="dt">preProc =</span> <span class="kw">c</span>(<span class="st">&quot;center&quot;</span>,<span class="st">&quot;scale&quot;</span>),
@@ -275,15 +275,15 @@ my_lm</code></pre></div>
 <pre><code>## Linear Regression 
 ## 
 ## 28 samples
-## 10 predictors
+##  1 predictor
 ## 
-## Pre-processing: centered (10), scaled (10) 
+## Pre-processing: centered (1), scaled (1) 
 ## Resampling: Cross-Validated (5 fold) 
 ## Summary of sample sizes: 21, 24, 21, 23, 23 
 ## Resampling results:
 ## 
 ##   RMSE      Rsquared   MAE     
-##   3.913699  0.7238825  3.051741
+##   2.979865  0.8455799  2.288848
 ## 
 ## Tuning parameter &#39;intercept&#39; was held constant at a value of TRUE</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(mpg<span class="op">~</span>wt,<span class="dt">data=</span>example_Train,<span class="dt">main=</span><span class="st">&quot;Train Data&quot;</span>)
@@ -293,7 +293,7 @@ my_lm</code></pre></div>
 <p>This is arguably one of the best features of the <strong>caret</strong> package as it helps us execute any number of models and then assess their performance on new data. Let’s look at our models thus far. In fact, it’s so easy to generate them with caret, we’ll just make them here again. Let’s set a common <strong>trainControl</strong> list. We’ll use the <strong>Train</strong> and <strong>Test</strong> sets from above.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#set.seed(123) # Make this example reproducible</span>
 my_svm &lt;-<span class="st"> </span><span class="kw">train</span>(
-  mpg <span class="op">~</span><span class="st"> </span>., 
+  mpg <span class="op">~</span><span class="st"> </span>wt, 
   example_Train,
   <span class="dt">method =</span> <span class="st">&quot;svmRadial&quot;</span>,
   <span class="dt">preProc =</span> <span class="kw">c</span>(<span class="st">&quot;center&quot;</span>,<span class="st">&quot;scale&quot;</span>),
@@ -304,21 +304,21 @@ my_svm</code></pre></div>
 <pre><code>## Support Vector Machines with Radial Basis Function Kernel 
 ## 
 ## 28 samples
-## 10 predictors
+##  1 predictor
 ## 
-## Pre-processing: centered (10), scaled (10) 
+## Pre-processing: centered (1), scaled (1) 
 ## Resampling: Cross-Validated (5 fold) 
 ## Summary of sample sizes: 21, 22, 21, 24, 24 
 ## Resampling results across tuning parameters:
 ## 
 ##   C     RMSE      Rsquared   MAE     
-##   0.25  4.234377  0.7915382  3.336668
-##   0.50  3.709846  0.8133780  3.050541
-##   1.00  3.161498  0.8234989  2.686041
+##   0.25  3.887650  0.7647783  3.165011
+##   0.50  3.230210  0.8261875  2.782540
+##   1.00  2.666332  0.8921278  2.316036
 ## 
-## Tuning parameter &#39;sigma&#39; was held constant at a value of 0.08166744
+## Tuning parameter &#39;sigma&#39; was held constant at a value of 0.9040613
 ## RMSE was used to select the optimal model using the smallest value.
-## The final values used for the model were sigma = 0.08166744 and C = 1.</code></pre>
+## The final values used for the model were sigma = 0.9040613 and C = 1.</code></pre>
 <p>So let’s plot the training data as well as the resulting regression line (in the color red) coming from the lm object. We’ll also plot the results from the Support Vector Machine predictions on the same graph (in blue). From this plot it appears that the Support Vector Machine does a better job of “following” the actual data - at least for the training data. We might even be able to improve the SVM performance if we tune the hyperparameters but the default without tuning seems better than the lm. It’s this type of observation that leads one to consider if there are yet other methods that would result in even better results.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(mpg<span class="op">~</span>wt,<span class="dt">data=</span>example_Train,<span class="dt">main=</span><span class="st">&quot;Train Data&quot;</span>)
 <span class="kw">abline</span>(lm_fit<span class="op">$</span>finalModel,<span class="dt">lty=</span><span class="dv">2</span>)
@@ -339,88 +339,84 @@ svm_preds &lt;-<span class="st"> </span><span class="kw">predict</span>(my_svm,e
 </div>
 <div id="more-comparisons" class="section level2">
 <h2><span class="header-section-number">10.2</span> More Comparisons</h2>
-<p>Let’s keep going. We’ll use some more methods to see how they perform on the same data.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">my_ctrl &lt;-<span class="st"> </span><span class="kw">trainControl</span>(
-    <span class="dt">method =</span> <span class="st">&quot;cv&quot;</span>, 
-    <span class="dt">number =</span> <span class="dv">3</span>
-  )</code></pre></div>
-<p>Now let’s build a model using three different methods. We’ll use the <strong>set.seed</strong> function to make sure that the underlying data used to train the models are the same. This allows for a better comparison.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">set.seed</span>(<span class="dv">127</span>)   <span class="co"># For reproducibility</span>
-mod_lm     &lt;-<span class="st"> </span><span class="kw">train</span>(mpg <span class="op">~</span><span class="st"> </span>., 
-                    <span class="dt">data=</span>Train, 
-                    <span class="dt">method =</span> <span class="st">&quot;lm&quot;</span>,
-                    <span class="dt">trControl =</span> my_ctrl)
+<p>Let’s keep going. We’ll use some more methods to see how they perform on the same data. The cool think about caret is that we can resuse the same control object and seeds to facilitate reproducibility. We’ll pick two other methods in addition to the ones we have to see how we can compare them all. In reality, this would be just the beginning of the process, not the end since if we pick a method with hyperparameters then we would want to tune those.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">control &lt;-<span class="st"> </span><span class="kw">trainControl</span>(<span class="dt">method =</span> <span class="st">&quot;cv&quot;</span>,       <span class="co"># Cross Fold</span>
+                        <span class="dt">number =</span> <span class="dv">5</span>,          <span class="co"># 5 Folds</span>
+                        <span class="dt">verboseIter =</span> <span class="ot">FALSE</span>)  <span class="co"># Verbose</span></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Train the lm model</span>
+<span class="kw">set.seed</span>(<span class="dv">123</span>)
+comp_mod_lm &lt;-<span class="st"> </span><span class="kw">train</span>(mpg <span class="op">~</span><span class="st"> </span>.,
+                     example_Train,
+                     <span class="dt">method =</span> <span class="st">&quot;lm&quot;</span>,
+                     <span class="dt">preProc =</span> <span class="kw">c</span>(<span class="st">&quot;center&quot;</span>,<span class="st">&quot;scale&quot;</span>),
+                     <span class="dt">trControl =</span> control)
 
-<span class="kw">set.seed</span>(<span class="dv">127</span>)
-mod_rf     &lt;-<span class="st"> </span><span class="kw">train</span>(mpg <span class="op">~</span><span class="st"> </span>., 
-                    <span class="dt">data=</span>Train, 
-                    <span class="dt">method =</span> <span class="st">&quot;rf&quot;</span>, 
-                    <span class="dt">trControl =</span> my_ctrl)
 
-<span class="kw">set.seed</span>(<span class="dv">127</span>)
-mod_ranger &lt;-<span class="st"> </span><span class="kw">train</span>(mpg <span class="op">~</span><span class="st"> </span>., 
-                    <span class="dt">data=</span>Train, 
-                    <span class="dt">method =</span> <span class="st">&quot;ranger&quot;</span>, 
-                    <span class="dt">trControl =</span> my_ctrl)</code></pre></div>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Look at the results of the hyperparameter tuning</span>
-<span class="kw">plot</span>(mod_rf)</code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-71-1.png" width="672" /></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#</span>
-<span class="kw">plot</span>(mod_ranger)</code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-71-2.png" width="672" /></p>
+<span class="co"># Train the SVM Radial Model</span>
+<span class="kw">set.seed</span>(<span class="dv">123</span>)
+comp_mod_svm &lt;-<span class="st"> </span><span class="kw">train</span>(mpg <span class="op">~</span><span class="st"> </span>.,
+                     example_Train,
+                     <span class="dt">method =</span> <span class="st">&quot;svmRadial&quot;</span>,
+                     <span class="dt">preProc =</span> <span class="kw">c</span>(<span class="st">&quot;center&quot;</span>,<span class="st">&quot;scale&quot;</span>),
+                     <span class="dt">trControl =</span> control)
+
+<span class="co"># Train the Lasso and Elastic-Net Regularized Generalized Linear Models</span>
+<span class="kw">set.seed</span>(<span class="dv">123</span>)
+comp_mod_glmnet &lt;-<span class="st"> </span><span class="kw">train</span>(mpg <span class="op">~</span><span class="st"> </span>.,
+                     example_Train,
+                     <span class="dt">method =</span> <span class="st">&quot;glmnet&quot;</span>,
+                     <span class="dt">preProc =</span> <span class="kw">c</span>(<span class="st">&quot;center&quot;</span>,<span class="st">&quot;scale&quot;</span>),
+                     <span class="dt">trControl =</span> control)
+
+<span class="co"># Train the Random Forest Model</span>
+<span class="kw">set.seed</span>(<span class="dv">123</span>)
+comp_mod_ranger &lt;-<span class="st"> </span><span class="kw">train</span>(mpg <span class="op">~</span><span class="st"> </span>.,
+                     example_Train,
+                     <span class="dt">method =</span> <span class="st">&quot;ranger&quot;</span>,
+                     <span class="dt">preProc =</span> <span class="kw">c</span>(<span class="st">&quot;center&quot;</span>,<span class="st">&quot;scale&quot;</span>),
+                     <span class="dt">trControl =</span> control)</code></pre></div>
 </div>
 <div id="using-the-resamples-function" class="section level2">
 <h2><span class="header-section-number">10.3</span> Using the resamples() function</h2>
-<p>Now, here comes the “magic”. Because we built three different modeling objects on the same data set, we can now use the <strong>resamples</strong> function to collect, analyze, and visualize a set of results. This is pretty powerful.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">results &lt;-<span class="st"> </span><span class="kw">resamples</span>(<span class="kw">list</span>(<span class="dt">lm=</span>mod_lm,<span class="dt">rf=</span>mod_rf,<span class="dt">ranger=</span>mod_ranger))
-<span class="kw">summary</span>(results)</code></pre></div>
+<p>Now, here comes the “magic”. Because we built four different modeling objects on the same data set and seeds we can now use the <strong>resamples</strong> function to collect, analyze, and visualize a set of results. This is pretty powerful.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">results &lt;-<span class="st"> </span><span class="kw">resamples</span>(<span class="kw">list</span>(<span class="dt">LM   =</span> comp_mod_lm, 
+                          <span class="dt">SVM =</span> comp_mod_svm, 
+                          <span class="dt">GLMNET    =</span> comp_mod_glmnet,
+                          <span class="dt">RANGER   =</span> comp_mod_ranger))
+
+results</code></pre></div>
 <pre><code>## 
 ## Call:
-## summary.resamples(object = results)
+## resamples.default(x = list(LM = comp_mod_lm, SVM = comp_mod_svm, GLMNET
+##  = comp_mod_glmnet, RANGER = comp_mod_ranger))
 ## 
-## Models: lm, rf, ranger 
-## Number of resamples: 3 
-## 
-## MAE 
-##            Min.  1st Qu.   Median     Mean  3rd Qu.     Max. NA&#39;s
-## lm     2.108278 3.042011 3.975743 4.587195 5.826653 7.677563    0
-## rf     1.661123 2.033094 2.405065 2.374357 2.730974 3.056882    0
-## ranger 1.606079 2.034722 2.463365 2.332690 2.695995 2.928626    0
-## 
-## RMSE 
-##            Min.  1st Qu.   Median     Mean  3rd Qu.      Max. NA&#39;s
-## lm     2.685681 3.469342 4.253003 5.965700 7.605709 10.958415    0
-## rf     2.146463 2.424040 2.701617 2.883135 3.251471  3.801326    0
-## ranger 2.099897 2.455332 2.810768 2.824033 3.186101  3.561434    0
-## 
-## Rsquared 
-##             Min.   1st Qu.    Median      Mean   3rd Qu.      Max. NA&#39;s
-## lm     0.4196867 0.5508810 0.6820754 0.6488848 0.7634838 0.8448923    0
-## rf     0.8143481 0.8476955 0.8810429 0.8690576 0.8964124 0.9117819    0
-## ranger 0.8184058 0.8615926 0.9047795 0.8771623 0.9065406 0.9083017    0</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">bwplot</span>(results)</code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-73-1.png" width="672" /></p>
+## Models: LM, SVM, GLMNET, RANGER 
+## Number of resamples: 5 
+## Performance metrics: MAE, RMSE, Rsquared 
+## Time estimates for: everything, final model fit</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">dotplot</span>(results)</code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-74-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-86-1.png" width="672" /></p>
 </div>
 <div id="model-performance" class="section level2">
 <h2><span class="header-section-number">10.4</span> Model Performance</h2>
 <p>Of course, we can now use the Test data frame to see how the RMSE looks on the holdout data frame.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">compute_rmse</span>(<span class="kw">predict</span>(mod_lm,Test),Test<span class="op">$</span>mpg)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">compute_rmse</span>(<span class="kw">predict</span>(comp_mod_lm,example_Test),example_Test<span class="op">$</span>mpg)</code></pre></div>
 <pre><code>## [1] 2.456504</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">compute_rmse</span>(<span class="kw">predict</span>(mod_rf,Test),Test<span class="op">$</span>mpg)</code></pre></div>
-<pre><code>## [1] 1.789079</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">compute_rmse</span>(<span class="kw">predict</span>(mod_ranger,Test),Test<span class="op">$</span>mpg)</code></pre></div>
-<pre><code>## [1] 1.7951</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">compute_rmse</span>(<span class="kw">predict</span>(comp_mod_svm,example_Test),example_Test<span class="op">$</span>mpg)</code></pre></div>
+<pre><code>## [1] 2.252893</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">compute_rmse</span>(<span class="kw">predict</span>(comp_mod_glmnet,example_Test),example_Test<span class="op">$</span>mpg)</code></pre></div>
+<pre><code>## [1] 2.161344</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">compute_rmse</span>(<span class="kw">predict</span>(comp_mod_ranger,example_Test),example_Test<span class="op">$</span>mpg)</code></pre></div>
+<pre><code>## [1] 1.635341</code></pre>
 <p>Another way to look at these models is to use the <strong>diff</strong> function.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">(difs &lt;-<span class="st"> </span><span class="kw">diff</span>(results))</code></pre></div>
 <pre><code>## 
 ## Call:
 ## diff.resamples(x = results)
 ## 
-## Models: lm, rf, ranger 
+## Models: LM, SVM, GLMNET, RANGER 
 ## Metrics: MAE, RMSE, Rsquared 
-## Number of differences: 3 
+## Number of differences: 6 
 ## p-value adjustment: bonferroni</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Get the summary</span>
 
@@ -434,46 +430,25 @@ mod_ranger &lt;-<span class="st"> </span><span class="kw">train</span>(mpg <span
 ## Lower diagonal: p-value for H0: difference = 0
 ## 
 ## MAE 
-##        lm rf      ranger 
-## lm        2.21284 2.25450
-## rf     1          0.04167
-## ranger 1  1              
+##        LM     SVM    GLMNET RANGER
+## LM            0.3071 1.0388 1.3234
+## SVM    1.0000        0.7317 1.0163
+## GLMNET 0.6872 0.2719        0.2846
+## RANGER 0.7821 0.2665 1.0000       
 ## 
 ## RMSE 
-##        lm rf     ranger
-## lm        3.0826 3.1417
-## rf     1         0.0591
-## ranger 1  1            
+##        LM     SVM    GLMNET RANGER
+## LM            0.4978 1.2396 1.4244
+## SVM    1.0000        0.7418 0.9265
+## GLMNET 1.0000 0.3685        0.1848
+## RANGER 1.0000 0.4456 1.0000       
 ## 
 ## Rsquared 
-##        lm     rf        ranger   
-## lm            -0.220173 -0.228278
-## rf     0.8482           -0.008105
-## ranger 0.7866 1.0000</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">compare_models</span>(mod_lm,mod_rf)</code></pre></div>
-<pre><code>## 
-##  One Sample t-test
-## 
-## data:  x
-## t = 1.0749, df = 2, p-value = 0.3949
-## alternative hypothesis: true mean is not equal to 0
-## 95 percent confidence interval:
-##  -9.256895 15.422024
-## sample estimates:
-## mean of x 
-##  3.082565</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">compare_models</span>(mod_ranger,mod_lm)</code></pre></div>
-<pre><code>## 
-##  One Sample t-test
-## 
-## data:  x
-## t = -1.0954, df = 2, p-value = 0.3877
-## alternative hypothesis: true mean is not equal to 0
-## 95 percent confidence interval:
-##  -15.482238   9.198905
-## sample estimates:
-## mean of x 
-## -3.141667</code></pre>
+##        LM     SVM       GLMNET    RANGER   
+## LM            -0.100972 -0.182505 -0.177913
+## SVM    1.0000           -0.081533 -0.076941
+## GLMNET 1.0000 0.1009               0.004592
+## RANGER 1.0000 1.0000    1.0000</code></pre>
 </div>
 <div id="feature-selection" class="section level2">
 <h2><span class="header-section-number">10.5</span> Feature Selection</h2>
@@ -516,7 +491,7 @@ results</code></pre></div>
 ## The top 5 variables (out of 5):
 ##    wt, am, drat, qsec, vs</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(results,<span class="dt">type=</span><span class="kw">c</span>(<span class="st">&quot;o&quot;</span>,<span class="st">&quot;g&quot;</span>))</code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-78-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-88-1.png" width="672" /></p>
 <p>What we get back is some idea about the important features. We could then build a model with caret that uses only these features to see if the suggested RMSE value mentioned in the rfe process matches.</p>
 </div>
 </div>

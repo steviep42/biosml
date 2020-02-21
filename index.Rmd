@@ -2202,7 +2202,7 @@ control <- trainControl(method = "cv",       # Cross Fold
 
 #set.seed(123) # Make this example reproducible
 my_lm <- train(
-  mpg ~ ., 
+  mpg ~ wt, 
   example_Train,
   method = "lm",
   preProc = c("center","scale"),
@@ -2223,7 +2223,7 @@ This is arguably one of the best features of the **caret** package as it helps u
 ```{r pickthe2}
 #set.seed(123) # Make this example reproducible
 my_svm <- train(
-  mpg ~ ., 
+  mpg ~ wt, 
   example_Train,
   method = "svmRadial",
   preProc = c("center","scale"),
@@ -2260,60 +2260,65 @@ cat("RMSE for smv is: ",compute_rmse(svm_test_preds,example_Test$mpg),"\n")
 
 ## More Comparisons
 
-Let's keep going. We'll use some more methods to see how they perform on the same data. 
+Let's keep going. We'll use some more methods to see how they perform on the same data. The cool think about caret is that we can resuse the same control object and seeds to facilitate reproducibility. We'll pick two other methods in addition to the ones we have to see how we can compare them all. In reality, this would be just the beginning of the process, not the end since if we pick a method with hyperparameters then we would want to tune those. 
 
 
-```{r}
-my_ctrl <- trainControl(
-    method = "cv", 
-    number = 3
-  )
-```
-
-
-Now let's build a model using three different methods. We'll use the **set.seed** function to make sure that the underlying data used to train the models are the same. This allows for a better comparison.
-
-```{r}
-set.seed(127)   # For reproducibility
-mod_lm     <- train(mpg ~ ., 
-                    data=Train, 
-                    method = "lm",
-                    trControl = my_ctrl)
-
-set.seed(127)
-mod_rf     <- train(mpg ~ ., 
-                    data=Train, 
-                    method = "rf", 
-                    trControl = my_ctrl)
-
-set.seed(127)
-mod_ranger <- train(mpg ~ ., 
-                    data=Train, 
-                    method = "ranger", 
-                    trControl = my_ctrl)
+```{r pickthe5}
+control <- trainControl(method = "cv",       # Cross Fold
+                        number = 5,          # 5 Folds
+                        verboseIter = FALSE)  # Verbose
 ```
 
 
 ```{r}
-# Look at the results of the hyperparameter tuning
-plot(mod_rf)
+# Train the lm model
+set.seed(123)
+comp_mod_lm <- train(mpg ~ .,
+                     example_Train,
+                     method = "lm",
+                     preProc = c("center","scale"),
+                     trControl = control)
 
-#
-plot(mod_ranger)
+
+# Train the SVM Radial Model
+set.seed(123)
+comp_mod_svm <- train(mpg ~ .,
+                     example_Train,
+                     method = "svmRadial",
+                     preProc = c("center","scale"),
+                     trControl = control)
+
+# Train the Lasso and Elastic-Net Regularized Generalized Linear Models
+set.seed(123)
+comp_mod_glmnet <- train(mpg ~ .,
+                     example_Train,
+                     method = "glmnet",
+                     preProc = c("center","scale"),
+                     trControl = control)
+
+# Train the Random Forest Model
+set.seed(123)
+comp_mod_ranger <- train(mpg ~ .,
+                     example_Train,
+                     method = "ranger",
+                     preProc = c("center","scale"),
+                     trControl = control)
+
 ```
+
 
 ## Using the resamples() function
 
-Now, here comes the "magic". Because we built three different modeling objects on the same data set, we can now use the **resamples** function to collect, analyze, and visualize a set of results. This is pretty powerful. 
-
-```{r}
-results <- resamples(list(lm=mod_lm,rf=mod_rf,ranger=mod_ranger))
-summary(results)
-```
+Now, here comes the "magic". Because we built four different modeling objects on the same data set and seeds we can now use the **resamples** function to collect, analyze, and visualize a set of results. This is pretty powerful. 
 
 
 ```{r}
-bwplot(results)
+results <- resamples(list(LM   = comp_mod_lm, 
+                          SVM = comp_mod_svm, 
+                          GLMNET    = comp_mod_glmnet,
+                          RANGER   = comp_mod_ranger))
+
+results
 ```
 
 
@@ -2321,15 +2326,18 @@ bwplot(results)
 dotplot(results)
 ```
 
+
 ## Model Performance
 
 Of course, we can now use the Test data frame to see how the RMSE looks on the holdout data frame. 
 
 
 ```{r computermse}
-compute_rmse(predict(mod_lm,Test),Test$mpg)
-compute_rmse(predict(mod_rf,Test),Test$mpg)
-compute_rmse(predict(mod_ranger,Test),Test$mpg)
+compute_rmse(predict(comp_mod_lm,example_Test),example_Test$mpg)
+compute_rmse(predict(comp_mod_svm,example_Test),example_Test$mpg)
+compute_rmse(predict(comp_mod_glmnet,example_Test),example_Test$mpg)
+compute_rmse(predict(comp_mod_ranger,example_Test),example_Test$mpg)
+
 ```
 
 Another way to look at these models is to use the **diff** function. 
@@ -2340,14 +2348,6 @@ Another way to look at these models is to use the **diff** function.
 # Get the summary
 
 summary(difs)
-```
-
-```{r}
-compare_models(mod_lm,mod_rf)
-```
-
-```{r}
-compare_models(mod_ranger,mod_lm)
 ```
 
 ## Feature Selection

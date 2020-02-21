@@ -282,28 +282,28 @@ folds &lt;-<span class="st"> </span><span class="kw">split</span>(<span class="k
 <p>Check out the folds to get a better understanding of what is going on. We generated a list that has 8 elements each of which holds a 4 element vector corresponding to indices for records in the mtcars data frame.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">folds</code></pre></div>
 <pre><code>## $`1`
-## [1]  4 13  6 19
+## [1] 27 15  7 17
 ## 
 ## $`2`
-## [1] 10 22  9 18
+## [1] 18 26 19 10
 ## 
 ## $`3`
-## [1] 20 30  8 26
+## [1] 12 14  4 21
 ## 
 ## $`4`
-## [1] 21  2 11 28
+## [1]  2  5  6 30
 ## 
 ## $`5`
-## [1] 25 27 14 15
+## [1] 22 29 28  3
 ## 
 ## $`6`
-## [1] 24 29 16  5
+## [1] 11 31 24 20
 ## 
 ## $`7`
-## [1]  1 32 31 17
+## [1] 23  8  9 25
 ## 
 ## $`8`
-## [1] 12 23  3  7</code></pre>
+## [1]  1 32 13 16</code></pre>
 <p>Again, each list element has the indices of four unique observations from the data frame. We have eight folds with four elements each for a total of 32 numbers corresponding to row numbers from the mtcars data frame.</p>
 <div id="cross-fold-validation" class="section level2">
 <h2><span class="header-section-number">4.1</span> Cross Fold Validation</h2>
@@ -349,9 +349,9 @@ lattice<span class="op">::</span><span class="kw">dotplot</span>(rmse,
                  <span class="dt">main=</span><span class="st">&quot;RMSE Across Folds Using K-Fold CV&quot;</span>)</code></pre></div>
 <p><img src="biosml_files/figure-html/latticeplot-1.png" width="672" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">mean</span>(rmse)</code></pre></div>
-<pre><code>## [1] 2.97408</code></pre>
+<pre><code>## [1] 3.122466</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sd</span>(rmse)</code></pre></div>
-<pre><code>## [1] 1.265444</code></pre>
+<pre><code>## [1] 1.191938</code></pre>
 </div>
 <div id="create-a-function-to-automate-things" class="section level2">
 <h2><span class="header-section-number">4.2</span> Create A Function To Automate Things</h2>
@@ -399,12 +399,12 @@ title &lt;-<span class="st"> </span><span class="kw">paste</span>(<span class="s
 
 
 <span class="kw">print</span>(<span class="kw">mean</span>(rmse))</code></pre></div>
-<pre><code>## [1] 3.037616</code></pre>
+<pre><code>## [1] 3.076315</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">lattice<span class="op">::</span><span class="kw">dotplot</span>(rmse,
                  <span class="dt">main=</span><span class="st">&quot;RMSE Across Folds Using K-Fold CV&quot;</span>)</code></pre></div>
 <p><img src="biosml_files/figure-html/fourfold-1.png" width="672" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sd</span>(rmse)</code></pre></div>
-<pre><code>## [1] 1.22477</code></pre>
+<pre><code>## [1] 1.129908</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">boxplot</span>(rmse,<span class="dt">main=</span>title)</code></pre></div>
 <p><img src="biosml_files/figure-html/fourfold-2.png" width="672" /></p>
 </div>
@@ -417,7 +417,7 @@ title &lt;-<span class="st"> </span><span class="kw">paste</span>(<span class="s
 <span class="co"># once. We get back 4 RMSE values - one for each fold</span>
 
 (rmse &lt;-<span class="st"> </span><span class="kw">make_mtcars_model</span>(num_of_folds))</code></pre></div>
-<pre><code>## [1] 3.904067 4.131148 3.161184 4.094111 2.037001 2.774833 2.100271 1.931495</code></pre>
+<pre><code>## [1] 1.963198 2.296806 2.335741 2.511999 1.627090 4.026409 4.704679 4.190740</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Now we repeat this some number of times - like 10. So we get back</span>
 <span class="co"># 80 RMSE values </span>
 
@@ -430,12 +430,12 @@ repeated_cv_rmse &lt;-<span class="st"> </span><span class="kw">sapply</span>(<s
                <span class="st">&quot;folds - &quot;</span>,<span class="kw">as.character</span>(<span class="kw">deparse</span>(myform)),<span class="dt">sep=</span><span class="st">&quot; &quot;</span>)
 
 (repeated_cv_rmse &lt;-<span class="st"> </span><span class="kw">mean</span>(<span class="kw">as.vector</span>(repeated_cv_rmse)))</code></pre></div>
-<pre><code>## [1] 3.009663</code></pre>
+<pre><code>## [1] 3.031059</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">boxplot</span>(repeated_cv_rmse)</code></pre></div>
 <p><img src="biosml_files/figure-html/rc1-2.png" width="672" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(repeated_cv_rmse)</code></pre></div>
 <pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-##    3.01    3.01    3.01    3.01    3.01    3.01</code></pre>
+##   3.031   3.031   3.031   3.031   3.031   3.031</code></pre>
 </div>
 <div id="bootstrap" class="section level2">
 <h2><span class="header-section-number">4.4</span> Bootstrap</h2>
@@ -479,7 +479,7 @@ repeated_cv_rmse &lt;-<span class="st"> </span><span class="kw">sapply</span>(<s
 <span class="co"># Just to be clear - here is what happens when we call the function</span>
 <span class="co"># once. We get back 8 RMSE values - one for each fold</span>
 (rmse &lt;-<span class="st"> </span><span class="kw">make_mtcars_boot</span>(num_of_folds))</code></pre></div>
-<pre><code>## [1] 3.996118 3.044946 2.235023 4.366487 3.640766 2.742463 3.008277 3.070458</code></pre>
+<pre><code>## [1] 3.196393 4.219022 3.051359 2.730649 4.423741 2.735248 3.881842 3.815097</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Now we repeat this some number of times - like 10. So we get back</span>
 <span class="co"># 80 RMSE values </span>
 
@@ -500,12 +500,12 @@ boot_repeated_rmse &lt;-<span class="st"> </span><span class="kw">as.vector</spa
 <pre><code>## [1] &quot;Summary of Bootstrap RMSE&quot;</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(boot_repeated_rmse)</code></pre></div>
 <pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-##   1.672   2.959   3.291   3.320   3.699   4.965</code></pre>
+##   1.659   2.905   3.288   3.285   3.630   5.086</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">print</span>(<span class="st">&quot;Summary of CV&quot;</span>)</code></pre></div>
 <pre><code>## [1] &quot;Summary of CV&quot;</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(repeated_cv_rmse)</code></pre></div>
 <pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-##    3.01    3.01    3.01    3.01    3.01    3.01</code></pre>
+##   3.031   3.031   3.031   3.031   3.031   3.031</code></pre>
 </div>
 </div>
             </section>
