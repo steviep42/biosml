@@ -178,12 +178,14 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="9.2" data-path="using-methods-other-than-lm.html"><a href="using-methods-other-than-lm.html#hyperparameter-tuning"><i class="fa fa-check"></i><b>9.2</b> Hyperparameter Tuning</a></li>
 </ul></li>
 <li class="chapter" data-level="10" data-path="picking-the-best-model.html"><a href="picking-the-best-model.html"><i class="fa fa-check"></i><b>10</b> Picking The Best Model</a><ul>
-<li class="chapter" data-level="10.1" data-path="picking-the-best-model.html"><a href="picking-the-best-model.html#using-the-resamples-function"><i class="fa fa-check"></i><b>10.1</b> Using the resamples() function</a></li>
-<li class="chapter" data-level="10.2" data-path="picking-the-best-model.html"><a href="picking-the-best-model.html#model-performance"><i class="fa fa-check"></i><b>10.2</b> Model Performance</a></li>
-<li class="chapter" data-level="10.3" data-path="picking-the-best-model.html"><a href="picking-the-best-model.html#feature-selection"><i class="fa fa-check"></i><b>10.3</b> Feature Selection</a><ul>
-<li class="chapter" data-level="10.3.1" data-path="picking-the-best-model.html"><a href="picking-the-best-model.html#recursive-feature-elimination"><i class="fa fa-check"></i><b>10.3.1</b> Recursive Feature Elimination</a></li>
-<li class="chapter" data-level="10.3.2" data-path="picking-the-best-model.html"><a href="picking-the-best-model.html#redundant-feature-removal"><i class="fa fa-check"></i><b>10.3.2</b> Redundant Feature Removal</a></li>
-<li class="chapter" data-level="10.3.3" data-path="picking-the-best-model.html"><a href="picking-the-best-model.html#feature-importance"><i class="fa fa-check"></i><b>10.3.3</b> Feature Importance</a></li>
+<li class="chapter" data-level="10.1" data-path="picking-the-best-model.html"><a href="picking-the-best-model.html#an-example"><i class="fa fa-check"></i><b>10.1</b> An Example</a></li>
+<li class="chapter" data-level="10.2" data-path="picking-the-best-model.html"><a href="picking-the-best-model.html#more-comparisons"><i class="fa fa-check"></i><b>10.2</b> More Comparisons</a></li>
+<li class="chapter" data-level="10.3" data-path="picking-the-best-model.html"><a href="picking-the-best-model.html#using-the-resamples-function"><i class="fa fa-check"></i><b>10.3</b> Using the resamples() function</a></li>
+<li class="chapter" data-level="10.4" data-path="picking-the-best-model.html"><a href="picking-the-best-model.html#model-performance"><i class="fa fa-check"></i><b>10.4</b> Model Performance</a></li>
+<li class="chapter" data-level="10.5" data-path="picking-the-best-model.html"><a href="picking-the-best-model.html#feature-selection"><i class="fa fa-check"></i><b>10.5</b> Feature Selection</a><ul>
+<li class="chapter" data-level="10.5.1" data-path="picking-the-best-model.html"><a href="picking-the-best-model.html#recursive-feature-elimination"><i class="fa fa-check"></i><b>10.5.1</b> Recursive Feature Elimination</a></li>
+<li class="chapter" data-level="10.5.2" data-path="picking-the-best-model.html"><a href="picking-the-best-model.html#redundant-feature-removal"><i class="fa fa-check"></i><b>10.5.2</b> Redundant Feature Removal</a></li>
+<li class="chapter" data-level="10.5.3" data-path="picking-the-best-model.html"><a href="picking-the-best-model.html#feature-importance"><i class="fa fa-check"></i><b>10.5.3</b> Feature Importance</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="11" data-path="data-pre-processing.html"><a href="data-pre-processing.html"><i class="fa fa-check"></i><b>11</b> Data Pre Processing</a><ul>
@@ -235,7 +237,109 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
             <section class="normal" id="section-">
 <div id="picking-the-best-model" class="section level1">
 <h1><span class="header-section-number">Chapter 10</span> Picking The Best Model</h1>
+<p>It’s always of interest to compare the results of one model to another (or even more) to determine the “best” model to share with some else. On the other hand, it’s easy to get carried away with trying out different models in an attempt to make perofrmance improvements especially when the might only be marginally better. It’s also wise to pick methods that you know how to reasonably defend over those that you can’t. For example, picking a Nueral Net model might result in better accuracy although if you are challened on the results in some way, would you be able to address all concerns ? If a logistic regression model resulted in a comparable result then you might should stick with that result since it’s a well-known method that few would question.</p>
+<div id="an-example" class="section level2">
+<h2><span class="header-section-number">10.1</span> An Example</h2>
+<p>As an example, let’s go back to the linear modeling example back in the section wherein we introduced the <strong>caret</strong> package.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">set.seed</span>(<span class="dv">123</span>) <span class="co"># Make this example reproducible</span>
+idx &lt;-<span class="st"> </span><span class="kw">createDataPartition</span>(mtcars<span class="op">$</span>mpg, <span class="dt">p =</span> .<span class="dv">8</span>, 
+                           <span class="dt">list =</span> <span class="ot">FALSE</span>, 
+                           <span class="dt">times =</span> <span class="dv">1</span>)
+<span class="kw">head</span>(idx)</code></pre></div>
+<pre><code>##      Resample1
+## [1,]         1
+## [2,]         2
+## [3,]         3
+## [4,]         4
+## [5,]         5
+## [6,]         6</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">example_Train &lt;-<span class="st"> </span>mtcars[ idx,]
+example_Test  &lt;-<span class="st"> </span>mtcars[<span class="op">-</span>idx,]
+
+<span class="co">#</span>
+control &lt;-<span class="st"> </span><span class="kw">trainControl</span>(<span class="dt">method =</span> <span class="st">&quot;cv&quot;</span>,       <span class="co"># Cross Fold</span>
+                        <span class="dt">number =</span> <span class="dv">5</span>,          <span class="co"># 5 Folds</span>
+                        <span class="dt">verboseIter =</span> <span class="ot">FALSE</span>)  <span class="co"># Verbose</span>
+<span class="co"># Train the model</span>
+
+<span class="co">#set.seed(123) # Make this example reproducible</span>
+my_lm &lt;-<span class="st"> </span><span class="kw">train</span>(
+  mpg <span class="op">~</span><span class="st"> </span>., 
+  example_Train,
+  <span class="dt">method =</span> <span class="st">&quot;lm&quot;</span>,
+  <span class="dt">preProc =</span> <span class="kw">c</span>(<span class="st">&quot;center&quot;</span>,<span class="st">&quot;scale&quot;</span>),
+  <span class="dt">trControl =</span> control
+)
+
+my_lm</code></pre></div>
+<pre><code>## Linear Regression 
+## 
+## 28 samples
+## 10 predictors
+## 
+## Pre-processing: centered (10), scaled (10) 
+## Resampling: Cross-Validated (5 fold) 
+## Summary of sample sizes: 21, 24, 21, 23, 23 
+## Resampling results:
+## 
+##   RMSE      Rsquared   MAE     
+##   3.913699  0.7238825  3.051741
+## 
+## Tuning parameter &#39;intercept&#39; was held constant at a value of TRUE</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(mpg<span class="op">~</span>wt,<span class="dt">data=</span>example_Train,<span class="dt">main=</span><span class="st">&quot;Train Data&quot;</span>)
+<span class="kw">abline</span>(lm_fit<span class="op">$</span>finalModel,<span class="dt">lty=</span><span class="dv">2</span>)</code></pre></div>
+<p><img src="biosml_files/figure-html/pickthe1-1.png" width="672" /></p>
+<p>So does this model perform better than a model built using a support vector machine ? It’s easy to generate such a model by reusing much of the same information from above.</p>
 <p>This is arguably one of the best features of the <strong>caret</strong> package as it helps us execute any number of models and then assess their performance on new data. Let’s look at our models thus far. In fact, it’s so easy to generate them with caret, we’ll just make them here again. Let’s set a common <strong>trainControl</strong> list. We’ll use the <strong>Train</strong> and <strong>Test</strong> sets from above.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#set.seed(123) # Make this example reproducible</span>
+my_svm &lt;-<span class="st"> </span><span class="kw">train</span>(
+  mpg <span class="op">~</span><span class="st"> </span>., 
+  example_Train,
+  <span class="dt">method =</span> <span class="st">&quot;svmRadial&quot;</span>,
+  <span class="dt">preProc =</span> <span class="kw">c</span>(<span class="st">&quot;center&quot;</span>,<span class="st">&quot;scale&quot;</span>),
+  <span class="dt">trControl =</span> control
+)
+
+my_svm</code></pre></div>
+<pre><code>## Support Vector Machines with Radial Basis Function Kernel 
+## 
+## 28 samples
+## 10 predictors
+## 
+## Pre-processing: centered (10), scaled (10) 
+## Resampling: Cross-Validated (5 fold) 
+## Summary of sample sizes: 21, 22, 21, 24, 24 
+## Resampling results across tuning parameters:
+## 
+##   C     RMSE      Rsquared   MAE     
+##   0.25  4.234377  0.7915382  3.336668
+##   0.50  3.709846  0.8133780  3.050541
+##   1.00  3.161498  0.8234989  2.686041
+## 
+## Tuning parameter &#39;sigma&#39; was held constant at a value of 0.08166744
+## RMSE was used to select the optimal model using the smallest value.
+## The final values used for the model were sigma = 0.08166744 and C = 1.</code></pre>
+<p>So let’s plot the training data as well as the resulting regression line (in the color red) coming from the lm object. We’ll also plot the results from the Support Vector Machine predictions on the same graph (in blue). From this plot it appears that the Support Vector Machine does a better job of “following” the actual data - at least for the training data. We might even be able to improve the SVM performance if we tune the hyperparameters but the default without tuning seems better than the lm. It’s this type of observation that leads one to consider if there are yet other methods that would result in even better results.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(mpg<span class="op">~</span>wt,<span class="dt">data=</span>example_Train,<span class="dt">main=</span><span class="st">&quot;Train Data&quot;</span>)
+<span class="kw">abline</span>(lm_fit<span class="op">$</span>finalModel,<span class="dt">lty=</span><span class="dv">2</span>)
+<span class="kw">grid</span>()
+svm_preds &lt;-<span class="st"> </span><span class="kw">predict</span>(my_svm,example_Train)
+
+pdf &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="kw">cbind</span>(Train<span class="op">$</span>wt,svm_preds)) 
+<span class="kw">points</span>(svm_preds<span class="op">~</span>V1,<span class="dt">data=</span>pdf[<span class="kw">order</span>(pdf<span class="op">$</span>V1),],<span class="dt">col=</span><span class="st">&quot;blue&quot;</span>,<span class="dt">pch=</span><span class="dv">4</span>,<span class="dt">type=</span><span class="st">&quot;l&quot;</span>)</code></pre></div>
+<p><img src="biosml_files/figure-html/pickthe3-1.png" width="672" /></p>
+<p>In terms of the RMSE for the Test set predictions, which method is better (i.e. the lowest RMSE) ?</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">lm_preds &lt;-<span class="st"> </span><span class="kw">predict</span>(my_lm,example_Train)
+svm_preds &lt;-<span class="st"> </span><span class="kw">predict</span>(my_svm,example_Train)
+<span class="co">#</span>
+<span class="kw">cat</span>(<span class="st">&quot;RMSE for lm is: &quot;</span>,<span class="kw">compute_rmse</span>(lm_test_preds,example_Test<span class="op">$</span>mpg),<span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>)</code></pre></div>
+<pre><code>## RMSE for lm is:  2.456504</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">cat</span>(<span class="st">&quot;RMSE for smv is: &quot;</span>,<span class="kw">compute_rmse</span>(svm_test_preds,example_Test<span class="op">$</span>mpg),<span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>)</code></pre></div>
+<pre><code>## RMSE for smv is:  2.020234</code></pre>
+</div>
+<div id="more-comparisons" class="section level2">
+<h2><span class="header-section-number">10.2</span> More Comparisons</h2>
+<p>Let’s keep going. We’ll use some more methods to see how they perform on the same data.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">my_ctrl &lt;-<span class="st"> </span><span class="kw">trainControl</span>(
     <span class="dt">method =</span> <span class="st">&quot;cv&quot;</span>, 
     <span class="dt">number =</span> <span class="dv">3</span>
@@ -264,8 +368,9 @@ mod_ranger &lt;-<span class="st"> </span><span class="kw">train</span>(mpg <span
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#</span>
 <span class="kw">plot</span>(mod_ranger)</code></pre></div>
 <p><img src="biosml_files/figure-html/unnamed-chunk-71-2.png" width="672" /></p>
+</div>
 <div id="using-the-resamples-function" class="section level2">
-<h2><span class="header-section-number">10.1</span> Using the resamples() function</h2>
+<h2><span class="header-section-number">10.3</span> Using the resamples() function</h2>
 <p>Now, here comes the “magic”. Because we built three different modeling objects on the same data set, we can now use the <strong>resamples</strong> function to collect, analyze, and visualize a set of results. This is pretty powerful.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">results &lt;-<span class="st"> </span><span class="kw">resamples</span>(<span class="kw">list</span>(<span class="dt">lm=</span>mod_lm,<span class="dt">rf=</span>mod_rf,<span class="dt">ranger=</span>mod_ranger))
 <span class="kw">summary</span>(results)</code></pre></div>
@@ -299,7 +404,7 @@ mod_ranger &lt;-<span class="st"> </span><span class="kw">train</span>(mpg <span
 <p><img src="biosml_files/figure-html/unnamed-chunk-74-1.png" width="672" /></p>
 </div>
 <div id="model-performance" class="section level2">
-<h2><span class="header-section-number">10.2</span> Model Performance</h2>
+<h2><span class="header-section-number">10.4</span> Model Performance</h2>
 <p>Of course, we can now use the Test data frame to see how the RMSE looks on the holdout data frame.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">compute_rmse</span>(<span class="kw">predict</span>(mod_lm,Test),Test<span class="op">$</span>mpg)</code></pre></div>
 <pre><code>## [1] 2.456504</code></pre>
@@ -371,19 +476,19 @@ mod_ranger &lt;-<span class="st"> </span><span class="kw">train</span>(mpg <span
 ## -3.141667</code></pre>
 </div>
 <div id="feature-selection" class="section level2">
-<h2><span class="header-section-number">10.3</span> Feature Selection</h2>
+<h2><span class="header-section-number">10.5</span> Feature Selection</h2>
 <p>Features are the columns in your data set. Up until now we have not been concerned with the formula being specified choosing rather to focus on how to run models with the caret package. However, knowing how to select the “best” subset of features is important since an overspcified formula might result in very long training times and, even then, it might not be that good of a model for predicting out of sample error. Of course, various methods have ways to deal with this problem.</p>
 <p>For example, Stepwise regression is one way to look at combinations of predictor variables to arrive at the optimal feature set according to some score (e.g. AIC, BIC). This process is implemented recursively. However, none of this should be a substitute for solid intuition about the data or knowing how features vary with each other (if at all). Still, packages such as caret have ways to assist with feature selection. We’ll look at a few here:</p>
 <div id="recursive-feature-elimination" class="section level3">
-<h3><span class="header-section-number">10.3.1</span> Recursive Feature Elimination</h3>
+<h3><span class="header-section-number">10.5.1</span> Recursive Feature Elimination</h3>
 <p>The general idea with this approach is to build models using combinations of predictors to arrive at the best model according to some metric such as RMSE. Some predictors might be discarded along the way resulting in a “leaner” feature set that would then hopefully be easier to defend than a more complex or fully specified feature set. There is no free lunch here in that blindly accepting the features handed to you by a recursive or automatic method should not be considered authoritative especially if you have a reason to believe that some key feature has been excluded. Many people, however, like to use these methods as a starting point. You would still need to review the diagnostics associated with a final model to determine if it is statistically sound.</p>
 <p>According to the <a href="https://topepo.github.io/caret/feature-selection-overview.html#models-with-built-in-feature-selection"><strong>caret</strong> documentation</a> there are a large number of supported models that contain some form of embedded or built-in feature selection. Such functions are doing you a favor (or not) by showing you the importance of contributing features.</p>
 <div class="figure">
 <img src="pics/feature_selection.png" />
 
 </div>
-<div id="an-example" class="section level4">
-<h4><span class="header-section-number">10.3.1.1</span> An Example</h4>
+<div id="an-example-1" class="section level4">
+<h4><span class="header-section-number">10.5.1.1</span> An Example</h4>
 <p>Let’s work with the <strong>lm</strong> function again to see if we can find some interesting features using some caret functions. The main function for Recursive Feature Elimination is <strong>rfe</strong> which, like the <strong>train</strong> function, accepts a control object to help guide the process. Here we are telling the <strong>rfe</strong> function to use some helper functions to assess predictors. We don’t need to pass it a model - it handles these things under the hood. In this case we’ll use 10 Fold Cross Validation.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">set.seed</span>(<span class="dv">123</span>)
 control &lt;-<span class="st"> </span><span class="kw">rfeControl</span>(<span class="dt">functions=</span>lmFuncs, <span class="dt">method=</span><span class="st">&quot;cv&quot;</span>,<span class="dt">number=</span><span class="dv">10</span>)
@@ -416,7 +521,7 @@ results</code></pre></div>
 </div>
 </div>
 <div id="redundant-feature-removal" class="section level3">
-<h3><span class="header-section-number">10.3.2</span> Redundant Feature Removal</h3>
+<h3><span class="header-section-number">10.5.2</span> Redundant Feature Removal</h3>
 <p>The <strong>caret</strong> package has some functions that can help us identify highly correlated variables that might be a candidates for removal prior to use in building a model. Let’s go back to the mtcars data set as it exists by default. One of the variables that is highly correlated with others is <strong>mpg</strong> Since that is the one we are trying to predict, we’ll keep it around.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">correlations &lt;-<span class="st"> </span><span class="kw">cor</span>(mtcars[,<span class="op">-</span><span class="dv">1</span>])
 
@@ -460,7 +565,7 @@ mtcars[,<span class="op">-</span><span class="dv">1</span>][,highcorr]</code></p
 ## Volvo 142E            4 121.0    4</code></pre>
 </div>
 <div id="feature-importance" class="section level3">
-<h3><span class="header-section-number">10.3.3</span> Feature Importance</h3>
+<h3><span class="header-section-number">10.5.3</span> Feature Importance</h3>
 </div>
 </div>
 </div>

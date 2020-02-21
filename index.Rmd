@@ -2177,7 +2177,90 @@ args(randomForest)
 
 # Picking The Best Model
 
+It's always of interest to compare the results of one model to another (or even more) to determine the "best" model to share with some else. On the other hand, it's easy to get carried away with trying out different models in an attempt to make perofrmance improvements especially when the might only be marginally better. It's also wise to pick methods that you know how to reasonably defend over those that you can't. For example, picking a Nueral Net model might result in better accuracy although if you are challened on the results in some way, would you be able to address all concerns ? If a logistic regression model resulted in a comparable result then you might should stick with that result since it's a well-known method that few would question. 
+
+
+## An Example 
+
+As an example, let's go back to the linear modeling example back in the section wherein we introduced the  **caret** package. 
+
+```{r pickthe1}
+set.seed(123) # Make this example reproducible
+idx <- createDataPartition(mtcars$mpg, p = .8, 
+                           list = FALSE, 
+                           times = 1)
+head(idx)
+
+example_Train <- mtcars[ idx,]
+example_Test  <- mtcars[-idx,]
+
+#
+control <- trainControl(method = "cv",       # Cross Fold
+                        number = 5,          # 5 Folds
+                        verboseIter = FALSE)  # Verbose
+# Train the model
+
+#set.seed(123) # Make this example reproducible
+my_lm <- train(
+  mpg ~ ., 
+  example_Train,
+  method = "lm",
+  preProc = c("center","scale"),
+  trControl = control
+)
+
+my_lm
+plot(mpg~wt,data=example_Train,main="Train Data")
+abline(lm_fit$finalModel,lty=2)
+```
+
+So does this model perform better than a model built using a support vector machine ? It's easy to generate such a model by reusing much of the same information from above. 
+
+
 This is arguably one of the best features of the **caret** package as it helps us execute any number of models and then assess their performance on new data. Let's look at our models thus far. In fact, it's so easy to generate them with caret, we'll just make them here again. Let's set a common **trainControl** list. We'll use the **Train** and **Test** sets from above.
+
+
+```{r pickthe2}
+#set.seed(123) # Make this example reproducible
+my_svm <- train(
+  mpg ~ ., 
+  example_Train,
+  method = "svmRadial",
+  preProc = c("center","scale"),
+  trControl = control
+)
+
+my_svm
+```
+
+
+So let's plot the training data as well as the resulting regression line (in the color red) coming from the lm object. We'll also plot the results from the Support Vector Machine predictions on the same graph (in blue). From this plot it appears that the Support Vector Machine does a better job of "following" the actual data - at least for the training data. We might even be able to improve the SVM performance if we tune the hyperparameters but the default without tuning seems better than the lm.  It's this type of observation that leads one to consider if there are yet other methods that would result in even better results.  
+
+
+```{r pickthe3}
+
+plot(mpg~wt,data=example_Train,main="Train Data")
+abline(lm_fit$finalModel,lty=2)
+grid()
+svm_preds <- predict(my_svm,example_Train)
+
+pdf <- data.frame(cbind(Train$wt,svm_preds)) 
+points(svm_preds~V1,data=pdf[order(pdf$V1),],col="blue",pch=4,type="l")
+```
+
+In terms of the RMSE for the Test set predictions, which method is better (i.e. the lowest RMSE) ? 
+
+```{r pickthe4}
+lm_preds <- predict(my_lm,example_Train)
+svm_preds <- predict(my_svm,example_Train)
+#
+cat("RMSE for lm is: ",compute_rmse(lm_test_preds,example_Test$mpg),"\n")
+cat("RMSE for smv is: ",compute_rmse(svm_test_preds,example_Test$mpg),"\n")
+```
+
+## More Comparisons
+
+Let's keep going. We'll use some more methods to see how they perform on the same data. 
 
 
 ```{r}
