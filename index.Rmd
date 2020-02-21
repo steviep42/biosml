@@ -2234,18 +2234,20 @@ my_svm
 ```
 
 
-So let's plot the training data as well as the resulting regression line (in the color red) coming from the lm object. We'll also plot the results from the Support Vector Machine predictions on the same graph (in blue). From this plot it appears that the Support Vector Machine does a better job of "following" the actual data - at least for the training data. We might even be able to improve the SVM performance if we tune the hyperparameters but the default without tuning seems better than the lm.  It's this type of observation that leads one to consider if there are yet other methods that would result in even better results.  
+So let's plot the training data as well as the resulting regression line (in the color black) coming from the lm object. We'll also plot the results from the Support Vector Machine predictions on the same graph (in red). From this plot it appears that the Support Vector Machine does a better job of "following" the actual data - at least for the training data. We might even be able to improve the SVM performance if we tune the hyperparameters but the default without tuning seems better than the lm.  It's this type of observation that leads one to consider if there are yet other methods that would result in even better results.  
 
 
 ```{r pickthe3}
 
 plot(mpg~wt,data=example_Train,main="Train Data")
-abline(lm_fit$finalModel,lty=2)
+abline(lm_fit$finalModel)
 grid()
 svm_preds <- predict(my_svm,example_Train)
 
 pdf <- data.frame(cbind(Train$wt,svm_preds)) 
-points(svm_preds~V1,data=pdf[order(pdf$V1),],col="blue",pch=4,type="l")
+points(svm_preds~V1,data=pdf[order(pdf$V1),],col="red",pch=4,type="l")
+legend("topright",c("lm","svm"),col=c("black","red"),lty=1,cex=1)
+
 ```
 
 In terms of the RMSE for the Test set predictions, which method is better (i.e. the lowest RMSE) ? 
@@ -2269,6 +2271,7 @@ control <- trainControl(method = "cv",       # Cross Fold
                         verboseIter = FALSE)  # Verbose
 ```
 
+Note that we will be predicting the MPG value as a function of all variables in the data frame. 
 
 ```{r}
 # Train the lm model

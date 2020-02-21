@@ -330,7 +330,7 @@ caret<span class="op">::</span><span class="kw">confusionMatrix</span>(fitpreds,
 ## </code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(caTools)
 <span class="kw">colAUC</span>(pm_model_fitpreds,test<span class="op">$</span>diabetes,<span class="dt">plotROC=</span><span class="ot">TRUE</span>)</code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-43-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-31-1.png" width="672" /></p>
 <pre><code>##                  [,1]
 ## neg vs. pos 0.8296226</code></pre>
 <p>But wait, why would we do this if we have the <strong>caret</strong> package readily available. We can explore any number methods, implement K Fold Cross Validation,and get feedback on the performance measures at the same time. Let’s reframe our above work using the caret package conveniences.</p>
@@ -479,7 +479,7 @@ pm_ranger_mod &lt;-<span class="st"> </span><span class="kw">train</span>(<span 
                     )</code></pre></div>
 <p>The object can be plotted. Here we see that the max AUC of .825 occurs when mtry is 3 and the Gini criterion is used to evaluate a tree.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(pm_ranger_mod)</code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-50-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-38-1.png" width="672" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">max</span>(pm_ranger_mod[[<span class="st">&quot;results&quot;</span>]]<span class="op">$</span>ROC)</code></pre></div>
 <pre><code>## [1] 0.8190116</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">preds &lt;-<span class="st"> </span><span class="kw">predict</span>(pm_ranger_mod,test)

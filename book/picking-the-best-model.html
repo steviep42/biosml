@@ -319,14 +319,15 @@ my_svm</code></pre></div>
 ## Tuning parameter &#39;sigma&#39; was held constant at a value of 0.9040613
 ## RMSE was used to select the optimal model using the smallest value.
 ## The final values used for the model were sigma = 0.9040613 and C = 1.</code></pre>
-<p>So let’s plot the training data as well as the resulting regression line (in the color red) coming from the lm object. We’ll also plot the results from the Support Vector Machine predictions on the same graph (in blue). From this plot it appears that the Support Vector Machine does a better job of “following” the actual data - at least for the training data. We might even be able to improve the SVM performance if we tune the hyperparameters but the default without tuning seems better than the lm. It’s this type of observation that leads one to consider if there are yet other methods that would result in even better results.</p>
+<p>So let’s plot the training data as well as the resulting regression line (in the color black) coming from the lm object. We’ll also plot the results from the Support Vector Machine predictions on the same graph (in red). From this plot it appears that the Support Vector Machine does a better job of “following” the actual data - at least for the training data. We might even be able to improve the SVM performance if we tune the hyperparameters but the default without tuning seems better than the lm. It’s this type of observation that leads one to consider if there are yet other methods that would result in even better results.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(mpg<span class="op">~</span>wt,<span class="dt">data=</span>example_Train,<span class="dt">main=</span><span class="st">&quot;Train Data&quot;</span>)
-<span class="kw">abline</span>(lm_fit<span class="op">$</span>finalModel,<span class="dt">lty=</span><span class="dv">2</span>)
+<span class="kw">abline</span>(lm_fit<span class="op">$</span>finalModel)
 <span class="kw">grid</span>()
 svm_preds &lt;-<span class="st"> </span><span class="kw">predict</span>(my_svm,example_Train)
 
 pdf &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="kw">cbind</span>(Train<span class="op">$</span>wt,svm_preds)) 
-<span class="kw">points</span>(svm_preds<span class="op">~</span>V1,<span class="dt">data=</span>pdf[<span class="kw">order</span>(pdf<span class="op">$</span>V1),],<span class="dt">col=</span><span class="st">&quot;blue&quot;</span>,<span class="dt">pch=</span><span class="dv">4</span>,<span class="dt">type=</span><span class="st">&quot;l&quot;</span>)</code></pre></div>
+<span class="kw">points</span>(svm_preds<span class="op">~</span>V1,<span class="dt">data=</span>pdf[<span class="kw">order</span>(pdf<span class="op">$</span>V1),],<span class="dt">col=</span><span class="st">&quot;red&quot;</span>,<span class="dt">pch=</span><span class="dv">4</span>,<span class="dt">type=</span><span class="st">&quot;l&quot;</span>)
+<span class="kw">legend</span>(<span class="st">&quot;topright&quot;</span>,<span class="kw">c</span>(<span class="st">&quot;lm&quot;</span>,<span class="st">&quot;svm&quot;</span>),<span class="dt">col=</span><span class="kw">c</span>(<span class="st">&quot;black&quot;</span>,<span class="st">&quot;red&quot;</span>),<span class="dt">lty=</span><span class="dv">1</span>,<span class="dt">cex=</span><span class="dv">1</span>)</code></pre></div>
 <p><img src="biosml_files/figure-html/pickthe3-1.png" width="672" /></p>
 <p>In terms of the RMSE for the Test set predictions, which method is better (i.e. the lowest RMSE) ?</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">lm_preds &lt;-<span class="st"> </span><span class="kw">predict</span>(my_lm,example_Train)
@@ -343,6 +344,7 @@ svm_preds &lt;-<span class="st"> </span><span class="kw">predict</span>(my_svm,e
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">control &lt;-<span class="st"> </span><span class="kw">trainControl</span>(<span class="dt">method =</span> <span class="st">&quot;cv&quot;</span>,       <span class="co"># Cross Fold</span>
                         <span class="dt">number =</span> <span class="dv">5</span>,          <span class="co"># 5 Folds</span>
                         <span class="dt">verboseIter =</span> <span class="ot">FALSE</span>)  <span class="co"># Verbose</span></code></pre></div>
+<p>Note that we will be predicting the MPG value as a function of all variables in the data frame.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Train the lm model</span>
 <span class="kw">set.seed</span>(<span class="dv">123</span>)
 comp_mod_lm &lt;-<span class="st"> </span><span class="kw">train</span>(mpg <span class="op">~</span><span class="st"> </span>.,
@@ -395,7 +397,7 @@ results</code></pre></div>
 ## Performance metrics: MAE, RMSE, Rsquared 
 ## Time estimates for: everything, final model fit</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">dotplot</span>(results)</code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-86-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-74-1.png" width="672" /></p>
 </div>
 <div id="model-performance" class="section level2">
 <h2><span class="header-section-number">10.4</span> Model Performance</h2>
@@ -491,7 +493,7 @@ results</code></pre></div>
 ## The top 5 variables (out of 5):
 ##    wt, am, drat, qsec, vs</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(results,<span class="dt">type=</span><span class="kw">c</span>(<span class="st">&quot;o&quot;</span>,<span class="st">&quot;g&quot;</span>))</code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-88-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-76-1.png" width="672" /></p>
 <p>What we get back is some idea about the important features. We could then build a model with caret that uses only these features to see if the suggested RMSE value mentioned in the rfe process matches.</p>
 </div>
 </div>
