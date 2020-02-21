@@ -428,9 +428,9 @@ sensitivity <span class="op">%&gt;%</span><span class="st"> </span><span class="
   <span class="kw">return</span>(<span class="kw">c</span>(<span class="dt">tpr=</span>tpr,<span class="dt">fpr=</span>fpr,<span class="dt">alpha=</span>thresh))
 }</code></pre></div>
 <p>Let’s look at a sequence of alpha values:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">metrics &lt;-<span class="st"> </span><span class="kw">t</span>(<span class="kw">sapply</span>(<span class="kw">seq</span>(<span class="fl">0.05</span>,.<span class="dv">95</span>,.<span class="dv">1</span>),<span class="cf">function</span>(x) <span class="kw">get_tprfpr</span>(x))) 
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">metrics &lt;-<span class="st"> </span><span class="kw">t</span>(<span class="kw">sapply</span>(<span class="kw">seq</span>(<span class="fl">0.01</span>,.<span class="dv">95</span>,.<span class="dv">09</span>),<span class="cf">function</span>(x) <span class="kw">get_tprfpr</span>(x))) 
 <span class="kw">plot</span>(tpr<span class="op">~</span>fpr,metrics,
-     <span class="dt">ylim=</span><span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">1</span>),
+     <span class="dt">ylim=</span><span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">1</span>),<span class="dt">xlim=</span><span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">1</span>),
      <span class="dt">main=</span><span class="st">&quot;Steve&#39;s Super Cool ROC Curve&quot;</span>,
      <span class="dt">xlab=</span><span class="st">&quot;False Positve Rate (1-Specificity)&quot;</span>,
      <span class="dt">ylab=</span><span class="st">&quot;True Positive Rate&quot;</span>,<span class="dt">type=</span><span class="st">&quot;l&quot;</span>)
@@ -441,7 +441,7 @@ sensitivity <span class="op">%&gt;%</span><span class="st"> </span><span class="
 <span class="co"># the right value to maximize the AUC (Area Under Curve)</span>
 
 <span class="kw">text</span>(metrics[,<span class="dv">2</span>],metrics[,<span class="dv">1</span>],<span class="dt">labels=</span>metrics[,<span class="dv">3</span>],<span class="dt">cex=</span><span class="fl">0.8</span>)</code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-144-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-107-1.png" width="672" /></p>
 <p>It turns out that area under an ROC curve is a measure of the usefulness of a test in general, where a greater area means a more useful test. Ideally we would want the area under the curve (also known as “AUC”) to be as close to 1 as possible. The dashed line above represents a classifier that basically “guesses” the outcome (pos vs neg) using a “coin flip” mentality. So, our classifier does much better than that but certainly not perfectly.</p>
 </div>
 <div id="better-ways-to-compute-the-roc-curve" class="section level2">
@@ -459,7 +459,7 @@ perf &lt;-<span class="st"> </span><span class="kw">performance</span>(pred,
 <span class="kw">abline</span>(<span class="dt">a =</span> <span class="dv">0</span>, <span class="dt">b =</span> <span class="dv">1</span>)
 
 <span class="kw">grid</span>()</code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-145-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-108-1.png" width="672" /></p>
 <p>And while I’m at it, I might as well show you how easy it is to compute a confusion matrix which we did by hand earlier. Remember that we create a table called <strong>my_confusion</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># How does this compare to the truth ?</span>
 my_confusion &lt;-<span class="st"> </span><span class="kw">table</span>(<span class="dt">predicted =</span> glm_label_preds,

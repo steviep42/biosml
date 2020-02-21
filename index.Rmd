@@ -2627,9 +2627,9 @@ Let's look at a sequence of alpha values:
 
 
 ```{r}
-metrics <- t(sapply(seq(0.05,.95,.1),function(x) get_tprfpr(x))) 
+metrics <- t(sapply(seq(0.01,.95,.09),function(x) get_tprfpr(x))) 
 plot(tpr~fpr,metrics,
-     ylim=c(0,1),
+     ylim=c(0,1),xlim=c(0,1),
      main="Steve's Super Cool ROC Curve",
      xlab="False Positve Rate (1-Specificity)",
      ylab="True Positive Rate",type="l")
