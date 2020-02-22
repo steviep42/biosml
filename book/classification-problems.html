@@ -443,8 +443,8 @@ sensitivity <span class="op">%&gt;%</span><span class="st"> </span><span class="
 <span class="co"># the right value to maximize the AUC (Area Under Curve)</span>
 
 <span class="kw">text</span>(metrics[,<span class="dv">2</span>],metrics[,<span class="dv">1</span>],<span class="dt">labels=</span>metrics[,<span class="dv">3</span>],<span class="dt">cex=</span><span class="fl">0.8</span>)</code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-24-1.png" width="672" /></p>
-<p>It turns out that area under an ROC curve is a measure of the usefulness of a test in general, where a greater area means a more useful test. Ideally we would want the area under the curve (also known as “AUC”) to be as close to 1 as possible. The dashed line above represents a classifier that basically “guesses” the outcome (pos vs neg) using a “coin flip” mentality. So, our classifier does much better than that but certainly not perfectly.</p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
+<p>It turns out that area under an ROC curve is a measure of the usefulness of a test in general, where a greater area means a more useful test. Ideally we would want the area under the curve (also known as “AUC”) to be as close to 1 as possible. The dashed line above represents a classifier that basically “guesses” the outcome (pos vs neg) using a “coin flip” mentality. So, our classifier does much better than that but certainly not perfectly. Now, we also care about the threshold that gives us a good balance between the TPR and FPR. I mean if we wanted a max AUC with no other concerns, we would also be accepting a very high FPR. So this is why looking at the curve is useful.</p>
 </div>
 <div id="better-ways-to-compute-the-roc-curve" class="section level2">
 <h2><span class="header-section-number">6.9</span> Better Ways To Compute The ROC Curve</h2>
@@ -463,6 +463,20 @@ ROCR<span class="op">::</span><span class="kw">plot</span>(perf,<span class="dt"
 
 <span class="kw">grid</span>()</code></pre></div>
 <p><img src="biosml_files/figure-html/ROCR1-1.png" width="672" /></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Get the optimal AUC</span>
+
+auc_ROCR &lt;-<span class="st"> </span>ROCR<span class="op">::</span><span class="kw">performance</span>(pred,<span class="dt">measure=</span><span class="st">&quot;auc&quot;</span>)
+auc_ROCR &lt;-<span class="st"> </span>auc_ROCR<span class="op">@</span>y.values[[<span class="dv">1</span>]]
+<span class="kw">cat</span>(<span class="st">&quot;Optimal AUC is: &quot;</span>,auc_ROCR,<span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>)</code></pre></div>
+<pre><code>## Optimal AUC is:  0.8143396</code></pre>
+<p>And id we wanted to see the auc associated with the “optimal” alpha we could use some functions to get that for us:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">pm_model_glm_probs &lt;-<span class="st"> </span><span class="kw">predict</span>(glm_model,glm_test,<span class="dt">type=</span><span class="st">&quot;response&quot;</span>)
+myRoc &lt;-<span class="st"> </span>pROC<span class="op">::</span><span class="kw">roc</span>(diabetes<span class="op">~</span>pm_model_glm_probs,<span class="dt">auc=</span><span class="ot">TRUE</span>,<span class="dt">data=</span>glm_test)
+pROC<span class="op">::</span><span class="kw">coords</span>(myRoc, <span class="st">&quot;best&quot;</span>, <span class="dt">ret =</span> <span class="st">&quot;threshold&quot;</span>,<span class="dt">transpose =</span> <span class="ot">TRUE</span>)</code></pre></div>
+<pre><code>## [1] 0.2246862</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">get_tprfpr</span>(.<span class="dv">2246862</span>)</code></pre></div>
+<pre><code>##       tpr       fpr     alpha 
+## 0.9245283 0.3900000 0.2246862</code></pre>
 <p>And while I’m at it, I might as well show you how easy it is to compute a confusion matrix which we did by hand earlier. Remember that we create a table called <strong>my_confusion</strong></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># How does this compare to the truth ?</span>
 my_confusion &lt;-<span class="st"> </span><span class="kw">table</span>(<span class="dt">predicted =</span> glm_label_preds,

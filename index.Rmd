@@ -597,7 +597,7 @@ boxplot(repeated_cv_rmse,
 title <- paste("RMSE Across",num_of_folds,
                "folds - ",as.character(deparse(myform)),sep=" ")
 
-(repeated_cv_rmse <- mean(as.vector(repeated_cv_rmse)))
+mean(as.vector(repeated_cv_rmse))
 boxplot(repeated_cv_rmse)
 summary(repeated_cv_rmse)
 
@@ -1241,7 +1241,7 @@ abline(a=0, b=1,lty=2)
 text(metrics[,2],metrics[,1],labels=metrics[,3],cex=0.8)
 ```
 
-It turns out that area under an ROC curve is a measure of the usefulness of a test in general, where a greater area means a more useful test. Ideally we would want the area under the curve (also known as "AUC") to be as close to 1 as possible. The dashed line above represents a classifier that basically "guesses" the outcome (pos vs neg) using a "coin flip" mentality. So, our classifier does much better than that but certainly not perfectly. 
+It turns out that area under an ROC curve is a measure of the usefulness of a test in general, where a greater area means a more useful test. Ideally we would want the area under the curve (also known as "AUC") to be as close to 1 as possible. The dashed line above represents a classifier that basically "guesses" the outcome (pos vs neg) using a "coin flip" mentality. So, our classifier does much better than that but certainly not perfectly. Now, we also care about the threshold that gives us a good balance between the TPR and FPR. I mean if we wanted a max AUC with no other concerns, we would also be accepting a very high FPR. So this is why looking at the curve is useful. 
 
 ## Better Ways To Compute The ROC Curve
 
@@ -1262,7 +1262,27 @@ ROCR::plot(perf,colorize=T,
 abline(a = 0, b = 1)
 
 grid()
+
+# Get the optimal AUC
+
+auc_ROCR <- ROCR::performance(pred,measure="auc")
+auc_ROCR <- auc_ROCR@y.values[[1]]
+cat("Optimal AUC is: ",auc_ROCR,"\n")
 ```
+
+And id we wanted to see the auc associated with the "optimal" alpha we could use some functions to get that for us:
+
+
+```{r pcroopt,message=FALSE}
+pm_model_glm_probs <- predict(glm_model,glm_test,type="response")
+myRoc <- pROC::roc(diabetes~pm_model_glm_probs,auc=TRUE,data=glm_test)
+pROC::coords(myRoc, "best", ret = "threshold",transpose = TRUE)
+```
+
+```{r}
+get_tprfpr(.2246862)
+```
+
 
 
 And while I'm at it, I might as well show you how easy it is to compute a confusion matrix which we did by hand earlier. Remember that we create a table called **my_confusion**
@@ -1624,7 +1644,7 @@ dt_pred <- predict(pm_class_tree,
 
 converted <- ifelse(pm_test$diabetes == "pos",1,0)
 
-aucval    <- auc(actual = converted,
+aucval    <- Metrics::auc(actual = converted,
                     predicted = dt_pred[,2])
 
 aucval
@@ -1977,7 +1997,7 @@ for (ii in 1:number_of_boostraps) {
   
   # Let's create an estimate of the AUC
   
-  aucval[ii] <- auc(actual = converted,
+  aucval[ii] <- Metrics::auc(actual = converted,
                     predicted = predl[[ii]][,2])
 }
   
@@ -2008,7 +2028,7 @@ bagged_pred <- predict(bagged_pm,
 ```{r}
 converted <- ifelse(pm_test$diabetes == "pos",1,0)
 
-aucval    <- auc(actual = converted,
+aucval    <- Metrics::auc(actual = converted,
                     predicted = bagged_pred[,2])
 
 aucval
@@ -2351,6 +2371,7 @@ Another way to look at these models is to use the **diff** function.
 # Get the summary
 
 summary(difs)
+dotplot(difs)
 ```
 
 ## Feature Selection
@@ -2512,13 +2533,13 @@ mtcars_na <- read.csv(url, strip.white = FALSE)
 The **Hmisc** package provides and **impute** function to do the work for us. Check it out. Notice how it finds the rows for which the **wt** feature is missing. 
 
 ```{r}
-impute(mtcars_na$wt, median)
+Hmisc::impute(mtcars_na$wt, median)
 ```
 
 To do the replacement is straightforward. 
 
 ```{r}
-mtcars_na$wt <- impute(mtcars_na$wt,median)
+mtcars_na$wt <- Hmisc::impute(mtcars_na$wt,median)
 ```
 
 ### Using caret
