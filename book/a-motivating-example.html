@@ -385,8 +385,8 @@ test_preds &lt;-<span class="st"> </span><span class="kw">predict</span>(
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Shuffle the row numbers of the data frame</span>
 
 (train_index &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(mtcars),<span class="kw">nrow</span>(mtcars)<span class="op">*</span>.<span class="dv">80</span>))</code></pre></div>
-<pre><code>##  [1] 30  6  1 14  5 17 23 18 22 25 10  4 13 28 29 32 12  3 15 21  8 16 27
-## [24]  2 19</code></pre>
+<pre><code>##  [1] 17  2 21 14  1 24 10 28  8  4 16 30  7 32 11 27 31 19  3 15  6 12 23
+## [24]  5 18</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Get 80% of the records from the data frame</span>
 train_df &lt;-<span class="st"> </span>mtcars[train_index,]
 
@@ -409,7 +409,7 @@ test_pred  &lt;-<span class="st"> </span><span class="kw">predict</span>(
 )
 
 (test_rmse &lt;-<span class="st"> </span><span class="kw">compute_rmse</span>(test_pred,test_df<span class="op">$</span>mpg))</code></pre></div>
-<pre><code>## [1] 3.845061</code></pre>
+<pre><code>## [1] 3.60331</code></pre>
 </div>
 <div id="other-methods" class="section level2">
 <h2><span class="header-section-number">3.6</span> Other Methods ?</h2>
@@ -425,7 +425,7 @@ my_rpart_preds &lt;-<span class="st"> </span>pred<span class="op">$</span>predic
 
 <span class="co"># What is the RMSE </span>
 <span class="kw">compute_rmse</span>(my_rpart_preds,test_df<span class="op">$</span>mpg)</code></pre></div>
-<pre><code>## [1] 2.397079</code></pre>
+<pre><code>## [1] 2.38333</code></pre>
 <p>Well the computed RMSE with the <strong>ranger</strong> method seems to be better in the sense that it is smaller than with the <strong>lm</strong> function. We might be on to something or maybe we just got lucky. We need a better way to proceed - something with more rigor.</p>
 </div>
 <div id="summary" class="section level2">

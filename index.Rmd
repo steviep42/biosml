@@ -1307,7 +1307,7 @@ caret::confusionMatrix(glm_label_preds,glm_test$diabetes,positive="pos")
 
 # Classification Example
 
-Here we present data on Pima Indians as it relates to diabetes. This data is provided by the **mlbench** package. The source of the information is the National Institute of Diabetes and Digestive and Kidney Diseases which in turn was hosted on the UCI Repository of Machine Learning. The variables are:
+Now that we've got an idea about how we might judge the performance quality of classification problem let's look at the mechanics of implementing a classificsastion model using the caret package. We've already seen it in action on a regression problem where we were predicting the MPG for the mtcars data frame. We'll be sticking with the Pima Indians dataset that we used previously  This data is provided by the **mlbench** package. The source of the information is the National Institute of Diabetes and Digestive and Kidney Diseases which in turn was hosted on the UCI Repository of Machine Learning. The variables are:
 
     pregnant - Number of times pregnant
     glucose	 - Plasma glucose concentration (glucose tolerance test)
@@ -1319,7 +1319,7 @@ Here we present data on Pima Indians as it relates to diabetes. This data is pro
     age	     - Age (years)
     diabetes - Class variable (test for diabetes)
     
-```{r}
+```{r cp1}
 library(mlbench)
 data("PimaIndiansDiabetes")
 
@@ -1327,37 +1327,63 @@ data("PimaIndiansDiabetes")
 pm <- PimaIndiansDiabetes
 ```
 
-If this were more a talk on exploratory practices we might spend more time investigating the relationships between the variables. 
+So let's look at some exploratory plots to see if there is anything interesting happening. We'll use the Data Explorer pacakge to help us with this although both R and Python have various packages to help with this kind of thing. In fact, there are probably too many packages and more are being developed every 6 months or so. 
 
 ## Exploratory Plots
 
-We'll look use some stock plots from the [**DataExplorer**](https://github.com/elastacloud/automatic-data-explorer) package to get a feel for the data. Look at correlations between the variables to see if any are strongly correlated with the variable we wish to predict or any other variables. 
+We'll look use some stock plots from the [**DataExplorer**](https://github.com/elastacloud/automatic-data-explorer) package to get a feel for the data. Look at correlations between the variables to see if any are strongly correlated with the variable we wish to predict or any other variables. Let's start out with the **plot_intro** function which can provide an overview of our data. It turns out that our data is pretty clean. There are no rows with missing values and we have only one categorical feature. 
+
+```{r}
+plot_intro(pm)
+```
+
+Let's see if there are any string correltations we need to be aware of. 
 
 ```{r decorr}
 plot_correlation(pm, type="continuous")
 ```
 
+There are more diabetes "negative" people than "positive".
 
 ```{r debar}
 plot_bar(pm)
 ```
+
+The histograms help us see what variables might be normally distributed although most of our features are skewed which makes sense in this case. For example, as people age, they tend to die so it's not surprising that we have by far more young people. It looks to me that the insulin data is a little odd and might warrant greater consideration.
 
 
 ```{r phist}
 plot_histogram(pm)
 ```
 
+This plot will show us side by side boxplots of the features as a function of "pos" or "neg". This is helpful to determine if, for example, there might be significant differences between glucose levels across the positive and negative groups. It makes sense that there might be. Insulin might be also although it's not totally apparent from the following graph. This is the kind of thing you would do to zone in on important variables. 
 
 ```{r pbox}
 plot_boxplot(pm,by="diabetes")
 ```
 
+This plot will help us see if any of our features are normally distibuted:
+
+
+```{r pqq}
+ plot_qq(pm,by="diabetes")
+```
+
+
+It turns out that Data Explorer will help us create a detailed report involving all of these plot tops. 
+
+
+```{r createreport,eval=FALSE}
+create_report(pm, y = "diabetes")
+```
+
+At this point we know that we want to predict "diabetes" and that perhaps glucose is an important variables in the data. We also don't observe many strong correlations in the data so mulitcollinrarity isn't a concern. We also don't see strong evidence in the PCA plot that the data would benefit from a PCA transformation. One thing that we might consider doing is scaling the data since the features do not share the same measurement scale. We'll take this into consideration. 
 
 ## Generalized Linear Models
 
 Let's pick a technique to model the data with the ultimate goal of being able to predict whether someone has diabetes or not. We'll start with the **glm** function in R. We'll take a kitchen sink approach where we predict the diabetes variable ("yes" or "no") based on the rest of the information in the data frame. 
 
-```{r}
+```{r classcreatedata}
 set.seed(123)
 idx <- createDataPartition(pm$diabetes, p = .8, 
                                   list = FALSE, 
@@ -1374,7 +1400,7 @@ nrow(test)
 
 If we used the non caret approach we might do something like the following: 
 
-```{r}
+```{r classglmold}
 pm_model_glm <- glm(diabetes ~ .,
                         data = train, family="binomial")
 
@@ -1389,7 +1415,7 @@ caret::confusionMatrix(fitpreds,
                        positive="pos")
 ```
 
-
+And if you haven't yet enough of ROC curves just yet, we could put up one of those. 
 
 ```{r}
 library(caTools)
@@ -1397,12 +1423,13 @@ colAUC(pm_model_fitpreds,test$diabetes,plotROC=TRUE)
 
 ```
 
-But wait, why would we do this if we have the **caret** package readily available. We can explore any number methods, implement K Fold Cross Validation,and get feedback on the performance measures at the same time. Let's reframe our above work using the caret package conveniences. 
+But wait, we've already been through the whole ROC curve, AUC, confusion matrix route so why would we take a manual approach if we have the **caret** package readily available. We can explore any number methods, implement K Fold Cross Validation,and get feedback on the performance measures at the same time. Let's reframe our above work using the caret package conveniences. 
+
+We've seen this before in the regression section so we'll dive right in with a realistic example. We want to use Cross Fold validation here. We'll select a metric of "Accuracy" and process the data by centering and scaling it since we have data on different measure scales. 
 
 ```{r logit1}
 ctrl <- trainControl(method = "cv", 
-                     number = 5
-                     )
+                     number = 5)
 
 pm_glm_mod <- train(form = diabetes ~ .,
                     data = train,
@@ -1410,27 +1437,26 @@ pm_glm_mod <- train(form = diabetes ~ .,
                     metric = "Accuracy",
                     method = "glm",
                     family = "binomial",
-                    preProc = c("center", "scale")
-                    )
+                    preProc = c("center", "scale"))
 pm_glm_mod
 pm_glm_mod$results
 ```
 
-We asked for the model to be build with concern for Accuracy being the priority. This is why in the result we see an estimated 77% accuracy rate when the model is applied to out of sample data. 
+So we get an estiamte of a 77% accuracy rate when the model is applied to out of sample data. This isn't so impressive but we aren't here to solve that problem (at least not just yet). So let's make some predictions use thing test data to see what the Accuracy rate is. 
 
 ```{r}
 pm_glm_pred_labels <- predict(pm_glm_mod,test)
 confusionMatrix(pm_glm_pred_labels,test$diabetes)
 ```
 
-We can certainly change the scoring metric to prioritize, for example, the area under the associated ROC curve. We just need to make some adjustments to the trainControl argument list and the train argument list. 
+We can certainly change the scoring metric to prioritize, for example, the area under the associated ROC curve. We just need to make some adjustments to the trainControl argument list and the train argument list. But these changes are minor.
 
 ```{r}
 ctrl <- trainControl(method = "cv", 
                      number = 5,
-                     classProbs = TRUE,
-                     summaryFunction = twoClassSummary
-                     )
+                     classProbs = T,
+                     savePredictions = T,  # Useful for Diagnostics
+                     summaryFunction = twoClassSummary)
 
 pm_glm_mod <- train(form = diabetes ~ .,
                     data = train,
@@ -1438,11 +1464,17 @@ pm_glm_mod <- train(form = diabetes ~ .,
                     metric = "ROC",
                     method = "glm",
                     family = "binomial",
-                    preProc = c("center", "scale")
-                    )
+                    preProc = c("center", "scale"))
 
 pm_glm_mod$results
 ```
+
+Notice that we get a different result back than before. Here we get the Area Under the ROC curve as well as the Sensitivity and Specifity. In many ways, this is all we need but if we wanted more we could use the MLeval package to help us. 
+
+```{r classmeval,message=FALSE}
+MLeval::evalm(pm_glm_mod)
+```
+
 
 ## Random Forests
 
