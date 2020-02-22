@@ -282,28 +282,28 @@ folds &lt;-<span class="st"> </span><span class="kw">split</span>(<span class="k
 <p>Check out the folds to get a better understanding of what is going on. We generated a list that has 8 elements each of which holds a 4 element vector corresponding to indices for records in the mtcars data frame.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">folds</code></pre></div>
 <pre><code>## $`1`
-## [1] 15 30 31  3
+## [1]  4 13  6 19
 ## 
 ## $`2`
-## [1] 29  7  8 27
+## [1] 10 22  9 18
 ## 
 ## $`3`
-## [1]  5  1  4 32
+## [1] 20 30  8 26
 ## 
 ## $`4`
-## [1] 19 10 23 24
+## [1] 21  2 11 28
 ## 
 ## $`5`
-## [1]  2 25  9 18
+## [1] 25 27 14 15
 ## 
 ## $`6`
-## [1] 13 17 16 26
+## [1] 24 29 16  5
 ## 
 ## $`7`
-## [1] 20 21 11 12
+## [1]  1 32 31 17
 ## 
 ## $`8`
-## [1] 28 22 14  6</code></pre>
+## [1] 12 23  3  7</code></pre>
 <p>Again, each list element has the indices of four unique observations from the data frame. We have eight folds with four elements each for a total of 32 numbers corresponding to row numbers from the mtcars data frame.</p>
 <div id="cross-fold-validation" class="section level2">
 <h2><span class="header-section-number">4.1</span> Cross Fold Validation</h2>
@@ -349,9 +349,9 @@ lattice<span class="op">::</span><span class="kw">dotplot</span>(rmse,
                  <span class="dt">main=</span><span class="st">&quot;RMSE Across Folds Using K-Fold CV&quot;</span>)</code></pre></div>
 <p><img src="biosml_files/figure-html/latticeplot-1.png" width="672" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">mean</span>(rmse)</code></pre></div>
-<pre><code>## [1] 3.202826</code></pre>
+<pre><code>## [1] 2.97408</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sd</span>(rmse)</code></pre></div>
-<pre><code>## [1] 1.139624</code></pre>
+<pre><code>## [1] 1.265444</code></pre>
 </div>
 <div id="create-a-function-to-automate-things" class="section level2">
 <h2><span class="header-section-number">4.2</span> Create A Function To Automate Things</h2>
@@ -399,12 +399,12 @@ title &lt;-<span class="st"> </span><span class="kw">paste</span>(<span class="s
 
 
 <span class="kw">print</span>(<span class="kw">mean</span>(rmse))</code></pre></div>
-<pre><code>## [1] 2.917614</code></pre>
+<pre><code>## [1] 3.037616</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">lattice<span class="op">::</span><span class="kw">dotplot</span>(rmse,
                  <span class="dt">main=</span><span class="st">&quot;RMSE Across Folds Using K-Fold CV&quot;</span>)</code></pre></div>
 <p><img src="biosml_files/figure-html/fourfold-1.png" width="672" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sd</span>(rmse)</code></pre></div>
-<pre><code>## [1] 1.619168</code></pre>
+<pre><code>## [1] 1.22477</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">boxplot</span>(rmse,<span class="dt">main=</span>title)</code></pre></div>
 <p><img src="biosml_files/figure-html/fourfold-2.png" width="672" /></p>
 </div>
@@ -417,7 +417,7 @@ title &lt;-<span class="st"> </span><span class="kw">paste</span>(<span class="s
 <span class="co"># once. We get back 4 RMSE values - one for each fold</span>
 
 (rmse &lt;-<span class="st"> </span><span class="kw">make_mtcars_model</span>(num_of_folds))</code></pre></div>
-<pre><code>## [1] 4.307394 2.165961 4.064317 2.648971 4.357943 1.335025 3.039382 2.230329</code></pre>
+<pre><code>## [1] 3.904067 4.131148 3.161184 4.094111 2.037001 2.774833 2.100271 1.931495</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Now we repeat this some number of times - like 10. So we get back</span>
 <span class="co"># 80 RMSE values </span>
 
@@ -430,45 +430,45 @@ repeated_cv_rmse &lt;-<span class="st"> </span><span class="kw">sapply</span>(<s
                <span class="st">&quot;folds - &quot;</span>,<span class="kw">as.character</span>(<span class="kw">deparse</span>(myform)),<span class="dt">sep=</span><span class="st">&quot; &quot;</span>)
 
 <span class="kw">mean</span>(<span class="kw">as.vector</span>(repeated_cv_rmse))</code></pre></div>
-<pre><code>## [1] 3.06313</code></pre>
+<pre><code>## [1] 3.009663</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">boxplot</span>(repeated_cv_rmse)</code></pre></div>
 <p><img src="biosml_files/figure-html/rc1-2.png" width="672" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(repeated_cv_rmse)</code></pre></div>
-<pre><code>##        V1              V2              V3              V4        
-##  Min.   :1.496   Min.   :2.087   Min.   :1.822   Min.   :0.9006  
-##  1st Qu.:2.346   1st Qu.:2.112   1st Qu.:2.338   1st Qu.:2.0594  
-##  Median :3.262   Median :3.360   Median :2.773   Median :2.9475  
-##  Mean   :3.281   Mean   :3.105   Mean   :3.151   Mean   :3.0272  
-##  3rd Qu.:4.225   3rd Qu.:3.783   3rd Qu.:3.453   3rd Qu.:4.2884  
-##  Max.   :5.159   Max.   :4.126   Max.   :5.631   Max.   :4.8363  
-##        V5              V6              V7              V8       
-##  Min.   :1.108   Min.   :1.853   Min.   :1.531   Min.   :1.648  
-##  1st Qu.:2.330   1st Qu.:2.489   1st Qu.:2.227   1st Qu.:1.993  
-##  Median :2.917   Median :2.606   Median :2.734   Median :3.038  
-##  Mean   :3.093   Mean   :3.238   Mean   :2.975   Mean   :2.979  
-##  3rd Qu.:4.003   3rd Qu.:3.558   3rd Qu.:4.050   3rd Qu.:3.906  
-##  Max.   :5.036   Max.   :5.838   Max.   :4.456   Max.   :4.475  
-##        V9             V10             V11             V12       
-##  Min.   :1.868   Min.   :1.685   Min.   :1.573   Min.   :1.399  
-##  1st Qu.:2.130   1st Qu.:2.204   1st Qu.:2.038   1st Qu.:2.215  
-##  Median :3.076   Median :2.583   Median :2.725   Median :3.348  
-##  Mean   :3.066   Mean   :2.989   Mean   :2.964   Mean   :3.133  
-##  3rd Qu.:3.899   3rd Qu.:3.431   3rd Qu.:4.067   3rd Qu.:4.014  
-##  Max.   :4.478   Max.   :5.385   Max.   :4.461   Max.   :4.693  
+<pre><code>##        V1              V2               V3              V4       
+##  Min.   :1.091   Min.   :0.9279   Min.   :1.404   Min.   :2.117  
+##  1st Qu.:2.312   1st Qu.:2.0813   1st Qu.:2.250   1st Qu.:2.521  
+##  Median :2.632   Median :3.3254   Median :2.727   Median :2.942  
+##  Mean   :2.902   Mean   :2.9977   Mean   :2.965   Mean   :3.116  
+##  3rd Qu.:3.854   3rd Qu.:3.9788   3rd Qu.:3.972   3rd Qu.:3.753  
+##  Max.   :4.481   Max.   :4.2322   Max.   :4.560   Max.   :4.371  
+##        V5              V6               V7              V8       
+##  Min.   :1.502   Min.   :0.8545   Min.   :1.410   Min.   :2.037  
+##  1st Qu.:2.348   1st Qu.:2.1604   1st Qu.:1.769   1st Qu.:2.532  
+##  Median :2.533   Median :2.8664   Median :3.039   Median :2.858  
+##  Mean   :2.935   Mean   :2.9386   Mean   :2.971   Mean   :3.055  
+##  3rd Qu.:3.359   3rd Qu.:4.2509   3rd Qu.:3.990   3rd Qu.:3.801  
+##  Max.   :5.161   Max.   :4.2829   Max.   :4.729   Max.   :4.145  
+##        V9              V10             V11             V12       
+##  Min.   :0.9624   Min.   :1.544   Min.   :1.368   Min.   :1.411  
+##  1st Qu.:2.1969   1st Qu.:2.049   1st Qu.:1.922   1st Qu.:2.097  
+##  Median :2.7253   Median :2.580   Median :3.411   Median :2.353  
+##  Mean   :2.9880   Mean   :3.002   Mean   :3.113   Mean   :2.870  
+##  3rd Qu.:4.1188   3rd Qu.:4.330   3rd Qu.:4.098   3rd Qu.:3.004  
+##  Max.   :4.7357   Max.   :4.597   Max.   :4.737   Max.   :5.621  
 ##       V13             V14             V15             V16       
-##  Min.   :2.089   Min.   :0.841   Min.   :1.800   Min.   :1.625  
-##  1st Qu.:2.299   1st Qu.:2.428   1st Qu.:2.741   1st Qu.:2.203  
-##  Median :2.371   Median :3.305   Median :3.249   Median :3.367  
-##  Mean   :2.990   Mean   :3.084   Mean   :3.140   Mean   :3.143  
-##  3rd Qu.:3.906   3rd Qu.:4.034   3rd Qu.:3.771   3rd Qu.:3.821  
-##  Max.   :4.693   Max.   :4.574   Max.   :4.045   Max.   :4.637  
-##       V17             V18              V19             V20       
-##  Min.   :1.668   Min.   :0.9239   Min.   :1.570   Min.   :1.286  
-##  1st Qu.:2.460   1st Qu.:2.5771   1st Qu.:2.255   1st Qu.:2.098  
-##  Median :3.020   Median :2.9430   Median :3.101   Median :2.785  
-##  Mean   :3.024   Mean   :2.9583   Mean   :3.053   Mean   :2.869  
-##  3rd Qu.:3.637   3rd Qu.:3.8394   3rd Qu.:3.776   3rd Qu.:3.506  
-##  Max.   :4.197   Max.   :4.0860   Max.   :4.503   Max.   :4.958</code></pre>
+##  Min.   :1.763   Min.   :2.022   Min.   :1.814   Min.   :1.604  
+##  1st Qu.:2.606   1st Qu.:2.228   1st Qu.:2.365   1st Qu.:2.659  
+##  Median :2.704   Median :2.825   Median :2.982   Median :2.846  
+##  Mean   :3.023   Mean   :3.115   Mean   :3.050   Mean   :3.108  
+##  3rd Qu.:3.165   3rd Qu.:3.986   3rd Qu.:3.812   3rd Qu.:3.782  
+##  Max.   :4.995   Max.   :4.707   Max.   :4.245   Max.   :4.768  
+##       V17             V18             V19             V20       
+##  Min.   :1.627   Min.   :1.481   Min.   :1.581   Min.   :1.351  
+##  1st Qu.:2.081   1st Qu.:1.669   1st Qu.:2.579   1st Qu.:2.017  
+##  Median :2.657   Median :2.545   Median :3.293   Median :3.133  
+##  Mean   :3.034   Mean   :2.860   Mean   :3.162   Mean   :2.988  
+##  3rd Qu.:3.429   3rd Qu.:3.374   3rd Qu.:3.761   3rd Qu.:4.007  
+##  Max.   :6.033   Max.   :6.137   Max.   :4.465   Max.   :4.388</code></pre>
 </div>
 <div id="bootstrap" class="section level2">
 <h2><span class="header-section-number">4.4</span> Bootstrap</h2>
@@ -512,7 +512,7 @@ repeated_cv_rmse &lt;-<span class="st"> </span><span class="kw">sapply</span>(<s
 <span class="co"># Just to be clear - here is what happens when we call the function</span>
 <span class="co"># once. We get back 8 RMSE values - one for each fold</span>
 (rmse &lt;-<span class="st"> </span><span class="kw">make_mtcars_boot</span>(num_of_folds))</code></pre></div>
-<pre><code>## [1] 3.126301 2.953247 3.038465 4.129560 3.620153 2.844648 2.608193 3.036296</code></pre>
+<pre><code>## [1] 3.996118 3.044946 2.235023 4.366487 3.640766 2.742463 3.008277 3.070458</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Now we repeat this some number of times - like 10. So we get back</span>
 <span class="co"># 80 RMSE values </span>
 
@@ -533,45 +533,45 @@ boot_repeated_rmse &lt;-<span class="st"> </span><span class="kw">as.vector</spa
 <pre><code>## [1] &quot;Summary of Bootstrap RMSE&quot;</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(boot_repeated_rmse)</code></pre></div>
 <pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-##   1.682   2.833   3.152   3.176   3.508   4.851</code></pre>
+##   1.672   2.959   3.291   3.320   3.699   4.965</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">print</span>(<span class="st">&quot;Summary of CV&quot;</span>)</code></pre></div>
 <pre><code>## [1] &quot;Summary of CV&quot;</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(repeated_cv_rmse)</code></pre></div>
-<pre><code>##        V1              V2              V3              V4        
-##  Min.   :1.496   Min.   :2.087   Min.   :1.822   Min.   :0.9006  
-##  1st Qu.:2.346   1st Qu.:2.112   1st Qu.:2.338   1st Qu.:2.0594  
-##  Median :3.262   Median :3.360   Median :2.773   Median :2.9475  
-##  Mean   :3.281   Mean   :3.105   Mean   :3.151   Mean   :3.0272  
-##  3rd Qu.:4.225   3rd Qu.:3.783   3rd Qu.:3.453   3rd Qu.:4.2884  
-##  Max.   :5.159   Max.   :4.126   Max.   :5.631   Max.   :4.8363  
-##        V5              V6              V7              V8       
-##  Min.   :1.108   Min.   :1.853   Min.   :1.531   Min.   :1.648  
-##  1st Qu.:2.330   1st Qu.:2.489   1st Qu.:2.227   1st Qu.:1.993  
-##  Median :2.917   Median :2.606   Median :2.734   Median :3.038  
-##  Mean   :3.093   Mean   :3.238   Mean   :2.975   Mean   :2.979  
-##  3rd Qu.:4.003   3rd Qu.:3.558   3rd Qu.:4.050   3rd Qu.:3.906  
-##  Max.   :5.036   Max.   :5.838   Max.   :4.456   Max.   :4.475  
-##        V9             V10             V11             V12       
-##  Min.   :1.868   Min.   :1.685   Min.   :1.573   Min.   :1.399  
-##  1st Qu.:2.130   1st Qu.:2.204   1st Qu.:2.038   1st Qu.:2.215  
-##  Median :3.076   Median :2.583   Median :2.725   Median :3.348  
-##  Mean   :3.066   Mean   :2.989   Mean   :2.964   Mean   :3.133  
-##  3rd Qu.:3.899   3rd Qu.:3.431   3rd Qu.:4.067   3rd Qu.:4.014  
-##  Max.   :4.478   Max.   :5.385   Max.   :4.461   Max.   :4.693  
+<pre><code>##        V1              V2               V3              V4       
+##  Min.   :1.091   Min.   :0.9279   Min.   :1.404   Min.   :2.117  
+##  1st Qu.:2.312   1st Qu.:2.0813   1st Qu.:2.250   1st Qu.:2.521  
+##  Median :2.632   Median :3.3254   Median :2.727   Median :2.942  
+##  Mean   :2.902   Mean   :2.9977   Mean   :2.965   Mean   :3.116  
+##  3rd Qu.:3.854   3rd Qu.:3.9788   3rd Qu.:3.972   3rd Qu.:3.753  
+##  Max.   :4.481   Max.   :4.2322   Max.   :4.560   Max.   :4.371  
+##        V5              V6               V7              V8       
+##  Min.   :1.502   Min.   :0.8545   Min.   :1.410   Min.   :2.037  
+##  1st Qu.:2.348   1st Qu.:2.1604   1st Qu.:1.769   1st Qu.:2.532  
+##  Median :2.533   Median :2.8664   Median :3.039   Median :2.858  
+##  Mean   :2.935   Mean   :2.9386   Mean   :2.971   Mean   :3.055  
+##  3rd Qu.:3.359   3rd Qu.:4.2509   3rd Qu.:3.990   3rd Qu.:3.801  
+##  Max.   :5.161   Max.   :4.2829   Max.   :4.729   Max.   :4.145  
+##        V9              V10             V11             V12       
+##  Min.   :0.9624   Min.   :1.544   Min.   :1.368   Min.   :1.411  
+##  1st Qu.:2.1969   1st Qu.:2.049   1st Qu.:1.922   1st Qu.:2.097  
+##  Median :2.7253   Median :2.580   Median :3.411   Median :2.353  
+##  Mean   :2.9880   Mean   :3.002   Mean   :3.113   Mean   :2.870  
+##  3rd Qu.:4.1188   3rd Qu.:4.330   3rd Qu.:4.098   3rd Qu.:3.004  
+##  Max.   :4.7357   Max.   :4.597   Max.   :4.737   Max.   :5.621  
 ##       V13             V14             V15             V16       
-##  Min.   :2.089   Min.   :0.841   Min.   :1.800   Min.   :1.625  
-##  1st Qu.:2.299   1st Qu.:2.428   1st Qu.:2.741   1st Qu.:2.203  
-##  Median :2.371   Median :3.305   Median :3.249   Median :3.367  
-##  Mean   :2.990   Mean   :3.084   Mean   :3.140   Mean   :3.143  
-##  3rd Qu.:3.906   3rd Qu.:4.034   3rd Qu.:3.771   3rd Qu.:3.821  
-##  Max.   :4.693   Max.   :4.574   Max.   :4.045   Max.   :4.637  
-##       V17             V18              V19             V20       
-##  Min.   :1.668   Min.   :0.9239   Min.   :1.570   Min.   :1.286  
-##  1st Qu.:2.460   1st Qu.:2.5771   1st Qu.:2.255   1st Qu.:2.098  
-##  Median :3.020   Median :2.9430   Median :3.101   Median :2.785  
-##  Mean   :3.024   Mean   :2.9583   Mean   :3.053   Mean   :2.869  
-##  3rd Qu.:3.637   3rd Qu.:3.8394   3rd Qu.:3.776   3rd Qu.:3.506  
-##  Max.   :4.197   Max.   :4.0860   Max.   :4.503   Max.   :4.958</code></pre>
+##  Min.   :1.763   Min.   :2.022   Min.   :1.814   Min.   :1.604  
+##  1st Qu.:2.606   1st Qu.:2.228   1st Qu.:2.365   1st Qu.:2.659  
+##  Median :2.704   Median :2.825   Median :2.982   Median :2.846  
+##  Mean   :3.023   Mean   :3.115   Mean   :3.050   Mean   :3.108  
+##  3rd Qu.:3.165   3rd Qu.:3.986   3rd Qu.:3.812   3rd Qu.:3.782  
+##  Max.   :4.995   Max.   :4.707   Max.   :4.245   Max.   :4.768  
+##       V17             V18             V19             V20       
+##  Min.   :1.627   Min.   :1.481   Min.   :1.581   Min.   :1.351  
+##  1st Qu.:2.081   1st Qu.:1.669   1st Qu.:2.579   1st Qu.:2.017  
+##  Median :2.657   Median :2.545   Median :3.293   Median :3.133  
+##  Mean   :3.034   Mean   :2.860   Mean   :3.162   Mean   :2.988  
+##  3rd Qu.:3.429   3rd Qu.:3.374   3rd Qu.:3.761   3rd Qu.:4.007  
+##  Max.   :6.033   Max.   :6.137   Max.   :4.465   Max.   :4.388</code></pre>
 </div>
 </div>
             </section>

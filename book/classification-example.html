@@ -257,7 +257,7 @@ pm &lt;-<span class="st"> </span>PimaIndiansDiabetes</code></pre></div>
 <h2><span class="header-section-number">7.1</span> Exploratory Plots</h2>
 <p>We’ll look use some stock plots from the <a href="https://github.com/elastacloud/automatic-data-explorer"><strong>DataExplorer</strong></a> package to get a feel for the data. Look at correlations between the variables to see if any are strongly correlated with the variable we wish to predict or any other variables. Let’s start out with the <strong>plot_intro</strong> function which can provide an overview of our data. It turns out that our data is pretty clean. There are no rows with missing values and we have only one categorical feature.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot_intro</span>(pm)</code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-33-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-26-1.png" width="672" /></p>
 <p>Let’s see if there are any string correltations we need to be aware of.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot_correlation</span>(pm, <span class="dt">type=</span><span class="st">&quot;continuous&quot;</span>)</code></pre></div>
 <p><img src="biosml_files/figure-html/decorr-1.png" width="672" /></p>
@@ -343,7 +343,7 @@ caret<span class="op">::</span><span class="kw">confusionMatrix</span>(fitpreds,
 <p>And if you haven’t yet enough of ROC curves just yet, we could put up one of those.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(caTools)
 <span class="kw">colAUC</span>(pm_model_fitpreds,test<span class="op">$</span>diabetes,<span class="dt">plotROC=</span><span class="ot">TRUE</span>)</code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-34-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-27-1.png" width="672" /></p>
 <pre><code>##                  [,1]
 ## neg vs. pos 0.8296226</code></pre>
 <p>But wait, we’ve already been through the whole ROC curve, AUC, confusion matrix route so why would we take a manual approach if we have the <strong>caret</strong> package readily available. We can explore any number methods, implement K Fold Cross Validation,and get feedback on the performance measures at the same time. Let’s reframe our above work using the caret package conveniences.</p>
@@ -405,6 +405,40 @@ pm_glm_mod</code></pre></div>
 ##                                           
 ##        &#39;Positive&#39; Class : neg             
 ## </code></pre>
+<p>The <strong>train</strong> function provides is with an object that contains lots of informstion but in no way interferes with the results of the glm model. It’s as if you had built it using the standalone glm function which means that you can easily examine the model diagnostics:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(pm_glm_mod<span class="op">$</span>finalModel)</code></pre></div>
+<pre><code>## 
+## Call:
+## NULL
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -2.5516  -0.7296  -0.4037   0.7642   2.7704  
+## 
+## Coefficients:
+##             Estimate Std. Error z value Pr(&gt;|z|)    
+## (Intercept) -0.87828    0.10862  -8.086 6.16e-16 ***
+## pregnant     0.34964    0.11914   2.935  0.00334 ** 
+## glucose      1.03922    0.13048   7.965 1.66e-15 ***
+## pressure    -0.25398    0.11127  -2.283  0.02246 *  
+## triceps      0.01623    0.12153   0.134  0.89379    
+## insulin     -0.17091    0.11809  -1.447  0.14781    
+## mass         0.81801    0.13393   6.108 1.01e-09 ***
+## pedigree     0.32550    0.10906   2.985  0.00284 ** 
+## age          0.23529    0.12291   1.914  0.05558 .  
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## (Dispersion parameter for binomial family taken to be 1)
+## 
+##     Null deviance: 796.05  on 614  degrees of freedom
+## Residual deviance: 581.37  on 606  degrees of freedom
+## AIC: 599.37
+## 
+## Number of Fisher Scoring iterations: 5</code></pre>
+<p>This includes the ability to see the various diagnostic plots:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(pm_glm_mod<span class="op">$</span>finalModel)</code></pre></div>
+<p><img src="biosml_files/figure-html/glmplot-1.png" width="672" /><img src="biosml_files/figure-html/glmplot-2.png" width="672" /><img src="biosml_files/figure-html/glmplot-3.png" width="672" /><img src="biosml_files/figure-html/glmplot-4.png" width="672" /></p>
 <p>We can certainly change the scoring metric to prioritize, for example, the area under the associated ROC curve. We just need to make some adjustments to the trainControl argument list and the train argument list. But these changes are minor.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ctrl &lt;-<span class="st"> </span><span class="kw">trainControl</span>(<span class="dt">method =</span> <span class="st">&quot;cv&quot;</span>, 
                      <span class="dt">number =</span> <span class="dv">5</span>,
@@ -707,7 +741,7 @@ pm_ranger_mod &lt;-<span class="st"> </span><span class="kw">train</span>(<span 
                     )</code></pre></div>
 <p>The object can be plotted. Here we see that the max AUC of .825 occurs when mtry is 3 and the Gini criterion is used to evaluate a tree.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(pm_ranger_mod)</code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-41-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-34-1.png" width="672" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">max</span>(pm_ranger_mod[[<span class="st">&quot;results&quot;</span>]]<span class="op">$</span>ROC)</code></pre></div>
 <pre><code>## [1] 0.8190116</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">preds &lt;-<span class="st"> </span><span class="kw">predict</span>(pm_ranger_mod,test)
