@@ -1535,8 +1535,7 @@ pm_ranger_mod <- train(form = diabetes ~ .,
                     metric = "ROC",
                     method = "ranger",
                     tuneLength = 7,
-                    preProc = c("center", "scale")
-                    )
+                    preProc = c("center", "scale"))
 ```
 
 The object can be plotted. Here we see that the max AUC of .825 occurs when mtry is 3 and the Gini criterion is used to evaluate a tree. 
@@ -2894,6 +2893,130 @@ nearZeroVar(bbbDescr)
 # What are their names ?
 names(bbbDescr[,nearZeroVar(bbbDescr)])
 
+```
+
+
+
+## PCA - Principal Components Analysis
+
+So one of the problems with data can be what is called multicollinearity
+where high correlations exist between variables in a data set. Consider the mtcars data frame for example. Let's assume that we want to predict whether a given car has an automatic transmission (0) or maial (1). We'll remove other columns from the data frame that represent categorical data so we can focus on the continuous numeric variables. 
+
+
+### Identify The Factors
+
+```{r pcafacheck}
+sapply(mtcars,function(x) length(unique(x)))
+```
+
+Let's eliminate cyl,vs,gear, and carb. We'll also remove the rownames since, if we don't, then they will cause problems when we create the biplot of the principal compoments. 
+
+```{r pcaprep}
+mtcars_data <- mtcars[,c(1,3:7,9)]
+rownames(mtcars_data) <- NULL
+```
+
+Now, let's look at the correlation matrix to see if we have highly correlated variabes. We do have several correlations that exceed .7 which is sufficiently high to consider that they might cause problems when building models. The caret package has a findCorrelation function that can remove predictors that exhibit a correlation above a certain threshold but we'll see how PCA can help - so we'll leave them in for now. 
+
+
+### Check For High Correlations
+
+```{r pcacorr}
+# Get correlations just for the predictor variables
+DataExplorer::plot_correlation(mtcars_data[,-7])
+```
+
+
+This is a graphic equivalent of this command:
+
+```{r}
+cor(mtcars_data[,-7])
+```
+
+
+### So Why Use PCA ? 
+
+There are several functions for doing Principal Components Analysis on this data. But why are we even thinking about PCA ? Well, it helps us deal with highly correlated data by **reducing** the dimensionality of a data set. In the mtcars data frame we don't have that many variabesl / columns but wouldn't it be nice to transform the data in a way that reduced the number of columns that we had to consider while also dealing with the multicollinrarity ? 
+
+This is what PCA can do for us. In reality we are using the eigenvectors of the covariance matrix of the original data. We use them to transform the original data into a reduced number of columns to consider. To get the ball rolling, we'll use the **prcomp** function. 
+
+
+```{r pcaprincomp}
+scaled_mtcars_data <- scale(mtcars_data[,-7])
+prcs <- princomp(scaled_mtcars_data)
+prcs
+```
+
+```{r pcasumm}
+summary(prcs)
+```
+
+### Check The BiPlot
+
+What we get from this summary is that PC1 accounts for roughly 70% of the variation in the data set. By the time we get to PC3, about 95% of the variation is accounted. We can also look at something called a biplot that allows us to see what variables in the first two components are influential. This information is also available just by viewing the default return information from the object itsel but the biplot makes it easier to see. 
+
+```{r pcabiplot}
+biplot(prcs)
+```
+
+Back to the summary information, we cal use something called a **screeplot** whih will help us see how many of the components to use. We don't actually need the plot although it can help. Look at the plot and find the "elbow" which is the point at which the rate of change stabilizes. In the plot below it looks like the elbow is at PC3. In looking at the summary info, if we select three components then we are accounting for about 95% of the variation in the data. IF we selected two components then we would have about 89% of the variation accounted for. 
+
+```{r pcasumm2}
+summary(prcs)
+```
+
+### Check The ScreePlot
+
+```{r pcascree1}
+screeplot(prcs,type="line")
+```
+
+Let's pick two components. We'll multiply our data set (using (matrix multiplication) by the two "loadings" / components that we picked. This will give us our original data in terms of the two principla components.
+
+```{r pcaloads}
+model2 <- prcs$loadings[,1:2]
+model2_scores <- as.matrix(scaled_mtcars_data) %*% model2
+```
+
+### Use The Transformed Dats
+
+So now we'll use the Naive Bayes method to do build a model using the transformed data. 
+
+```{r pcanb1}
+mod2 <- e1071::naiveBayes(model2_scores,factor(mtcars_data$am))
+(mod2t <- table(predict(mod2,model2_scores),mtcars_data$am))
+
+cat("Accuracy for PCA mod: ",sum(diag(mod2t))/sum(mod2t),"\n")
+
+```
+
+Compare this to a model built using the untransformed data:
+
+
+```{r pcanb2}
+mod1 <- e1071::naiveBayes(mtcars_data[-7],factor(mtcars_data$am))
+(mod1t <- table(predict(mod1,mtcars_data),mtcars_data$am))
+
+cat("Accuracy for PCA mod: ",sum(diag(mod1t))/sum(mod1t),"\n")
+```
+
+### Summary
+
+So the advantages of PCA should be clear in this case. We have effecively replaced the original data by a smaller data set while also dealing with the correlation issues. We used only two components. Now, a disdvantage here is that the model with the transformed data is in terms of the components which means that the model is less transparent. Perhaps a minor price to pay for better accuracy. In terms of the caret package we can do this using the **preProcess** function:
+
+```{r pcacaret}
+control <- trainControl(method="cv",number = 5)
+
+#
+caret_nb <- train(factor(am)~.,
+                  mtcars_data,
+                  method="nb",
+                  preProcess=c("center","scale","pca"),
+                  trControl = control)
+```
+
+```{r pcacaret22}
+table(predicted=predict(caret_nb,mtcars),mtcars$am)
 ```
 
 

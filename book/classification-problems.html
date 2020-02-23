@@ -204,12 +204,21 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="11.3.4" data-path="data-pre-processing.html"><a href="data-pre-processing.html#order-of-processing"><i class="fa fa-check"></i><b>11.3.4</b> Order of Processing</a></li>
 </ul></li>
 <li class="chapter" data-level="11.4" data-path="data-pre-processing.html"><a href="data-pre-processing.html#low-variance-variables"><i class="fa fa-check"></i><b>11.4</b> Low Variance Variables</a></li>
-<li class="chapter" data-level="11.5" data-path="data-pre-processing.html"><a href="data-pre-processing.html#order-of-pre-processing"><i class="fa fa-check"></i><b>11.5</b> Order of Pre-Processing</a></li>
-<li class="chapter" data-level="11.6" data-path="data-pre-processing.html"><a href="data-pre-processing.html#identifying-redundant-features"><i class="fa fa-check"></i><b>11.6</b> Identifying Redundant Features</a><ul>
-<li class="chapter" data-level="11.6.1" data-path="data-pre-processing.html"><a href="data-pre-processing.html#highly-correlated-variables"><i class="fa fa-check"></i><b>11.6.1</b> Highly Correlated Variables</a></li>
+<li class="chapter" data-level="11.5" data-path="data-pre-processing.html"><a href="data-pre-processing.html#pca---principal-components-analysis"><i class="fa fa-check"></i><b>11.5</b> PCA - Principal Components Analysis</a><ul>
+<li class="chapter" data-level="11.5.1" data-path="data-pre-processing.html"><a href="data-pre-processing.html#identify-the-factors"><i class="fa fa-check"></i><b>11.5.1</b> Identify The Factors</a></li>
+<li class="chapter" data-level="11.5.2" data-path="data-pre-processing.html"><a href="data-pre-processing.html#check-for-high-correlations"><i class="fa fa-check"></i><b>11.5.2</b> Check For High Correlations</a></li>
+<li class="chapter" data-level="11.5.3" data-path="data-pre-processing.html"><a href="data-pre-processing.html#so-why-use-pca"><i class="fa fa-check"></i><b>11.5.3</b> So Why Use PCA ?</a></li>
+<li class="chapter" data-level="11.5.4" data-path="data-pre-processing.html"><a href="data-pre-processing.html#check-the-biplot"><i class="fa fa-check"></i><b>11.5.4</b> Check The BiPlot</a></li>
+<li class="chapter" data-level="11.5.5" data-path="data-pre-processing.html"><a href="data-pre-processing.html#check-the-screeplot"><i class="fa fa-check"></i><b>11.5.5</b> Check The ScreePlot</a></li>
+<li class="chapter" data-level="11.5.6" data-path="data-pre-processing.html"><a href="data-pre-processing.html#use-the-transformed-dats"><i class="fa fa-check"></i><b>11.5.6</b> Use The Transformed Dats</a></li>
+<li class="chapter" data-level="11.5.7" data-path="data-pre-processing.html"><a href="data-pre-processing.html#summary-1"><i class="fa fa-check"></i><b>11.5.7</b> Summary</a></li>
 </ul></li>
-<li class="chapter" data-level="11.7" data-path="data-pre-processing.html"><a href="data-pre-processing.html#ranking-features"><i class="fa fa-check"></i><b>11.7</b> Ranking Features</a></li>
-<li class="chapter" data-level="11.8" data-path="data-pre-processing.html"><a href="data-pre-processing.html#feature-selection-1"><i class="fa fa-check"></i><b>11.8</b> Feature Selection</a></li>
+<li class="chapter" data-level="11.6" data-path="data-pre-processing.html"><a href="data-pre-processing.html#order-of-pre-processing"><i class="fa fa-check"></i><b>11.6</b> Order of Pre-Processing</a></li>
+<li class="chapter" data-level="11.7" data-path="data-pre-processing.html"><a href="data-pre-processing.html#identifying-redundant-features"><i class="fa fa-check"></i><b>11.7</b> Identifying Redundant Features</a><ul>
+<li class="chapter" data-level="11.7.1" data-path="data-pre-processing.html"><a href="data-pre-processing.html#highly-correlated-variables"><i class="fa fa-check"></i><b>11.7.1</b> Highly Correlated Variables</a></li>
+</ul></li>
+<li class="chapter" data-level="11.8" data-path="data-pre-processing.html"><a href="data-pre-processing.html#ranking-features"><i class="fa fa-check"></i><b>11.8</b> Ranking Features</a></li>
+<li class="chapter" data-level="11.9" data-path="data-pre-processing.html"><a href="data-pre-processing.html#feature-selection-1"><i class="fa fa-check"></i><b>11.9</b> Feature Selection</a></li>
 </ul></li>
 <li class="chapter" data-level="12" data-path="using-external-ml-frameworks.html"><a href="using-external-ml-frameworks.html"><i class="fa fa-check"></i><b>12</b> Using External ML Frameworks</a><ul>
 <li class="chapter" data-level="12.1" data-path="using-external-ml-frameworks.html"><a href="using-external-ml-frameworks.html#using-h2o"><i class="fa fa-check"></i><b>12.1</b> Using h2o</a></li>
@@ -443,7 +452,7 @@ sensitivity <span class="op">%&gt;%</span><span class="st"> </span><span class="
 <span class="co"># the right value to maximize the AUC (Area Under Curve)</span>
 
 <span class="kw">text</span>(metrics[,<span class="dv">2</span>],metrics[,<span class="dv">1</span>],<span class="dt">labels=</span>metrics[,<span class="dv">3</span>],<span class="dt">cex=</span><span class="fl">0.8</span>)</code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
 <p>It turns out that area under an ROC curve is a measure of the usefulness of a test in general, where a greater area means a more useful test. Ideally we would want the area under the curve (also known as “AUC”) to be as close to 1 as possible. The dashed line above represents a classifier that basically “guesses” the outcome (pos vs neg) using a “coin flip” mentality. So, our classifier does much better than that but certainly not perfectly. Now, we also care about the threshold that gives us a good balance between the TPR and FPR. I mean if we wanted a max AUC with no other concerns, we would also be accepting a very high FPR. So this is why looking at the curve is useful.</p>
 </div>
 <div id="better-ways-to-compute-the-roc-curve" class="section level2">

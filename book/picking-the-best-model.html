@@ -204,12 +204,21 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="11.3.4" data-path="data-pre-processing.html"><a href="data-pre-processing.html#order-of-processing"><i class="fa fa-check"></i><b>11.3.4</b> Order of Processing</a></li>
 </ul></li>
 <li class="chapter" data-level="11.4" data-path="data-pre-processing.html"><a href="data-pre-processing.html#low-variance-variables"><i class="fa fa-check"></i><b>11.4</b> Low Variance Variables</a></li>
-<li class="chapter" data-level="11.5" data-path="data-pre-processing.html"><a href="data-pre-processing.html#order-of-pre-processing"><i class="fa fa-check"></i><b>11.5</b> Order of Pre-Processing</a></li>
-<li class="chapter" data-level="11.6" data-path="data-pre-processing.html"><a href="data-pre-processing.html#identifying-redundant-features"><i class="fa fa-check"></i><b>11.6</b> Identifying Redundant Features</a><ul>
-<li class="chapter" data-level="11.6.1" data-path="data-pre-processing.html"><a href="data-pre-processing.html#highly-correlated-variables"><i class="fa fa-check"></i><b>11.6.1</b> Highly Correlated Variables</a></li>
+<li class="chapter" data-level="11.5" data-path="data-pre-processing.html"><a href="data-pre-processing.html#pca---principal-components-analysis"><i class="fa fa-check"></i><b>11.5</b> PCA - Principal Components Analysis</a><ul>
+<li class="chapter" data-level="11.5.1" data-path="data-pre-processing.html"><a href="data-pre-processing.html#identify-the-factors"><i class="fa fa-check"></i><b>11.5.1</b> Identify The Factors</a></li>
+<li class="chapter" data-level="11.5.2" data-path="data-pre-processing.html"><a href="data-pre-processing.html#check-for-high-correlations"><i class="fa fa-check"></i><b>11.5.2</b> Check For High Correlations</a></li>
+<li class="chapter" data-level="11.5.3" data-path="data-pre-processing.html"><a href="data-pre-processing.html#so-why-use-pca"><i class="fa fa-check"></i><b>11.5.3</b> So Why Use PCA ?</a></li>
+<li class="chapter" data-level="11.5.4" data-path="data-pre-processing.html"><a href="data-pre-processing.html#check-the-biplot"><i class="fa fa-check"></i><b>11.5.4</b> Check The BiPlot</a></li>
+<li class="chapter" data-level="11.5.5" data-path="data-pre-processing.html"><a href="data-pre-processing.html#check-the-screeplot"><i class="fa fa-check"></i><b>11.5.5</b> Check The ScreePlot</a></li>
+<li class="chapter" data-level="11.5.6" data-path="data-pre-processing.html"><a href="data-pre-processing.html#use-the-transformed-dats"><i class="fa fa-check"></i><b>11.5.6</b> Use The Transformed Dats</a></li>
+<li class="chapter" data-level="11.5.7" data-path="data-pre-processing.html"><a href="data-pre-processing.html#summary-1"><i class="fa fa-check"></i><b>11.5.7</b> Summary</a></li>
 </ul></li>
-<li class="chapter" data-level="11.7" data-path="data-pre-processing.html"><a href="data-pre-processing.html#ranking-features"><i class="fa fa-check"></i><b>11.7</b> Ranking Features</a></li>
-<li class="chapter" data-level="11.8" data-path="data-pre-processing.html"><a href="data-pre-processing.html#feature-selection-1"><i class="fa fa-check"></i><b>11.8</b> Feature Selection</a></li>
+<li class="chapter" data-level="11.6" data-path="data-pre-processing.html"><a href="data-pre-processing.html#order-of-pre-processing"><i class="fa fa-check"></i><b>11.6</b> Order of Pre-Processing</a></li>
+<li class="chapter" data-level="11.7" data-path="data-pre-processing.html"><a href="data-pre-processing.html#identifying-redundant-features"><i class="fa fa-check"></i><b>11.7</b> Identifying Redundant Features</a><ul>
+<li class="chapter" data-level="11.7.1" data-path="data-pre-processing.html"><a href="data-pre-processing.html#highly-correlated-variables"><i class="fa fa-check"></i><b>11.7.1</b> Highly Correlated Variables</a></li>
+</ul></li>
+<li class="chapter" data-level="11.8" data-path="data-pre-processing.html"><a href="data-pre-processing.html#ranking-features"><i class="fa fa-check"></i><b>11.8</b> Ranking Features</a></li>
+<li class="chapter" data-level="11.9" data-path="data-pre-processing.html"><a href="data-pre-processing.html#feature-selection-1"><i class="fa fa-check"></i><b>11.9</b> Feature Selection</a></li>
 </ul></li>
 <li class="chapter" data-level="12" data-path="using-external-ml-frameworks.html"><a href="using-external-ml-frameworks.html"><i class="fa fa-check"></i><b>12</b> Using External ML Frameworks</a><ul>
 <li class="chapter" data-level="12.1" data-path="using-external-ml-frameworks.html"><a href="using-external-ml-frameworks.html#using-h2o"><i class="fa fa-check"></i><b>12.1</b> Using h2o</a></li>
@@ -397,7 +406,7 @@ results</code></pre></div>
 ## Performance metrics: MAE, RMSE, Rsquared 
 ## Time estimates for: everything, final model fit</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">dotplot</span>(results)</code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-70-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-71-1.png" width="672" /></p>
 </div>
 <div id="model-performance" class="section level2">
 <h2><span class="header-section-number">10.4</span> Model Performance</h2>
@@ -452,7 +461,7 @@ results</code></pre></div>
 ## GLMNET 1.0000 0.1009               0.004592
 ## RANGER 1.0000 1.0000    1.0000</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">dotplot</span>(difs)</code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-71-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-72-1.png" width="672" /></p>
 </div>
 <div id="feature-selection" class="section level2">
 <h2><span class="header-section-number">10.5</span> Feature Selection</h2>
@@ -495,7 +504,7 @@ results</code></pre></div>
 ## The top 5 variables (out of 5):
 ##    wt, am, drat, qsec, vs</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(results,<span class="dt">type=</span><span class="kw">c</span>(<span class="st">&quot;o&quot;</span>,<span class="st">&quot;g&quot;</span>))</code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-72-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-73-1.png" width="672" /></p>
 <p>What we get back is some idea about the important features. We could then build a model with caret that uses only these features to see if the suggested RMSE value mentioned in the rfe process matches.</p>
 </div>
 </div>

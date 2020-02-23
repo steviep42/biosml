@@ -204,12 +204,21 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="11.3.4" data-path="data-pre-processing.html"><a href="data-pre-processing.html#order-of-processing"><i class="fa fa-check"></i><b>11.3.4</b> Order of Processing</a></li>
 </ul></li>
 <li class="chapter" data-level="11.4" data-path="data-pre-processing.html"><a href="data-pre-processing.html#low-variance-variables"><i class="fa fa-check"></i><b>11.4</b> Low Variance Variables</a></li>
-<li class="chapter" data-level="11.5" data-path="data-pre-processing.html"><a href="data-pre-processing.html#order-of-pre-processing"><i class="fa fa-check"></i><b>11.5</b> Order of Pre-Processing</a></li>
-<li class="chapter" data-level="11.6" data-path="data-pre-processing.html"><a href="data-pre-processing.html#identifying-redundant-features"><i class="fa fa-check"></i><b>11.6</b> Identifying Redundant Features</a><ul>
-<li class="chapter" data-level="11.6.1" data-path="data-pre-processing.html"><a href="data-pre-processing.html#highly-correlated-variables"><i class="fa fa-check"></i><b>11.6.1</b> Highly Correlated Variables</a></li>
+<li class="chapter" data-level="11.5" data-path="data-pre-processing.html"><a href="data-pre-processing.html#pca---principal-components-analysis"><i class="fa fa-check"></i><b>11.5</b> PCA - Principal Components Analysis</a><ul>
+<li class="chapter" data-level="11.5.1" data-path="data-pre-processing.html"><a href="data-pre-processing.html#identify-the-factors"><i class="fa fa-check"></i><b>11.5.1</b> Identify The Factors</a></li>
+<li class="chapter" data-level="11.5.2" data-path="data-pre-processing.html"><a href="data-pre-processing.html#check-for-high-correlations"><i class="fa fa-check"></i><b>11.5.2</b> Check For High Correlations</a></li>
+<li class="chapter" data-level="11.5.3" data-path="data-pre-processing.html"><a href="data-pre-processing.html#so-why-use-pca"><i class="fa fa-check"></i><b>11.5.3</b> So Why Use PCA ?</a></li>
+<li class="chapter" data-level="11.5.4" data-path="data-pre-processing.html"><a href="data-pre-processing.html#check-the-biplot"><i class="fa fa-check"></i><b>11.5.4</b> Check The BiPlot</a></li>
+<li class="chapter" data-level="11.5.5" data-path="data-pre-processing.html"><a href="data-pre-processing.html#check-the-screeplot"><i class="fa fa-check"></i><b>11.5.5</b> Check The ScreePlot</a></li>
+<li class="chapter" data-level="11.5.6" data-path="data-pre-processing.html"><a href="data-pre-processing.html#use-the-transformed-dats"><i class="fa fa-check"></i><b>11.5.6</b> Use The Transformed Dats</a></li>
+<li class="chapter" data-level="11.5.7" data-path="data-pre-processing.html"><a href="data-pre-processing.html#summary-1"><i class="fa fa-check"></i><b>11.5.7</b> Summary</a></li>
 </ul></li>
-<li class="chapter" data-level="11.7" data-path="data-pre-processing.html"><a href="data-pre-processing.html#ranking-features"><i class="fa fa-check"></i><b>11.7</b> Ranking Features</a></li>
-<li class="chapter" data-level="11.8" data-path="data-pre-processing.html"><a href="data-pre-processing.html#feature-selection-1"><i class="fa fa-check"></i><b>11.8</b> Feature Selection</a></li>
+<li class="chapter" data-level="11.6" data-path="data-pre-processing.html"><a href="data-pre-processing.html#order-of-pre-processing"><i class="fa fa-check"></i><b>11.6</b> Order of Pre-Processing</a></li>
+<li class="chapter" data-level="11.7" data-path="data-pre-processing.html"><a href="data-pre-processing.html#identifying-redundant-features"><i class="fa fa-check"></i><b>11.7</b> Identifying Redundant Features</a><ul>
+<li class="chapter" data-level="11.7.1" data-path="data-pre-processing.html"><a href="data-pre-processing.html#highly-correlated-variables"><i class="fa fa-check"></i><b>11.7.1</b> Highly Correlated Variables</a></li>
+</ul></li>
+<li class="chapter" data-level="11.8" data-path="data-pre-processing.html"><a href="data-pre-processing.html#ranking-features"><i class="fa fa-check"></i><b>11.8</b> Ranking Features</a></li>
+<li class="chapter" data-level="11.9" data-path="data-pre-processing.html"><a href="data-pre-processing.html#feature-selection-1"><i class="fa fa-check"></i><b>11.9</b> Feature Selection</a></li>
 </ul></li>
 <li class="chapter" data-level="12" data-path="using-external-ml-frameworks.html"><a href="using-external-ml-frameworks.html"><i class="fa fa-check"></i><b>12</b> Using External ML Frameworks</a><ul>
 <li class="chapter" data-level="12.1" data-path="using-external-ml-frameworks.html"><a href="using-external-ml-frameworks.html#using-h2o"><i class="fa fa-check"></i><b>12.1</b> Using h2o</a></li>
@@ -285,7 +294,7 @@ mtcars_na &lt;-<span class="st"> </span><span class="kw">read.csv</span>(url, <s
 <p>Let’s look at a boxplot of the <strong>wt</strong> feature.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">boxplot</span>(mtcars_na<span class="op">$</span>wt,<span class="dt">na.rm=</span><span class="ot">TRUE</span>,<span class="dt">main=</span><span class="st">&quot;Distribution of the wt feature&quot;</span>)
 <span class="kw">grid</span>()</code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-81-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-82-1.png" width="672" /></p>
 <p>To make the substitution would involve the following. First we need to find out which row numbers have missing values for the <strong>wt</strong> feature.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">(missing_wt_indices &lt;-<span class="st"> </span><span class="kw">which</span>(<span class="kw">is.na</span>(mtcars_na<span class="op">$</span>wt)))</code></pre></div>
 <pre><code>## [1]  2  9 23</code></pre>
@@ -816,8 +825,126 @@ mtcars_nzv[<span class="kw">nearZeroVar</span>(mtcars_nzv)]</code></pre></div>
 <pre><code>## [1] &quot;negative&quot;     &quot;peoe_vsa.2.1&quot; &quot;peoe_vsa.3.1&quot; &quot;a_acid&quot;      
 ## [5] &quot;vsa_acid&quot;     &quot;frac.anion7.&quot; &quot;alert&quot;</code></pre>
 </div>
+<div id="pca---principal-components-analysis" class="section level2">
+<h2><span class="header-section-number">11.5</span> PCA - Principal Components Analysis</h2>
+<p>So one of the problems with data can be what is called multicollinearity where high correlations exist between variables in a data set. Consider the mtcars data frame for example. Let’s assume that we want to predict whether a given car has an automatic transmission (0) or maial (1). We’ll remove other columns from the data frame that represent categorical data so we can focus on the continuous numeric variables.</p>
+<div id="identify-the-factors" class="section level3">
+<h3><span class="header-section-number">11.5.1</span> Identify The Factors</h3>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sapply</span>(mtcars,<span class="cf">function</span>(x) <span class="kw">length</span>(<span class="kw">unique</span>(x)))</code></pre></div>
+<pre><code>##  mpg  cyl disp   hp drat   wt qsec   vs   am gear carb 
+##   25    3   27   22   22   29   30    2    2    3    6</code></pre>
+<p>Let’s eliminate cyl,vs,gear, and carb. We’ll also remove the rownames since, if we don’t, then they will cause problems when we create the biplot of the principal compoments.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mtcars_data &lt;-<span class="st"> </span>mtcars[,<span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">3</span><span class="op">:</span><span class="dv">7</span>,<span class="dv">9</span>)]
+<span class="kw">rownames</span>(mtcars_data) &lt;-<span class="st"> </span><span class="ot">NULL</span></code></pre></div>
+<p>Now, let’s look at the correlation matrix to see if we have highly correlated variabes. We do have several correlations that exceed .7 which is sufficiently high to consider that they might cause problems when building models. The caret package has a findCorrelation function that can remove predictors that exhibit a correlation above a certain threshold but we’ll see how PCA can help - so we’ll leave them in for now.</p>
+</div>
+<div id="check-for-high-correlations" class="section level3">
+<h3><span class="header-section-number">11.5.2</span> Check For High Correlations</h3>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Get correlations just for the predictor variables</span>
+DataExplorer<span class="op">::</span><span class="kw">plot_correlation</span>(mtcars_data[,<span class="op">-</span><span class="dv">7</span>])</code></pre></div>
+<p><img src="biosml_files/figure-html/pcacorr-1.png" width="672" /></p>
+<p>This is a graphic equivalent of this command:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">cor</span>(mtcars_data[,<span class="op">-</span><span class="dv">7</span>])</code></pre></div>
+<pre><code>##             mpg       disp         hp        drat         wt        qsec
+## mpg   1.0000000 -0.8475514 -0.7761684  0.68117191 -0.8676594  0.41868403
+## disp -0.8475514  1.0000000  0.7909486 -0.71021393  0.8879799 -0.43369788
+## hp   -0.7761684  0.7909486  1.0000000 -0.44875912  0.6587479 -0.70822339
+## drat  0.6811719 -0.7102139 -0.4487591  1.00000000 -0.7124406  0.09120476
+## wt   -0.8676594  0.8879799  0.6587479 -0.71244065  1.0000000 -0.17471588
+## qsec  0.4186840 -0.4336979 -0.7082234  0.09120476 -0.1747159  1.00000000</code></pre>
+</div>
+<div id="so-why-use-pca" class="section level3">
+<h3><span class="header-section-number">11.5.3</span> So Why Use PCA ?</h3>
+<p>There are several functions for doing Principal Components Analysis on this data. But why are we even thinking about PCA ? Well, it helps us deal with highly correlated data by <strong>reducing</strong> the dimensionality of a data set. In the mtcars data frame we don’t have that many variabesl / columns but wouldn’t it be nice to transform the data in a way that reduced the number of columns that we had to consider while also dealing with the multicollinrarity ?</p>
+<p>This is what PCA can do for us. In reality we are using the eigenvectors of the covariance matrix of the original data. We use them to transform the original data into a reduced number of columns to consider. To get the ball rolling, we’ll use the <strong>prcomp</strong> function.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">scaled_mtcars_data &lt;-<span class="st"> </span><span class="kw">scale</span>(mtcars_data[,<span class="op">-</span><span class="dv">7</span>])
+prcs &lt;-<span class="st"> </span><span class="kw">princomp</span>(scaled_mtcars_data)
+prcs</code></pre></div>
+<pre><code>## Call:
+## princomp(x = scaled_mtcars_data)
+## 
+## Standard deviations:
+##    Comp.1    Comp.2    Comp.3    Comp.4    Comp.5    Comp.6 
+## 2.0140855 1.0546249 0.5682775 0.3866999 0.3477012 0.2243967 
+## 
+##  6  variables and  32 observations.</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(prcs)</code></pre></div>
+<pre><code>## Importance of components:
+##                           Comp.1    Comp.2     Comp.3     Comp.4
+## Standard deviation     2.0140855 1.0546249 0.56827746 0.38669985
+## Proportion of Variance 0.6978994 0.1913520 0.05555944 0.02572676
+## Cumulative Proportion  0.6978994 0.8892514 0.94481088 0.97053763
+##                            Comp.5      Comp.6
+## Standard deviation     0.34770121 0.224396671
+## Proportion of Variance 0.02079933 0.008663031
+## Cumulative Proportion  0.99133697 1.000000000</code></pre>
+</div>
+<div id="check-the-biplot" class="section level3">
+<h3><span class="header-section-number">11.5.4</span> Check The BiPlot</h3>
+<p>What we get from this summary is that PC1 accounts for roughly 70% of the variation in the data set. By the time we get to PC3, about 95% of the variation is accounted. We can also look at something called a biplot that allows us to see what variables in the first two components are influential. This information is also available just by viewing the default return information from the object itsel but the biplot makes it easier to see.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">biplot</span>(prcs)</code></pre></div>
+<p><img src="biosml_files/figure-html/pcabiplot-1.png" width="672" /></p>
+<p>Back to the summary information, we cal use something called a <strong>screeplot</strong> whih will help us see how many of the components to use. We don’t actually need the plot although it can help. Look at the plot and find the “elbow” which is the point at which the rate of change stabilizes. In the plot below it looks like the elbow is at PC3. In looking at the summary info, if we select three components then we are accounting for about 95% of the variation in the data. IF we selected two components then we would have about 89% of the variation accounted for.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(prcs)</code></pre></div>
+<pre><code>## Importance of components:
+##                           Comp.1    Comp.2     Comp.3     Comp.4
+## Standard deviation     2.0140855 1.0546249 0.56827746 0.38669985
+## Proportion of Variance 0.6978994 0.1913520 0.05555944 0.02572676
+## Cumulative Proportion  0.6978994 0.8892514 0.94481088 0.97053763
+##                            Comp.5      Comp.6
+## Standard deviation     0.34770121 0.224396671
+## Proportion of Variance 0.02079933 0.008663031
+## Cumulative Proportion  0.99133697 1.000000000</code></pre>
+</div>
+<div id="check-the-screeplot" class="section level3">
+<h3><span class="header-section-number">11.5.5</span> Check The ScreePlot</h3>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">screeplot</span>(prcs,<span class="dt">type=</span><span class="st">&quot;line&quot;</span>)</code></pre></div>
+<p><img src="biosml_files/figure-html/pcascree1-1.png" width="672" /></p>
+<p>Let’s pick two components. We’ll multiply our data set (using (matrix multiplication) by the two “loadings” / components that we picked. This will give us our original data in terms of the two principla components.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model2 &lt;-<span class="st"> </span>prcs<span class="op">$</span>loadings[,<span class="dv">1</span><span class="op">:</span><span class="dv">2</span>]
+model2_scores &lt;-<span class="st"> </span><span class="kw">as.matrix</span>(scaled_mtcars_data) <span class="op">%*%</span><span class="st"> </span>model2</code></pre></div>
+</div>
+<div id="use-the-transformed-dats" class="section level3">
+<h3><span class="header-section-number">11.5.6</span> Use The Transformed Dats</h3>
+<p>So now we’ll use the Naive Bayes method to do build a model using the transformed data.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mod2 &lt;-<span class="st"> </span>e1071<span class="op">::</span><span class="kw">naiveBayes</span>(model2_scores,<span class="kw">factor</span>(mtcars_data<span class="op">$</span>am))
+(mod2t &lt;-<span class="st"> </span><span class="kw">table</span>(<span class="kw">predict</span>(mod2,model2_scores),mtcars_data<span class="op">$</span>am))</code></pre></div>
+<pre><code>##    
+##      0  1
+##   0 18  0
+##   1  1 13</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">cat</span>(<span class="st">&quot;Accuracy for PCA mod: &quot;</span>,<span class="kw">sum</span>(<span class="kw">diag</span>(mod2t))<span class="op">/</span><span class="kw">sum</span>(mod2t),<span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>)</code></pre></div>
+<pre><code>## Accuracy for PCA mod:  0.96875</code></pre>
+<p>Compare this to a model built using the untransformed data:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mod1 &lt;-<span class="st"> </span>e1071<span class="op">::</span><span class="kw">naiveBayes</span>(mtcars_data[<span class="op">-</span><span class="dv">7</span>],<span class="kw">factor</span>(mtcars_data<span class="op">$</span>am))
+(mod1t &lt;-<span class="st"> </span><span class="kw">table</span>(<span class="kw">predict</span>(mod1,mtcars_data),mtcars_data<span class="op">$</span>am))</code></pre></div>
+<pre><code>##    
+##      0  1
+##   0 16  2
+##   1  3 11</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">cat</span>(<span class="st">&quot;Accuracy for PCA mod: &quot;</span>,<span class="kw">sum</span>(<span class="kw">diag</span>(mod1t))<span class="op">/</span><span class="kw">sum</span>(mod1t),<span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>)</code></pre></div>
+<pre><code>## Accuracy for PCA mod:  0.84375</code></pre>
+</div>
+<div id="summary-1" class="section level3">
+<h3><span class="header-section-number">11.5.7</span> Summary</h3>
+<p>So the advantages of PCA should be clear in this case. We have effecively replaced the original data by a smaller data set while also dealing with the correlation issues. We used only two components. Now, a disdvantage here is that the model with the transformed data is in terms of the components which means that the model is less transparent. Perhaps a minor price to pay for better accuracy. In terms of the caret package we can do this using the <strong>preProcess</strong> function:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">control &lt;-<span class="st"> </span><span class="kw">trainControl</span>(<span class="dt">method=</span><span class="st">&quot;cv&quot;</span>,<span class="dt">number =</span> <span class="dv">5</span>)
+
+<span class="co">#</span>
+caret_nb &lt;-<span class="st"> </span><span class="kw">train</span>(<span class="kw">factor</span>(am)<span class="op">~</span>.,
+                  mtcars_data,
+                  <span class="dt">method=</span><span class="st">&quot;nb&quot;</span>,
+                  <span class="dt">preProcess=</span><span class="kw">c</span>(<span class="st">&quot;center&quot;</span>,<span class="st">&quot;scale&quot;</span>,<span class="st">&quot;pca&quot;</span>),
+                  <span class="dt">trControl =</span> control)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">table</span>(<span class="dt">predicted=</span><span class="kw">predict</span>(caret_nb,mtcars),mtcars<span class="op">$</span>am)</code></pre></div>
+<pre><code>##          
+## predicted  0  1
+##         0 18  0
+##         1  1 13</code></pre>
+</div>
+</div>
 <div id="order-of-pre-processing" class="section level2">
-<h2><span class="header-section-number">11.5</span> Order of Pre-Processing</h2>
+<h2><span class="header-section-number">11.6</span> Order of Pre-Processing</h2>
 <p>In reality, if we wanted to line up the order in which to pre process data it would read something like the following:</p>
 <ul>
 <li>Remove Near Zero Variance Features</li>
@@ -832,10 +959,10 @@ mtcars_nzv[<span class="kw">nearZeroVar</span>(mtcars_nzv)]</code></pre></div>
   )</code></pre></div>
 </div>
 <div id="identifying-redundant-features" class="section level2">
-<h2><span class="header-section-number">11.6</span> Identifying Redundant Features</h2>
+<h2><span class="header-section-number">11.7</span> Identifying Redundant Features</h2>
 <p>Lots of Data Scientists and model builders would like to know which features are important and which are redundant - BEFORE building the model. Many times, people just include all features and rely upon post model statistics to diagnose the model. This is fine though there are automated methods to help. Some statisticians do not like this approach (e.g. Step Wise Regression) because it emphasizes a scoring metric that is computed as a function of other measures though that process itself might be incomplete in some way. Ideally, you would have some up front idea about the data.</p>
 <div id="highly-correlated-variables" class="section level3">
-<h3><span class="header-section-number">11.6.1</span> Highly Correlated Variables</h3>
+<h3><span class="header-section-number">11.7.1</span> Highly Correlated Variables</h3>
 <p>In an earlier section we looked at the correlations between the variables in the mtcars data frame. When there are a number of strongly correlated variables the issue of multicollinerarity might exist. One variable might be sufficient to represent the information of one or more other variables which is useful when building models because it would allow us to leave out comparatively low information variables.</p>
 <p>Techniques like PCA Principal Components Analysis can be used to recombine features in a way that explains most of the variation of data set. A simpler way might be to look for highly correlated sets of variables and remove those over a certain threshold of correlation from the data frame.</p>
 <p>Let’s look at the mtcars data frame again to see what variables are correlated.</p>
@@ -852,7 +979,7 @@ correlations[<span class="dv">1</span><span class="op">:</span><span class="dv">
 <p>It turns out that there are lots of strong correlations going on here. The darker the circle the stronger the correlation.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">suppressMessages</span>(<span class="kw">library</span>(corrplot))
 <span class="kw">corrplot</span>(correlations, <span class="dt">order=</span><span class="st">&quot;hclust&quot;</span>)</code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-105-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-107-1.png" width="672" /></p>
 <p>The <strong>caret</strong> package has some functions that can help us identify highly correlated variables that might be a candidates for removal prior to use in building a model. One of the variables that is highly correlated with others is <strong>mpg</strong> Since that is the one we are trying to predict, we’ll keep it around. The following columns from mtcars have a correlation of .75 (or higher) with some other variable(s)</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">(highcorr &lt;-<span class="st"> </span><span class="kw">findCorrelation</span>(correlations, <span class="dt">cutoff=</span>.<span class="dv">75</span>))</code></pre></div>
 <pre><code>## [1]  2  3  1 10</code></pre>
@@ -876,7 +1003,7 @@ decorrel_lm &lt;-<span class="st"> </span><span class="kw">train</span>(mpg<span
 </div>
 </div>
 <div id="ranking-features" class="section level2">
-<h2><span class="header-section-number">11.7</span> Ranking Features</h2>
+<h2><span class="header-section-number">11.8</span> Ranking Features</h2>
 <p>Another approach would be to identify the important variables as determined by a rigorous, reliable and statistically aware process. Some models will report this information as part of the computation. The <strong>caret</strong> package has a function called <strong>varImp</strong> which helps to calculate relative variable importance within an object produced by the <strong>train</strong> function. What this means for us is that we can take most models built with <strong>train</strong> and pass it to the <strong>varImp</strong> function.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">idx &lt;-<span class="st"> </span><span class="kw">createDataPartition</span>(mtcars<span class="op">$</span>mpg, <span class="dt">p =</span> .<span class="dv">8</span>, 
                                   <span class="dt">list =</span> <span class="ot">FALSE</span>, 
@@ -897,31 +1024,31 @@ myLm &lt;-<span class="st"> </span><span class="kw">train</span>(mpg<span class=
 ## 
 ## Residuals:
 ##     Min      1Q  Median      3Q     Max 
-## -3.3535 -1.3186 -0.1256  1.1996  4.5252 
+## -3.7806 -1.7545 -0.3543  1.3856  4.2860 
 ## 
 ## Coefficients:
 ##             Estimate Std. Error t value Pr(&gt;|t|)  
-## (Intercept) 10.42918   20.41066   0.511   0.6159  
-## cyl          0.06323    1.17927   0.054   0.9579  
-## disp         0.01922    0.02092   0.919   0.3711  
-## hp          -0.02982    0.02616  -1.140   0.2701  
-## drat         0.48349    1.80885   0.267   0.7925  
-## wt          -4.10842    2.02290  -2.031   0.0582 .
-## qsec         1.01755    0.80247   1.268   0.2219  
-## vs           0.12678    2.26134   0.056   0.9559  
-## am           3.84834    2.48430   1.549   0.1398  
-## gear         0.20807    1.66454   0.125   0.9020  
-## carb         0.09515    0.95574   0.100   0.9219  
+## (Intercept)  9.79029   21.87509   0.448   0.6601  
+## cyl          0.31656    1.38370   0.229   0.8218  
+## disp         0.01131    0.02031   0.557   0.5847  
+## hp          -0.02082    0.02416  -0.862   0.4007  
+## drat         0.01161    2.06481   0.006   0.9956  
+## wt          -3.76210    2.12545  -1.770   0.0947 .
+## qsec         0.98666    0.85232   1.158   0.2630  
+## vs           1.36970    3.35043   0.409   0.6878  
+## am           3.30389    2.69070   1.228   0.2362  
+## gear         0.51833    1.85608   0.279   0.7834  
+## carb        -0.18652    1.01008  -0.185   0.8557  
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
-## Residual standard error: 2.799 on 17 degrees of freedom
-## Multiple R-squared:  0.8653, Adjusted R-squared:  0.786 
-## F-statistic: 10.92 on 10 and 17 DF,  p-value: 1.427e-05</code></pre>
+## Residual standard error: 2.857 on 17 degrees of freedom
+## Multiple R-squared:  0.8694, Adjusted R-squared:  0.7926 
+## F-statistic: 11.32 on 10 and 17 DF,  p-value: 1.111e-05</code></pre>
 <p>If you look at the summary of the model it looks pretty bleak because mot of the coefficients aren’t significant. You wouldn’t want to take your career on this model.</p>
 <p>Now let’s see what variables are considered to be important by using <strong>varImp</strong>. Remember that this might lead us to use a subset of the more prominent variables in the formation of a new model in case, for example, the coefficients in the existing model weren’t significant.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(<span class="kw">varImp</span>(myLm))</code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-110-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-112-1.png" width="672" /></p>
 <p>How do things look in the model if we limit the formula to some of the “important” (allegedly) features ? Well, it explains more of the variance with fewer predictors (the R^2 value). Both <strong>wt</strong> and <strong>hp</strong> are significant. That’s a start.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">myLm &lt;-<span class="st"> </span><span class="kw">train</span>(mpg<span class="op">~</span>wt<span class="op">+</span>disp<span class="op">+</span>hp,
                      <span class="dt">data =</span> train,
@@ -936,23 +1063,23 @@ myLm &lt;-<span class="st"> </span><span class="kw">train</span>(mpg<span class=
 ## 
 ## Residuals:
 ##     Min      1Q  Median      3Q     Max 
-## -4.2102 -1.6149 -0.2855  0.8671  5.7722 
+## -3.9784 -1.8640 -0.0619  1.0826  5.7101 
 ## 
 ## Coefficients:
 ##              Estimate Std. Error t value Pr(&gt;|t|)    
-## (Intercept) 37.586172   2.233998  16.825  8.7e-15 ***
-## wt          -4.086950   1.147622  -3.561  0.00158 ** 
-## disp         0.002663   0.011268   0.236  0.81519    
-## hp          -0.032979   0.012535  -2.631  0.01464 *  
+## (Intercept) 36.920047   2.285317  16.155 2.13e-14 ***
+## wt          -3.563226   1.145769  -3.110  0.00477 ** 
+## disp        -0.003175   0.011354  -0.280  0.78212    
+## hp          -0.030244   0.012775  -2.368  0.02631 *  
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
-## Residual standard error: 2.727 on 24 degrees of freedom
-## Multiple R-squared:  0.8195, Adjusted R-squared:  0.797 
-## F-statistic: 36.33 on 3 and 24 DF,  p-value: 4.39e-09</code></pre>
+## Residual standard error: 2.765 on 24 degrees of freedom
+## Multiple R-squared:  0.8274, Adjusted R-squared:  0.8058 
+## F-statistic: 38.34 on 3 and 24 DF,  p-value: 2.591e-09</code></pre>
 </div>
 <div id="feature-selection-1" class="section level2">
-<h2><span class="header-section-number">11.8</span> Feature Selection</h2>
+<h2><span class="header-section-number">11.9</span> Feature Selection</h2>
 <p>Being able to automatically include only the most important features is desirable (again an example might be Step Wise Regression). Caret provides its own function to do a simple backwards selection to recursively eliminate features based on how they contribute (or not) to the model. You could do all of this by hand yourself of course.</p>
 <p>Automatic feature selection methods can be used to build many models with different subsets of a dataset and identify those attributes that are and are not required to build an accurate model. The <strong>caret</strong> package has a function called *rfe** to implement this. However, it involves some additional setup:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">rfeControl &lt;-<span class="st"> </span><span class="kw">rfeControl</span>(<span class="dt">functions=</span>lmFuncs, <span class="dt">method=</span><span class="st">&quot;cv&quot;</span>, <span class="dt">number=</span><span class="dv">10</span>)
@@ -971,20 +1098,20 @@ results &lt;-<span class="st"> </span><span class="kw">rfe</span>(mtcars[,<span 
 ## Resampling performance over subset size:
 ## 
 ##  Variables  RMSE Rsquared   MAE RMSESD RsquaredSD  MAESD Selected
-##          2 2.957   0.7969 2.468  1.137     0.2097 0.9631         
-##          3 2.866   0.8745 2.382  1.152     0.1188 0.9158        *
-##          4 3.013   0.8685 2.564  1.164     0.1252 0.9699         
-##          5 2.984   0.8719 2.569  1.260     0.1620 1.0733         
-##          6 3.394   0.8400 2.896  1.459     0.1678 1.2158         
-##          7 3.354   0.8515 2.809  1.693     0.1957 1.4458         
-##          8 3.372   0.8529 2.868  1.657     0.1932 1.4344         
-##          9 3.726   0.8459 3.252  1.706     0.1953 1.3802         
-##         10 3.555   0.8564 3.131  1.683     0.1792 1.4051         
+##          2 3.669   0.8101 3.197 2.1856     0.2126 2.1747         
+##          3 3.122   0.7857 2.690 1.0369     0.2760 1.0413         
+##          4 3.169   0.7749 2.715 0.9946     0.2830 1.0522         
+##          5 2.970   0.7846 2.430 0.7343     0.2394 0.5426        *
+##          6 3.227   0.7822 2.663 0.8431     0.2280 0.7780         
+##          7 3.422   0.7770 2.873 1.2910     0.2248 1.2426         
+##          8 3.335   0.7931 2.776 1.2877     0.2081 1.2558         
+##          9 3.555   0.7442 2.980 1.2947     0.2642 1.2370         
+##         10 3.450   0.7550 2.875 1.2359     0.2588 1.2025         
 ## 
-## The top 3 variables (out of 3):
-##    wt, am, drat</code></pre>
+## The top 5 variables (out of 5):
+##    wt, am, drat, qsec, vs</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(results,<span class="dt">type=</span><span class="kw">c</span>(<span class="st">&quot;g&quot;</span>,<span class="st">&quot;o&quot;</span>))</code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-112-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-114-1.png" width="672" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">myLm &lt;-<span class="st"> </span><span class="kw">train</span>(mpg<span class="op">~</span>wt<span class="op">+</span>am<span class="op">+</span>qsec,
                      <span class="dt">data =</span> train,
                      <span class="dt">method =</span> <span class="st">&quot;lm&quot;</span>,
@@ -998,20 +1125,20 @@ results &lt;-<span class="st"> </span><span class="kw">rfe</span>(mtcars[,<span 
 ## 
 ## Residuals:
 ##     Min      1Q  Median      3Q     Max 
-## -3.5128 -1.9473 -0.5083  1.4113  4.6227 
+## -3.5162 -1.4825 -0.5431  1.4970  4.5066 
 ## 
 ## Coefficients:
 ##             Estimate Std. Error t value Pr(&gt;|t|)    
-## (Intercept)    9.748      7.828   1.245  0.22506    
-## wt            -3.746      0.838  -4.471  0.00016 ***
-## am             3.293      1.610   2.045  0.05192 .  
-## qsec           1.180      0.316   3.734  0.00103 ** 
+## (Intercept)   8.3415     7.4181   1.124 0.271930    
+## wt           -3.8493     0.7397  -5.204 2.48e-05 ***
+## am            2.7706     1.4766   1.876 0.072826 .  
+## qsec          1.2969     0.3124   4.152 0.000359 ***
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
-## Residual standard error: 2.564 on 24 degrees of freedom
-## Multiple R-squared:  0.8404, Adjusted R-squared:  0.8204 
-## F-statistic: 42.12 on 3 and 24 DF,  p-value: 1.019e-09</code></pre>
+## Residual standard error: 2.537 on 24 degrees of freedom
+## Multiple R-squared:  0.8546, Adjusted R-squared:  0.8365 
+## F-statistic: 47.03 on 3 and 24 DF,  p-value: 3.339e-10</code></pre>
 </div>
 </div>
             </section>
