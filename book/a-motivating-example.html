@@ -210,8 +210,9 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="11.5.3" data-path="data-pre-processing.html"><a href="data-pre-processing.html#so-why-use-pca"><i class="fa fa-check"></i><b>11.5.3</b> So Why Use PCA ?</a></li>
 <li class="chapter" data-level="11.5.4" data-path="data-pre-processing.html"><a href="data-pre-processing.html#check-the-biplot"><i class="fa fa-check"></i><b>11.5.4</b> Check The BiPlot</a></li>
 <li class="chapter" data-level="11.5.5" data-path="data-pre-processing.html"><a href="data-pre-processing.html#check-the-screeplot"><i class="fa fa-check"></i><b>11.5.5</b> Check The ScreePlot</a></li>
-<li class="chapter" data-level="11.5.6" data-path="data-pre-processing.html"><a href="data-pre-processing.html#use-the-transformed-dats"><i class="fa fa-check"></i><b>11.5.6</b> Use The Transformed Dats</a></li>
-<li class="chapter" data-level="11.5.7" data-path="data-pre-processing.html"><a href="data-pre-processing.html#summary-1"><i class="fa fa-check"></i><b>11.5.7</b> Summary</a></li>
+<li class="chapter" data-level="11.5.6" data-path="data-pre-processing.html"><a href="data-pre-processing.html#use-the-transformed-data"><i class="fa fa-check"></i><b>11.5.6</b> Use The Transformed Data</a></li>
+<li class="chapter" data-level="11.5.7" data-path="data-pre-processing.html"><a href="data-pre-processing.html#pls"><i class="fa fa-check"></i><b>11.5.7</b> PLS</a></li>
+<li class="chapter" data-level="11.5.8" data-path="data-pre-processing.html"><a href="data-pre-processing.html#summary-1"><i class="fa fa-check"></i><b>11.5.8</b> Summary</a></li>
 </ul></li>
 <li class="chapter" data-level="11.6" data-path="data-pre-processing.html"><a href="data-pre-processing.html#order-of-pre-processing"><i class="fa fa-check"></i><b>11.6</b> Order of Pre-Processing</a></li>
 <li class="chapter" data-level="11.7" data-path="data-pre-processing.html"><a href="data-pre-processing.html#identifying-redundant-features"><i class="fa fa-check"></i><b>11.7</b> Identifying Redundant Features</a><ul>
@@ -394,8 +395,8 @@ test_preds &lt;-<span class="st"> </span><span class="kw">predict</span>(
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Shuffle the row numbers of the data frame</span>
 
 (train_index &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(mtcars),<span class="kw">nrow</span>(mtcars)<span class="op">*</span>.<span class="dv">80</span>))</code></pre></div>
-<pre><code>##  [1]  6 27 32 24 10 20  4 21  7 29 19  3 22 14 31 18 23 16 26  2  1  5 13
-## [24]  9 12</code></pre>
+<pre><code>##  [1]  2 14 18 15 17 20 29 11 24  9 25  1 28  5 31 26 12 13 32 22  3  6  4
+## [24] 10 30</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Get 80% of the records from the data frame</span>
 train_df &lt;-<span class="st"> </span>mtcars[train_index,]
 
@@ -418,7 +419,7 @@ test_pred  &lt;-<span class="st"> </span><span class="kw">predict</span>(
 )
 
 (test_rmse &lt;-<span class="st"> </span><span class="kw">compute_rmse</span>(test_pred,test_df<span class="op">$</span>mpg))</code></pre></div>
-<pre><code>## [1] 4.316442</code></pre>
+<pre><code>## [1] 2.962433</code></pre>
 </div>
 <div id="other-methods" class="section level2">
 <h2><span class="header-section-number">3.6</span> Other Methods ?</h2>
@@ -434,7 +435,7 @@ my_rpart_preds &lt;-<span class="st"> </span>pred<span class="op">$</span>predic
 
 <span class="co"># What is the RMSE </span>
 <span class="kw">compute_rmse</span>(my_rpart_preds,test_df<span class="op">$</span>mpg)</code></pre></div>
-<pre><code>## [1] 2.830509</code></pre>
+<pre><code>## [1] 1.629558</code></pre>
 <p>Well the computed RMSE with the <strong>ranger</strong> method seems to be better in the sense that it is smaller than with the <strong>lm</strong> function. We might be on to something or maybe we just got lucky. We need a better way to proceed - something with more rigor.</p>
 </div>
 <div id="summary" class="section level2">

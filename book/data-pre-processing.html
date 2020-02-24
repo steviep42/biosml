@@ -210,8 +210,9 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="11.5.3" data-path="data-pre-processing.html"><a href="data-pre-processing.html#so-why-use-pca"><i class="fa fa-check"></i><b>11.5.3</b> So Why Use PCA ?</a></li>
 <li class="chapter" data-level="11.5.4" data-path="data-pre-processing.html"><a href="data-pre-processing.html#check-the-biplot"><i class="fa fa-check"></i><b>11.5.4</b> Check The BiPlot</a></li>
 <li class="chapter" data-level="11.5.5" data-path="data-pre-processing.html"><a href="data-pre-processing.html#check-the-screeplot"><i class="fa fa-check"></i><b>11.5.5</b> Check The ScreePlot</a></li>
-<li class="chapter" data-level="11.5.6" data-path="data-pre-processing.html"><a href="data-pre-processing.html#use-the-transformed-dats"><i class="fa fa-check"></i><b>11.5.6</b> Use The Transformed Dats</a></li>
-<li class="chapter" data-level="11.5.7" data-path="data-pre-processing.html"><a href="data-pre-processing.html#summary-1"><i class="fa fa-check"></i><b>11.5.7</b> Summary</a></li>
+<li class="chapter" data-level="11.5.6" data-path="data-pre-processing.html"><a href="data-pre-processing.html#use-the-transformed-data"><i class="fa fa-check"></i><b>11.5.6</b> Use The Transformed Data</a></li>
+<li class="chapter" data-level="11.5.7" data-path="data-pre-processing.html"><a href="data-pre-processing.html#pls"><i class="fa fa-check"></i><b>11.5.7</b> PLS</a></li>
+<li class="chapter" data-level="11.5.8" data-path="data-pre-processing.html"><a href="data-pre-processing.html#summary-1"><i class="fa fa-check"></i><b>11.5.8</b> Summary</a></li>
 </ul></li>
 <li class="chapter" data-level="11.6" data-path="data-pre-processing.html"><a href="data-pre-processing.html#order-of-pre-processing"><i class="fa fa-check"></i><b>11.6</b> Order of Pre-Processing</a></li>
 <li class="chapter" data-level="11.7" data-path="data-pre-processing.html"><a href="data-pre-processing.html#identifying-redundant-features"><i class="fa fa-check"></i><b>11.7</b> Identifying Redundant Features</a><ul>
@@ -294,7 +295,7 @@ mtcars_na &lt;-<span class="st"> </span><span class="kw">read.csv</span>(url, <s
 <p>Let’s look at a boxplot of the <strong>wt</strong> feature.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">boxplot</span>(mtcars_na<span class="op">$</span>wt,<span class="dt">na.rm=</span><span class="ot">TRUE</span>,<span class="dt">main=</span><span class="st">&quot;Distribution of the wt feature&quot;</span>)
 <span class="kw">grid</span>()</code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-82-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-85-1.png" width="672" /></p>
 <p>To make the substitution would involve the following. First we need to find out which row numbers have missing values for the <strong>wt</strong> feature.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">(missing_wt_indices &lt;-<span class="st"> </span><span class="kw">which</span>(<span class="kw">is.na</span>(mtcars_na<span class="op">$</span>wt)))</code></pre></div>
 <pre><code>## [1]  2  9 23</code></pre>
@@ -904,8 +905,8 @@ prcs</code></pre></div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model2 &lt;-<span class="st"> </span>prcs<span class="op">$</span>loadings[,<span class="dv">1</span><span class="op">:</span><span class="dv">2</span>]
 model2_scores &lt;-<span class="st"> </span><span class="kw">as.matrix</span>(scaled_mtcars_data) <span class="op">%*%</span><span class="st"> </span>model2</code></pre></div>
 </div>
-<div id="use-the-transformed-dats" class="section level3">
-<h3><span class="header-section-number">11.5.6</span> Use The Transformed Dats</h3>
+<div id="use-the-transformed-data" class="section level3">
+<h3><span class="header-section-number">11.5.6</span> Use The Transformed Data</h3>
 <p>So now we’ll use the Naive Bayes method to do build a model using the transformed data.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mod2 &lt;-<span class="st"> </span>e1071<span class="op">::</span><span class="kw">naiveBayes</span>(model2_scores,<span class="kw">factor</span>(mtcars_data<span class="op">$</span>am))
 (mod2t &lt;-<span class="st"> </span><span class="kw">table</span>(<span class="kw">predict</span>(mod2,model2_scores),mtcars_data<span class="op">$</span>am))</code></pre></div>
@@ -925,8 +926,21 @@ model2_scores &lt;-<span class="st"> </span><span class="kw">as.matrix</span>(sc
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">cat</span>(<span class="st">&quot;Accuracy for PCA mod: &quot;</span>,<span class="kw">sum</span>(<span class="kw">diag</span>(mod1t))<span class="op">/</span><span class="kw">sum</span>(mod1t),<span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>)</code></pre></div>
 <pre><code>## Accuracy for PCA mod:  0.84375</code></pre>
 </div>
+<div id="pls" class="section level3">
+<h3><span class="header-section-number">11.5.7</span> PLS</h3>
+<p>Partial Least Squares regression is related to PCA although, in classification probelms, the latter ignores the variable being predicted. PLS uses information from the variable to be predicted (the class labels) to help maximize the separation of the two classes. Of course, using pls as a method within caret is easy.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">control &lt;-<span class="st"> </span><span class="kw">trainControl</span>(<span class="dt">method=</span><span class="st">&quot;cv&quot;</span>,<span class="dt">number =</span> <span class="dv">5</span>)
+
+<span class="co">#</span>
+caret_pls &lt;-<span class="st"> </span><span class="kw">train</span>(<span class="kw">factor</span>(am)<span class="op">~</span>.,
+                  mtcars,
+                  <span class="dt">method=</span><span class="st">&quot;pls&quot;</span>,
+                  <span class="dt">preProcess=</span><span class="kw">c</span>(<span class="st">&quot;center&quot;</span>,<span class="st">&quot;scale&quot;</span>),
+                  <span class="dt">trControl =</span> control)</code></pre></div>
+<p>We already knew that the mtcars data frame would benefit from PCA. Here we see that PLS uses the first three Principal Components to arrive at an accurcay of 0.97 on the data set.</p>
+</div>
 <div id="summary-1" class="section level3">
-<h3><span class="header-section-number">11.5.7</span> Summary</h3>
+<h3><span class="header-section-number">11.5.8</span> Summary</h3>
 <p>So the advantages of PCA should be clear in this case. We have effecively replaced the original data by a smaller data set while also dealing with the correlation issues. We used only two components. Now, a disdvantage here is that the model with the transformed data is in terms of the components which means that the model is less transparent. Perhaps a minor price to pay for better accuracy. In terms of the caret package we can do this using the <strong>preProcess</strong> function:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">control &lt;-<span class="st"> </span><span class="kw">trainControl</span>(<span class="dt">method=</span><span class="st">&quot;cv&quot;</span>,<span class="dt">number =</span> <span class="dv">5</span>)
 
@@ -979,7 +993,7 @@ correlations[<span class="dv">1</span><span class="op">:</span><span class="dv">
 <p>It turns out that there are lots of strong correlations going on here. The darker the circle the stronger the correlation.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">suppressMessages</span>(<span class="kw">library</span>(corrplot))
 <span class="kw">corrplot</span>(correlations, <span class="dt">order=</span><span class="st">&quot;hclust&quot;</span>)</code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-107-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-110-1.png" width="672" /></p>
 <p>The <strong>caret</strong> package has some functions that can help us identify highly correlated variables that might be a candidates for removal prior to use in building a model. One of the variables that is highly correlated with others is <strong>mpg</strong> Since that is the one we are trying to predict, we’ll keep it around. The following columns from mtcars have a correlation of .75 (or higher) with some other variable(s)</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">(highcorr &lt;-<span class="st"> </span><span class="kw">findCorrelation</span>(correlations, <span class="dt">cutoff=</span>.<span class="dv">75</span>))</code></pre></div>
 <pre><code>## [1]  2  3  1 10</code></pre>
@@ -1024,31 +1038,29 @@ myLm &lt;-<span class="st"> </span><span class="kw">train</span>(mpg<span class=
 ## 
 ## Residuals:
 ##     Min      1Q  Median      3Q     Max 
-## -3.7806 -1.7545 -0.3543  1.3856  4.2860 
+## -3.9098 -1.5374 -0.1527  1.5445  4.0890 
 ## 
 ## Coefficients:
-##             Estimate Std. Error t value Pr(&gt;|t|)  
-## (Intercept)  9.79029   21.87509   0.448   0.6601  
-## cyl          0.31656    1.38370   0.229   0.8218  
-## disp         0.01131    0.02031   0.557   0.5847  
-## hp          -0.02082    0.02416  -0.862   0.4007  
-## drat         0.01161    2.06481   0.006   0.9956  
-## wt          -3.76210    2.12545  -1.770   0.0947 .
-## qsec         0.98666    0.85232   1.158   0.2630  
-## vs           1.36970    3.35043   0.409   0.6878  
-## am           3.30389    2.69070   1.228   0.2362  
-## gear         0.51833    1.85608   0.279   0.7834  
-## carb        -0.18652    1.01008  -0.185   0.8557  
-## ---
-## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+##              Estimate Std. Error t value Pr(&gt;|t|)
+## (Intercept) 19.532334  21.150208   0.924    0.369
+## cyl         -0.316125   1.244631  -0.254    0.803
+## disp         0.007606   0.019360   0.393    0.699
+## hp          -0.016776   0.024713  -0.679    0.506
+## drat         0.320679   1.935934   0.166    0.870
+## wt          -2.929458   2.124476  -1.379    0.186
+## qsec         0.524244   0.854782   0.613    0.548
+## vs           0.256793   2.821903   0.091    0.929
+## am           2.903638   2.563503   1.133    0.273
+## gear         0.794932   1.826663   0.435    0.669
+## carb        -0.657533   0.997591  -0.659    0.519
 ## 
-## Residual standard error: 2.857 on 17 degrees of freedom
-## Multiple R-squared:  0.8694, Adjusted R-squared:  0.7926 
-## F-statistic: 11.32 on 10 and 17 DF,  p-value: 1.111e-05</code></pre>
+## Residual standard error: 2.751 on 17 degrees of freedom
+## Multiple R-squared:  0.8734, Adjusted R-squared:  0.7989 
+## F-statistic: 11.73 on 10 and 17 DF,  p-value: 8.698e-06</code></pre>
 <p>If you look at the summary of the model it looks pretty bleak because mot of the coefficients aren’t significant. You wouldn’t want to take your career on this model.</p>
 <p>Now let’s see what variables are considered to be important by using <strong>varImp</strong>. Remember that this might lead us to use a subset of the more prominent variables in the formation of a new model in case, for example, the coefficients in the existing model weren’t significant.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(<span class="kw">varImp</span>(myLm))</code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-112-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-115-1.png" width="672" /></p>
 <p>How do things look in the model if we limit the formula to some of the “important” (allegedly) features ? Well, it explains more of the variance with fewer predictors (the R^2 value). Both <strong>wt</strong> and <strong>hp</strong> are significant. That’s a start.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">myLm &lt;-<span class="st"> </span><span class="kw">train</span>(mpg<span class="op">~</span>wt<span class="op">+</span>disp<span class="op">+</span>hp,
                      <span class="dt">data =</span> train,
@@ -1063,20 +1075,20 @@ myLm &lt;-<span class="st"> </span><span class="kw">train</span>(mpg<span class=
 ## 
 ## Residuals:
 ##     Min      1Q  Median      3Q     Max 
-## -3.9784 -1.8640 -0.0619  1.0826  5.7101 
+## -4.3015 -1.7608 -0.2197  0.9654  5.5607 
 ## 
 ## Coefficients:
 ##              Estimate Std. Error t value Pr(&gt;|t|)    
-## (Intercept) 36.920047   2.285317  16.155 2.13e-14 ***
-## wt          -3.563226   1.145769  -3.110  0.00477 ** 
-## disp        -0.003175   0.011354  -0.280  0.78212    
-## hp          -0.030244   0.012775  -2.368  0.02631 *  
+## (Intercept) 37.836807   2.263749  16.714 1.01e-14 ***
+## wt          -4.090214   1.114789  -3.669  0.00121 ** 
+## disp         0.002061   0.010928   0.189  0.85201    
+## hp          -0.032746   0.012091  -2.708  0.01227 *  
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
-## Residual standard error: 2.765 on 24 degrees of freedom
-## Multiple R-squared:  0.8274, Adjusted R-squared:  0.8058 
-## F-statistic: 38.34 on 3 and 24 DF,  p-value: 2.591e-09</code></pre>
+## Residual standard error: 2.695 on 24 degrees of freedom
+## Multiple R-squared:  0.8285, Adjusted R-squared:  0.8071 
+## F-statistic: 38.65 on 3 and 24 DF,  p-value: 2.394e-09</code></pre>
 </div>
 <div id="feature-selection-1" class="section level2">
 <h2><span class="header-section-number">11.9</span> Feature Selection</h2>
@@ -1097,21 +1109,21 @@ results &lt;-<span class="st"> </span><span class="kw">rfe</span>(mtcars[,<span 
 ## 
 ## Resampling performance over subset size:
 ## 
-##  Variables  RMSE Rsquared   MAE RMSESD RsquaredSD  MAESD Selected
-##          2 3.669   0.8101 3.197 2.1856     0.2126 2.1747         
-##          3 3.122   0.7857 2.690 1.0369     0.2760 1.0413         
-##          4 3.169   0.7749 2.715 0.9946     0.2830 1.0522         
-##          5 2.970   0.7846 2.430 0.7343     0.2394 0.5426        *
-##          6 3.227   0.7822 2.663 0.8431     0.2280 0.7780         
-##          7 3.422   0.7770 2.873 1.2910     0.2248 1.2426         
-##          8 3.335   0.7931 2.776 1.2877     0.2081 1.2558         
-##          9 3.555   0.7442 2.980 1.2947     0.2642 1.2370         
-##         10 3.450   0.7550 2.875 1.2359     0.2588 1.2025         
+##  Variables  RMSE Rsquared   MAE RMSESD RsquaredSD MAESD Selected
+##          2 3.480   0.8138 3.025  1.704     0.1937 1.504         
+##          3 3.314   0.8694 2.915  1.537     0.1192 1.290        *
+##          4 3.485   0.8749 2.986  1.536     0.1200 1.307         
+##          5 3.599   0.8540 2.977  1.526     0.1530 1.267         
+##          6 3.549   0.8472 2.963  1.323     0.1580 1.141         
+##          7 3.648   0.8426 2.998  1.424     0.1704 1.183         
+##          8 3.588   0.8428 2.941  1.331     0.1641 1.044         
+##          9 3.779   0.8239 3.142  1.419     0.1790 1.083         
+##         10 3.707   0.8357 3.126  1.283     0.1558 1.031         
 ## 
-## The top 5 variables (out of 5):
-##    wt, am, drat, qsec, vs</code></pre>
+## The top 3 variables (out of 3):
+##    wt, am, gear</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(results,<span class="dt">type=</span><span class="kw">c</span>(<span class="st">&quot;g&quot;</span>,<span class="st">&quot;o&quot;</span>))</code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-114-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-117-1.png" width="672" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">myLm &lt;-<span class="st"> </span><span class="kw">train</span>(mpg<span class="op">~</span>wt<span class="op">+</span>am<span class="op">+</span>qsec,
                      <span class="dt">data =</span> train,
                      <span class="dt">method =</span> <span class="st">&quot;lm&quot;</span>,
@@ -1125,20 +1137,20 @@ results &lt;-<span class="st"> </span><span class="kw">rfe</span>(mtcars[,<span 
 ## 
 ## Residuals:
 ##     Min      1Q  Median      3Q     Max 
-## -3.5162 -1.4825 -0.5431  1.4970  4.5066 
+## -3.3388 -1.6537 -0.7464  1.4471  4.5759 
 ## 
 ## Coefficients:
 ##             Estimate Std. Error t value Pr(&gt;|t|)    
-## (Intercept)   8.3415     7.4181   1.124 0.271930    
-## wt           -3.8493     0.7397  -5.204 2.48e-05 ***
-## am            2.7706     1.4766   1.876 0.072826 .  
-## qsec          1.2969     0.3124   4.152 0.000359 ***
+## (Intercept)   8.6137     7.9467   1.084 0.289163    
+## wt           -3.8747     0.7574  -5.116  3.1e-05 ***
+## am            3.1709     1.5816   2.005 0.056387 .  
+## qsec          1.2756     0.3283   3.885 0.000704 ***
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
-## Residual standard error: 2.537 on 24 degrees of freedom
-## Multiple R-squared:  0.8546, Adjusted R-squared:  0.8365 
-## F-statistic: 47.03 on 3 and 24 DF,  p-value: 3.339e-10</code></pre>
+## Residual standard error: 2.53 on 24 degrees of freedom
+## Multiple R-squared:  0.8488, Adjusted R-squared:  0.8299 
+## F-statistic: 44.92 on 3 and 24 DF,  p-value: 5.321e-10</code></pre>
 </div>
 </div>
             </section>

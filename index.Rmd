@@ -2978,7 +2978,7 @@ model2 <- prcs$loadings[,1:2]
 model2_scores <- as.matrix(scaled_mtcars_data) %*% model2
 ```
 
-### Use The Transformed Dats
+### Use The Transformed Data
 
 So now we'll use the Naive Bayes method to do build a model using the transformed data. 
 
@@ -2999,6 +2999,24 @@ mod1 <- e1071::naiveBayes(mtcars_data[-7],factor(mtcars_data$am))
 
 cat("Accuracy for PCA mod: ",sum(diag(mod1t))/sum(mod1t),"\n")
 ```
+
+### PLS 
+
+Partial Least Squares regression is related to PCA although, in classification probelms, the latter ignores the variable being predicted. PLS uses information from the variable to be predicted (the class labels) to help maximize the separation of the two classes. Of course, using pls as a method within caret is easy. 
+
+```{r pcaplsexamp}
+control <- trainControl(method="cv",number = 5)
+
+#
+caret_pls <- train(factor(am)~.,
+                  mtcars,
+                  method="pls",
+                  preProcess=c("center","scale"),
+                  trControl = control)
+```
+
+We already knew that the mtcars data frame would benefit from PCA. Here we see that PLS uses the first three Principal Components to arrive at an accurcay of 0.97 on the data set.
+
 
 ### Summary
 
