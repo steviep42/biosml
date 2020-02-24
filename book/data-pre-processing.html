@@ -220,6 +220,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </ul></li>
 <li class="chapter" data-level="11.8" data-path="data-pre-processing.html"><a href="data-pre-processing.html#ranking-features"><i class="fa fa-check"></i><b>11.8</b> Ranking Features</a></li>
 <li class="chapter" data-level="11.9" data-path="data-pre-processing.html"><a href="data-pre-processing.html#feature-selection-1"><i class="fa fa-check"></i><b>11.9</b> Feature Selection</a></li>
+<li class="chapter" data-level="11.10" data-path="data-pre-processing.html"><a href="data-pre-processing.html#categorical-features"><i class="fa fa-check"></i><b>11.10</b> Categorical Features</a></li>
 </ul></li>
 <li class="chapter" data-level="12" data-path="using-external-ml-frameworks.html"><a href="using-external-ml-frameworks.html"><i class="fa fa-check"></i><b>12</b> Using External ML Frameworks</a><ul>
 <li class="chapter" data-level="12.1" data-path="using-external-ml-frameworks.html"><a href="using-external-ml-frameworks.html#using-h2o"><i class="fa fa-check"></i><b>12.1</b> Using h2o</a></li>
@@ -295,7 +296,7 @@ mtcars_na &lt;-<span class="st"> </span><span class="kw">read.csv</span>(url, <s
 <p>Let’s look at a boxplot of the <strong>wt</strong> feature.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">boxplot</span>(mtcars_na<span class="op">$</span>wt,<span class="dt">na.rm=</span><span class="ot">TRUE</span>,<span class="dt">main=</span><span class="st">&quot;Distribution of the wt feature&quot;</span>)
 <span class="kw">grid</span>()</code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-85-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-82-1.png" width="672" /></p>
 <p>To make the substitution would involve the following. First we need to find out which row numbers have missing values for the <strong>wt</strong> feature.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">(missing_wt_indices &lt;-<span class="st"> </span><span class="kw">which</span>(<span class="kw">is.na</span>(mtcars_na<span class="op">$</span>wt)))</code></pre></div>
 <pre><code>## [1]  2  9 23</code></pre>
@@ -993,7 +994,7 @@ correlations[<span class="dv">1</span><span class="op">:</span><span class="dv">
 <p>It turns out that there are lots of strong correlations going on here. The darker the circle the stronger the correlation.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">suppressMessages</span>(<span class="kw">library</span>(corrplot))
 <span class="kw">corrplot</span>(correlations, <span class="dt">order=</span><span class="st">&quot;hclust&quot;</span>)</code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-110-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-107-1.png" width="672" /></p>
 <p>The <strong>caret</strong> package has some functions that can help us identify highly correlated variables that might be a candidates for removal prior to use in building a model. One of the variables that is highly correlated with others is <strong>mpg</strong> Since that is the one we are trying to predict, we’ll keep it around. The following columns from mtcars have a correlation of .75 (or higher) with some other variable(s)</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">(highcorr &lt;-<span class="st"> </span><span class="kw">findCorrelation</span>(correlations, <span class="dt">cutoff=</span>.<span class="dv">75</span>))</code></pre></div>
 <pre><code>## [1]  2  3  1 10</code></pre>
@@ -1060,7 +1061,7 @@ myLm &lt;-<span class="st"> </span><span class="kw">train</span>(mpg<span class=
 <p>If you look at the summary of the model it looks pretty bleak because mot of the coefficients aren’t significant. You wouldn’t want to take your career on this model.</p>
 <p>Now let’s see what variables are considered to be important by using <strong>varImp</strong>. Remember that this might lead us to use a subset of the more prominent variables in the formation of a new model in case, for example, the coefficients in the existing model weren’t significant.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(<span class="kw">varImp</span>(myLm))</code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-115-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-112-1.png" width="672" /></p>
 <p>How do things look in the model if we limit the formula to some of the “important” (allegedly) features ? Well, it explains more of the variance with fewer predictors (the R^2 value). Both <strong>wt</strong> and <strong>hp</strong> are significant. That’s a start.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">myLm &lt;-<span class="st"> </span><span class="kw">train</span>(mpg<span class="op">~</span>wt<span class="op">+</span>disp<span class="op">+</span>hp,
                      <span class="dt">data =</span> train,
@@ -1123,7 +1124,7 @@ results &lt;-<span class="st"> </span><span class="kw">rfe</span>(mtcars[,<span 
 ## The top 3 variables (out of 3):
 ##    wt, am, gear</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(results,<span class="dt">type=</span><span class="kw">c</span>(<span class="st">&quot;g&quot;</span>,<span class="st">&quot;o&quot;</span>))</code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-117-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-114-1.png" width="672" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">myLm &lt;-<span class="st"> </span><span class="kw">train</span>(mpg<span class="op">~</span>wt<span class="op">+</span>am<span class="op">+</span>qsec,
                      <span class="dt">data =</span> train,
                      <span class="dt">method =</span> <span class="st">&quot;lm&quot;</span>,
@@ -1151,6 +1152,144 @@ results &lt;-<span class="st"> </span><span class="kw">rfe</span>(mtcars[,<span 
 ## Residual standard error: 2.53 on 24 degrees of freedom
 ## Multiple R-squared:  0.8488, Adjusted R-squared:  0.8299 
 ## F-statistic: 44.92 on 3 and 24 DF,  p-value: 5.321e-10</code></pre>
+</div>
+<div id="categorical-features" class="section level2">
+<h2><span class="header-section-number">11.10</span> Categorical Features</h2>
+<p>Categorical features are those that are labelled or character data which suggest categories (e.g. “male”,“female”,“smoker”,“non-snoker”). These variables, while useful, need to be recoded in a way to make them useful for machine learning methods. For example, read in the following data:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">url &lt;-<span class="st"> &quot;https://raw.githubusercontent.com/steviep42/bios534_spring_2020/master/data/etitanic.csv&quot;</span>
+etitanic &lt;-<span class="st"> </span><span class="kw">read.csv</span>(url)</code></pre></div>
+<p>If you insepct this data frame you will notice that there are already some “factors” in the data. This is good because we can begin to use this information in the development of models although this will be a function of what it is we are trying to predict.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">str</span>(etitanic)</code></pre></div>
+<pre><code>## &#39;data.frame&#39;:    1046 obs. of  6 variables:
+##  $ pclass  : Factor w/ 3 levels &quot;1st&quot;,&quot;2nd&quot;,&quot;3rd&quot;: 1 1 1 1 1 1 1 1 1 1 ...
+##  $ survived: int  1 1 0 0 0 1 1 0 1 0 ...
+##  $ sex     : Factor w/ 2 levels &quot;female&quot;,&quot;male&quot;: 1 2 1 2 1 2 1 2 1 2 ...
+##  $ age     : num  29 0.917 2 30 25 ...
+##  $ sibsp   : int  0 1 1 1 1 0 1 0 2 0 ...
+##  $ parch   : int  0 2 2 2 2 0 0 0 0 0 ...</code></pre>
+<p>If we want to predict, for example, whether someone survived the catastrophe (the survived column), we’ll need to turn that into a factor also since it represents a category. This happens a lot in classification.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">etitanic &lt;-<span class="st"> </span>etitanic <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mutate</span>(<span class="dt">survived =</span> <span class="kw">factor</span>(survived))
+<span class="kw">str</span>(etitanic)</code></pre></div>
+<pre><code>## &#39;data.frame&#39;:    1046 obs. of  6 variables:
+##  $ pclass  : Factor w/ 3 levels &quot;1st&quot;,&quot;2nd&quot;,&quot;3rd&quot;: 1 1 1 1 1 1 1 1 1 1 ...
+##  $ survived: Factor w/ 2 levels &quot;0&quot;,&quot;1&quot;: 2 2 1 1 1 2 2 1 2 1 ...
+##  $ sex     : Factor w/ 2 levels &quot;female&quot;,&quot;male&quot;: 1 2 1 2 1 2 1 2 1 2 ...
+##  $ age     : num  29 0.917 2 30 25 ...
+##  $ sibsp   : int  0 1 1 1 1 0 1 0 2 0 ...
+##  $ parch   : int  0 2 2 2 2 0 0 0 0 0 ...</code></pre>
+<p>Now we can build a model to predict survival:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">control &lt;-<span class="st"> </span><span class="kw">trainControl</span>(<span class="dt">method=</span><span class="st">&quot;cv&quot;</span>,<span class="dt">number=</span><span class="dv">5</span>)
+etitanic_model &lt;-<span class="st"> </span><span class="kw">train</span>(survived <span class="op">~</span><span class="st"> </span>.,etitanic,<span class="dt">method=</span><span class="st">&quot;glm&quot;</span>,<span class="dt">trControl=</span>control)</code></pre></div>
+<p>The Accuracy of the model, or the fact that we didn’t make a train / test split, is beside the point here. We need to inform R that we have categories else it won’t know what to do with them or, worse, it will do something unexpected. Let’s look at another situation that frequently occurs where we might have categories that are numbers. Well, that was true in the above example but it was quite apparent that the 0 or 1 motif is a binary situation. So it was fairly obvious. Consider the mtcars data frame:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">str</span>(mtcars)</code></pre></div>
+<pre><code>## &#39;data.frame&#39;:    32 obs. of  11 variables:
+##  $ mpg : num  21 21 22.8 21.4 18.7 18.1 14.3 24.4 22.8 19.2 ...
+##  $ cyl : num  6 6 4 6 8 6 8 4 4 6 ...
+##  $ disp: num  160 160 108 258 360 ...
+##  $ hp  : num  110 110 93 110 175 105 245 62 95 123 ...
+##  $ drat: num  3.9 3.9 3.85 3.08 3.15 2.76 3.21 3.69 3.92 3.92 ...
+##  $ wt  : num  2.62 2.88 2.32 3.21 3.44 ...
+##  $ qsec: num  16.5 17 18.6 19.4 17 ...
+##  $ vs  : num  0 0 1 1 0 1 0 1 1 1 ...
+##  $ am  : num  1 1 1 0 0 0 0 0 0 0 ...
+##  $ gear: num  4 4 4 3 3 3 3 4 4 4 ...
+##  $ carb: num  4 4 1 1 2 1 4 2 2 4 ...</code></pre>
+<p>Notice that the cyl, vs, am, gear, and carb features take on a few unique values. This suggests that they are actually categories.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"> <span class="kw">sapply</span>(mtcars,<span class="cf">function</span>(x) <span class="kw">length</span>(<span class="kw">unique</span>(x)))</code></pre></div>
+<pre><code>##  mpg  cyl disp   hp drat   wt qsec   vs   am gear carb 
+##   25    3   27   22   22   29   30    2    2    3    6</code></pre>
+<p>For example, the cylinder variable is a classification of whether a car has 4,6, or 8 cylinders. There is no such thing as a 4.5 cylinder automobile. Nor is there a car that had a transmission type of 1.5. In these cases we should probably make factors out of these prior to use with a method.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">lm1 &lt;-<span class="st"> </span><span class="kw">train</span>(mpg<span class="op">~</span>cyl<span class="op">+</span>am,
+             <span class="dt">data=</span>mtcars,
+             <span class="dt">method=</span><span class="st">&quot;lm&quot;</span>,
+             <span class="dt">trControl=</span><span class="kw">trainControl</span>(<span class="dt">method=</span><span class="st">&quot;cv&quot;</span>,<span class="dt">number=</span><span class="dv">3</span>))
+
+lm1</code></pre></div>
+<pre><code>## Linear Regression 
+## 
+## 32 samples
+##  2 predictor
+## 
+## No pre-processing
+## Resampling: Cross-Validated (3 fold) 
+## Summary of sample sizes: 21, 20, 23 
+## Resampling results:
+## 
+##   RMSE      Rsquared   MAE     
+##   3.413223  0.6960045  2.892075
+## 
+## Tuning parameter &#39;intercept&#39; was held constant at a value of TRUE</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(lm1)</code></pre></div>
+<pre><code>## 
+## Call:
+## lm(formula = .outcome ~ ., data = dat)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -5.6856 -1.7172 -0.2657  1.8838  6.8144 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)  34.5224     2.6032  13.262 7.69e-14 ***
+## cyl          -2.5010     0.3608  -6.931 1.28e-07 ***
+## am            2.5670     1.2914   1.988   0.0564 .  
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 3.059 on 29 degrees of freedom
+## Multiple R-squared:  0.759,  Adjusted R-squared:  0.7424 
+## F-statistic: 45.67 on 2 and 29 DF,  p-value: 1.094e-09</code></pre>
+<p>Now we will create some factors out of am and cyl to show that the resulting model will be different in terms of the coefficents. But first notice how creating a factor will assign an underling numeric value to the feature which is the key to making it usabale by downstream ML methods.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(mtcars)
+mod_mtcars &lt;-<span class="st"> </span>mtcars <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mutate</span>(<span class="dt">cyl=</span><span class="kw">factor</span>(cyl),<span class="dt">am=</span><span class="kw">factor</span>(am))
+
+<span class="kw">levels</span>(mod_mtcars<span class="op">$</span>am)</code></pre></div>
+<pre><code>## [1] &quot;0&quot; &quot;1&quot;</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">levels</span>(mod_mtcars<span class="op">$</span>cyl)</code></pre></div>
+<pre><code>## [1] &quot;4&quot; &quot;6&quot; &quot;8&quot;</code></pre>
+<p>Now let’s make a model</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(mtcars)
+mod_mtcars &lt;-<span class="st"> </span>mtcars <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mutate</span>(<span class="dt">cyl=</span><span class="kw">factor</span>(cyl),<span class="dt">am=</span><span class="kw">factor</span>(am))
+lm2 &lt;-<span class="st"> </span><span class="kw">train</span>(mpg<span class="op">~</span>cyl<span class="op">+</span>am,
+             <span class="dt">data=</span>mod_mtcars,
+             <span class="dt">method=</span><span class="st">&quot;lm&quot;</span>,
+             <span class="dt">trControl=</span><span class="kw">trainControl</span>(<span class="dt">method=</span><span class="st">&quot;cv&quot;</span>,<span class="dt">number=</span><span class="dv">3</span>))
+lm2</code></pre></div>
+<pre><code>## Linear Regression 
+## 
+## 32 samples
+##  2 predictor
+## 
+## No pre-processing
+## Resampling: Cross-Validated (3 fold) 
+## Summary of sample sizes: 23, 20, 21 
+## Resampling results:
+## 
+##   RMSE      Rsquared   MAE     
+##   3.248075  0.7674768  2.596527
+## 
+## Tuning parameter &#39;intercept&#39; was held constant at a value of TRUE</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(lm2)</code></pre></div>
+<pre><code>## 
+## Call:
+## lm(formula = .outcome ~ ., data = dat)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -5.9618 -1.4971 -0.2057  1.8907  6.5382 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)   24.802      1.323  18.752  &lt; 2e-16 ***
+## cyl6          -6.156      1.536  -4.009 0.000411 ***
+## cyl8         -10.068      1.452  -6.933 1.55e-07 ***
+## am1            2.560      1.298   1.973 0.058457 .  
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 3.073 on 28 degrees of freedom
+## Multiple R-squared:  0.7651, Adjusted R-squared:  0.7399 
+## F-statistic:  30.4 on 3 and 28 DF,  p-value: 5.959e-09</code></pre>
 </div>
 </div>
             </section>

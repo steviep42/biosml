@@ -2751,8 +2751,6 @@ myLm <- lm(mpg~.,
 all.equal(preds,unscaled_preds)
 ```
 
-
-
 #### caret and preprocess
 
 But the **caret** package will help you do this using the **preProcess** function. Here we can actually request that the data is "centered" and "scaled" as part of the model assembly process. We could do this before the call to the **Train** function but then we would also have to convert the training and test data ourselves. In the following situation, the data will be centered and scaled though the returned RMSE will be in terms of the unscaled data. 
@@ -3181,6 +3179,84 @@ myLm <- train(mpg~wt+am+qsec,
                      )
 
 summary(myLm)
+```
+
+## Categorical Features
+
+Categorical features are those that are labelled or character data which suggest categories (e.g. "male","female","smoker","non-snoker"). These variables, while useful, need to be recoded in a way to make them useful for machine learning methods. For example, read in the following data:
+
+
+```{r readetitanic}
+url <- "https://raw.githubusercontent.com/steviep42/bios534_spring_2020/master/data/etitanic.csv"
+etitanic <- read.csv(url)
+```
+
+If you insepct this data frame you will notice that there are already some "factors" in the data. This is good because we can begin to use this information in the development of models although this will be a function of what it is we are trying to predict. 
+
+```{r inspectetitanic}
+str(etitanic)
+```
+
+If we want to predict, for example, whether someone survived the catastrophe (the survived column), we'll need to turn that into a factor also since it represents a category. This happens a lot in classification. 
+
+
+```{r}
+etitanic <- etitanic %>% mutate(survived = factor(survived))
+str(etitanic)
+```
+
+Now we can build a model to predict survival:
+
+```{r etitanicmodcreate}
+control <- trainControl(method="cv",number=5)
+etitanic_model <- train(survived ~ .,etitanic,method="glm",trControl=control)
+```
+
+The Accuracy of the model, or the fact that we didn't make a train / test split, is beside the point here. We need to inform R that we have categories else it won't know what to do with them or, worse, it will do something unexpected. Let's look at another situation that frequently occurs where we might have categories that are numbers. Well, that was true in the above example but it was quite apparent that the 0 or 1 motif is a binary situation. So it was fairly obvious. Consider the mtcars data frame:
+
+```{r}
+str(mtcars)
+```
+
+Notice that the cyl, vs, am, gear, and carb features take on a few unique values. This suggests that they are actually categories. 
+
+```{r applyfact}
+ sapply(mtcars,function(x) length(unique(x)))
+```
+
+For example, the cylinder variable is a classification of whether a car has 4,6, or 8 cylinders. There is no such thing as a 4.5 cylinder automobile. Nor is there a car that had a transmission type of 1.5. In these cases we should probably make factors out of these prior to use with a method.
+
+```{r factlm1}
+lm1 <- train(mpg~cyl+am,
+             data=mtcars,
+             method="lm",
+             trControl=trainControl(method="cv",number=3))
+
+lm1
+summary(lm1)
+```
+
+Now we will create some factors out of am and cyl to show that the resulting model will be different in terms of the coefficents. But first notice how creating a factor will assign an underling numeric value to the feature which is the key to making it usabale by downstream ML methods. 
+
+```{r createfacs}
+data(mtcars)
+mod_mtcars <- mtcars %>% mutate(cyl=factor(cyl),am=factor(am))
+
+levels(mod_mtcars$am)
+levels(mod_mtcars$cyl)
+```
+
+Now let's make a model
+
+```{r factlm2}
+data(mtcars)
+mod_mtcars <- mtcars %>% mutate(cyl=factor(cyl),am=factor(am))
+lm2 <- train(mpg~cyl+am,
+             data=mod_mtcars,
+             method="lm",
+             trControl=trainControl(method="cv",number=3))
+lm2
+summary(lm2)
 ```
 
 
