@@ -455,7 +455,7 @@ sensitivity <span class="op">%&gt;%</span><span class="st"> </span><span class="
 <span class="co"># the right value to maximize the AUC (Area Under Curve)</span>
 
 <span class="kw">text</span>(metrics[,<span class="dv">2</span>],metrics[,<span class="dv">1</span>],<span class="dt">labels=</span>metrics[,<span class="dv">3</span>],<span class="dt">cex=</span><span class="fl">0.8</span>)</code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-31-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
 <p>It turns out that area under an ROC curve is a measure of the usefulness of a test in general, where a greater area means a more useful test. Ideally we would want the area under the curve (also known as “AUC”) to be as close to 1 as possible. The dashed line above represents a classifier that basically “guesses” the outcome (pos vs neg) using a “coin flip” mentality. So, our classifier does much better than that but certainly not perfectly. Now, we also care about the threshold that gives us a good balance between the TPR and FPR. I mean if we wanted a max AUC with no other concerns, we would also be accepting a very high FPR. So this is why looking at the curve is useful.</p>
 </div>
 <div id="better-ways-to-compute-the-roc-curve" class="section level2">

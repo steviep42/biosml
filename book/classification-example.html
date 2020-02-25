@@ -269,7 +269,7 @@ pm &lt;-<span class="st"> </span>PimaIndiansDiabetes</code></pre></div>
 <h2><span class="header-section-number">7.1</span> Exploratory Plots</h2>
 <p>We’ll look use some stock plots from the <a href="https://github.com/elastacloud/automatic-data-explorer"><strong>DataExplorer</strong></a> package to get a feel for the data. Look at correlations between the variables to see if any are strongly correlated with the variable we wish to predict or any other variables. Let’s start out with the <strong>plot_intro</strong> function which can provide an overview of our data. It turns out that our data is pretty clean. There are no rows with missing values and we have only one categorical feature.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot_intro</span>(pm)</code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-36-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-26-1.png" width="672" /></p>
 <p>Let’s see if there are any string correltations we need to be aware of.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot_correlation</span>(pm, <span class="dt">type=</span><span class="st">&quot;continuous&quot;</span>)</code></pre></div>
 <p><img src="biosml_files/figure-html/decorr-1.png" width="672" /></p>
@@ -355,7 +355,7 @@ caret<span class="op">::</span><span class="kw">confusionMatrix</span>(fitpreds,
 <p>And if you haven’t yet enough of ROC curves just yet, we could put up one of those.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(caTools)
 <span class="kw">colAUC</span>(pm_model_fitpreds,test<span class="op">$</span>diabetes,<span class="dt">plotROC=</span><span class="ot">TRUE</span>)</code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-37-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-27-1.png" width="672" /></p>
 <pre><code>##                  [,1]
 ## neg vs. pos 0.8296226</code></pre>
 <p>But wait, we’ve already been through the whole ROC curve, AUC, confusion matrix route so why would we take a manual approach if we have the <strong>caret</strong> package readily available. We can explore any number methods, implement K Fold Cross Validation,and get feedback on the performance measures at the same time. Let’s reframe our above work using the caret package conveniences.</p>
@@ -752,7 +752,7 @@ pm_ranger_mod &lt;-<span class="st"> </span><span class="kw">train</span>(<span 
                     <span class="dt">preProc =</span> <span class="kw">c</span>(<span class="st">&quot;center&quot;</span>, <span class="st">&quot;scale&quot;</span>))</code></pre></div>
 <p>The object can be plotted. Here we see that the max AUC of .825 occurs when mtry is 3 and the Gini criterion is used to evaluate a tree.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(pm_ranger_mod)</code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-44-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-34-1.png" width="672" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">max</span>(pm_ranger_mod[[<span class="st">&quot;results&quot;</span>]]<span class="op">$</span>ROC)</code></pre></div>
 <pre><code>## [1] 0.8190116</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">preds &lt;-<span class="st"> </span><span class="kw">predict</span>(pm_ranger_mod,test)
