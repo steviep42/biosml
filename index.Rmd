@@ -3259,6 +3259,64 @@ lm2
 summary(lm2)
 ```
 
+## Binning 
+
+Sometimes we have data that spans a range of values such that it might make more sense to "bin" or collect the values into "buckets" represented by categories. This is akin to what a histogram does. Look at the PimaIndiansDiabetes data set for an example. Specifically, look at the **pregnant** feature in the form of a histogram. Most of those surveyed had less than 5 pregnancies although there are those who had at least that number of pregnancies and more. 
+
+```{r pmbin1}
+pm_new <- PimaIndiansDiabetes
+hist(pm_new$pregnant)
+
+```
+
+We could build our models using the number of pregnancies without attemptin to transform the feature in any way. But let's bin this feature. In R, we can use the **cut** function to chop up a numerical range of data into a specified number of bins and according to some function such as the **quantile** function which would give us for bins labelled from 1 to 4. This will produce sample quantiles according to the 0, 25th, 50th, 75%, and 100% percentiles. 
+
+```{r cutuppm}
+cut(pm_new$pregnant, breaks=quantile(pm$pregnant),
+                     include.lowest = TRUE,labels=1:4)
+
+pm_new <- pm_new %>% 
+  mutate(pregnant=cut(pregnant,breaks=quantile(pregnant),
+                      include.lowest=TRUE,labels=1:4))
+
+str(pm_new$pregnant)
+```
+
+So we could now build a model using this newly binned information. It might not make a big difference although it might give some insight into to what extent the number of pregnancies influence the model. More specifically, which bin of the pregnancy variable would be influential - if it all ? First, let's create a model using the untransformed data as found in the PimaIndiansDiabetes data frame.
+
+
+```{r buildpmbaseline}
+control <- trainControl(method="cv",number=5)
+
+cutmodel1 <- train(diabetes~.,
+                   data=PimaIndiansDiabetes,
+                   method="glm",
+                   trControl=control)
+summary(cutmodel2$finalModel)
+
+varImp(cutmodel1)
+```
+
+We definitely see that pregnancy is an important feature here although, again, we don't know what sub population might have influence, if any, on the overall model. Let's rerun this analysis on the transformed version of the data frame.
+
+```{r buildbinnedpm}
+cutmodel2 <- train(diabetes~.,
+                   data=pm_new,
+                   method="glm",
+                   trControl=control)
+
+summary(cutmodel2$finalModel)
+varImp(cutmodel2)
+```
+
+This is interesting in that pehaps it's the 4th bin of the pregnancy feature that has the major influence on the model. So if we look at the distribution of positive cases we see that in the positive cases there are more people from the 4th bin:
+
+```{r plot4bin}
+pm_new %>% group_by(diabetes,pregnant) %>% 
+  count() %>% 
+  ggplot(aes(x=diabetes,y=n,fill=pregnant)) + geom_bar(stat="identity")
+```
+
 
 # Using External ML Frameworks
 
