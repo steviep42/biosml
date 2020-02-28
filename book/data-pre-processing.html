@@ -329,7 +329,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>Let’s look at a boxplot of the <strong>wt</strong> feature.</p>
 <div class="sourceCode" id="cb349"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb349-1" data-line-number="1"><span class="kw">boxplot</span>(mtcars_na<span class="op">$</span>wt,<span class="dt">na.rm=</span><span class="ot">TRUE</span>,<span class="dt">main=</span><span class="st">&quot;Distribution of the wt feature&quot;</span>)</a>
 <a class="sourceLine" id="cb349-2" data-line-number="2"><span class="kw">grid</span>()</a></code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-82-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-84-1.png" width="672" /></p>
 <p>To make the substitution would involve the following. First we need to find out which row numbers have missing values for the <strong>wt</strong> feature.</p>
 <div class="sourceCode" id="cb350"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb350-1" data-line-number="1">(missing_wt_indices &lt;-<span class="st"> </span><span class="kw">which</span>(<span class="kw">is.na</span>(mtcars_na<span class="op">$</span>wt)))</a></code></pre></div>
 <pre><code>## [1]  2  9 23</code></pre>
@@ -961,7 +961,7 @@ where high correlations exist between variables in a data set. Consider the mtca
 <p>It turns out that there are lots of strong correlations going on here. The darker the circle the stronger the correlation.</p>
 <div class="sourceCode" id="cb453"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb453-1" data-line-number="1"><span class="kw">suppressMessages</span>(<span class="kw">library</span>(corrplot))</a>
 <a class="sourceLine" id="cb453-2" data-line-number="2"><span class="kw">corrplot</span>(correlations, <span class="dt">order=</span><span class="st">&quot;hclust&quot;</span>)</a></code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-107-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-109-1.png" width="672" /></p>
 <p>The <strong>caret</strong> package has some functions that can help us identify highly correlated variables that might be a candidates for removal prior to use in building a model. One of the variables that is highly correlated with others is <strong>mpg</strong> Since that is the one we are trying to predict, we’ll keep it around. The following columns from mtcars have a correlation of .75 (or higher) with some other variable(s)</p>
 <div class="sourceCode" id="cb454"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb454-1" data-line-number="1">(highcorr &lt;-<span class="st"> </span><span class="kw">findCorrelation</span>(correlations, <span class="dt">cutoff=</span>.<span class="dv">75</span>))</a></code></pre></div>
 <pre><code>## [1]  2  3  1 10</code></pre>
@@ -1030,7 +1030,7 @@ where high correlations exist between variables in a data set. Consider the mtca
 <p>If you look at the summary of the model it looks pretty bleak because mot of the coefficients aren’t significant. You wouldn’t want to take your career on this model.</p>
 <p>Now let’s see what variables are considered to be important by using <strong>varImp</strong>. Remember that this might lead us to use a subset of the more prominent variables in the formation of a new model in case, for example, the coefficients in the existing model weren’t significant.</p>
 <div class="sourceCode" id="cb464"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb464-1" data-line-number="1"><span class="kw">plot</span>(<span class="kw">varImp</span>(myLm))</a></code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-112-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-114-1.png" width="672" /></p>
 <p>How do things look in the model if we limit the formula to some of the “important” (allegedly) features ? Well, it explains more of the variance with fewer predictors (the R^2 value). Both <strong>wt</strong> and <strong>hp</strong> are significant. That’s a start.</p>
 <div class="sourceCode" id="cb465"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb465-1" data-line-number="1">myLm &lt;-<span class="st"> </span><span class="kw">train</span>(mpg<span class="op">~</span>wt<span class="op">+</span>disp<span class="op">+</span>hp,</a>
 <a class="sourceLine" id="cb465-2" data-line-number="2">                     <span class="dt">data =</span> train,</a>
@@ -1093,7 +1093,7 @@ where high correlations exist between variables in a data set. Consider the mtca
 ## The top 4 variables (out of 4):
 ##    wt, am, drat, gear</code></pre>
 <div class="sourceCode" id="cb469"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb469-1" data-line-number="1"><span class="kw">plot</span>(results,<span class="dt">type=</span><span class="kw">c</span>(<span class="st">&quot;g&quot;</span>,<span class="st">&quot;o&quot;</span>))</a></code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-114-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-116-1.png" width="672" /></p>
 <div class="sourceCode" id="cb470"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb470-1" data-line-number="1">myLm &lt;-<span class="st"> </span><span class="kw">train</span>(mpg<span class="op">~</span>wt<span class="op">+</span>am<span class="op">+</span>qsec,</a>
 <a class="sourceLine" id="cb470-2" data-line-number="2">                     <span class="dt">data =</span> train,</a>
 <a class="sourceLine" id="cb470-3" data-line-number="3">                     <span class="dt">method =</span> <span class="st">&quot;lm&quot;</span>,</a>
