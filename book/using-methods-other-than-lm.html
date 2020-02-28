@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<html lang="" xml:lang="">
 <head>
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 9 Using Methods Other Than lm | Predictive Learning in R</title>
   <meta name="description" content="Chapter 9 Using Methods Other Than lm | Predictive Learning in R" />
-  <meta name="generator" content="bookdown 0.14 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.17 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 9 Using Methods Other Than lm | Predictive Learning in R" />
   <meta property="og:type" content="book" />
@@ -52,41 +52,66 @@
 
 
 <style type="text/css">
-div.sourceCode { overflow-x: auto; }
-table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
-  margin: 0; padding: 0; vertical-align: baseline; border: none; }
-table.sourceCode { width: 100%; line-height: 100%; }
-td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
-td.sourceCode { padding-left: 5px; }
-code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code > span.dt { color: #902000; } /* DataType */
-code > span.dv { color: #40a070; } /* DecVal */
-code > span.bn { color: #40a070; } /* BaseN */
-code > span.fl { color: #40a070; } /* Float */
-code > span.ch { color: #4070a0; } /* Char */
-code > span.st { color: #4070a0; } /* String */
-code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code > span.ot { color: #007020; } /* Other */
-code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code > span.fu { color: #06287e; } /* Function */
-code > span.er { color: #ff0000; font-weight: bold; } /* Error */
-code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
-code > span.cn { color: #880000; } /* Constant */
-code > span.sc { color: #4070a0; } /* SpecialChar */
-code > span.vs { color: #4070a0; } /* VerbatimString */
-code > span.ss { color: #bb6688; } /* SpecialString */
-code > span.im { } /* Import */
-code > span.va { color: #19177c; } /* Variable */
-code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code > span.op { color: #666666; } /* Operator */
-code > span.bu { } /* BuiltIn */
-code > span.ex { } /* Extension */
-code > span.pp { color: #bc7a00; } /* Preprocessor */
-code > span.at { color: #7d9029; } /* Attribute */
-code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(data-line-number);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
 </head>
@@ -255,65 +280,65 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>The random forest algorithm, as implemented by Breiman, is designed such that each predictor is given a fair chance to manifest its importance in the overall forest model. Each tree is built by taking a random set of features, and then choosing the feature with the best split at each node, starting with the root. Features/predictors which are relevant will influence the tree heavily in the first few splits.&quot;</p>
 </blockquote>
 <p>So we can somewhat blindly use the function to get a sense of what the most important predictors are as well as how many trees to “grow” in order to minimize errors. We could also adjust the <strong>mtry</strong> parameter to see influence how many variables are randomly sampled at each tree split. For now. well stick with some basic defaults:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">percent &lt;-<span class="st"> </span>.<span class="dv">80</span>
-idx &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(mtcars),<span class="kw">round</span>(percent<span class="op">*</span><span class="kw">nrow</span>(mtcars)))
-
-train &lt;-<span class="st"> </span>mtcars[idx,]
-test  &lt;-<span class="st"> </span>mtcars[<span class="op">-</span>idx,]</code></pre></div>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">suppressMessages</span>(<span class="kw">library</span>(randomForest))
-
-<span class="co"># See https://www.r-bloggers.com/part-4a-modelling-predicting-the-amount-of-rain/</span>
-
-my_rf &lt;-<span class="st"> </span><span class="kw">randomForest</span>(mpg<span class="op">~</span>.,
-                      <span class="dt">data=</span>train,
-                      <span class="dt">mtry=</span><span class="dv">3</span>,      <span class="co"># This is the default </span>
-                      <span class="dt">importance=</span><span class="ot">TRUE</span>)
-
-<span class="co"># Check out the predictions</span>
-
-(test_pred_forest &lt;-<span class="st"> </span><span class="kw">predict</span>(my_rf,test))</code></pre></div>
-<pre><code>##  Mazda RX4 Wag Hornet 4 Drive    Merc 450SLC Toyota Corolla   Ferrari Dino 
-##       20.47318       18.96482       16.27745       28.80971       20.28941 
-##  Maserati Bora 
-##       15.39219</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">(rmse_rf &lt;-<span class="st"> </span><span class="kw">compute_rmse</span>(test_pred_forest,test<span class="op">$</span>mpg))</code></pre></div>
-<pre><code>## [1] 2.37279</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#</span>
-<span class="kw">mean</span>(rmse_rf)</code></pre></div>
-<pre><code>## [1] 2.37279</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">imp &lt;-<span class="st"> </span><span class="kw">varImp</span>(my_rf)
-imp.features &lt;-<span class="st"> </span><span class="kw">tibble</span>(<span class="dt">variables =</span> <span class="kw">row.names</span>(imp), 
-                       <span class="dt">importance =</span> imp[, <span class="dv">1</span>])
-<span class="co">#</span>
-
-<span class="kw">ggplot</span>(imp.features, 
-       <span class="kw">aes</span>(<span class="dt">x=</span> <span class="kw">reorder</span>(variables, importance) , 
-           <span class="dt">y =</span> importance)) <span class="op">+</span>
-<span class="st">                  </span><span class="kw">geom_bar</span>(<span class="dt">stat =</span> <span class="st">&quot;identity&quot;</span>) <span class="op">+</span><span class="st"> </span>
-<span class="st">                  </span><span class="kw">coord_flip</span>() <span class="op">+</span>
-<span class="st">                  </span><span class="kw">theme_bw</span>() <span class="op">+</span>
-<span class="st">                  </span><span class="kw">xlab</span>(<span class="st">&quot;&quot;</span>) <span class="op">+</span><span class="st"> </span>
-<span class="st">                  </span><span class="kw">ylab</span>(<span class="st">&quot;important&quot;</span>)<span class="op">+</span>
-<span class="st">                  </span><span class="kw">ggtitle</span>(<span class="st">&quot;Key Variables </span><span class="ch">\n</span><span class="st">&quot;</span>) <span class="op">+</span>
-<span class="st">          </span><span class="kw">theme</span>(<span class="dt">plot.title =</span> <span class="kw">element_text</span>(<span class="dt">size=</span><span class="dv">18</span>))</code></pre></div>
+<div class="sourceCode" id="cb265"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb265-1" data-line-number="1">percent &lt;-<span class="st"> </span><span class="fl">.80</span></a>
+<a class="sourceLine" id="cb265-2" data-line-number="2">idx &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(mtcars),<span class="kw">round</span>(percent<span class="op">*</span><span class="kw">nrow</span>(mtcars)))</a>
+<a class="sourceLine" id="cb265-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb265-4" data-line-number="4">train &lt;-<span class="st"> </span>mtcars[idx,]</a>
+<a class="sourceLine" id="cb265-5" data-line-number="5">test  &lt;-<span class="st"> </span>mtcars[<span class="op">-</span>idx,]</a></code></pre></div>
+<div class="sourceCode" id="cb266"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb266-1" data-line-number="1"><span class="kw">suppressMessages</span>(<span class="kw">library</span>(randomForest))</a>
+<a class="sourceLine" id="cb266-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb266-3" data-line-number="3"><span class="co"># See https://www.r-bloggers.com/part-4a-modelling-predicting-the-amount-of-rain/</span></a>
+<a class="sourceLine" id="cb266-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb266-5" data-line-number="5">my_rf &lt;-<span class="st"> </span><span class="kw">randomForest</span>(mpg<span class="op">~</span>.,</a>
+<a class="sourceLine" id="cb266-6" data-line-number="6">                      <span class="dt">data=</span>train,</a>
+<a class="sourceLine" id="cb266-7" data-line-number="7">                      <span class="dt">mtry=</span><span class="dv">3</span>,      <span class="co"># This is the default </span></a>
+<a class="sourceLine" id="cb266-8" data-line-number="8">                      <span class="dt">importance=</span><span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb266-9" data-line-number="9"></a>
+<a class="sourceLine" id="cb266-10" data-line-number="10"><span class="co"># Check out the predictions</span></a>
+<a class="sourceLine" id="cb266-11" data-line-number="11"></a>
+<a class="sourceLine" id="cb266-12" data-line-number="12">(test_pred_forest &lt;-<span class="st"> </span><span class="kw">predict</span>(my_rf,test))</a></code></pre></div>
+<pre><code>##           Merc 280C          Merc 450SE Lincoln Continental            Fiat 128 
+##            20.03076            16.15387            12.90906            27.81147 
+##          Camaro Z28    Pontiac Firebird 
+##            15.43021            16.27847</code></pre>
+<div class="sourceCode" id="cb268"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb268-1" data-line-number="1">(rmse_rf &lt;-<span class="st"> </span><span class="kw">compute_rmse</span>(test_pred_forest,test<span class="op">$</span>mpg))</a></code></pre></div>
+<pre><code>## [1] 2.752575</code></pre>
+<div class="sourceCode" id="cb270"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb270-1" data-line-number="1"><span class="co">#</span></a>
+<a class="sourceLine" id="cb270-2" data-line-number="2"><span class="kw">mean</span>(rmse_rf)</a></code></pre></div>
+<pre><code>## [1] 2.752575</code></pre>
+<div class="sourceCode" id="cb272"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb272-1" data-line-number="1">imp &lt;-<span class="st"> </span><span class="kw">varImp</span>(my_rf)</a>
+<a class="sourceLine" id="cb272-2" data-line-number="2">imp.features &lt;-<span class="st"> </span><span class="kw">tibble</span>(<span class="dt">variables =</span> <span class="kw">row.names</span>(imp), </a>
+<a class="sourceLine" id="cb272-3" data-line-number="3">                       <span class="dt">importance =</span> imp[, <span class="dv">1</span>])</a>
+<a class="sourceLine" id="cb272-4" data-line-number="4"><span class="co">#</span></a>
+<a class="sourceLine" id="cb272-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb272-6" data-line-number="6"><span class="kw">ggplot</span>(imp.features, </a>
+<a class="sourceLine" id="cb272-7" data-line-number="7">       <span class="kw">aes</span>(<span class="dt">x=</span> <span class="kw">reorder</span>(variables, importance) , </a>
+<a class="sourceLine" id="cb272-8" data-line-number="8">           <span class="dt">y =</span> importance)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb272-9" data-line-number="9"><span class="st">                  </span><span class="kw">geom_bar</span>(<span class="dt">stat =</span> <span class="st">&quot;identity&quot;</span>) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb272-10" data-line-number="10"><span class="st">                  </span><span class="kw">coord_flip</span>() <span class="op">+</span></a>
+<a class="sourceLine" id="cb272-11" data-line-number="11"><span class="st">                  </span><span class="kw">theme_bw</span>() <span class="op">+</span></a>
+<a class="sourceLine" id="cb272-12" data-line-number="12"><span class="st">                  </span><span class="kw">xlab</span>(<span class="st">&quot;&quot;</span>) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb272-13" data-line-number="13"><span class="st">                  </span><span class="kw">ylab</span>(<span class="st">&quot;important&quot;</span>)<span class="op">+</span></a>
+<a class="sourceLine" id="cb272-14" data-line-number="14"><span class="st">                  </span><span class="kw">ggtitle</span>(<span class="st">&quot;Key Variables </span><span class="ch">\n</span><span class="st">&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb272-15" data-line-number="15"><span class="st">          </span><span class="kw">theme</span>(<span class="dt">plot.title =</span> <span class="kw">element_text</span>(<span class="dt">size=</span><span class="dv">18</span>))</a></code></pre></div>
 <p><img src="biosml_files/figure-html/rfimport-1.png" width="672" /></p>
 <p>So the thing here is that we have a parameter called <strong>mtry</strong> that influences the outcome but is not necessarily something that we know how to optimally set without some experimentation. The <strong>mtry</strong> value is the number of variables that are randomly sampled at each tree split.</p>
 <p>The method will pick a default value based on the number of predictor variables but it’s not guaranteed to be the best value - it’s just a starting point. We could write a loop to “walk through” various values of the <strong>mtry</strong> parameter.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">make_mtcars_rf &lt;-<span class="st"> </span><span class="cf">function</span>(<span class="dt">mtry=</span><span class="dv">3</span>) {
-    my_rf &lt;-<span class="st"> </span><span class="kw">randomForest</span>(mpg<span class="op">~</span>.,
-                   <span class="dt">data=</span>train,
-                   <span class="dt">mtry=</span>mtry,
-                   <span class="dt">importance=</span><span class="ot">TRUE</span>)
-
-<span class="co"># Check out the predictions</span>
-    (test_pred_rf &lt;-<span class="st"> </span><span class="kw">predict</span>(my_rf,test))
-    (rmse_rf &lt;-<span class="st"> </span><span class="kw">compute_rmse</span>(test_pred_rf,test<span class="op">$</span>mpg))
-
-    <span class="kw">return</span>(rmse_rf)
-}</code></pre></div>
+<div class="sourceCode" id="cb273"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb273-1" data-line-number="1">make_mtcars_rf &lt;-<span class="st"> </span><span class="cf">function</span>(<span class="dt">mtry=</span><span class="dv">3</span>) {</a>
+<a class="sourceLine" id="cb273-2" data-line-number="2">    my_rf &lt;-<span class="st"> </span><span class="kw">randomForest</span>(mpg<span class="op">~</span>.,</a>
+<a class="sourceLine" id="cb273-3" data-line-number="3">                   <span class="dt">data=</span>train,</a>
+<a class="sourceLine" id="cb273-4" data-line-number="4">                   <span class="dt">mtry=</span>mtry,</a>
+<a class="sourceLine" id="cb273-5" data-line-number="5">                   <span class="dt">importance=</span><span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb273-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb273-7" data-line-number="7"><span class="co"># Check out the predictions</span></a>
+<a class="sourceLine" id="cb273-8" data-line-number="8">    (test_pred_rf &lt;-<span class="st"> </span><span class="kw">predict</span>(my_rf,test))</a>
+<a class="sourceLine" id="cb273-9" data-line-number="9">    (rmse_rf &lt;-<span class="st"> </span><span class="kw">compute_rmse</span>(test_pred_rf,test<span class="op">$</span>mpg))</a>
+<a class="sourceLine" id="cb273-10" data-line-number="10"></a>
+<a class="sourceLine" id="cb273-11" data-line-number="11">    <span class="kw">return</span>(rmse_rf)</a>
+<a class="sourceLine" id="cb273-12" data-line-number="12">}</a></code></pre></div>
 <p>So now we could check out RMSE for varying values of <strong>mtry</strong>. The following will call the <strong>randomForest</strong> package 5 times. Starting with the first iteration, the value of <strong>mtry</strong> will be 3, the next time it will be 4, and so on until the last iteration where it will be 8. This is just an experiment to see if varying <strong>mtry</strong> will help minimize the RMSE of our model. We also have to be careful not to pick incorrect values for <strong>mtry</strong> so reading the help page for the <strong>randomForest</strong> package would be helpful. For now, let’s assume that what we are doing is okay.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sapply</span>(<span class="dv">3</span><span class="op">:</span><span class="dv">8</span>,make_mtcars_rf)</code></pre></div>
-<pre><code>## [1] 2.358311 2.284770 2.343154 2.227046 2.297799 2.377500</code></pre>
+<div class="sourceCode" id="cb274"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb274-1" data-line-number="1"><span class="kw">sapply</span>(<span class="dv">3</span><span class="op">:</span><span class="dv">8</span>,make_mtcars_rf)</a></code></pre></div>
+<pre><code>## [1] 2.714520 2.708959 2.671706 2.675977 2.594984 2.699084</code></pre>
 <p>While this is fine, it would be nice if there were an easier way to handle this process. Besides, if we pick another method (e.g. the <strong>ranger</strong> function) then we have to deal with whatever arguments that method requires. This leads to a more general discussion on <strong>model parameters</strong> vs <strong>hyperparameters</strong>.</p>
 <div id="parameters-vs-hyperparameters-1" class="section level2">
 <h2><span class="header-section-number">9.1</span> Parameters vs Hyperparameters</h2>
@@ -321,7 +346,7 @@ imp.features &lt;-<span class="st"> </span><span class="kw">tibble</span>(<span 
 <p><strong>Hyperparameters</strong> (sometimes called <strong>metaparameters</strong>) represent information that is supplied in the form of an argument prior the call to the method to generate results. These parameters might not be something one can intelligently set without some experimentation.</p>
 <p>Of course most modeling functions one would call in R have default values for various arguments but this does not mean that the defaults are appropriate for all cases.</p>
 <p>To see the hyper parameters of the <strong>lm</strong> function, check the help page or use the <strong>args</strong> function. As an example, the <strong>method</strong> argument is a hyper parameter which has a default value of <strong>qr</strong>. This could be changed but one would need a reason to do so.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">args</span>(lm)</code></pre></div>
+<div class="sourceCode" id="cb276"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb276-1" data-line-number="1"><span class="kw">args</span>(lm)</a></code></pre></div>
 <pre><code>## function (formula, data, subset, weights, na.action, method = &quot;qr&quot;, 
 ##     model = TRUE, x = FALSE, y = FALSE, qr = TRUE, singular.ok = TRUE, 
 ##     contrasts = NULL, offset, ...) 
@@ -332,33 +357,33 @@ imp.features &lt;-<span class="st"> </span><span class="kw">tibble</span>(<span 
 <p>The process of finding the “right” values for these parameters is generally referred to as “hypermarket tuning”. Different values are supplied for each invocation of a method (as we did in the above example) to see the effect on the model. We might do this many times to arrive at the optimal parameter set to produce a model that offers the “best” explanatory and predictive power.</p>
 <p>Just to review - things like coefficients and residuals are parameters that are generated by a call to the <strong>lm</strong> function. They don’t actually exist until the function does some work. However, the “weights” parameter referred to in the help page for the <strong>lm</strong> function is a <strong>hyperparameter</strong> since one sets this (or accepts the default value) prior to running the command. So <strong>hyperparameters</strong> are specific to whatever algorithm (and supporting R function) you are using. Concepts such as coefficients and intercept, however, are parameters that would be generated by any method that implements linear regression.</p>
 <p>More generally, what if we wanted to use other functions to do some predicting ? There are some reasonable alternatives to the humble <strong>lm</strong> function. But they would require some investigation prior to use to understand what parameters are supported by those respective functions.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">print</span>(<span class="st">&quot;rpart arguments&quot;</span>)</code></pre></div>
+<div class="sourceCode" id="cb278"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb278-1" data-line-number="1"><span class="kw">print</span>(<span class="st">&quot;rpart arguments&quot;</span>)</a></code></pre></div>
 <pre><code>## [1] &quot;rpart arguments&quot;</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">args</span>(rpart)</code></pre></div>
+<div class="sourceCode" id="cb280"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb280-1" data-line-number="1"><span class="kw">args</span>(rpart)</a></code></pre></div>
 <pre><code>## function (formula, data, weights, subset, na.action = na.rpart, 
 ##     method, model = FALSE, x = FALSE, y = TRUE, parms, control, 
 ##     cost, ...) 
 ## NULL</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#</span>
-
-<span class="kw">print</span>(<span class="st">&quot;glm arguments&quot;</span>)</code></pre></div>
+<div class="sourceCode" id="cb282"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb282-1" data-line-number="1"><span class="co">#</span></a>
+<a class="sourceLine" id="cb282-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb282-3" data-line-number="3"><span class="kw">print</span>(<span class="st">&quot;glm arguments&quot;</span>)</a></code></pre></div>
 <pre><code>## [1] &quot;glm arguments&quot;</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">args</span>(glm)</code></pre></div>
+<div class="sourceCode" id="cb284"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb284-1" data-line-number="1"><span class="kw">args</span>(glm)</a></code></pre></div>
 <pre><code>## function (formula, family = gaussian, data, weights, subset, 
 ##     na.action, start = NULL, etastart, mustart, offset, control = list(...), 
 ##     model = TRUE, method = &quot;glm.fit&quot;, x = FALSE, y = TRUE, singular.ok = TRUE, 
 ##     contrasts = NULL, ...) 
 ## NULL</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#</span>
-
-<span class="kw">print</span>(<span class="st">&quot;pls args&quot;</span>)</code></pre></div>
+<div class="sourceCode" id="cb286"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb286-1" data-line-number="1"><span class="co">#</span></a>
+<a class="sourceLine" id="cb286-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb286-3" data-line-number="3"><span class="kw">print</span>(<span class="st">&quot;pls args&quot;</span>)</a></code></pre></div>
 <pre><code>## [1] &quot;pls args&quot;</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">args</span>(plsr)</code></pre></div>
+<div class="sourceCode" id="cb288"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb288-1" data-line-number="1"><span class="kw">args</span>(plsr)</a></code></pre></div>
 <pre><code>## function (..., method = pls.options()$plsralg) 
 ## NULL</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">print</span>(<span class="st">&quot;random Forest arguments&quot;</span>)</code></pre></div>
+<div class="sourceCode" id="cb290"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb290-1" data-line-number="1"><span class="kw">print</span>(<span class="st">&quot;random Forest arguments&quot;</span>)</a></code></pre></div>
 <pre><code>## [1] &quot;random Forest arguments&quot;</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">args</span>(randomForest)</code></pre></div>
+<div class="sourceCode" id="cb292"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb292-1" data-line-number="1"><span class="kw">args</span>(randomForest)</a></code></pre></div>
 <pre><code>## function (x, ...) 
 ## NULL</code></pre>
 </div>
@@ -388,12 +413,11 @@ gitbook.start({
 "github": false,
 "facebook": true,
 "twitter": true,
-"google": false,
 "linkedin": false,
 "weibo": false,
 "instapaper": false,
 "vk": false,
-"all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
 },
 "fontsettings": {
 "theme": "white",
@@ -405,6 +429,10 @@ gitbook.start({
 "text": null
 },
 "history": {
+"link": null,
+"text": null
+},
+"view": {
 "link": null,
 "text": null
 },
@@ -421,7 +449,7 @@ gitbook.start({
   (function () {
     var script = document.createElement("script");
     script.type = "text/javascript";
-    var src = "";
+    var src = "true";
     if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
     if (location.protocol !== "file:")
       if (/^https?:/.test(src))

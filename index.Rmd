@@ -2320,8 +2320,8 @@ In terms of the RMSE for the Test set predictions, which method is better (i.e. 
 lm_preds <- predict(my_lm,example_Train)
 svm_preds <- predict(my_svm,example_Train)
 #
-cat("RMSE for lm is: ",compute_rmse(lm_test_preds,example_Test$mpg),"\n")
-cat("RMSE for smv is: ",compute_rmse(svm_test_preds,example_Test$mpg),"\n")
+cat("RMSE for lm is: ",compute_rmse(lm_preds,example_Test$mpg),"\n")
+cat("RMSE for smv is: ",compute_rmse(svm_preds,example_Test$mpg),"\n")
 ```
 
 ## More Comparisons
@@ -3292,7 +3292,7 @@ cutmodel1 <- train(diabetes~.,
                    data=PimaIndiansDiabetes,
                    method="glm",
                    trControl=control)
-summary(cutmodel2$finalModel)
+summary(cutmodel1$finalModel)
 
 varImp(cutmodel1)
 ```
