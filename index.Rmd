@@ -551,7 +551,7 @@ So the second iteration would then take the second fold as the holdout / test da
 ```{r}
 # Generates Some Folds
 
-num_of_folds <- 8
+num_of_folds <- 4
 
 # This generates 8 groups of 4 indices such that each
 # group has unique observations. No observation is used
@@ -571,11 +571,11 @@ Check out the folds to get a better understanding of what is going on. We genera
 folds
 ```
 
-Again, each list element has the indices of four unique observations from the data frame. We have eight folds with four elements each for a total of 32 numbers corresponding to row numbers from the mtcars data frame. 
+Again, each list element has the indices of eight unique observations from the data frame. We have four folds with eight elements each for a total of 32 numbers corresponding to row numbers from the mtcars data frame. 
 
 ## Cross Fold Validation 
 
-To implement the cross validation, we will create a processing loop that will execute once for each of the 8 folds. During each execution of the loop we will create a model using data combined from all folds **except** the fold corresponding to the current loop number (e.g, 1, 2, .. 8).
+To implement the cross validation, we will create a processing loop that will execute once for each of the 8 folds. During each execution of the loop we will create a model using data combined from all folds **except** the fold corresponding to the current loop number (e.g, 1, 2, .. 4).
 
 Once the model is built we then test it on the fold number corresponding to the current loop number. 
 
@@ -618,7 +618,7 @@ for (ii in 1:length(folds)) {
 }
 ```
 
-The above list structures allow us to drill down into any aspect of the models and predictions we have made for each of the 8 folds. More importantly we can see how well the model works against each of the individual holdout / test data sets. In the end, we just want to be able to look at the average RMSE across the folds. This gives us clues as to how good the model might perform against new data. 
+The above list structures allow us to drill down into any aspect of the models and predictions we have made for each of the 4 folds. More importantly we can see how well the model works against each of the individual holdout / test data sets. In the end, we just want to be able to look at the average RMSE across the folds. This gives us clues as to how good the model might perform against new data. 
 
 ```{r latticeplot}
 rmse <- unlist(rmse)
@@ -669,10 +669,10 @@ make_mtcars_model <- function(formula=myform, num_of_folds=8) {
 }
 ```
 
-Let's look at the average RMSE across 4 folds. 
+Let's look at the average RMSE across 8 folds. 
 
 ```{r fourfold}
-num_of_folds <- 4
+num_of_folds <- 8
 
 rmse <- make_mtcars_model(num_of_folds)
 
