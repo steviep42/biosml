@@ -66,7 +66,7 @@ This lecture is concerned primarily with Predictive Modeling. Some examples of P
 
 In this domain there are generally two types of predictive models.
 
-## In-Sample vs  Out-Of-Sample Data 
+## In-Sample vs Out-Of-Sample Error
 
 The goal of predictive model is to generate models that can generalize to new data. It would be good if any model we generate could provide a good estimate of out of sample error. It's easy to generate a model on an entire data set (in sample data) and then turn around and use that data for prediction. But how will it perform on new data ? Haven't we just over trained our model ? 
 
@@ -168,9 +168,122 @@ Simpler models, such as linear regression, can be like this - easy to understand
 
 Models that are biased generally have less variability when applied to new data whereas less biased models generally have higher variability when applied to new data. Obviously, striking a balance between the two is desirable. There are techniques to help with this. 
 
+## Some Important Terminology
+
+While we could stsart building a lot of models at this point it would be wise to review spme jargon in the world of predictive modeling so we can understand how to fully exploit the variabes (also known as "features") in our data. This is very important. Let's start out with a basic example involving the most (over)used data set in R Education - the "mtcars" data frame. 
+
+```{r mtcarshelp,eval=FALSE}
+Motor Trend Car Road Tests
+
+The data was extracted from the 1974 Motor Trend US magazine, 
+and comprises fuel consumption and 10 aspects of automobile 
+design and performance for 32 automobiles (1973–74 models).
+
+A data frame with 32 observations on 11 (numeric) variables.
+
+[, 1]	mpg	  Miles/(US) gallon
+[, 2]	cyl	  Number of cylinders
+[, 3]	disp  Displacement (cu.in.)
+[, 4]	hp	  Gross horsepower
+[, 5]	drat	Rear axle ratio
+[, 6]	wt	  Weight (1000 lbs)
+[, 7]	qsec	1/4 mile time
+[, 8]	vs	  Engine (0 = V-shaped, 1 = straight)
+[, 9]	am	  Transmission (0 = automatic, 1 = manual)
+[,10]	gear	Number of forward gears
+[,11]	carb	Number of carburetors
+```
+
+We need to understand the variables in this data frame beyond the superficial. Let's say that we wanted to predict the mpg for a given car using other variables in the data frame. We might also want to predict whether a car has an automatic or manual transmission based on some other variables. Some jargon would be useful here. For example, if we wanted to predict the mpg, consider the following graphic:
+
+![](./pics/jargon1.png)
+
+Or if we wanted to predict the transmission type - the jargon is the same but the variable type is different:
+
+![](./pics/jargon2.png)
+
+In the first case we are attempting to predict a numeric quantity whereas in the second case we are predicting a binary outcome (a 0 or 1) which corresponds to, respectively, an automatic or manual transmission. The fact that it appears to be numeric is a bit deceptive since it's just a label - we wouldn't compute on this number. So how do we get to know the data ? Plotting it might be one way but there are a coupld of ways to get some clues up front using some code:
+
+```{r sapplen}
+mtcars %>% summarize_all(n_distinct)
+```
+
+Be on the lookout for columns that don't have very many unique values such as vs, am, and cyl. These are more likley categoeries by which we might summarize the continuous quantities. As an example - what is the average mpg for each transmission type ? What is the average mpg for all cylinder types ? Even though all the variables appear to be numeric doesn't mean that they can be "computed" on. Does it make sense to take the average of the transmission type ? It's either 0 or 1 (auto or manual). There is no such thing as a car with a 0.40625  transmission. 
+
+```{r meanmpg}
+mean(mtcars$am)
+```
+
+Perhaps it's better to count the number of times each transmission type occurs.
+
+```{r}
+table(mtcars$am)
+```
+
+
+## Levels of Measurement
+
+We should review the concepts behdind the "levels of measurement" which are helpful in classifying the variables we have in this, or other, data frames. Here is a graphic which summarizes them. (Note: see [this video](https://www.youtube.com/watch?v=LPHYPXBK_ks) from which the graphics were taken.)
+
+
+![](./pics/lom.png)
+
+### Nominal
+
+  - The lowest level of measurement
+  - Discrete Categories
+  - No Order 
+  - Binary 
+  - Qualitative or Categorical
+  
+Examples include gender (assuming binary M/F), colors ("red","blue","pink"), marital status, 
+religion, political affilation ("republican","democrat"), smoker ("Y/N"), names
+
+Possible measures for this type of information include Mode, Range, Percentage
+
+
+### Ordinal
+
+   - Ordered Categries
+   - Relative Rankings
+   - Unknown Distance Between Rankings
+   - Zero Is Arbitrary
+   
+Examples include "first, second, third", "low, middle, high", Likert scales, size (small, medium,large), movie ratings, satisfaction ratings, pain ratings (1-10)
+
+Possible measures include all those for nominal data with the addition of Median, Percentile, and Rank order or correlations. Can be counted but not measured granulalrly.
+
+### Interval
+
+  - Ordered categories
+  - Equal distance between values
+  - Known and accepted unit of measurement
+  - Zero is arbitrary
+  
+The difference between two variables is on an interval. Farenheit or Celsius temp (0 does not represent and absolute lowest value). Interval scales tell us about order and differences. Elevation, time of day. 
+
+Measures include all those for Ordinal with the addition of mean, standard deviation, addition, and subtraction. However, multiplication and division wouldn't make sense given that there is no absolute zero. Would a cylinder value of 0 make sense ? 
+
+
+### Ratio
+
+  - Equal Intervals
+  - Ordered
+  - Natural Zero
+  
+Examples include Weight, Height, Time (stopwatch) degrees Kelvin, blood pressure, 
+
+Can use all Interval tests, descriptive and inferential statistics, can make comparisons, add, subtract, multiply, divide.
+
+![](./pics/ops.png)
+
+Decision Tree for Levels of Measurement:
+
+![](./pics/dt.png)
+
 # A Motivating Example 
 
-You will need to install and then load the following packages:
+You will need to install and then load the following packages. There will be more as you work through the examples. 
 
 ```{r eval=FALSE}
 library(tidyverse)
@@ -189,9 +302,9 @@ Thus far we haven't gotten our hands dirty but we'll need to do that if we want 
 ![](./pics/workflow.jpg)
 
 
-Let's start out with a basic example involving the most (over)used data set in R Education - the "mtcars" data frame. 
+Let's keep working with the mtcars data frame:
 
-```{r mtcarshelp,eval=FALSE}
+```{r mtcarshelp2,eval=FALSE}
 Motor Trend Car Road Tests
 
 The data was extracted from the 1974 Motor Trend US magazine, 
@@ -2475,6 +2588,7 @@ mtcars[,-1][,highcorr]
 
 
 # Data Pre Processing
+
 
 ## Types of Pre Processing 
 

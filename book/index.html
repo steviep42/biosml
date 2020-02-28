@@ -129,7 +129,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Preface</a><ul>
 <li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#machine-learning"><i class="fa fa-check"></i><b>1.1</b> Machine Learning</a></li>
 <li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#predictive-modeling"><i class="fa fa-check"></i><b>1.2</b> Predictive Modeling</a></li>
-<li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#in-sample-vs-out-of-sample-data"><i class="fa fa-check"></i><b>1.3</b> In-Sample vs Out-Of-Sample Data</a></li>
+<li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#in-sample-vs-out-of-sample-error"><i class="fa fa-check"></i><b>1.3</b> In-Sample vs Out-Of-Sample Error</a></li>
 <li class="chapter" data-level="1.4" data-path="index.html"><a href="index.html#performance-metrics"><i class="fa fa-check"></i><b>1.4</b> Performance Metrics</a></li>
 <li class="chapter" data-level="1.5" data-path="index.html"><a href="index.html#black-box"><i class="fa fa-check"></i><b>1.5</b> Black Box</a></li>
 </ul></li>
@@ -141,6 +141,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="2.3.2" data-path="predictive-supervised-learning.html"><a href="predictive-supervised-learning.html#variance"><i class="fa fa-check"></i><b>2.3.2</b> Variance</a></li>
 </ul></li>
 <li class="chapter" data-level="2.4" data-path="predictive-supervised-learning.html"><a href="predictive-supervised-learning.html#overfitting-and-underfitting"><i class="fa fa-check"></i><b>2.4</b> Overfitting and Underfitting</a></li>
+<li class="chapter" data-level="2.5" data-path="predictive-supervised-learning.html"><a href="predictive-supervised-learning.html#some-important-terminology"><i class="fa fa-check"></i><b>2.5</b> Some Important Terminology</a></li>
+<li class="chapter" data-level="2.6" data-path="predictive-supervised-learning.html"><a href="predictive-supervised-learning.html#levels-of-measurement"><i class="fa fa-check"></i><b>2.6</b> Levels of Measurement</a><ul>
+<li class="chapter" data-level="2.6.1" data-path="predictive-supervised-learning.html"><a href="predictive-supervised-learning.html#nominal"><i class="fa fa-check"></i><b>2.6.1</b> Nominal</a></li>
+<li class="chapter" data-level="2.6.2" data-path="predictive-supervised-learning.html"><a href="predictive-supervised-learning.html#ordinal"><i class="fa fa-check"></i><b>2.6.2</b> Ordinal</a></li>
+<li class="chapter" data-level="2.6.3" data-path="predictive-supervised-learning.html"><a href="predictive-supervised-learning.html#interval"><i class="fa fa-check"></i><b>2.6.3</b> Interval</a></li>
+<li class="chapter" data-level="2.6.4" data-path="predictive-supervised-learning.html"><a href="predictive-supervised-learning.html#ratio"><i class="fa fa-check"></i><b>2.6.4</b> Ratio</a></li>
+</ul></li>
 </ul></li>
 <li class="chapter" data-level="3" data-path="a-motivating-example.html"><a href="a-motivating-example.html"><i class="fa fa-check"></i><b>3</b> A Motivating Example</a><ul>
 <li class="chapter" data-level="3.1" data-path="a-motivating-example.html"><a href="a-motivating-example.html#suggested-workflow"><i class="fa fa-check"></i><b>3.1</b> Suggested Workflow</a></li>
@@ -310,8 +317,8 @@ clustering, mixture models, DBSCAN, Association Rules, Neural Networks</p>
 </ul>
 <p>In this domain there are generally two types of predictive models.</p>
 </div>
-<div id="in-sample-vs-out-of-sample-data" class="section level2">
-<h2><span class="header-section-number">1.3</span> In-Sample vs Out-Of-Sample Data</h2>
+<div id="in-sample-vs-out-of-sample-error" class="section level2">
+<h2><span class="header-section-number">1.3</span> In-Sample vs Out-Of-Sample Error</h2>
 <p>The goal of predictive model is to generate models that can generalize to new data. It would be good if any model we generate could provide a good estimate of out of sample error. It’s easy to generate a model on an entire data set (in sample data) and then turn around and use that data for prediction. But how will it perform on new data ? Haven’t we just over trained our model ?</p>
 </div>
 <div id="performance-metrics" class="section level2">

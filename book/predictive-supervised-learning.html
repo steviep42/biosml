@@ -129,7 +129,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Preface</a><ul>
 <li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#machine-learning"><i class="fa fa-check"></i><b>1.1</b> Machine Learning</a></li>
 <li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#predictive-modeling"><i class="fa fa-check"></i><b>1.2</b> Predictive Modeling</a></li>
-<li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#in-sample-vs-out-of-sample-data"><i class="fa fa-check"></i><b>1.3</b> In-Sample vs Out-Of-Sample Data</a></li>
+<li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#in-sample-vs-out-of-sample-error"><i class="fa fa-check"></i><b>1.3</b> In-Sample vs Out-Of-Sample Error</a></li>
 <li class="chapter" data-level="1.4" data-path="index.html"><a href="index.html#performance-metrics"><i class="fa fa-check"></i><b>1.4</b> Performance Metrics</a></li>
 <li class="chapter" data-level="1.5" data-path="index.html"><a href="index.html#black-box"><i class="fa fa-check"></i><b>1.5</b> Black Box</a></li>
 </ul></li>
@@ -141,6 +141,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="2.3.2" data-path="predictive-supervised-learning.html"><a href="predictive-supervised-learning.html#variance"><i class="fa fa-check"></i><b>2.3.2</b> Variance</a></li>
 </ul></li>
 <li class="chapter" data-level="2.4" data-path="predictive-supervised-learning.html"><a href="predictive-supervised-learning.html#overfitting-and-underfitting"><i class="fa fa-check"></i><b>2.4</b> Overfitting and Underfitting</a></li>
+<li class="chapter" data-level="2.5" data-path="predictive-supervised-learning.html"><a href="predictive-supervised-learning.html#some-important-terminology"><i class="fa fa-check"></i><b>2.5</b> Some Important Terminology</a></li>
+<li class="chapter" data-level="2.6" data-path="predictive-supervised-learning.html"><a href="predictive-supervised-learning.html#levels-of-measurement"><i class="fa fa-check"></i><b>2.6</b> Levels of Measurement</a><ul>
+<li class="chapter" data-level="2.6.1" data-path="predictive-supervised-learning.html"><a href="predictive-supervised-learning.html#nominal"><i class="fa fa-check"></i><b>2.6.1</b> Nominal</a></li>
+<li class="chapter" data-level="2.6.2" data-path="predictive-supervised-learning.html"><a href="predictive-supervised-learning.html#ordinal"><i class="fa fa-check"></i><b>2.6.2</b> Ordinal</a></li>
+<li class="chapter" data-level="2.6.3" data-path="predictive-supervised-learning.html"><a href="predictive-supervised-learning.html#interval"><i class="fa fa-check"></i><b>2.6.3</b> Interval</a></li>
+<li class="chapter" data-level="2.6.4" data-path="predictive-supervised-learning.html"><a href="predictive-supervised-learning.html#ratio"><i class="fa fa-check"></i><b>2.6.4</b> Ratio</a></li>
+</ul></li>
 </ul></li>
 <li class="chapter" data-level="3" data-path="a-motivating-example.html"><a href="a-motivating-example.html"><i class="fa fa-check"></i><b>3</b> A Motivating Example</a><ul>
 <li class="chapter" data-level="3.1" data-path="a-motivating-example.html"><a href="a-motivating-example.html#suggested-workflow"><i class="fa fa-check"></i><b>3.1</b> Suggested Workflow</a></li>
@@ -336,6 +343,98 @@ RMSE = \sqrt\frac{\sum_i^n(P_i-O_i)^2}{n}
 <p>Simpler models, such as linear regression, can be like this - easy to understand but somewhat biased in their assessment of data. Depending on the size of the data it might be computationally less expensive to build more biased models.</p>
 <p><img src="pics/more_bias.png" /></p>
 <p>Models that are biased generally have less variability when applied to new data whereas less biased models generally have higher variability when applied to new data. Obviously, striking a balance between the two is desirable. There are techniques to help with this.</p>
+</div>
+<div id="some-important-terminology" class="section level2">
+<h2><span class="header-section-number">2.5</span> Some Important Terminology</h2>
+<p>While we could stsart building a lot of models at this point it would be wise to review spme jargon in the world of predictive modeling so we can understand how to fully exploit the variabes (also known as “features”) in our data. This is very important. Let’s start out with a basic example involving the most (over)used data set in R Education - the “mtcars” data frame.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">Motor Trend Car Road Tests</a>
+<a class="sourceLine" id="cb2-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb2-3" data-line-number="3">The data was extracted from the <span class="dv">1974</span> Motor Trend US magazine, </a>
+<a class="sourceLine" id="cb2-4" data-line-number="4">and comprises fuel consumption and <span class="dv">10</span> aspects of automobile </a>
+<a class="sourceLine" id="cb2-5" data-line-number="5">design and performance <span class="cf">for</span> <span class="dv">32</span> <span class="kw">automobiles</span> (1973–<span class="dv">74</span> models).</a>
+<a class="sourceLine" id="cb2-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb2-7" data-line-number="7">A data frame with <span class="dv">32</span> observations on <span class="dv">11</span> (numeric) variables.</a>
+<a class="sourceLine" id="cb2-8" data-line-number="8"></a>
+<a class="sourceLine" id="cb2-9" data-line-number="9">[, <span class="dv">1</span>]   mpg   Miles<span class="op">/</span>(US) gallon</a>
+<a class="sourceLine" id="cb2-10" data-line-number="10">[, <span class="dv">2</span>]   cyl   Number of cylinders</a>
+<a class="sourceLine" id="cb2-11" data-line-number="11">[, <span class="dv">3</span>]   disp  <span class="kw">Displacement</span> (cu.in.)</a>
+<a class="sourceLine" id="cb2-12" data-line-number="12">[, <span class="dv">4</span>]   hp    Gross horsepower</a>
+<a class="sourceLine" id="cb2-13" data-line-number="13">[, <span class="dv">5</span>]   drat    Rear axle ratio</a>
+<a class="sourceLine" id="cb2-14" data-line-number="14">[, <span class="dv">6</span>]   wt    <span class="kw">Weight</span> (<span class="dv">1000</span> lbs)</a>
+<a class="sourceLine" id="cb2-15" data-line-number="15">[, <span class="dv">7</span>]   qsec    <span class="dv">1</span><span class="op">/</span><span class="dv">4</span> mile time</a>
+<a class="sourceLine" id="cb2-16" data-line-number="16">[, <span class="dv">8</span>]   vs    <span class="kw">Engine</span> (<span class="dv">0</span> =<span class="st"> </span>V<span class="op">-</span>shaped, <span class="dv">1</span> =<span class="st"> </span>straight)</a>
+<a class="sourceLine" id="cb2-17" data-line-number="17">[, <span class="dv">9</span>]   am    <span class="kw">Transmission</span> (<span class="dv">0</span> =<span class="st"> </span>automatic, <span class="dv">1</span> =<span class="st"> </span>manual)</a>
+<a class="sourceLine" id="cb2-18" data-line-number="18">[,<span class="dv">10</span>]   gear    Number of forward gears</a>
+<a class="sourceLine" id="cb2-19" data-line-number="19">[,<span class="dv">11</span>]   carb    Number of carburetors</a></code></pre></div>
+<p>We need to understand the variables in this data frame beyond the superficial. Let’s say that we wanted to predict the mpg for a given car using other variables in the data frame. We might also want to predict whether a car has an automatic or manual transmission based on some other variables. Some jargon would be useful here. For example, if we wanted to predict the mpg, consider the following graphic:</p>
+<p><img src="pics/jargon1.png" /></p>
+<p>Or if we wanted to predict the transmission type - the jargon is the same but the variable type is different:</p>
+<p><img src="pics/jargon2.png" /></p>
+<p>In the first case we are attempting to predict a numeric quantity whereas in the second case we are predicting a binary outcome (a 0 or 1) which corresponds to, respectively, an automatic or manual transmission. The fact that it appears to be numeric is a bit deceptive since it’s just a label - we wouldn’t compute on this number. So how do we get to know the data ? Plotting it might be one way but there are a coupld of ways to get some clues up front using some code:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">mtcars <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">summarize_all</span>(n_distinct)</a></code></pre></div>
+<pre><code>##   mpg cyl disp hp drat wt qsec vs am gear carb
+## 1  25   3   27 22   22 29   30  2  2    3    6</code></pre>
+<p>Be on the lookout for columns that don’t have very many unique values such as vs, am, and cyl. These are more likley categoeries by which we might summarize the continuous quantities. As an example - what is the average mpg for each transmission type ? What is the average mpg for all cylinder types ? Even though all the variables appear to be numeric doesn’t mean that they can be “computed” on. Does it make sense to take the average of the transmission type ? It’s either 0 or 1 (auto or manual). There is no such thing as a car with a 0.40625 transmission.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw">mean</span>(mtcars<span class="op">$</span>am)</a></code></pre></div>
+<pre><code>## [1] 0.40625</code></pre>
+<p>Perhaps it’s better to count the number of times each transmission type occurs.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw">table</span>(mtcars<span class="op">$</span>am)</a></code></pre></div>
+<pre><code>## 
+##  0  1 
+## 19 13</code></pre>
+</div>
+<div id="levels-of-measurement" class="section level2">
+<h2><span class="header-section-number">2.6</span> Levels of Measurement</h2>
+<p>We should review the concepts behdind the “levels of measurement” which are helpful in classifying the variables we have in this, or other, data frames. Here is a graphic which summarizes them. (Note: see <a href="https://www.youtube.com/watch?v=LPHYPXBK_ks">this video</a> from which the graphics were taken.)</p>
+<p><img src="pics/lom.png" /></p>
+<div id="nominal" class="section level3">
+<h3><span class="header-section-number">2.6.1</span> Nominal</h3>
+<ul>
+<li>The lowest level of measurement</li>
+<li>Discrete Categories</li>
+<li>No Order</li>
+<li>Binary</li>
+<li>Qualitative or Categorical</li>
+</ul>
+<p>Examples include gender (assuming binary M/F), colors (“red”,“blue”,“pink”), marital status,
+religion, political affilation (“republican”,“democrat”), smoker (“Y/N”), names</p>
+<p>Possible measures for this type of information include Mode, Range, Percentage</p>
+</div>
+<div id="ordinal" class="section level3">
+<h3><span class="header-section-number">2.6.2</span> Ordinal</h3>
+<ul>
+<li>Ordered Categries</li>
+<li>Relative Rankings</li>
+<li>Unknown Distance Between Rankings</li>
+<li>Zero Is Arbitrary</li>
+</ul>
+<p>Examples include “first, second, third”, “low, middle, high”, Likert scales, size (small, medium,large), movie ratings, satisfaction ratings, pain ratings (1-10)</p>
+<p>Possible measures include all those for nominal data with the addition of Median, Percentile, and Rank order or correlations. Can be counted but not measured granulalrly.</p>
+</div>
+<div id="interval" class="section level3">
+<h3><span class="header-section-number">2.6.3</span> Interval</h3>
+<ul>
+<li>Ordered categories</li>
+<li>Equal distance between values</li>
+<li>Known and accepted unit of measurement</li>
+<li>Zero is arbitrary</li>
+</ul>
+<p>The difference between two variables is on an interval. Farenheit or Celsius temp (0 does not represent and absolute lowest value). Interval scales tell us about order and differences. Elevation, time of day.</p>
+<p>Measures include all those for Ordinal with the addition of mean, standard deviation, addition, and subtraction. However, multiplication and division wouldn’t make sense given that there is no absolute zero. Would a cylinder value of 0 make sense ?</p>
+</div>
+<div id="ratio" class="section level3">
+<h3><span class="header-section-number">2.6.4</span> Ratio</h3>
+<ul>
+<li>Equal Intervals</li>
+<li>Ordered</li>
+<li>Natural Zero</li>
+</ul>
+<p>Examples include Weight, Height, Time (stopwatch) degrees Kelvin, blood pressure,</p>
+<p>Can use all Interval tests, descriptive and inferential statistics, can make comparisons, add, subtract, multiply, divide.</p>
+<p><img src="pics/ops.png" /></p>
+<p>Decision Tree for Levels of Measurement:</p>
+<p><img src="pics/dt.png" /></p>
+</div>
 </div>
 </div>
             </section>

@@ -129,7 +129,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Preface</a><ul>
 <li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#machine-learning"><i class="fa fa-check"></i><b>1.1</b> Machine Learning</a></li>
 <li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#predictive-modeling"><i class="fa fa-check"></i><b>1.2</b> Predictive Modeling</a></li>
-<li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#in-sample-vs-out-of-sample-data"><i class="fa fa-check"></i><b>1.3</b> In-Sample vs Out-Of-Sample Data</a></li>
+<li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#in-sample-vs-out-of-sample-error"><i class="fa fa-check"></i><b>1.3</b> In-Sample vs Out-Of-Sample Error</a></li>
 <li class="chapter" data-level="1.4" data-path="index.html"><a href="index.html#performance-metrics"><i class="fa fa-check"></i><b>1.4</b> Performance Metrics</a></li>
 <li class="chapter" data-level="1.5" data-path="index.html"><a href="index.html#black-box"><i class="fa fa-check"></i><b>1.5</b> Black Box</a></li>
 </ul></li>
@@ -141,6 +141,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="2.3.2" data-path="predictive-supervised-learning.html"><a href="predictive-supervised-learning.html#variance"><i class="fa fa-check"></i><b>2.3.2</b> Variance</a></li>
 </ul></li>
 <li class="chapter" data-level="2.4" data-path="predictive-supervised-learning.html"><a href="predictive-supervised-learning.html#overfitting-and-underfitting"><i class="fa fa-check"></i><b>2.4</b> Overfitting and Underfitting</a></li>
+<li class="chapter" data-level="2.5" data-path="predictive-supervised-learning.html"><a href="predictive-supervised-learning.html#some-important-terminology"><i class="fa fa-check"></i><b>2.5</b> Some Important Terminology</a></li>
+<li class="chapter" data-level="2.6" data-path="predictive-supervised-learning.html"><a href="predictive-supervised-learning.html#levels-of-measurement"><i class="fa fa-check"></i><b>2.6</b> Levels of Measurement</a><ul>
+<li class="chapter" data-level="2.6.1" data-path="predictive-supervised-learning.html"><a href="predictive-supervised-learning.html#nominal"><i class="fa fa-check"></i><b>2.6.1</b> Nominal</a></li>
+<li class="chapter" data-level="2.6.2" data-path="predictive-supervised-learning.html"><a href="predictive-supervised-learning.html#ordinal"><i class="fa fa-check"></i><b>2.6.2</b> Ordinal</a></li>
+<li class="chapter" data-level="2.6.3" data-path="predictive-supervised-learning.html"><a href="predictive-supervised-learning.html#interval"><i class="fa fa-check"></i><b>2.6.3</b> Interval</a></li>
+<li class="chapter" data-level="2.6.4" data-path="predictive-supervised-learning.html"><a href="predictive-supervised-learning.html#ratio"><i class="fa fa-check"></i><b>2.6.4</b> Ratio</a></li>
+</ul></li>
 </ul></li>
 <li class="chapter" data-level="3" data-path="a-motivating-example.html"><a href="a-motivating-example.html"><i class="fa fa-check"></i><b>3</b> A Motivating Example</a><ul>
 <li class="chapter" data-level="3.1" data-path="a-motivating-example.html"><a href="a-motivating-example.html#suggested-workflow"><i class="fa fa-check"></i><b>3.1</b> Suggested Workflow</a></li>
@@ -274,69 +281,69 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="a-motivating-example" class="section level1">
 <h1><span class="header-section-number">Chapter 3</span> A Motivating Example</h1>
-<p>You will need to install and then load the following packages:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw">library</span>(tidyverse)</a>
-<a class="sourceLine" id="cb2-2" data-line-number="2"><span class="kw">library</span>(rpart)</a>
-<a class="sourceLine" id="cb2-3" data-line-number="3"><span class="kw">library</span>(caret)</a>
-<a class="sourceLine" id="cb2-4" data-line-number="4"><span class="kw">library</span>(pls)</a>
-<a class="sourceLine" id="cb2-5" data-line-number="5"><span class="kw">library</span>(mlbench)</a>
-<a class="sourceLine" id="cb2-6" data-line-number="6"><span class="kw">library</span>(DataExplorer)</a></code></pre></div>
+<p>You will need to install and then load the following packages. There will be more as you work through the examples.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="kw">library</span>(tidyverse)</a>
+<a class="sourceLine" id="cb9-2" data-line-number="2"><span class="kw">library</span>(rpart)</a>
+<a class="sourceLine" id="cb9-3" data-line-number="3"><span class="kw">library</span>(caret)</a>
+<a class="sourceLine" id="cb9-4" data-line-number="4"><span class="kw">library</span>(pls)</a>
+<a class="sourceLine" id="cb9-5" data-line-number="5"><span class="kw">library</span>(mlbench)</a>
+<a class="sourceLine" id="cb9-6" data-line-number="6"><span class="kw">library</span>(DataExplorer)</a></code></pre></div>
 <div id="suggested-workflow" class="section level2">
 <h2><span class="header-section-number">3.1</span> Suggested Workflow</h2>
 <p>Thus far we haven’t gotten our hands dirty but we’ll need to do that if we want an experiential approach to any of this. It’s useful to have a schematic that outlines the general process. Consider the following workflow. In general this is a solid representation of what one might do as part of building a predictive model.</p>
 <p><img src="pics/workflow.jpg" /></p>
-<p>Let’s start out with a basic example involving the most (over)used data set in R Education - the “mtcars” data frame.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">Motor Trend Car Road Tests</a>
-<a class="sourceLine" id="cb3-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb3-3" data-line-number="3">The data was extracted from the <span class="dv">1974</span> Motor Trend US magazine, </a>
-<a class="sourceLine" id="cb3-4" data-line-number="4">and comprises fuel consumption and <span class="dv">10</span> aspects of automobile </a>
-<a class="sourceLine" id="cb3-5" data-line-number="5">design and performance <span class="cf">for</span> <span class="dv">32</span> <span class="kw">automobiles</span> (1973–<span class="dv">74</span> models).</a>
-<a class="sourceLine" id="cb3-6" data-line-number="6"></a>
-<a class="sourceLine" id="cb3-7" data-line-number="7">A data frame with <span class="dv">32</span> observations on <span class="dv">11</span> (numeric) variables.</a>
-<a class="sourceLine" id="cb3-8" data-line-number="8"></a>
-<a class="sourceLine" id="cb3-9" data-line-number="9">[, <span class="dv">1</span>]   mpg   Miles<span class="op">/</span>(US) gallon</a>
-<a class="sourceLine" id="cb3-10" data-line-number="10">[, <span class="dv">2</span>]   cyl   Number of cylinders</a>
-<a class="sourceLine" id="cb3-11" data-line-number="11">[, <span class="dv">3</span>]   disp  <span class="kw">Displacement</span> (cu.in.)</a>
-<a class="sourceLine" id="cb3-12" data-line-number="12">[, <span class="dv">4</span>]   hp    Gross horsepower</a>
-<a class="sourceLine" id="cb3-13" data-line-number="13">[, <span class="dv">5</span>]   drat    Rear axle ratio</a>
-<a class="sourceLine" id="cb3-14" data-line-number="14">[, <span class="dv">6</span>]   wt    <span class="kw">Weight</span> (<span class="dv">1000</span> lbs)</a>
-<a class="sourceLine" id="cb3-15" data-line-number="15">[, <span class="dv">7</span>]   qsec    <span class="dv">1</span><span class="op">/</span><span class="dv">4</span> mile time</a>
-<a class="sourceLine" id="cb3-16" data-line-number="16">[, <span class="dv">8</span>]   vs    <span class="kw">Engine</span> (<span class="dv">0</span> =<span class="st"> </span>V<span class="op">-</span>shaped, <span class="dv">1</span> =<span class="st"> </span>straight)</a>
-<a class="sourceLine" id="cb3-17" data-line-number="17">[, <span class="dv">9</span>]   am    <span class="kw">Transmission</span> (<span class="dv">0</span> =<span class="st"> </span>automatic, <span class="dv">1</span> =<span class="st"> </span>manual)</a>
-<a class="sourceLine" id="cb3-18" data-line-number="18">[,<span class="dv">10</span>]   gear    Number of forward gears</a>
-<a class="sourceLine" id="cb3-19" data-line-number="19">[,<span class="dv">11</span>]   carb    Number of carburetors</a></code></pre></div>
+<p>Let’s keep working with the mtcars data frame:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1">Motor Trend Car Road Tests</a>
+<a class="sourceLine" id="cb10-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb10-3" data-line-number="3">The data was extracted from the <span class="dv">1974</span> Motor Trend US magazine, </a>
+<a class="sourceLine" id="cb10-4" data-line-number="4">and comprises fuel consumption and <span class="dv">10</span> aspects of automobile </a>
+<a class="sourceLine" id="cb10-5" data-line-number="5">design and performance <span class="cf">for</span> <span class="dv">32</span> <span class="kw">automobiles</span> (1973–<span class="dv">74</span> models).</a>
+<a class="sourceLine" id="cb10-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb10-7" data-line-number="7">A data frame with <span class="dv">32</span> observations on <span class="dv">11</span> (numeric) variables.</a>
+<a class="sourceLine" id="cb10-8" data-line-number="8"></a>
+<a class="sourceLine" id="cb10-9" data-line-number="9">[, <span class="dv">1</span>]   mpg   Miles<span class="op">/</span>(US) gallon</a>
+<a class="sourceLine" id="cb10-10" data-line-number="10">[, <span class="dv">2</span>]   cyl   Number of cylinders</a>
+<a class="sourceLine" id="cb10-11" data-line-number="11">[, <span class="dv">3</span>]   disp  <span class="kw">Displacement</span> (cu.in.)</a>
+<a class="sourceLine" id="cb10-12" data-line-number="12">[, <span class="dv">4</span>]   hp    Gross horsepower</a>
+<a class="sourceLine" id="cb10-13" data-line-number="13">[, <span class="dv">5</span>]   drat    Rear axle ratio</a>
+<a class="sourceLine" id="cb10-14" data-line-number="14">[, <span class="dv">6</span>]   wt    <span class="kw">Weight</span> (<span class="dv">1000</span> lbs)</a>
+<a class="sourceLine" id="cb10-15" data-line-number="15">[, <span class="dv">7</span>]   qsec    <span class="dv">1</span><span class="op">/</span><span class="dv">4</span> mile time</a>
+<a class="sourceLine" id="cb10-16" data-line-number="16">[, <span class="dv">8</span>]   vs    <span class="kw">Engine</span> (<span class="dv">0</span> =<span class="st"> </span>V<span class="op">-</span>shaped, <span class="dv">1</span> =<span class="st"> </span>straight)</a>
+<a class="sourceLine" id="cb10-17" data-line-number="17">[, <span class="dv">9</span>]   am    <span class="kw">Transmission</span> (<span class="dv">0</span> =<span class="st"> </span>automatic, <span class="dv">1</span> =<span class="st"> </span>manual)</a>
+<a class="sourceLine" id="cb10-18" data-line-number="18">[,<span class="dv">10</span>]   gear    Number of forward gears</a>
+<a class="sourceLine" id="cb10-19" data-line-number="19">[,<span class="dv">11</span>]   carb    Number of carburetors</a></code></pre></div>
 </div>
 <div id="scatterplot" class="section level2">
 <h2><span class="header-section-number">3.2</span> Scatterplot</h2>
 <p>Let’s look at a <strong>pairs()</strong> plot to see if there are any obvious linear relationships between any of the variables. Some of these variables can be considered as factors or categories (such as cyl, vs, am, gear, and carb) so for now we will exclude them to focus only on the continuous / measured variables.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw">pairs</span>(mtcars[,<span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">3</span><span class="op">:</span><span class="dv">7</span>)])</a></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="kw">pairs</span>(mtcars[,<span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">3</span><span class="op">:</span><span class="dv">7</span>)])</a></code></pre></div>
 <p><img src="biosml_files/figure-html/pairsplot-1.png" width="672" /></p>
 </div>
 <div id="correlations" class="section level2">
 <h2><span class="header-section-number">3.3</span> Correlations</h2>
 <p>Let’s look at some correlations to see how we might predict MPG as a function of other variables in the data set. Note that this isn’t an in-depth modeling lecture so we will fast track over deep discussions on how to fully evaluate and diagnose a model emerging from a specific method - although that is important. But, in the interest of motivating a work flow, we’ll simplify some of those discussions for now.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw">library</span>(DataExplorer)</a>
-<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="kw">plot_correlation</span>(mtcars)</a></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1"><span class="kw">library</span>(DataExplorer)</a>
+<a class="sourceLine" id="cb12-2" data-line-number="2"><span class="kw">plot_correlation</span>(mtcars)</a></code></pre></div>
 <p><img src="biosml_files/figure-html/corrplot1-1.png" width="672" /></p>
 <p>There are some strong correlations here and perhaps a case could be made for collinearity but we aren’t going to get into that right now. We also have variables on different measurement scales but, again, we’ll hold off dealing with that for the moment.</p>
 <p>As a preview of the <strong>caret</strong> package, we’ll use the <strong>findCorrelation</strong> function to help identify variables that are correlated above a certain threshold. Here, we’ll identify variables that are correlated at a level of 0.7 or above. This function takes a correlation matrix as input. We have a number of variables we might consider removing but, again, we’ll hold off on that for now.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw">data</span>(mtcars)</a>
-<a class="sourceLine" id="cb6-2" data-line-number="2">caret<span class="op">::</span><span class="kw">findCorrelation</span>(<span class="kw">cor</span>(mtcars),</a>
-<a class="sourceLine" id="cb6-3" data-line-number="3">                       <span class="dt">cutoff =</span> <span class="fl">0.7</span>,</a>
-<a class="sourceLine" id="cb6-4" data-line-number="4">                       <span class="dt">names =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1"><span class="kw">data</span>(mtcars)</a>
+<a class="sourceLine" id="cb13-2" data-line-number="2">caret<span class="op">::</span><span class="kw">findCorrelation</span>(<span class="kw">cor</span>(mtcars),</a>
+<a class="sourceLine" id="cb13-3" data-line-number="3">                       <span class="dt">cutoff =</span> <span class="fl">0.7</span>,</a>
+<a class="sourceLine" id="cb13-4" data-line-number="4">                       <span class="dt">names =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
 <pre><code>## [1] &quot;cyl&quot;  &quot;disp&quot; &quot;mpg&quot;  &quot;wt&quot;   &quot;hp&quot;   &quot;vs&quot;   &quot;drat&quot; &quot;am&quot;</code></pre>
 </div>
 <div id="building-a-model---in-sample-error" class="section level2">
 <h2><span class="header-section-number">3.4</span> Building A Model - In Sample Error</h2>
 <p>So now we will use the above information to build a linear model using the mtcars data frame. We’ll turn around and use the same exact data frame to test our model - Any resulting error we see will be <strong>in sample</strong> error and will not generalize well to new data. However, the model will not help us anticipate any <strong>out of sample error</strong>.</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="kw">data</span>(mtcars)</a>
-<a class="sourceLine" id="cb8-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb8-3" data-line-number="3"><span class="co"># Let&#39;s evaluate a basic formula</span></a>
-<a class="sourceLine" id="cb8-4" data-line-number="4">myform &lt;-<span class="st"> </span><span class="kw">formula</span>(mpg<span class="op">~</span>wt)</a>
-<a class="sourceLine" id="cb8-5" data-line-number="5"></a>
-<a class="sourceLine" id="cb8-6" data-line-number="6"><span class="co"># Use the built in &quot;lm&quot; function</span></a>
-<a class="sourceLine" id="cb8-7" data-line-number="7">lm_model &lt;-<span class="st"> </span><span class="kw">lm</span>(myform,<span class="dt">data=</span>mtcars)</a>
-<a class="sourceLine" id="cb8-8" data-line-number="8"><span class="kw">summary</span>(lm_model)</a></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1"><span class="kw">data</span>(mtcars)</a>
+<a class="sourceLine" id="cb15-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb15-3" data-line-number="3"><span class="co"># Let&#39;s evaluate a basic formula</span></a>
+<a class="sourceLine" id="cb15-4" data-line-number="4">myform &lt;-<span class="st"> </span><span class="kw">formula</span>(mpg<span class="op">~</span>wt)</a>
+<a class="sourceLine" id="cb15-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb15-6" data-line-number="6"><span class="co"># Use the built in &quot;lm&quot; function</span></a>
+<a class="sourceLine" id="cb15-7" data-line-number="7">lm_model &lt;-<span class="st"> </span><span class="kw">lm</span>(myform,<span class="dt">data=</span>mtcars)</a>
+<a class="sourceLine" id="cb15-8" data-line-number="8"><span class="kw">summary</span>(lm_model)</a></code></pre></div>
 <pre><code>## 
 ## Call:
 ## lm(formula = myform, data = mtcars)
@@ -355,41 +362,41 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## Residual standard error: 3.046 on 30 degrees of freedom
 ## Multiple R-squared:  0.7528, Adjusted R-squared:  0.7446 
 ## F-statistic: 91.38 on 1 and 30 DF,  p-value: 1.294e-10</code></pre>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="co"># Do the predictions on the data set used to train the</span></a>
-<a class="sourceLine" id="cb10-2" data-line-number="2"><span class="co"># model. This isn&#39;t what you want to do in the real world</span></a>
-<a class="sourceLine" id="cb10-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb10-4" data-line-number="4">training_preds &lt;-<span class="st"> </span><span class="kw">predict</span>(</a>
-<a class="sourceLine" id="cb10-5" data-line-number="5">    lm_model,</a>
-<a class="sourceLine" id="cb10-6" data-line-number="6">    <span class="dt">newdata=</span>mtcars,</a>
-<a class="sourceLine" id="cb10-7" data-line-number="7">    <span class="dt">type=</span><span class="st">&quot;response&quot;</span></a>
-<a class="sourceLine" id="cb10-8" data-line-number="8">  )</a></code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" data-line-number="1"><span class="co"># Do the predictions on the data set used to train the</span></a>
+<a class="sourceLine" id="cb17-2" data-line-number="2"><span class="co"># model. This isn&#39;t what you want to do in the real world</span></a>
+<a class="sourceLine" id="cb17-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb17-4" data-line-number="4">training_preds &lt;-<span class="st"> </span><span class="kw">predict</span>(</a>
+<a class="sourceLine" id="cb17-5" data-line-number="5">    lm_model,</a>
+<a class="sourceLine" id="cb17-6" data-line-number="6">    <span class="dt">newdata=</span>mtcars,</a>
+<a class="sourceLine" id="cb17-7" data-line-number="7">    <span class="dt">type=</span><span class="st">&quot;response&quot;</span></a>
+<a class="sourceLine" id="cb17-8" data-line-number="8">  )</a></code></pre></div>
 <p>So let’s see what this looks like graphically. Remember that we want to be able to compute the Root Mean Square Error for this model:</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1">title &lt;-<span class="st"> &quot;lm - mpg~wt&quot;</span></a>
-<a class="sourceLine" id="cb11-2" data-line-number="2"><span class="kw">plot</span>(mpg<span class="op">~</span>wt,mtcars,<span class="dt">pch=</span><span class="dv">19</span>,<span class="dt">main=</span>title,</a>
-<a class="sourceLine" id="cb11-3" data-line-number="3">     <span class="dt">ylim=</span><span class="kw">c</span>(<span class="kw">min</span>(mtcars<span class="op">$</span>mpg)<span class="op">-</span><span class="dv">5</span>,<span class="kw">max</span>(mtcars<span class="op">$</span>mpg)))</a>
-<a class="sourceLine" id="cb11-4" data-line-number="4"><span class="kw">abline</span>(lm_model)</a>
-<a class="sourceLine" id="cb11-5" data-line-number="5"><span class="kw">grid</span>()</a>
-<a class="sourceLine" id="cb11-6" data-line-number="6"><span class="kw">segments</span>(mtcars<span class="op">$</span>wt,training_preds,</a>
-<a class="sourceLine" id="cb11-7" data-line-number="7">         mtcars<span class="op">$</span>wt,mtcars<span class="op">$</span>mpg,</a>
-<a class="sourceLine" id="cb11-8" data-line-number="8">         <span class="dt">col=</span><span class="st">&quot;red&quot;</span>,<span class="dt">lwd=</span><span class="fl">1.2</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" data-line-number="1">title &lt;-<span class="st"> &quot;lm - mpg~wt&quot;</span></a>
+<a class="sourceLine" id="cb18-2" data-line-number="2"><span class="kw">plot</span>(mpg<span class="op">~</span>wt,mtcars,<span class="dt">pch=</span><span class="dv">19</span>,<span class="dt">main=</span>title,</a>
+<a class="sourceLine" id="cb18-3" data-line-number="3">     <span class="dt">ylim=</span><span class="kw">c</span>(<span class="kw">min</span>(mtcars<span class="op">$</span>mpg)<span class="op">-</span><span class="dv">5</span>,<span class="kw">max</span>(mtcars<span class="op">$</span>mpg)))</a>
+<a class="sourceLine" id="cb18-4" data-line-number="4"><span class="kw">abline</span>(lm_model)</a>
+<a class="sourceLine" id="cb18-5" data-line-number="5"><span class="kw">grid</span>()</a>
+<a class="sourceLine" id="cb18-6" data-line-number="6"><span class="kw">segments</span>(mtcars<span class="op">$</span>wt,training_preds,</a>
+<a class="sourceLine" id="cb18-7" data-line-number="7">         mtcars<span class="op">$</span>wt,mtcars<span class="op">$</span>mpg,</a>
+<a class="sourceLine" id="cb18-8" data-line-number="8">         <span class="dt">col=</span><span class="st">&quot;red&quot;</span>,<span class="dt">lwd=</span><span class="fl">1.2</span>)</a></code></pre></div>
 <p><img src="biosml_files/figure-html/lmplot-1.png" width="672" /></p>
 <p>Let’s compute the RMSE for this model. The formula for this is:</p>
 <p><span class="math display">\[
 RMSE = \sqrt\frac{\sum_i^n(P_i-O_i)^2}{n}
 \]</span></p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1">errors &lt;-<span class="st"> </span>training_preds<span class="op">-</span>mtcars<span class="op">$</span>mpg</a>
-<a class="sourceLine" id="cb12-2" data-line-number="2">training_rmse   &lt;-<span class="st"> </span><span class="kw">sqrt</span>(<span class="kw">mean</span>(errors<span class="op">^</span><span class="dv">2</span>))</a>
-<a class="sourceLine" id="cb12-3" data-line-number="3"><span class="kw">print</span>(training_rmse)</a></code></pre></div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" data-line-number="1">errors &lt;-<span class="st"> </span>training_preds<span class="op">-</span>mtcars<span class="op">$</span>mpg</a>
+<a class="sourceLine" id="cb19-2" data-line-number="2">training_rmse   &lt;-<span class="st"> </span><span class="kw">sqrt</span>(<span class="kw">mean</span>(errors<span class="op">^</span><span class="dv">2</span>))</a>
+<a class="sourceLine" id="cb19-3" data-line-number="3"><span class="kw">print</span>(training_rmse)</a></code></pre></div>
 <pre><code>## [1] 2.949163</code></pre>
 <p>We might even want to create a function to do this for future use:</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1"><span class="co"># Lets define a rmse function for future use</span></a>
-<a class="sourceLine" id="cb14-2" data-line-number="2">compute_rmse &lt;-<span class="st"> </span><span class="cf">function</span>(preds,known) {</a>
-<a class="sourceLine" id="cb14-3" data-line-number="3">  errors &lt;-<span class="st"> </span>preds<span class="op">-</span>known</a>
-<a class="sourceLine" id="cb14-4" data-line-number="4">  rmse   &lt;-<span class="st"> </span><span class="kw">sqrt</span>(<span class="kw">mean</span>(errors<span class="op">^</span><span class="dv">2</span>))</a>
-<a class="sourceLine" id="cb14-5" data-line-number="5">  <span class="kw">return</span>(rmse)</a>
-<a class="sourceLine" id="cb14-6" data-line-number="6">}</a>
-<a class="sourceLine" id="cb14-7" data-line-number="7"></a>
-<a class="sourceLine" id="cb14-8" data-line-number="8"><span class="kw">compute_rmse</span>(training_preds,mtcars<span class="op">$</span>mpg)</a></code></pre></div>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb21-1" data-line-number="1"><span class="co"># Lets define a rmse function for future use</span></a>
+<a class="sourceLine" id="cb21-2" data-line-number="2">compute_rmse &lt;-<span class="st"> </span><span class="cf">function</span>(preds,known) {</a>
+<a class="sourceLine" id="cb21-3" data-line-number="3">  errors &lt;-<span class="st"> </span>preds<span class="op">-</span>known</a>
+<a class="sourceLine" id="cb21-4" data-line-number="4">  rmse   &lt;-<span class="st"> </span><span class="kw">sqrt</span>(<span class="kw">mean</span>(errors<span class="op">^</span><span class="dv">2</span>))</a>
+<a class="sourceLine" id="cb21-5" data-line-number="5">  <span class="kw">return</span>(rmse)</a>
+<a class="sourceLine" id="cb21-6" data-line-number="6">}</a>
+<a class="sourceLine" id="cb21-7" data-line-number="7"></a>
+<a class="sourceLine" id="cb21-8" data-line-number="8"><span class="kw">compute_rmse</span>(training_preds,mtcars<span class="op">$</span>mpg)</a></code></pre></div>
 <pre><code>## [1] 2.949163</code></pre>
 <p>Is this good ? Bad ? Just average ? Well we don’t really know. One good thing is that the metric is in terms of the predicted variable, <strong>mpg</strong>, so it can easily be interpreted.</p>
 <p>However, unless someone has specified a tolerance level for the RMSE we don’t know if we have something that can be extended to other car types. We also could experiment with other regression formula to see if the RMSE goes down (or up).</p>
@@ -400,62 +407,62 @@ RMSE = \sqrt\frac{\sum_i^n(P_i-O_i)^2}{n}
 <p>The idea here is to build a model using say the first 21 rows of mtcars (a training set that is roughly 65% of the data) and then use a test set, rows 22 - 32 of mtcars, as input to the model to determine how well the model performs.</p>
 <p>Remember - we want to minimize the RMSE. The first 21 rows are outlined in green and rows 22-32 are outlined in red. This means we are training on a subset of the data and we hope that any model we build thereon will be extensible to the holdout or test data frame</p>
 <p><img src="pics/mtcars.png" /></p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" data-line-number="1">lm_model_train &lt;-<span class="st"> </span><span class="kw">lm</span>(myform,<span class="dt">data=</span>mtcars[<span class="dv">1</span><span class="op">:</span><span class="dv">21</span>,])</a>
-<a class="sourceLine" id="cb16-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb16-3" data-line-number="3"><span class="co"># Do the prediction on the test set</span></a>
-<a class="sourceLine" id="cb16-4" data-line-number="4">test_preds &lt;-<span class="st"> </span><span class="kw">predict</span>(</a>
-<a class="sourceLine" id="cb16-5" data-line-number="5">    lm_model_train,</a>
-<a class="sourceLine" id="cb16-6" data-line-number="6">    <span class="dt">newdata=</span>mtcars[<span class="dv">22</span><span class="op">:</span><span class="dv">32</span>,],</a>
-<a class="sourceLine" id="cb16-7" data-line-number="7">    <span class="dt">type=</span><span class="st">&quot;response&quot;</span></a>
-<a class="sourceLine" id="cb16-8" data-line-number="8">  )</a>
-<a class="sourceLine" id="cb16-9" data-line-number="9"></a>
-<a class="sourceLine" id="cb16-10" data-line-number="10">(test_rmse &lt;-<span class="st"> </span><span class="kw">compute_rmse</span>(test_preds,mtcars[<span class="dv">22</span><span class="op">:</span><span class="dv">32</span>,]<span class="op">$</span>mpg))</a></code></pre></div>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb23-1" data-line-number="1">lm_model_train &lt;-<span class="st"> </span><span class="kw">lm</span>(myform,<span class="dt">data=</span>mtcars[<span class="dv">1</span><span class="op">:</span><span class="dv">21</span>,])</a>
+<a class="sourceLine" id="cb23-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb23-3" data-line-number="3"><span class="co"># Do the prediction on the test set</span></a>
+<a class="sourceLine" id="cb23-4" data-line-number="4">test_preds &lt;-<span class="st"> </span><span class="kw">predict</span>(</a>
+<a class="sourceLine" id="cb23-5" data-line-number="5">    lm_model_train,</a>
+<a class="sourceLine" id="cb23-6" data-line-number="6">    <span class="dt">newdata=</span>mtcars[<span class="dv">22</span><span class="op">:</span><span class="dv">32</span>,],</a>
+<a class="sourceLine" id="cb23-7" data-line-number="7">    <span class="dt">type=</span><span class="st">&quot;response&quot;</span></a>
+<a class="sourceLine" id="cb23-8" data-line-number="8">  )</a>
+<a class="sourceLine" id="cb23-9" data-line-number="9"></a>
+<a class="sourceLine" id="cb23-10" data-line-number="10">(test_rmse &lt;-<span class="st"> </span><span class="kw">compute_rmse</span>(test_preds,mtcars[<span class="dv">22</span><span class="op">:</span><span class="dv">32</span>,]<span class="op">$</span>mpg))</a></code></pre></div>
 <pre><code>## [1] 3.286759</code></pre>
 <p>We trained the model on the first 21 rows of the data frame which might contain some outliers (or not). The RMSE got larger ! Does this mean the model is “bad” ? Maybe, maybe not.</p>
 <p>One thing we could do is to experiment with another split of the data, perhaps in a different proportion (e.g. 80/20) or maybe even a series of splits to see if we can get an idea of how widely the RMSE varies. Here we create a sample of 80% of mtcars to create a training set.</p>
-<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" data-line-number="1"><span class="co"># Shuffle the row numbers of the data frame</span></a>
-<a class="sourceLine" id="cb18-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb18-3" data-line-number="3">(train_index &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(mtcars),<span class="kw">nrow</span>(mtcars)<span class="op">*</span>.<span class="dv">80</span>))</a></code></pre></div>
-<pre><code>##  [1] 13  1 15 28  8 23 11 30 31 22 26 32 18 29  2 16 27  3 19  7 21  9  6 17 25</code></pre>
-<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb20-1" data-line-number="1"><span class="co"># Get 80% of the records from the data frame</span></a>
-<a class="sourceLine" id="cb20-2" data-line-number="2">train_df &lt;-<span class="st"> </span>mtcars[train_index,]</a>
-<a class="sourceLine" id="cb20-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb20-4" data-line-number="4"><span class="co"># We have approx 80% of the data in train_df</span></a>
-<a class="sourceLine" id="cb20-5" data-line-number="5"><span class="kw">nrow</span>(train_df)</a></code></pre></div>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb25-1" data-line-number="1"><span class="co"># Shuffle the row numbers of the data frame</span></a>
+<a class="sourceLine" id="cb25-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb25-3" data-line-number="3">(train_index &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(mtcars),<span class="kw">nrow</span>(mtcars)<span class="op">*</span>.<span class="dv">80</span>))</a></code></pre></div>
+<pre><code>##  [1]  1  4  8 29 15 27  6 24  7  2 17 16  3 25 13 11  9 30 23 19 32 14 18 10 21</code></pre>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb27-1" data-line-number="1"><span class="co"># Get 80% of the records from the data frame</span></a>
+<a class="sourceLine" id="cb27-2" data-line-number="2">train_df &lt;-<span class="st"> </span>mtcars[train_index,]</a>
+<a class="sourceLine" id="cb27-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb27-4" data-line-number="4"><span class="co"># We have approx 80% of the data in train_df</span></a>
+<a class="sourceLine" id="cb27-5" data-line-number="5"><span class="kw">nrow</span>(train_df)</a></code></pre></div>
 <pre><code>## [1] 25</code></pre>
-<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb22-1" data-line-number="1"><span class="co"># Get the other 20% that we wish to test on</span></a>
-<a class="sourceLine" id="cb22-2" data-line-number="2">test_df  &lt;-<span class="st"> </span>mtcars[<span class="op">-</span>train_index,]</a>
-<a class="sourceLine" id="cb22-3" data-line-number="3"><span class="kw">nrow</span>(test_df)</a></code></pre></div>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb29-1" data-line-number="1"><span class="co"># Get the other 20% that we wish to test on</span></a>
+<a class="sourceLine" id="cb29-2" data-line-number="2">test_df  &lt;-<span class="st"> </span>mtcars[<span class="op">-</span>train_index,]</a>
+<a class="sourceLine" id="cb29-3" data-line-number="3"><span class="kw">nrow</span>(test_df)</a></code></pre></div>
 <pre><code>## [1] 7</code></pre>
 <p>Now do the modeling</p>
-<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb24-1" data-line-number="1">train_model_lm &lt;-<span class="st"> </span><span class="kw">lm</span>(myform, <span class="dt">data=</span>train_df)</a>
-<a class="sourceLine" id="cb24-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb24-3" data-line-number="3"><span class="co"># Test the model on the test / holdout data frame</span></a>
-<a class="sourceLine" id="cb24-4" data-line-number="4"></a>
-<a class="sourceLine" id="cb24-5" data-line-number="5">test_pred  &lt;-<span class="st"> </span><span class="kw">predict</span>(</a>
-<a class="sourceLine" id="cb24-6" data-line-number="6">  train_model_lm,</a>
-<a class="sourceLine" id="cb24-7" data-line-number="7">  <span class="dt">newdata=</span>test_df,</a>
-<a class="sourceLine" id="cb24-8" data-line-number="8">  <span class="dt">type=</span><span class="st">&quot;response&quot;</span></a>
-<a class="sourceLine" id="cb24-9" data-line-number="9">)</a>
-<a class="sourceLine" id="cb24-10" data-line-number="10"></a>
-<a class="sourceLine" id="cb24-11" data-line-number="11">(test_rmse &lt;-<span class="st"> </span><span class="kw">compute_rmse</span>(test_pred,test_df<span class="op">$</span>mpg))</a></code></pre></div>
-<pre><code>## [1] 3.171369</code></pre>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb31-1" data-line-number="1">train_model_lm &lt;-<span class="st"> </span><span class="kw">lm</span>(myform, <span class="dt">data=</span>train_df)</a>
+<a class="sourceLine" id="cb31-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb31-3" data-line-number="3"><span class="co"># Test the model on the test / holdout data frame</span></a>
+<a class="sourceLine" id="cb31-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb31-5" data-line-number="5">test_pred  &lt;-<span class="st"> </span><span class="kw">predict</span>(</a>
+<a class="sourceLine" id="cb31-6" data-line-number="6">  train_model_lm,</a>
+<a class="sourceLine" id="cb31-7" data-line-number="7">  <span class="dt">newdata=</span>test_df,</a>
+<a class="sourceLine" id="cb31-8" data-line-number="8">  <span class="dt">type=</span><span class="st">&quot;response&quot;</span></a>
+<a class="sourceLine" id="cb31-9" data-line-number="9">)</a>
+<a class="sourceLine" id="cb31-10" data-line-number="10"></a>
+<a class="sourceLine" id="cb31-11" data-line-number="11">(test_rmse &lt;-<span class="st"> </span><span class="kw">compute_rmse</span>(test_pred,test_df<span class="op">$</span>mpg))</a></code></pre></div>
+<pre><code>## [1] 3.419191</code></pre>
 </div>
 <div id="other-methods" class="section level2">
 <h2><span class="header-section-number">3.6</span> Other Methods ?</h2>
 <p>Could we improve the situation by using another modeling method ? This would be something that we could try with out much effort. We just have to identify an appropriate method. Let’s look at a Random Forest method called <strong>ranger</strong>.</p>
-<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb26-1" data-line-number="1"><span class="kw">library</span>(ranger)</a>
-<a class="sourceLine" id="cb26-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb26-3" data-line-number="3"><span class="co"># Call the ranger function </span></a>
-<a class="sourceLine" id="cb26-4" data-line-number="4">my_rpart &lt;-<span class="st"> </span><span class="kw">ranger</span>(mpg <span class="op">~</span><span class="st"> </span>., <span class="dt">data =</span> train_df)</a>
-<a class="sourceLine" id="cb26-5" data-line-number="5"></a>
-<a class="sourceLine" id="cb26-6" data-line-number="6"><span class="co"># Make some Predictions</span></a>
-<a class="sourceLine" id="cb26-7" data-line-number="7">pred &lt;-<span class="st"> </span><span class="kw">predict</span>(my_rpart, test_df)</a>
-<a class="sourceLine" id="cb26-8" data-line-number="8">my_rpart_preds &lt;-<span class="st"> </span>pred<span class="op">$</span>predictions</a>
-<a class="sourceLine" id="cb26-9" data-line-number="9"></a>
-<a class="sourceLine" id="cb26-10" data-line-number="10"><span class="co"># What is the RMSE </span></a>
-<a class="sourceLine" id="cb26-11" data-line-number="11"><span class="kw">compute_rmse</span>(my_rpart_preds,test_df<span class="op">$</span>mpg)</a></code></pre></div>
-<pre><code>## [1] 2.520747</code></pre>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb33-1" data-line-number="1"><span class="kw">library</span>(ranger)</a>
+<a class="sourceLine" id="cb33-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb33-3" data-line-number="3"><span class="co"># Call the ranger function </span></a>
+<a class="sourceLine" id="cb33-4" data-line-number="4">my_rpart &lt;-<span class="st"> </span><span class="kw">ranger</span>(mpg <span class="op">~</span><span class="st"> </span>., <span class="dt">data =</span> train_df)</a>
+<a class="sourceLine" id="cb33-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb33-6" data-line-number="6"><span class="co"># Make some Predictions</span></a>
+<a class="sourceLine" id="cb33-7" data-line-number="7">pred &lt;-<span class="st"> </span><span class="kw">predict</span>(my_rpart, test_df)</a>
+<a class="sourceLine" id="cb33-8" data-line-number="8">my_rpart_preds &lt;-<span class="st"> </span>pred<span class="op">$</span>predictions</a>
+<a class="sourceLine" id="cb33-9" data-line-number="9"></a>
+<a class="sourceLine" id="cb33-10" data-line-number="10"><span class="co"># What is the RMSE </span></a>
+<a class="sourceLine" id="cb33-11" data-line-number="11"><span class="kw">compute_rmse</span>(my_rpart_preds,test_df<span class="op">$</span>mpg)</a></code></pre></div>
+<pre><code>## [1] 3.007288</code></pre>
 <p>Well the computed RMSE with the <strong>ranger</strong> method seems to be better in the sense that it is smaller than with the <strong>lm</strong> function. We might be on to something or maybe we just got lucky. We need a better way to proceed - something with more rigor.</p>
 </div>
 <div id="summary" class="section level2">
