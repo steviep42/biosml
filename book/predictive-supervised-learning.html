@@ -249,11 +249,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="11.6" data-path="data-pre-processing.html"><a href="data-pre-processing.html#order-of-pre-processing"><i class="fa fa-check"></i><b>11.6</b> Order of Pre-Processing</a></li>
 <li class="chapter" data-level="11.7" data-path="data-pre-processing.html"><a href="data-pre-processing.html#identifying-redundant-features"><i class="fa fa-check"></i><b>11.7</b> Identifying Redundant Features</a><ul>
 <li class="chapter" data-level="11.7.1" data-path="data-pre-processing.html"><a href="data-pre-processing.html#highly-correlated-variables"><i class="fa fa-check"></i><b>11.7.1</b> Highly Correlated Variables</a></li>
+<li class="chapter" data-level="11.7.2" data-path="data-pre-processing.html"><a href="data-pre-processing.html#ranking-features"><i class="fa fa-check"></i><b>11.7.2</b> Ranking Features</a></li>
+<li class="chapter" data-level="11.7.3" data-path="data-pre-processing.html"><a href="data-pre-processing.html#feature-selection-1"><i class="fa fa-check"></i><b>11.7.3</b> Feature Selection</a></li>
 </ul></li>
-<li class="chapter" data-level="11.8" data-path="data-pre-processing.html"><a href="data-pre-processing.html#ranking-features"><i class="fa fa-check"></i><b>11.8</b> Ranking Features</a></li>
-<li class="chapter" data-level="11.9" data-path="data-pre-processing.html"><a href="data-pre-processing.html#feature-selection-1"><i class="fa fa-check"></i><b>11.9</b> Feature Selection</a></li>
-<li class="chapter" data-level="11.10" data-path="data-pre-processing.html"><a href="data-pre-processing.html#categorical-features"><i class="fa fa-check"></i><b>11.10</b> Categorical Features</a></li>
-<li class="chapter" data-level="11.11" data-path="data-pre-processing.html"><a href="data-pre-processing.html#binning"><i class="fa fa-check"></i><b>11.11</b> Binning</a></li>
+<li class="chapter" data-level="11.8" data-path="data-pre-processing.html"><a href="data-pre-processing.html#handling-categories"><i class="fa fa-check"></i><b>11.8</b> Handling Categories</a><ul>
+<li class="chapter" data-level="11.8.1" data-path="data-pre-processing.html"><a href="data-pre-processing.html#is-rank-a-category"><i class="fa fa-check"></i><b>11.8.1</b> Is Rank A Category ?</a></li>
+<li class="chapter" data-level="11.8.2" data-path="data-pre-processing.html"><a href="data-pre-processing.html#relationship-to-one-hot-encoding"><i class="fa fa-check"></i><b>11.8.2</b> Relationship To One Hot Encoding</a></li>
+</ul></li>
+<li class="chapter" data-level="11.9" data-path="data-pre-processing.html"><a href="data-pre-processing.html#binning"><i class="fa fa-check"></i><b>11.9</b> Binning</a></li>
 </ul></li>
 <li class="chapter" data-level="12" data-path="using-external-ml-frameworks.html"><a href="using-external-ml-frameworks.html"><i class="fa fa-check"></i><b>12</b> Using External ML Frameworks</a><ul>
 <li class="chapter" data-level="12.1" data-path="using-external-ml-frameworks.html"><a href="using-external-ml-frameworks.html#using-h2o"><i class="fa fa-check"></i><b>12.1</b> Using h2o</a></li>
@@ -346,7 +349,7 @@ RMSE = \sqrt\frac{\sum_i^n(P_i-O_i)^2}{n}
 </div>
 <div id="some-important-terminology" class="section level2">
 <h2><span class="header-section-number">2.5</span> Some Important Terminology</h2>
-<p>While we could stsart building a lot of models at this point it would be wise to review spme jargon in the world of predictive modeling so we can understand how to fully exploit the variabes (also known as “features”) in our data. This is very important. Let’s start out with a basic example involving the most (over)used data set in R Education - the “mtcars” data frame.</p>
+<p>While we could start building a lot of models at this point it would be wise to review some jargon in the world of predictive modeling so we can understand how to fully exploit the variables (also known as “features”) in our data. This is very important. Let’s start out with a basic example involving the most (over)used data set in R Education - the “mtcars” data frame.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">Motor Trend Car Road Tests</a>
 <a class="sourceLine" id="cb2-2" data-line-number="2"></a>
 <a class="sourceLine" id="cb2-3" data-line-number="3">The data was extracted from the <span class="dv">1974</span> Motor Trend US magazine, </a>
@@ -370,11 +373,11 @@ RMSE = \sqrt\frac{\sum_i^n(P_i-O_i)^2}{n}
 <p><img src="pics/jargon1.png" /></p>
 <p>Or if we wanted to predict the transmission type - the jargon is the same but the variable type is different:</p>
 <p><img src="pics/jargon2.png" /></p>
-<p>In the first case we are attempting to predict a numeric quantity whereas in the second case we are predicting a binary outcome (a 0 or 1) which corresponds to, respectively, an automatic or manual transmission. The fact that it appears to be numeric is a bit deceptive since it’s just a label - we wouldn’t compute on this number. So how do we get to know the data ? Plotting it might be one way but there are a coupld of ways to get some clues up front using some code:</p>
+<p>In the first case we are attempting to predict a numeric quantity whereas in the second case we are predicting a binary outcome (a 0 or 1) which corresponds to, respectively, an automatic or manual transmission. The fact that it appears to be numeric is a bit deceptive since it’s just a label - we wouldn’t compute on this number. So how do we get to know the data ? Plotting it might be one way but there are a couple of ways to get some clues up front using some code:</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">mtcars <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">summarize_all</span>(n_distinct)</a></code></pre></div>
 <pre><code>##   mpg cyl disp hp drat wt qsec vs am gear carb
 ## 1  25   3   27 22   22 29   30  2  2    3    6</code></pre>
-<p>Be on the lookout for columns that don’t have very many unique values such as vs, am, and cyl. These are more likley categoeries by which we might summarize the continuous quantities. As an example - what is the average mpg for each transmission type ? What is the average mpg for all cylinder types ? Even though all the variables appear to be numeric doesn’t mean that they can be “computed” on. Does it make sense to take the average of the transmission type ? It’s either 0 or 1 (auto or manual). There is no such thing as a car with a 0.40625 transmission.</p>
+<p>Be on the lookout for columns that don’t have very many unique values such as vs, am, and cyl. These are more likely categories by which we might summarize the continuous quantities. As an example - what is the average mpg for each transmission type ? What is the average mpg for all cylinder types ? Even though all the variables appear to be numeric doesn’t mean that they can be “computed” on. Does it make sense to take the average of the transmission type ? It’s either 0 or 1 (auto or manual). There is no such thing as a car with a 0.40625 transmission.</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw">mean</span>(mtcars<span class="op">$</span>am)</a></code></pre></div>
 <pre><code>## [1] 0.40625</code></pre>
 <p>Perhaps it’s better to count the number of times each transmission type occurs.</p>
@@ -385,7 +388,7 @@ RMSE = \sqrt\frac{\sum_i^n(P_i-O_i)^2}{n}
 </div>
 <div id="levels-of-measurement" class="section level2">
 <h2><span class="header-section-number">2.6</span> Levels of Measurement</h2>
-<p>We should review the concepts behdind the “levels of measurement” which are helpful in classifying the variables we have in this, or other, data frames. Here is a graphic which summarizes them. (Note: see <a href="https://www.youtube.com/watch?v=LPHYPXBK_ks">this video</a> from which the graphics were taken.)</p>
+<p>We should review the concepts behind the “levels of measurement” which are helpful in classifying the variables we have in this, or other, data frames. Here is a graphic which summarizes them. (Note: see <a href="https://www.youtube.com/watch?v=LPHYPXBK_ks">this video</a> from which the graphics were taken.)</p>
 <p><img src="pics/lom.png" /></p>
 <div id="nominal" class="section level3">
 <h3><span class="header-section-number">2.6.1</span> Nominal</h3>
@@ -397,13 +400,13 @@ RMSE = \sqrt\frac{\sum_i^n(P_i-O_i)^2}{n}
 <li>Qualitative or Categorical</li>
 </ul>
 <p>Examples include gender (assuming binary M/F), colors (“red”,“blue”,“pink”), marital status,
-religion, political affilation (“republican”,“democrat”), smoker (“Y/N”), names</p>
+religion, political affiliation (“republican”,“democrat”), smoker (“Y/N”), names</p>
 <p>Possible measures for this type of information include Mode, Range, Percentage</p>
 </div>
 <div id="ordinal" class="section level3">
 <h3><span class="header-section-number">2.6.2</span> Ordinal</h3>
 <ul>
-<li>Ordered Categries</li>
+<li>Ordered Categories</li>
 <li>Relative Rankings</li>
 <li>Unknown Distance Between Rankings</li>
 <li>Zero Is Arbitrary</li>
@@ -419,7 +422,7 @@ religion, political affilation (“republican”,“democrat”), smoker (“Y/N
 <li>Known and accepted unit of measurement</li>
 <li>Zero is arbitrary</li>
 </ul>
-<p>The difference between two variables is on an interval. Farenheit or Celsius temp (0 does not represent and absolute lowest value). Interval scales tell us about order and differences. Elevation, time of day.</p>
+<p>The difference between two variables is on an interval. Fahrenheit or Celsius temp (0 does not represent and absolute lowest value). Interval scales tell us about order and differences. Elevation, time of day.</p>
 <p>Measures include all those for Ordinal with the addition of mean, standard deviation, addition, and subtraction. However, multiplication and division wouldn’t make sense given that there is no absolute zero. Would a cylinder value of 0 make sense ?</p>
 </div>
 <div id="ratio" class="section level3">

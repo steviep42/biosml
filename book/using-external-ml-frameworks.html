@@ -249,11 +249,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="11.6" data-path="data-pre-processing.html"><a href="data-pre-processing.html#order-of-pre-processing"><i class="fa fa-check"></i><b>11.6</b> Order of Pre-Processing</a></li>
 <li class="chapter" data-level="11.7" data-path="data-pre-processing.html"><a href="data-pre-processing.html#identifying-redundant-features"><i class="fa fa-check"></i><b>11.7</b> Identifying Redundant Features</a><ul>
 <li class="chapter" data-level="11.7.1" data-path="data-pre-processing.html"><a href="data-pre-processing.html#highly-correlated-variables"><i class="fa fa-check"></i><b>11.7.1</b> Highly Correlated Variables</a></li>
+<li class="chapter" data-level="11.7.2" data-path="data-pre-processing.html"><a href="data-pre-processing.html#ranking-features"><i class="fa fa-check"></i><b>11.7.2</b> Ranking Features</a></li>
+<li class="chapter" data-level="11.7.3" data-path="data-pre-processing.html"><a href="data-pre-processing.html#feature-selection-1"><i class="fa fa-check"></i><b>11.7.3</b> Feature Selection</a></li>
 </ul></li>
-<li class="chapter" data-level="11.8" data-path="data-pre-processing.html"><a href="data-pre-processing.html#ranking-features"><i class="fa fa-check"></i><b>11.8</b> Ranking Features</a></li>
-<li class="chapter" data-level="11.9" data-path="data-pre-processing.html"><a href="data-pre-processing.html#feature-selection-1"><i class="fa fa-check"></i><b>11.9</b> Feature Selection</a></li>
-<li class="chapter" data-level="11.10" data-path="data-pre-processing.html"><a href="data-pre-processing.html#categorical-features"><i class="fa fa-check"></i><b>11.10</b> Categorical Features</a></li>
-<li class="chapter" data-level="11.11" data-path="data-pre-processing.html"><a href="data-pre-processing.html#binning"><i class="fa fa-check"></i><b>11.11</b> Binning</a></li>
+<li class="chapter" data-level="11.8" data-path="data-pre-processing.html"><a href="data-pre-processing.html#handling-categories"><i class="fa fa-check"></i><b>11.8</b> Handling Categories</a><ul>
+<li class="chapter" data-level="11.8.1" data-path="data-pre-processing.html"><a href="data-pre-processing.html#is-rank-a-category"><i class="fa fa-check"></i><b>11.8.1</b> Is Rank A Category ?</a></li>
+<li class="chapter" data-level="11.8.2" data-path="data-pre-processing.html"><a href="data-pre-processing.html#relationship-to-one-hot-encoding"><i class="fa fa-check"></i><b>11.8.2</b> Relationship To One Hot Encoding</a></li>
+</ul></li>
+<li class="chapter" data-level="11.9" data-path="data-pre-processing.html"><a href="data-pre-processing.html#binning"><i class="fa fa-check"></i><b>11.9</b> Binning</a></li>
 </ul></li>
 <li class="chapter" data-level="12" data-path="using-external-ml-frameworks.html"><a href="using-external-ml-frameworks.html"><i class="fa fa-check"></i><b>12</b> Using External ML Frameworks</a><ul>
 <li class="chapter" data-level="12.1" data-path="using-external-ml-frameworks.html"><a href="using-external-ml-frameworks.html#using-h2o"><i class="fa fa-check"></i><b>12.1</b> Using h2o</a></li>
@@ -296,209 +299,209 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="using-h2o" class="section level2">
 <h2><span class="header-section-number">12.1</span> Using h2o</h2>
 <p>The package must first be installed which can done using the <strong>install.packages</strong> function (or the menu in R Studio). Loading the library is done just as you would any other library.</p>
-<div class="sourceCode" id="cb508"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb508-1" data-line-number="1"><span class="kw">library</span>(h2o)</a></code></pre></div>
+<div class="sourceCode" id="cb536"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb536-1" data-line-number="1"><span class="kw">library</span>(h2o)</a></code></pre></div>
 <p>The goal of using this library is not to replace the methods available to you in R but, just like the <strong>caret</strong> package, seeks to provide a uniform interface for a variety of underlying methods. This includes common methods including an “Auto ML” service that picks methods for you. Let’s apply h2o to our work. The underlying h2o architecture uses a “running instance” concept that can be initialized and accessed from R. You initialize it once per interactive session.</p>
-<div class="sourceCode" id="cb509"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb509-1" data-line-number="1"><span class="kw">h2o.init</span>()</a>
-<a class="sourceLine" id="cb509-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb509-3" data-line-number="3">H2O is not running yet, starting it now...</a>
-<a class="sourceLine" id="cb509-4" data-line-number="4"></a>
-<a class="sourceLine" id="cb509-5" data-line-number="5">Note<span class="op">:</span><span class="st">  </span>In case of errors look at the following log files<span class="op">:</span></a>
-<a class="sourceLine" id="cb509-6" data-line-number="6"><span class="st">    </span><span class="er">/</span>var<span class="op">/</span>folders<span class="op">/</span>wh<span class="op">/</span>z0v5hqgx3dzdfgz47lnbr_3w0000gn<span class="op">/</span>T<span class="op">/</span><span class="er">/</span>RtmpRehHby<span class="op">/</span>h2o_esteban_started_from_r.out</a>
-<a class="sourceLine" id="cb509-7" data-line-number="7">    <span class="op">/</span>var<span class="op">/</span>folders<span class="op">/</span>wh<span class="op">/</span>z0v5hqgx3dzdfgz47lnbr_3w0000gn<span class="op">/</span>T<span class="op">/</span><span class="er">/</span>RtmpRehHby<span class="op">/</span>h2o_esteban_started_from_r.err</a>
-<a class="sourceLine" id="cb509-8" data-line-number="8"></a>
-<a class="sourceLine" id="cb509-9" data-line-number="9">java version <span class="st">&quot;1.8.0_131&quot;</span></a>
-<a class="sourceLine" id="cb509-10" data-line-number="10"><span class="kw">Java</span>(TM) SE Runtime <span class="kw">Environment</span> (build <span class="dv">1</span>.<span class="fl">8.0</span>_<span class="dv">131</span><span class="op">-</span>b11)</a>
-<a class="sourceLine" id="cb509-11" data-line-number="11">Java <span class="kw">HotSpot</span>(TM) <span class="dv">64</span><span class="op">-</span>Bit Server <span class="kw">VM</span> (build <span class="fl">25.131</span><span class="op">-</span>b11, mixed mode)</a>
-<a class="sourceLine" id="cb509-12" data-line-number="12"></a>
-<a class="sourceLine" id="cb509-13" data-line-number="13">Starting H2O JVM and connecting<span class="op">:</span><span class="st"> </span>.. Connection successful<span class="op">!</span></a>
-<a class="sourceLine" id="cb509-14" data-line-number="14"></a>
-<a class="sourceLine" id="cb509-15" data-line-number="15">R is connected to the H2O cluster<span class="op">:</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb509-16" data-line-number="16"><span class="st">    </span>H2O cluster uptime<span class="op">:</span><span class="st">         </span><span class="dv">2</span> seconds <span class="dv">577</span> milliseconds </a>
-<a class="sourceLine" id="cb509-17" data-line-number="17">    H2O cluster timezone<span class="op">:</span><span class="st">       </span>America<span class="op">/</span>New_York </a>
-<a class="sourceLine" id="cb509-18" data-line-number="18">    H2O data parsing timezone<span class="op">:</span><span class="st">  </span>UTC </a>
-<a class="sourceLine" id="cb509-19" data-line-number="19">    H2O cluster version<span class="op">:</span><span class="st">        </span><span class="dv">3</span>.<span class="dv">26</span>.<span class="fl">0.2</span> </a>
-<a class="sourceLine" id="cb509-20" data-line-number="20">    H2O cluster version age<span class="op">:</span><span class="st">    </span><span class="dv">5</span> months and <span class="dv">5</span> days <span class="op">!!!</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb509-21" data-line-number="21"><span class="st">    </span>H2O cluster name<span class="op">:</span><span class="st">           </span>H2O_started_from_R_esteban_pgj795 </a>
-<a class="sourceLine" id="cb509-22" data-line-number="22">    H2O cluster total nodes<span class="op">:</span><span class="st">    </span><span class="dv">1</span> </a>
-<a class="sourceLine" id="cb509-23" data-line-number="23">    H2O cluster total memory<span class="op">:</span><span class="st">   </span><span class="fl">1.78</span> GB </a>
-<a class="sourceLine" id="cb509-24" data-line-number="24">    H2O cluster total cores<span class="op">:</span><span class="st">    </span><span class="dv">4</span> </a>
-<a class="sourceLine" id="cb509-25" data-line-number="25">    H2O cluster allowed cores<span class="op">:</span><span class="st">  </span><span class="dv">4</span> </a>
-<a class="sourceLine" id="cb509-26" data-line-number="26">    H2O cluster healthy<span class="op">:</span><span class="st">        </span><span class="ot">TRUE</span> </a>
-<a class="sourceLine" id="cb509-27" data-line-number="27">    H2O Connection ip<span class="op">:</span><span class="st">          </span>localhost </a>
-<a class="sourceLine" id="cb509-28" data-line-number="28">    H2O Connection port<span class="op">:</span><span class="st">        </span><span class="dv">54321</span> </a>
-<a class="sourceLine" id="cb509-29" data-line-number="29">    H2O Connection proxy<span class="op">:</span><span class="st">       </span><span class="ot">NA</span> </a>
-<a class="sourceLine" id="cb509-30" data-line-number="30">    H2O Internal Security<span class="op">:</span><span class="st">      </span><span class="ot">FALSE</span> </a>
-<a class="sourceLine" id="cb509-31" data-line-number="31">    H2O API Extensions<span class="op">:</span><span class="st">         </span>Amazon S3, XGBoost, Algos, AutoML, Core V3, Core V4 </a>
-<a class="sourceLine" id="cb509-32" data-line-number="32">    R Version<span class="op">:</span><span class="st">                  </span>R version <span class="dv">3</span>.<span class="fl">5.3</span> (<span class="dv">2019-03-11</span>) </a>
-<a class="sourceLine" id="cb509-33" data-line-number="33"></a>
-<a class="sourceLine" id="cb509-34" data-line-number="34">Your H2O cluster version is too <span class="kw">old</span> (<span class="dv">5</span> months and <span class="dv">5</span> days)<span class="op">!</span></a>
-<a class="sourceLine" id="cb509-35" data-line-number="35">Please download and install the latest version from http<span class="op">:</span><span class="er">//</span>h2o.ai<span class="op">/</span>download<span class="op">/</span></a>
-<a class="sourceLine" id="cb509-36" data-line-number="36">Show <span class="cf">in</span> New WindowClear OutputExpand<span class="op">/</span>Collapse Output</a>
-<a class="sourceLine" id="cb509-37" data-line-number="37">  <span class="op">|</span><span class="er">===========================================================|</span><span class="st"> </span><span class="dv">100</span>%</a>
-<a class="sourceLine" id="cb509-38" data-line-number="38">Console<span class="op">~</span><span class="er">/</span>Dropbox<span class="op">/</span>ML<span class="op">/</span>bookdown<span class="op">-</span>minimal<span class="op">/</span></a>
-<a class="sourceLine" id="cb509-39" data-line-number="39">Console</a>
-<a class="sourceLine" id="cb509-40" data-line-number="40">Terminal</a>
-<a class="sourceLine" id="cb509-41" data-line-number="41"></a>
-<a class="sourceLine" id="cb509-42" data-line-number="42">R Markdown</a>
-<a class="sourceLine" id="cb509-43" data-line-number="43"></a>
-<a class="sourceLine" id="cb509-44" data-line-number="44"><span class="op">~</span><span class="er">/</span>Dropbox<span class="op">/</span>ML<span class="op">/</span>bookdown<span class="op">-</span>minimal<span class="op">/</span><span class="st">  </span></a></code></pre></div>
+<div class="sourceCode" id="cb537"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb537-1" data-line-number="1"><span class="kw">h2o.init</span>()</a>
+<a class="sourceLine" id="cb537-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb537-3" data-line-number="3">H2O is not running yet, starting it now...</a>
+<a class="sourceLine" id="cb537-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb537-5" data-line-number="5">Note<span class="op">:</span><span class="st">  </span>In case of errors look at the following log files<span class="op">:</span></a>
+<a class="sourceLine" id="cb537-6" data-line-number="6"><span class="st">    </span><span class="er">/</span>var<span class="op">/</span>folders<span class="op">/</span>wh<span class="op">/</span>z0v5hqgx3dzdfgz47lnbr_3w0000gn<span class="op">/</span>T<span class="op">/</span><span class="er">/</span>RtmpRehHby<span class="op">/</span>h2o_esteban_started_from_r.out</a>
+<a class="sourceLine" id="cb537-7" data-line-number="7">    <span class="op">/</span>var<span class="op">/</span>folders<span class="op">/</span>wh<span class="op">/</span>z0v5hqgx3dzdfgz47lnbr_3w0000gn<span class="op">/</span>T<span class="op">/</span><span class="er">/</span>RtmpRehHby<span class="op">/</span>h2o_esteban_started_from_r.err</a>
+<a class="sourceLine" id="cb537-8" data-line-number="8"></a>
+<a class="sourceLine" id="cb537-9" data-line-number="9">java version <span class="st">&quot;1.8.0_131&quot;</span></a>
+<a class="sourceLine" id="cb537-10" data-line-number="10"><span class="kw">Java</span>(TM) SE Runtime <span class="kw">Environment</span> (build <span class="dv">1</span>.<span class="fl">8.0</span>_<span class="dv">131</span><span class="op">-</span>b11)</a>
+<a class="sourceLine" id="cb537-11" data-line-number="11">Java <span class="kw">HotSpot</span>(TM) <span class="dv">64</span><span class="op">-</span>Bit Server <span class="kw">VM</span> (build <span class="fl">25.131</span><span class="op">-</span>b11, mixed mode)</a>
+<a class="sourceLine" id="cb537-12" data-line-number="12"></a>
+<a class="sourceLine" id="cb537-13" data-line-number="13">Starting H2O JVM and connecting<span class="op">:</span><span class="st"> </span>.. Connection successful<span class="op">!</span></a>
+<a class="sourceLine" id="cb537-14" data-line-number="14"></a>
+<a class="sourceLine" id="cb537-15" data-line-number="15">R is connected to the H2O cluster<span class="op">:</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb537-16" data-line-number="16"><span class="st">    </span>H2O cluster uptime<span class="op">:</span><span class="st">         </span><span class="dv">2</span> seconds <span class="dv">577</span> milliseconds </a>
+<a class="sourceLine" id="cb537-17" data-line-number="17">    H2O cluster timezone<span class="op">:</span><span class="st">       </span>America<span class="op">/</span>New_York </a>
+<a class="sourceLine" id="cb537-18" data-line-number="18">    H2O data parsing timezone<span class="op">:</span><span class="st">  </span>UTC </a>
+<a class="sourceLine" id="cb537-19" data-line-number="19">    H2O cluster version<span class="op">:</span><span class="st">        </span><span class="dv">3</span>.<span class="dv">26</span>.<span class="fl">0.2</span> </a>
+<a class="sourceLine" id="cb537-20" data-line-number="20">    H2O cluster version age<span class="op">:</span><span class="st">    </span><span class="dv">5</span> months and <span class="dv">5</span> days <span class="op">!!!</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb537-21" data-line-number="21"><span class="st">    </span>H2O cluster name<span class="op">:</span><span class="st">           </span>H2O_started_from_R_esteban_pgj795 </a>
+<a class="sourceLine" id="cb537-22" data-line-number="22">    H2O cluster total nodes<span class="op">:</span><span class="st">    </span><span class="dv">1</span> </a>
+<a class="sourceLine" id="cb537-23" data-line-number="23">    H2O cluster total memory<span class="op">:</span><span class="st">   </span><span class="fl">1.78</span> GB </a>
+<a class="sourceLine" id="cb537-24" data-line-number="24">    H2O cluster total cores<span class="op">:</span><span class="st">    </span><span class="dv">4</span> </a>
+<a class="sourceLine" id="cb537-25" data-line-number="25">    H2O cluster allowed cores<span class="op">:</span><span class="st">  </span><span class="dv">4</span> </a>
+<a class="sourceLine" id="cb537-26" data-line-number="26">    H2O cluster healthy<span class="op">:</span><span class="st">        </span><span class="ot">TRUE</span> </a>
+<a class="sourceLine" id="cb537-27" data-line-number="27">    H2O Connection ip<span class="op">:</span><span class="st">          </span>localhost </a>
+<a class="sourceLine" id="cb537-28" data-line-number="28">    H2O Connection port<span class="op">:</span><span class="st">        </span><span class="dv">54321</span> </a>
+<a class="sourceLine" id="cb537-29" data-line-number="29">    H2O Connection proxy<span class="op">:</span><span class="st">       </span><span class="ot">NA</span> </a>
+<a class="sourceLine" id="cb537-30" data-line-number="30">    H2O Internal Security<span class="op">:</span><span class="st">      </span><span class="ot">FALSE</span> </a>
+<a class="sourceLine" id="cb537-31" data-line-number="31">    H2O API Extensions<span class="op">:</span><span class="st">         </span>Amazon S3, XGBoost, Algos, AutoML, Core V3, Core V4 </a>
+<a class="sourceLine" id="cb537-32" data-line-number="32">    R Version<span class="op">:</span><span class="st">                  </span>R version <span class="dv">3</span>.<span class="fl">5.3</span> (<span class="dv">2019-03-11</span>) </a>
+<a class="sourceLine" id="cb537-33" data-line-number="33"></a>
+<a class="sourceLine" id="cb537-34" data-line-number="34">Your H2O cluster version is too <span class="kw">old</span> (<span class="dv">5</span> months and <span class="dv">5</span> days)<span class="op">!</span></a>
+<a class="sourceLine" id="cb537-35" data-line-number="35">Please download and install the latest version from http<span class="op">:</span><span class="er">//</span>h2o.ai<span class="op">/</span>download<span class="op">/</span></a>
+<a class="sourceLine" id="cb537-36" data-line-number="36">Show <span class="cf">in</span> New WindowClear OutputExpand<span class="op">/</span>Collapse Output</a>
+<a class="sourceLine" id="cb537-37" data-line-number="37">  <span class="op">|</span><span class="er">===========================================================|</span><span class="st"> </span><span class="dv">100</span>%</a>
+<a class="sourceLine" id="cb537-38" data-line-number="38">Console<span class="op">~</span><span class="er">/</span>Dropbox<span class="op">/</span>ML<span class="op">/</span>bookdown<span class="op">-</span>minimal<span class="op">/</span></a>
+<a class="sourceLine" id="cb537-39" data-line-number="39">Console</a>
+<a class="sourceLine" id="cb537-40" data-line-number="40">Terminal</a>
+<a class="sourceLine" id="cb537-41" data-line-number="41"></a>
+<a class="sourceLine" id="cb537-42" data-line-number="42">R Markdown</a>
+<a class="sourceLine" id="cb537-43" data-line-number="43"></a>
+<a class="sourceLine" id="cb537-44" data-line-number="44"><span class="op">~</span><span class="er">/</span>Dropbox<span class="op">/</span>ML<span class="op">/</span>bookdown<span class="op">-</span>minimal<span class="op">/</span><span class="st">  </span></a></code></pre></div>
 <p>Once the h2o environment has been initialized then work can begin. This will take the form of using R functions provided by the h2o package to read in data and prepare it for use with various methods. Let’s repeat the regression on mtcars using h2o functions. Since mtcars is already available in the the R environment we can easily import it into h2o.</p>
-<div class="sourceCode" id="cb510"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb510-1" data-line-number="1"><span class="co"># Import mtcars</span></a>
-<a class="sourceLine" id="cb510-2" data-line-number="2">mtcars_h2o_df &lt;-<span class="st"> </span><span class="kw">as.h2o</span>(mtcars)</a>
-<a class="sourceLine" id="cb510-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb510-4" data-line-number="4"><span class="co"># Idenitfy the variable to be predicted</span></a>
-<a class="sourceLine" id="cb510-5" data-line-number="5">y &lt;-<span class="st"> &quot;mpg&quot;</span></a>
-<a class="sourceLine" id="cb510-6" data-line-number="6"></a>
-<a class="sourceLine" id="cb510-7" data-line-number="7"><span class="co"># Put the predictor names into a vector</span></a>
-<a class="sourceLine" id="cb510-8" data-line-number="8">x &lt;-<span class="st"> </span><span class="kw">setdiff</span>(<span class="kw">colnames</span>(mtcars_h2o_df),y)</a></code></pre></div>
+<div class="sourceCode" id="cb538"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb538-1" data-line-number="1"><span class="co"># Import mtcars</span></a>
+<a class="sourceLine" id="cb538-2" data-line-number="2">mtcars_h2o_df &lt;-<span class="st"> </span><span class="kw">as.h2o</span>(mtcars)</a>
+<a class="sourceLine" id="cb538-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb538-4" data-line-number="4"><span class="co"># Idenitfy the variable to be predicted</span></a>
+<a class="sourceLine" id="cb538-5" data-line-number="5">y &lt;-<span class="st"> &quot;mpg&quot;</span></a>
+<a class="sourceLine" id="cb538-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb538-7" data-line-number="7"><span class="co"># Put the predictor names into a vector</span></a>
+<a class="sourceLine" id="cb538-8" data-line-number="8">x &lt;-<span class="st"> </span><span class="kw">setdiff</span>(<span class="kw">colnames</span>(mtcars_h2o_df),y)</a></code></pre></div>
 </div>
 <div id="create-some-h20-models" class="section level2">
 <h2><span class="header-section-number">12.2</span> Create Some h20 Models</h2>
 <p>Now let’s create some training and test data sets. We could do this ourselves using conventional R commands or helper functions from the caret package. However, the h2o package provides its own set of helpers.</p>
-<div class="sourceCode" id="cb511"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb511-1" data-line-number="1">splits &lt;-<span class="st"> </span><span class="kw">h2o.splitFrame</span>(mtcars_h2o_df, <span class="dt">ratios=</span><span class="fl">0.8</span>,<span class="dt">seed=</span><span class="dv">1</span>)</a>
-<a class="sourceLine" id="cb511-2" data-line-number="2">train_h2o &lt;-<span class="st"> </span>splits[[<span class="dv">1</span>]]</a>
-<a class="sourceLine" id="cb511-3" data-line-number="3">test_h2o  &lt;-<span class="st"> </span>splits[[<span class="dv">2</span>]]</a>
-<a class="sourceLine" id="cb511-4" data-line-number="4"></a>
-<a class="sourceLine" id="cb511-5" data-line-number="5">train</a>
-<a class="sourceLine" id="cb511-6" data-line-number="6"></a>
-<a class="sourceLine" id="cb511-7" data-line-number="7">mpg cyl disp  hp drat    wt  qsec vs am gear carb</a>
-<a class="sourceLine" id="cb511-8" data-line-number="8"><span class="dv">1</span> <span class="fl">21.0</span>   <span class="dv">6</span>  <span class="dv">160</span> <span class="dv">110</span> <span class="fl">3.90</span> <span class="fl">2.620</span> <span class="fl">16.46</span>  <span class="dv">0</span>  <span class="dv">1</span>    <span class="dv">4</span>    <span class="dv">4</span></a>
-<a class="sourceLine" id="cb511-9" data-line-number="9"><span class="dv">2</span> <span class="fl">21.0</span>   <span class="dv">6</span>  <span class="dv">160</span> <span class="dv">110</span> <span class="fl">3.90</span> <span class="fl">2.875</span> <span class="fl">17.02</span>  <span class="dv">0</span>  <span class="dv">1</span>    <span class="dv">4</span>    <span class="dv">4</span></a>
-<a class="sourceLine" id="cb511-10" data-line-number="10"><span class="dv">3</span> <span class="fl">21.4</span>   <span class="dv">6</span>  <span class="dv">258</span> <span class="dv">110</span> <span class="fl">3.08</span> <span class="fl">3.215</span> <span class="fl">19.44</span>  <span class="dv">1</span>  <span class="dv">0</span>    <span class="dv">3</span>    <span class="dv">1</span></a>
-<a class="sourceLine" id="cb511-11" data-line-number="11"><span class="dv">4</span> <span class="fl">18.7</span>   <span class="dv">8</span>  <span class="dv">360</span> <span class="dv">175</span> <span class="fl">3.15</span> <span class="fl">3.440</span> <span class="fl">17.02</span>  <span class="dv">0</span>  <span class="dv">0</span>    <span class="dv">3</span>    <span class="dv">2</span></a>
-<a class="sourceLine" id="cb511-12" data-line-number="12"><span class="dv">5</span> <span class="fl">18.1</span>   <span class="dv">6</span>  <span class="dv">225</span> <span class="dv">105</span> <span class="fl">2.76</span> <span class="fl">3.460</span> <span class="fl">20.22</span>  <span class="dv">1</span>  <span class="dv">0</span>    <span class="dv">3</span>    <span class="dv">1</span></a>
-<a class="sourceLine" id="cb511-13" data-line-number="13"><span class="dv">6</span> <span class="fl">14.3</span>   <span class="dv">8</span>  <span class="dv">360</span> <span class="dv">245</span> <span class="fl">3.21</span> <span class="fl">3.570</span> <span class="fl">15.84</span>  <span class="dv">0</span>  <span class="dv">0</span>    <span class="dv">3</span>    <span class="dv">4</span></a>
-<a class="sourceLine" id="cb511-14" data-line-number="14"></a>
-<a class="sourceLine" id="cb511-15" data-line-number="15">[<span class="dv">29</span> rows x <span class="dv">11</span> columns] </a></code></pre></div>
+<div class="sourceCode" id="cb539"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb539-1" data-line-number="1">splits &lt;-<span class="st"> </span><span class="kw">h2o.splitFrame</span>(mtcars_h2o_df, <span class="dt">ratios=</span><span class="fl">0.8</span>,<span class="dt">seed=</span><span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb539-2" data-line-number="2">train_h2o &lt;-<span class="st"> </span>splits[[<span class="dv">1</span>]]</a>
+<a class="sourceLine" id="cb539-3" data-line-number="3">test_h2o  &lt;-<span class="st"> </span>splits[[<span class="dv">2</span>]]</a>
+<a class="sourceLine" id="cb539-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb539-5" data-line-number="5">train</a>
+<a class="sourceLine" id="cb539-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb539-7" data-line-number="7">mpg cyl disp  hp drat    wt  qsec vs am gear carb</a>
+<a class="sourceLine" id="cb539-8" data-line-number="8"><span class="dv">1</span> <span class="fl">21.0</span>   <span class="dv">6</span>  <span class="dv">160</span> <span class="dv">110</span> <span class="fl">3.90</span> <span class="fl">2.620</span> <span class="fl">16.46</span>  <span class="dv">0</span>  <span class="dv">1</span>    <span class="dv">4</span>    <span class="dv">4</span></a>
+<a class="sourceLine" id="cb539-9" data-line-number="9"><span class="dv">2</span> <span class="fl">21.0</span>   <span class="dv">6</span>  <span class="dv">160</span> <span class="dv">110</span> <span class="fl">3.90</span> <span class="fl">2.875</span> <span class="fl">17.02</span>  <span class="dv">0</span>  <span class="dv">1</span>    <span class="dv">4</span>    <span class="dv">4</span></a>
+<a class="sourceLine" id="cb539-10" data-line-number="10"><span class="dv">3</span> <span class="fl">21.4</span>   <span class="dv">6</span>  <span class="dv">258</span> <span class="dv">110</span> <span class="fl">3.08</span> <span class="fl">3.215</span> <span class="fl">19.44</span>  <span class="dv">1</span>  <span class="dv">0</span>    <span class="dv">3</span>    <span class="dv">1</span></a>
+<a class="sourceLine" id="cb539-11" data-line-number="11"><span class="dv">4</span> <span class="fl">18.7</span>   <span class="dv">8</span>  <span class="dv">360</span> <span class="dv">175</span> <span class="fl">3.15</span> <span class="fl">3.440</span> <span class="fl">17.02</span>  <span class="dv">0</span>  <span class="dv">0</span>    <span class="dv">3</span>    <span class="dv">2</span></a>
+<a class="sourceLine" id="cb539-12" data-line-number="12"><span class="dv">5</span> <span class="fl">18.1</span>   <span class="dv">6</span>  <span class="dv">225</span> <span class="dv">105</span> <span class="fl">2.76</span> <span class="fl">3.460</span> <span class="fl">20.22</span>  <span class="dv">1</span>  <span class="dv">0</span>    <span class="dv">3</span>    <span class="dv">1</span></a>
+<a class="sourceLine" id="cb539-13" data-line-number="13"><span class="dv">6</span> <span class="fl">14.3</span>   <span class="dv">8</span>  <span class="dv">360</span> <span class="dv">245</span> <span class="fl">3.21</span> <span class="fl">3.570</span> <span class="fl">15.84</span>  <span class="dv">0</span>  <span class="dv">0</span>    <span class="dv">3</span>    <span class="dv">4</span></a>
+<a class="sourceLine" id="cb539-14" data-line-number="14"></a>
+<a class="sourceLine" id="cb539-15" data-line-number="15">[<span class="dv">29</span> rows x <span class="dv">11</span> columns] </a></code></pre></div>
 <p>Now let’s create a model. We’ll use the Generalized Linear Model function from h2o. It is important to note that this function is implemented from within h2o. That is, we are not in anyway using any existing R packages to do this nor are we using anything from the <strong>care</strong> package. Here we’ll request a 4-Fold, Cross Validation step as part of the model assembly.</p>
-<div class="sourceCode" id="cb512"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb512-1" data-line-number="1">h2o_glm_model &lt;-<span class="st"> </span><span class="kw">h2o.glm</span>(<span class="dt">y=</span>y,<span class="dt">x=</span>x,train_h2o,<span class="dt">nfolds=</span><span class="dv">4</span>)</a>
-<a class="sourceLine" id="cb512-2" data-line-number="2"><span class="kw">summary</span>(h2o_glm_model)</a>
-<a class="sourceLine" id="cb512-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb512-4" data-line-number="4"><span class="co">#</span></a>
-<a class="sourceLine" id="cb512-5" data-line-number="5"></a>
-<a class="sourceLine" id="cb512-6" data-line-number="6"> <span class="op">|</span><span class="er">===========================================================|</span><span class="st"> </span><span class="dv">100</span>%</a>
-<a class="sourceLine" id="cb512-7" data-line-number="7">Model Details<span class="op">:</span></a>
-<a class="sourceLine" id="cb512-8" data-line-number="8"><span class="er">==============</span></a>
-<a class="sourceLine" id="cb512-9" data-line-number="9"></a>
-<a class="sourceLine" id="cb512-10" data-line-number="10">H2ORegressionModel<span class="op">:</span><span class="st"> </span>glm</a>
-<a class="sourceLine" id="cb512-11" data-line-number="11">Model Key<span class="op">:</span><span class="st">  </span>GLM_model_R_<span class="dv">1577927955348</span>_<span class="dv">1</span> </a>
-<a class="sourceLine" id="cb512-12" data-line-number="12">GLM Model<span class="op">:</span><span class="st"> </span>summary</a>
-<a class="sourceLine" id="cb512-13" data-line-number="13">    family     link                              regularization</a>
-<a class="sourceLine" id="cb512-14" data-line-number="14"><span class="dv">1</span> gaussian identity Elastic <span class="kw">Net</span> (<span class="dt">alpha =</span> <span class="fl">0.5</span>, <span class="dt">lambda =</span> <span class="fl">1.0664</span> )</a>
-<a class="sourceLine" id="cb512-15" data-line-number="15">  number_of_predictors_total number_of_active_predictors</a>
-<a class="sourceLine" id="cb512-16" data-line-number="16"><span class="dv">1</span>                         <span class="dv">10</span>                           <span class="dv">9</span></a>
-<a class="sourceLine" id="cb512-17" data-line-number="17">  number_of_iterations    training_frame</a>
-<a class="sourceLine" id="cb512-18" data-line-number="18"><span class="dv">1</span>                    <span class="dv">1</span> RTMP_sid_bf87_<span class="dv">673</span></a>
-<a class="sourceLine" id="cb512-19" data-line-number="19"></a>
-<a class="sourceLine" id="cb512-20" data-line-number="20">H2ORegressionMetrics<span class="op">:</span><span class="st"> </span>glm</a>
-<a class="sourceLine" id="cb512-21" data-line-number="21"><span class="op">**</span><span class="st"> </span>Reported on training data. <span class="op">**</span></a>
-<a class="sourceLine" id="cb512-22" data-line-number="22"></a>
-<a class="sourceLine" id="cb512-23" data-line-number="23">MSE<span class="op">:</span><span class="st">  </span><span class="fl">6.185253</span></a>
-<a class="sourceLine" id="cb512-24" data-line-number="24">RMSE<span class="op">:</span><span class="st">  </span><span class="fl">2.487017</span></a>
-<a class="sourceLine" id="cb512-25" data-line-number="25">MAE<span class="op">:</span><span class="st">  </span><span class="fl">1.940791</span></a>
-<a class="sourceLine" id="cb512-26" data-line-number="26">RMSLE<span class="op">:</span><span class="st">  </span><span class="fl">0.1135999</span></a>
-<a class="sourceLine" id="cb512-27" data-line-number="27">Mean Residual Deviance <span class="op">:</span><span class="st">  </span><span class="fl">6.185253</span></a>
-<a class="sourceLine" id="cb512-28" data-line-number="28">R<span class="op">^</span><span class="dv">2</span> <span class="op">:</span><span class="st">  </span><span class="fl">0.8392098</span></a>
-<a class="sourceLine" id="cb512-29" data-line-number="29">Null Deviance <span class="op">:</span><span class="fl">1115.568</span></a>
-<a class="sourceLine" id="cb512-30" data-line-number="30">Null D.o.F. <span class="op">:</span><span class="dv">28</span></a>
-<a class="sourceLine" id="cb512-31" data-line-number="31">Residual Deviance <span class="op">:</span><span class="fl">179.3723</span></a>
-<a class="sourceLine" id="cb512-32" data-line-number="32">Residual D.o.F. <span class="op">:</span><span class="dv">19</span></a>
-<a class="sourceLine" id="cb512-33" data-line-number="33">AIC <span class="op">:</span><span class="fl">157.1413</span></a>
-<a class="sourceLine" id="cb512-34" data-line-number="34"></a>
-<a class="sourceLine" id="cb512-35" data-line-number="35"></a>
-<a class="sourceLine" id="cb512-36" data-line-number="36"></a>
-<a class="sourceLine" id="cb512-37" data-line-number="37">H2ORegressionMetrics<span class="op">:</span><span class="st"> </span>glm</a>
-<a class="sourceLine" id="cb512-38" data-line-number="38"><span class="op">**</span><span class="st"> </span>Reported on cross<span class="op">-</span>validation data. <span class="op">**</span></a>
-<a class="sourceLine" id="cb512-39" data-line-number="39"><span class="er">**</span><span class="st"> </span><span class="dv">4</span><span class="op">-</span>fold cross<span class="op">-</span>validation on training <span class="kw">data</span> (Metrics computed <span class="cf">for</span> combined holdout predictions) <span class="op">**</span></a>
-<a class="sourceLine" id="cb512-40" data-line-number="40"></a>
-<a class="sourceLine" id="cb512-41" data-line-number="41">MSE<span class="op">:</span><span class="st">  </span><span class="fl">9.520966</span></a>
-<a class="sourceLine" id="cb512-42" data-line-number="42">RMSE<span class="op">:</span><span class="st">  </span><span class="fl">3.085606</span></a>
-<a class="sourceLine" id="cb512-43" data-line-number="43">MAE<span class="op">:</span><span class="st">  </span><span class="fl">2.478209</span></a>
-<a class="sourceLine" id="cb512-44" data-line-number="44">RMSLE<span class="op">:</span><span class="st">  </span><span class="fl">0.1462186</span></a>
-<a class="sourceLine" id="cb512-45" data-line-number="45">Mean Residual Deviance <span class="op">:</span><span class="st">  </span><span class="fl">9.520966</span></a>
-<a class="sourceLine" id="cb512-46" data-line-number="46">R<span class="op">^</span><span class="dv">2</span> <span class="op">:</span><span class="st">  </span><span class="fl">0.7524955</span></a>
-<a class="sourceLine" id="cb512-47" data-line-number="47">Null Deviance <span class="op">:</span><span class="fl">1194.241</span></a>
-<a class="sourceLine" id="cb512-48" data-line-number="48">Null D.o.F. <span class="op">:</span><span class="dv">28</span></a>
-<a class="sourceLine" id="cb512-49" data-line-number="49">Residual Deviance <span class="op">:</span><span class="fl">276.108</span></a>
-<a class="sourceLine" id="cb512-50" data-line-number="50">Residual D.o.F. <span class="op">:</span><span class="dv">19</span></a>
-<a class="sourceLine" id="cb512-51" data-line-number="51">AIC <span class="op">:</span><span class="fl">169.6498</span></a>
-<a class="sourceLine" id="cb512-52" data-line-number="52"></a>
-<a class="sourceLine" id="cb512-53" data-line-number="53"></a>
-<a class="sourceLine" id="cb512-54" data-line-number="54">Cross<span class="op">-</span>Validation Metrics Summary<span class="op">:</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb512-55" data-line-number="55"><span class="st">                            </span>mean          sd cv_<span class="dv">1</span>_valid cv_<span class="dv">2</span>_valid</a>
-<a class="sourceLine" id="cb512-56" data-line-number="56">mae                    <span class="fl">2.4294133</span>   <span class="fl">0.4533141</span>  <span class="fl">3.3255308</span>  <span class="fl">2.6851656</span></a>
-<a class="sourceLine" id="cb512-57" data-line-number="57">mean_residual_deviance  <span class="fl">9.431254</span>   <span class="fl">2.5729601</span>  <span class="fl">11.924386</span>  <span class="fl">13.098149</span></a>
-<a class="sourceLine" id="cb512-58" data-line-number="58">mse                     <span class="fl">9.431254</span>   <span class="fl">2.5729601</span>  <span class="fl">11.924386</span>  <span class="fl">13.098149</span></a>
-<a class="sourceLine" id="cb512-59" data-line-number="59">null_deviance          <span class="fl">298.56015</span>    <span class="fl">73.43793</span>   <span class="fl">429.7452</span>  <span class="fl">322.68143</span></a>
-<a class="sourceLine" id="cb512-60" data-line-number="60">r2                     <span class="fl">0.7409388</span> <span class="fl">0.041704282</span>  <span class="fl">0.6850852</span> <span class="fl">0.70873845</span></a>
-<a class="sourceLine" id="cb512-61" data-line-number="61">residual_deviance         <span class="fl">69.027</span>   <span class="fl">21.894964</span>  <span class="fl">107.31948</span>  <span class="fl">65.490746</span></a>
-<a class="sourceLine" id="cb512-62" data-line-number="62">rmse                   <span class="fl">2.9984744</span>  <span class="fl">0.46925735</span>  <span class="fl">3.4531705</span>  <span class="fl">3.6191366</span></a>
-<a class="sourceLine" id="cb512-63" data-line-number="63">rmsle                  <span class="fl">0.1363086</span> <span class="fl">0.026307607</span> <span class="fl">0.19733523</span> <span class="fl">0.13199924</span></a>
-<a class="sourceLine" id="cb512-64" data-line-number="64">                       cv_<span class="dv">3</span>_valid cv_<span class="dv">4</span>_valid</a>
-<a class="sourceLine" id="cb512-65" data-line-number="65">mae                     <span class="fl">1.6167169</span>  <span class="fl">2.0902402</span></a>
-<a class="sourceLine" id="cb512-66" data-line-number="66">mean_residual_deviance  <span class="fl">3.6748443</span>   <span class="fl">9.027636</span></a>
-<a class="sourceLine" id="cb512-67" data-line-number="67">mse                     <span class="fl">3.6748443</span>   <span class="fl">9.027636</span></a>
-<a class="sourceLine" id="cb512-68" data-line-number="68">null_deviance           <span class="fl">139.37894</span>  <span class="fl">302.43506</span></a>
-<a class="sourceLine" id="cb512-69" data-line-number="69">r2                     <span class="fl">0.83919096</span> <span class="fl">0.73074067</span></a>
-<a class="sourceLine" id="cb512-70" data-line-number="70">residual_deviance       <span class="fl">22.049067</span>   <span class="fl">81.24872</span></a>
-<a class="sourceLine" id="cb512-71" data-line-number="71">rmse                    <span class="fl">1.9169884</span>  <span class="fl">3.0046024</span></a>
-<a class="sourceLine" id="cb512-72" data-line-number="72">rmsle                   <span class="fl">0.0983199</span> <span class="fl">0.11758001</span></a>
-<a class="sourceLine" id="cb512-73" data-line-number="73"></a>
-<a class="sourceLine" id="cb512-74" data-line-number="74">Scoring History<span class="op">:</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb512-75" data-line-number="75"><span class="st">            </span>timestamp   duration iterations negative_log_likelihood</a>
-<a class="sourceLine" id="cb512-76" data-line-number="76"><span class="dv">1</span> <span class="dv">2020-01-01</span> <span class="dv">20</span><span class="op">:</span><span class="dv">21</span><span class="op">:</span><span class="dv">13</span>  <span class="fl">0.000</span> sec          <span class="dv">0</span>              <span class="fl">1115.56759</span></a>
-<a class="sourceLine" id="cb512-77" data-line-number="77">  objective</a>
-<a class="sourceLine" id="cb512-78" data-line-number="78"><span class="dv">1</span>  <span class="fl">38.46785</span></a>
-<a class="sourceLine" id="cb512-79" data-line-number="79"></a>
-<a class="sourceLine" id="cb512-80" data-line-number="80">Variable Importances<span class="op">:</span><span class="st"> </span>(Extract with <span class="st">`</span><span class="dt">h2o.varimp</span><span class="st">`</span>) </a>
-<a class="sourceLine" id="cb512-81" data-line-number="81"><span class="op">==</span><span class="er">===============================================</span></a>
-<a class="sourceLine" id="cb512-82" data-line-number="82"></a>
-<a class="sourceLine" id="cb512-83" data-line-number="83"><span class="st">   </span>variable relative_importance scaled_importance  percentage</a>
-<a class="sourceLine" id="cb512-84" data-line-number="84"><span class="dv">1</span>        wt          <span class="fl">1.19294625</span>        <span class="fl">1.00000000</span> <span class="fl">0.208632891</span></a>
-<a class="sourceLine" id="cb512-85" data-line-number="85"><span class="dv">2</span>       cyl          <span class="fl">0.92951526</span>        <span class="fl">0.77917615</span> <span class="fl">0.162561772</span></a>
-<a class="sourceLine" id="cb512-86" data-line-number="86"><span class="dv">3</span>      disp          <span class="fl">0.78424629</span>        <span class="fl">0.65740287</span> <span class="fl">0.137155861</span></a>
-<a class="sourceLine" id="cb512-87" data-line-number="87"><span class="dv">4</span>        hp          <span class="fl">0.69294345</span>        <span class="fl">0.58086729</span> <span class="fl">0.121188021</span></a>
-<a class="sourceLine" id="cb512-88" data-line-number="88"><span class="dv">5</span>      carb          <span class="fl">0.62287613</span>        <span class="fl">0.52213261</span> <span class="fl">0.108934035</span></a>
-<a class="sourceLine" id="cb512-89" data-line-number="89"><span class="dv">6</span>        am          <span class="fl">0.55736672</span>        <span class="fl">0.46721864</span> <span class="fl">0.097477175</span></a>
-<a class="sourceLine" id="cb512-90" data-line-number="90"><span class="dv">7</span>        vs          <span class="fl">0.46246830</span>        <span class="fl">0.38766902</span> <span class="fl">0.080880507</span></a>
-<a class="sourceLine" id="cb512-91" data-line-number="91"><span class="dv">8</span>      drat          <span class="fl">0.45447201</span>        <span class="fl">0.38096604</span> <span class="fl">0.079482047</span></a>
-<a class="sourceLine" id="cb512-92" data-line-number="92"><span class="dv">9</span>      gear          <span class="fl">0.02108593</span>        <span class="fl">0.01767551</span> <span class="fl">0.003687692</span></a>
-<a class="sourceLine" id="cb512-93" data-line-number="93"><span class="dv">10</span>     qsec          <span class="fl">0.00000000</span>        <span class="fl">0.00000000</span> <span class="fl">0.000000000</span></a></code></pre></div>
+<div class="sourceCode" id="cb540"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb540-1" data-line-number="1">h2o_glm_model &lt;-<span class="st"> </span><span class="kw">h2o.glm</span>(<span class="dt">y=</span>y,<span class="dt">x=</span>x,train_h2o,<span class="dt">nfolds=</span><span class="dv">4</span>)</a>
+<a class="sourceLine" id="cb540-2" data-line-number="2"><span class="kw">summary</span>(h2o_glm_model)</a>
+<a class="sourceLine" id="cb540-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb540-4" data-line-number="4"><span class="co">#</span></a>
+<a class="sourceLine" id="cb540-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb540-6" data-line-number="6"> <span class="op">|</span><span class="er">===========================================================|</span><span class="st"> </span><span class="dv">100</span>%</a>
+<a class="sourceLine" id="cb540-7" data-line-number="7">Model Details<span class="op">:</span></a>
+<a class="sourceLine" id="cb540-8" data-line-number="8"><span class="er">==============</span></a>
+<a class="sourceLine" id="cb540-9" data-line-number="9"></a>
+<a class="sourceLine" id="cb540-10" data-line-number="10">H2ORegressionModel<span class="op">:</span><span class="st"> </span>glm</a>
+<a class="sourceLine" id="cb540-11" data-line-number="11">Model Key<span class="op">:</span><span class="st">  </span>GLM_model_R_<span class="dv">1577927955348</span>_<span class="dv">1</span> </a>
+<a class="sourceLine" id="cb540-12" data-line-number="12">GLM Model<span class="op">:</span><span class="st"> </span>summary</a>
+<a class="sourceLine" id="cb540-13" data-line-number="13">    family     link                              regularization</a>
+<a class="sourceLine" id="cb540-14" data-line-number="14"><span class="dv">1</span> gaussian identity Elastic <span class="kw">Net</span> (<span class="dt">alpha =</span> <span class="fl">0.5</span>, <span class="dt">lambda =</span> <span class="fl">1.0664</span> )</a>
+<a class="sourceLine" id="cb540-15" data-line-number="15">  number_of_predictors_total number_of_active_predictors</a>
+<a class="sourceLine" id="cb540-16" data-line-number="16"><span class="dv">1</span>                         <span class="dv">10</span>                           <span class="dv">9</span></a>
+<a class="sourceLine" id="cb540-17" data-line-number="17">  number_of_iterations    training_frame</a>
+<a class="sourceLine" id="cb540-18" data-line-number="18"><span class="dv">1</span>                    <span class="dv">1</span> RTMP_sid_bf87_<span class="dv">673</span></a>
+<a class="sourceLine" id="cb540-19" data-line-number="19"></a>
+<a class="sourceLine" id="cb540-20" data-line-number="20">H2ORegressionMetrics<span class="op">:</span><span class="st"> </span>glm</a>
+<a class="sourceLine" id="cb540-21" data-line-number="21"><span class="op">**</span><span class="st"> </span>Reported on training data. <span class="op">**</span></a>
+<a class="sourceLine" id="cb540-22" data-line-number="22"></a>
+<a class="sourceLine" id="cb540-23" data-line-number="23">MSE<span class="op">:</span><span class="st">  </span><span class="fl">6.185253</span></a>
+<a class="sourceLine" id="cb540-24" data-line-number="24">RMSE<span class="op">:</span><span class="st">  </span><span class="fl">2.487017</span></a>
+<a class="sourceLine" id="cb540-25" data-line-number="25">MAE<span class="op">:</span><span class="st">  </span><span class="fl">1.940791</span></a>
+<a class="sourceLine" id="cb540-26" data-line-number="26">RMSLE<span class="op">:</span><span class="st">  </span><span class="fl">0.1135999</span></a>
+<a class="sourceLine" id="cb540-27" data-line-number="27">Mean Residual Deviance <span class="op">:</span><span class="st">  </span><span class="fl">6.185253</span></a>
+<a class="sourceLine" id="cb540-28" data-line-number="28">R<span class="op">^</span><span class="dv">2</span> <span class="op">:</span><span class="st">  </span><span class="fl">0.8392098</span></a>
+<a class="sourceLine" id="cb540-29" data-line-number="29">Null Deviance <span class="op">:</span><span class="fl">1115.568</span></a>
+<a class="sourceLine" id="cb540-30" data-line-number="30">Null D.o.F. <span class="op">:</span><span class="dv">28</span></a>
+<a class="sourceLine" id="cb540-31" data-line-number="31">Residual Deviance <span class="op">:</span><span class="fl">179.3723</span></a>
+<a class="sourceLine" id="cb540-32" data-line-number="32">Residual D.o.F. <span class="op">:</span><span class="dv">19</span></a>
+<a class="sourceLine" id="cb540-33" data-line-number="33">AIC <span class="op">:</span><span class="fl">157.1413</span></a>
+<a class="sourceLine" id="cb540-34" data-line-number="34"></a>
+<a class="sourceLine" id="cb540-35" data-line-number="35"></a>
+<a class="sourceLine" id="cb540-36" data-line-number="36"></a>
+<a class="sourceLine" id="cb540-37" data-line-number="37">H2ORegressionMetrics<span class="op">:</span><span class="st"> </span>glm</a>
+<a class="sourceLine" id="cb540-38" data-line-number="38"><span class="op">**</span><span class="st"> </span>Reported on cross<span class="op">-</span>validation data. <span class="op">**</span></a>
+<a class="sourceLine" id="cb540-39" data-line-number="39"><span class="er">**</span><span class="st"> </span><span class="dv">4</span><span class="op">-</span>fold cross<span class="op">-</span>validation on training <span class="kw">data</span> (Metrics computed <span class="cf">for</span> combined holdout predictions) <span class="op">**</span></a>
+<a class="sourceLine" id="cb540-40" data-line-number="40"></a>
+<a class="sourceLine" id="cb540-41" data-line-number="41">MSE<span class="op">:</span><span class="st">  </span><span class="fl">9.520966</span></a>
+<a class="sourceLine" id="cb540-42" data-line-number="42">RMSE<span class="op">:</span><span class="st">  </span><span class="fl">3.085606</span></a>
+<a class="sourceLine" id="cb540-43" data-line-number="43">MAE<span class="op">:</span><span class="st">  </span><span class="fl">2.478209</span></a>
+<a class="sourceLine" id="cb540-44" data-line-number="44">RMSLE<span class="op">:</span><span class="st">  </span><span class="fl">0.1462186</span></a>
+<a class="sourceLine" id="cb540-45" data-line-number="45">Mean Residual Deviance <span class="op">:</span><span class="st">  </span><span class="fl">9.520966</span></a>
+<a class="sourceLine" id="cb540-46" data-line-number="46">R<span class="op">^</span><span class="dv">2</span> <span class="op">:</span><span class="st">  </span><span class="fl">0.7524955</span></a>
+<a class="sourceLine" id="cb540-47" data-line-number="47">Null Deviance <span class="op">:</span><span class="fl">1194.241</span></a>
+<a class="sourceLine" id="cb540-48" data-line-number="48">Null D.o.F. <span class="op">:</span><span class="dv">28</span></a>
+<a class="sourceLine" id="cb540-49" data-line-number="49">Residual Deviance <span class="op">:</span><span class="fl">276.108</span></a>
+<a class="sourceLine" id="cb540-50" data-line-number="50">Residual D.o.F. <span class="op">:</span><span class="dv">19</span></a>
+<a class="sourceLine" id="cb540-51" data-line-number="51">AIC <span class="op">:</span><span class="fl">169.6498</span></a>
+<a class="sourceLine" id="cb540-52" data-line-number="52"></a>
+<a class="sourceLine" id="cb540-53" data-line-number="53"></a>
+<a class="sourceLine" id="cb540-54" data-line-number="54">Cross<span class="op">-</span>Validation Metrics Summary<span class="op">:</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb540-55" data-line-number="55"><span class="st">                            </span>mean          sd cv_<span class="dv">1</span>_valid cv_<span class="dv">2</span>_valid</a>
+<a class="sourceLine" id="cb540-56" data-line-number="56">mae                    <span class="fl">2.4294133</span>   <span class="fl">0.4533141</span>  <span class="fl">3.3255308</span>  <span class="fl">2.6851656</span></a>
+<a class="sourceLine" id="cb540-57" data-line-number="57">mean_residual_deviance  <span class="fl">9.431254</span>   <span class="fl">2.5729601</span>  <span class="fl">11.924386</span>  <span class="fl">13.098149</span></a>
+<a class="sourceLine" id="cb540-58" data-line-number="58">mse                     <span class="fl">9.431254</span>   <span class="fl">2.5729601</span>  <span class="fl">11.924386</span>  <span class="fl">13.098149</span></a>
+<a class="sourceLine" id="cb540-59" data-line-number="59">null_deviance          <span class="fl">298.56015</span>    <span class="fl">73.43793</span>   <span class="fl">429.7452</span>  <span class="fl">322.68143</span></a>
+<a class="sourceLine" id="cb540-60" data-line-number="60">r2                     <span class="fl">0.7409388</span> <span class="fl">0.041704282</span>  <span class="fl">0.6850852</span> <span class="fl">0.70873845</span></a>
+<a class="sourceLine" id="cb540-61" data-line-number="61">residual_deviance         <span class="fl">69.027</span>   <span class="fl">21.894964</span>  <span class="fl">107.31948</span>  <span class="fl">65.490746</span></a>
+<a class="sourceLine" id="cb540-62" data-line-number="62">rmse                   <span class="fl">2.9984744</span>  <span class="fl">0.46925735</span>  <span class="fl">3.4531705</span>  <span class="fl">3.6191366</span></a>
+<a class="sourceLine" id="cb540-63" data-line-number="63">rmsle                  <span class="fl">0.1363086</span> <span class="fl">0.026307607</span> <span class="fl">0.19733523</span> <span class="fl">0.13199924</span></a>
+<a class="sourceLine" id="cb540-64" data-line-number="64">                       cv_<span class="dv">3</span>_valid cv_<span class="dv">4</span>_valid</a>
+<a class="sourceLine" id="cb540-65" data-line-number="65">mae                     <span class="fl">1.6167169</span>  <span class="fl">2.0902402</span></a>
+<a class="sourceLine" id="cb540-66" data-line-number="66">mean_residual_deviance  <span class="fl">3.6748443</span>   <span class="fl">9.027636</span></a>
+<a class="sourceLine" id="cb540-67" data-line-number="67">mse                     <span class="fl">3.6748443</span>   <span class="fl">9.027636</span></a>
+<a class="sourceLine" id="cb540-68" data-line-number="68">null_deviance           <span class="fl">139.37894</span>  <span class="fl">302.43506</span></a>
+<a class="sourceLine" id="cb540-69" data-line-number="69">r2                     <span class="fl">0.83919096</span> <span class="fl">0.73074067</span></a>
+<a class="sourceLine" id="cb540-70" data-line-number="70">residual_deviance       <span class="fl">22.049067</span>   <span class="fl">81.24872</span></a>
+<a class="sourceLine" id="cb540-71" data-line-number="71">rmse                    <span class="fl">1.9169884</span>  <span class="fl">3.0046024</span></a>
+<a class="sourceLine" id="cb540-72" data-line-number="72">rmsle                   <span class="fl">0.0983199</span> <span class="fl">0.11758001</span></a>
+<a class="sourceLine" id="cb540-73" data-line-number="73"></a>
+<a class="sourceLine" id="cb540-74" data-line-number="74">Scoring History<span class="op">:</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb540-75" data-line-number="75"><span class="st">            </span>timestamp   duration iterations negative_log_likelihood</a>
+<a class="sourceLine" id="cb540-76" data-line-number="76"><span class="dv">1</span> <span class="dv">2020-01-01</span> <span class="dv">20</span><span class="op">:</span><span class="dv">21</span><span class="op">:</span><span class="dv">13</span>  <span class="fl">0.000</span> sec          <span class="dv">0</span>              <span class="fl">1115.56759</span></a>
+<a class="sourceLine" id="cb540-77" data-line-number="77">  objective</a>
+<a class="sourceLine" id="cb540-78" data-line-number="78"><span class="dv">1</span>  <span class="fl">38.46785</span></a>
+<a class="sourceLine" id="cb540-79" data-line-number="79"></a>
+<a class="sourceLine" id="cb540-80" data-line-number="80">Variable Importances<span class="op">:</span><span class="st"> </span>(Extract with <span class="st">`</span><span class="dt">h2o.varimp</span><span class="st">`</span>) </a>
+<a class="sourceLine" id="cb540-81" data-line-number="81"><span class="op">==</span><span class="er">===============================================</span></a>
+<a class="sourceLine" id="cb540-82" data-line-number="82"></a>
+<a class="sourceLine" id="cb540-83" data-line-number="83"><span class="st">   </span>variable relative_importance scaled_importance  percentage</a>
+<a class="sourceLine" id="cb540-84" data-line-number="84"><span class="dv">1</span>        wt          <span class="fl">1.19294625</span>        <span class="fl">1.00000000</span> <span class="fl">0.208632891</span></a>
+<a class="sourceLine" id="cb540-85" data-line-number="85"><span class="dv">2</span>       cyl          <span class="fl">0.92951526</span>        <span class="fl">0.77917615</span> <span class="fl">0.162561772</span></a>
+<a class="sourceLine" id="cb540-86" data-line-number="86"><span class="dv">3</span>      disp          <span class="fl">0.78424629</span>        <span class="fl">0.65740287</span> <span class="fl">0.137155861</span></a>
+<a class="sourceLine" id="cb540-87" data-line-number="87"><span class="dv">4</span>        hp          <span class="fl">0.69294345</span>        <span class="fl">0.58086729</span> <span class="fl">0.121188021</span></a>
+<a class="sourceLine" id="cb540-88" data-line-number="88"><span class="dv">5</span>      carb          <span class="fl">0.62287613</span>        <span class="fl">0.52213261</span> <span class="fl">0.108934035</span></a>
+<a class="sourceLine" id="cb540-89" data-line-number="89"><span class="dv">6</span>        am          <span class="fl">0.55736672</span>        <span class="fl">0.46721864</span> <span class="fl">0.097477175</span></a>
+<a class="sourceLine" id="cb540-90" data-line-number="90"><span class="dv">7</span>        vs          <span class="fl">0.46246830</span>        <span class="fl">0.38766902</span> <span class="fl">0.080880507</span></a>
+<a class="sourceLine" id="cb540-91" data-line-number="91"><span class="dv">8</span>      drat          <span class="fl">0.45447201</span>        <span class="fl">0.38096604</span> <span class="fl">0.079482047</span></a>
+<a class="sourceLine" id="cb540-92" data-line-number="92"><span class="dv">9</span>      gear          <span class="fl">0.02108593</span>        <span class="fl">0.01767551</span> <span class="fl">0.003687692</span></a>
+<a class="sourceLine" id="cb540-93" data-line-number="93"><span class="dv">10</span>     qsec          <span class="fl">0.00000000</span>        <span class="fl">0.00000000</span> <span class="fl">0.000000000</span></a></code></pre></div>
 <p>Now we can do a prediction on the object against the test set.</p>
-<div class="sourceCode" id="cb513"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb513-1" data-line-number="1">(h2o_glm_preds &lt;-<span class="st"> </span><span class="kw">h2o.predict</span>(h2o_glm_model,test_h2o))</a>
-<a class="sourceLine" id="cb513-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb513-3" data-line-number="3"><span class="co">#</span></a>
-<a class="sourceLine" id="cb513-4" data-line-number="4"><span class="kw">h2o.performance</span>(h2o_glm_model,test_h2o)</a>
-<a class="sourceLine" id="cb513-5" data-line-number="5"></a>
-<a class="sourceLine" id="cb513-6" data-line-number="6"> <span class="op">|</span><span class="er">===========================================================|</span><span class="st"> </span><span class="dv">100</span>%</a>
-<a class="sourceLine" id="cb513-7" data-line-number="7">   predict</a>
-<a class="sourceLine" id="cb513-8" data-line-number="8"><span class="dv">1</span> <span class="fl">25.93186</span></a>
-<a class="sourceLine" id="cb513-9" data-line-number="9"><span class="dv">2</span> <span class="fl">20.67344</span></a>
-<a class="sourceLine" id="cb513-10" data-line-number="10"><span class="dv">3</span> <span class="fl">24.38237</span></a>
-<a class="sourceLine" id="cb513-11" data-line-number="11"></a>
-<a class="sourceLine" id="cb513-12" data-line-number="12">[<span class="dv">3</span> rows x <span class="dv">1</span> column] </a>
-<a class="sourceLine" id="cb513-13" data-line-number="13">H2ORegressionMetrics<span class="op">:</span><span class="st"> </span>glm</a>
-<a class="sourceLine" id="cb513-14" data-line-number="14"></a>
-<a class="sourceLine" id="cb513-15" data-line-number="15">MSE<span class="op">:</span><span class="st">  </span><span class="fl">6.762548</span></a>
-<a class="sourceLine" id="cb513-16" data-line-number="16">RMSE<span class="op">:</span><span class="st">  </span><span class="fl">2.60049</span></a>
-<a class="sourceLine" id="cb513-17" data-line-number="17">MAE<span class="op">:</span><span class="st">  </span><span class="fl">2.495891</span></a>
-<a class="sourceLine" id="cb513-18" data-line-number="18">RMSLE<span class="op">:</span><span class="st">  </span><span class="fl">0.1076563</span></a>
-<a class="sourceLine" id="cb513-19" data-line-number="19">Mean Residual Deviance <span class="op">:</span><span class="st">  </span><span class="fl">6.762548</span></a>
-<a class="sourceLine" id="cb513-20" data-line-number="20">R<span class="op">^</span><span class="dv">2</span> <span class="op">:</span><span class="st">  </span><span class="fl">-2.052306</span></a>
-<a class="sourceLine" id="cb513-21" data-line-number="21">Null Deviance <span class="op">:</span><span class="fl">10.87611</span></a>
-<a class="sourceLine" id="cb513-22" data-line-number="22">Null D.o.F. <span class="op">:</span><span class="dv">2</span></a>
-<a class="sourceLine" id="cb513-23" data-line-number="23">Residual Deviance <span class="op">:</span><span class="fl">20.28765</span></a>
-<a class="sourceLine" id="cb513-24" data-line-number="24">Residual D.o.F. <span class="op">:-</span><span class="dv">7</span></a>
-<a class="sourceLine" id="cb513-25" data-line-number="25">AIC <span class="op">:</span><span class="fl">36.24783</span></a></code></pre></div>
+<div class="sourceCode" id="cb541"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb541-1" data-line-number="1">(h2o_glm_preds &lt;-<span class="st"> </span><span class="kw">h2o.predict</span>(h2o_glm_model,test_h2o))</a>
+<a class="sourceLine" id="cb541-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb541-3" data-line-number="3"><span class="co">#</span></a>
+<a class="sourceLine" id="cb541-4" data-line-number="4"><span class="kw">h2o.performance</span>(h2o_glm_model,test_h2o)</a>
+<a class="sourceLine" id="cb541-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb541-6" data-line-number="6"> <span class="op">|</span><span class="er">===========================================================|</span><span class="st"> </span><span class="dv">100</span>%</a>
+<a class="sourceLine" id="cb541-7" data-line-number="7">   predict</a>
+<a class="sourceLine" id="cb541-8" data-line-number="8"><span class="dv">1</span> <span class="fl">25.93186</span></a>
+<a class="sourceLine" id="cb541-9" data-line-number="9"><span class="dv">2</span> <span class="fl">20.67344</span></a>
+<a class="sourceLine" id="cb541-10" data-line-number="10"><span class="dv">3</span> <span class="fl">24.38237</span></a>
+<a class="sourceLine" id="cb541-11" data-line-number="11"></a>
+<a class="sourceLine" id="cb541-12" data-line-number="12">[<span class="dv">3</span> rows x <span class="dv">1</span> column] </a>
+<a class="sourceLine" id="cb541-13" data-line-number="13">H2ORegressionMetrics<span class="op">:</span><span class="st"> </span>glm</a>
+<a class="sourceLine" id="cb541-14" data-line-number="14"></a>
+<a class="sourceLine" id="cb541-15" data-line-number="15">MSE<span class="op">:</span><span class="st">  </span><span class="fl">6.762548</span></a>
+<a class="sourceLine" id="cb541-16" data-line-number="16">RMSE<span class="op">:</span><span class="st">  </span><span class="fl">2.60049</span></a>
+<a class="sourceLine" id="cb541-17" data-line-number="17">MAE<span class="op">:</span><span class="st">  </span><span class="fl">2.495891</span></a>
+<a class="sourceLine" id="cb541-18" data-line-number="18">RMSLE<span class="op">:</span><span class="st">  </span><span class="fl">0.1076563</span></a>
+<a class="sourceLine" id="cb541-19" data-line-number="19">Mean Residual Deviance <span class="op">:</span><span class="st">  </span><span class="fl">6.762548</span></a>
+<a class="sourceLine" id="cb541-20" data-line-number="20">R<span class="op">^</span><span class="dv">2</span> <span class="op">:</span><span class="st">  </span><span class="fl">-2.052306</span></a>
+<a class="sourceLine" id="cb541-21" data-line-number="21">Null Deviance <span class="op">:</span><span class="fl">10.87611</span></a>
+<a class="sourceLine" id="cb541-22" data-line-number="22">Null D.o.F. <span class="op">:</span><span class="dv">2</span></a>
+<a class="sourceLine" id="cb541-23" data-line-number="23">Residual Deviance <span class="op">:</span><span class="fl">20.28765</span></a>
+<a class="sourceLine" id="cb541-24" data-line-number="24">Residual D.o.F. <span class="op">:-</span><span class="dv">7</span></a>
+<a class="sourceLine" id="cb541-25" data-line-number="25">AIC <span class="op">:</span><span class="fl">36.24783</span></a></code></pre></div>
 </div>
 <div id="saving-a-model" class="section level2">
 <h2><span class="header-section-number">12.3</span> Saving A Model</h2>
 <p>You can save the contents of any h2o generated model by using the <strong>h2o.saveModel()</strong> function. You could extract pieces of information from the S4 object but saving the model is easy to do - as is reading it back in.</p>
-<div class="sourceCode" id="cb514"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb514-1" data-line-number="1">model_path &lt;-<span class="st"> </span><span class="kw">h2o.saveModel</span>(h2o_glm_model,<span class="dt">path=</span><span class="kw">getwd</span>(),<span class="dt">force=</span><span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb514-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb514-3" data-line-number="3"><span class="co"># If you need to load a previously saved model</span></a>
-<a class="sourceLine" id="cb514-4" data-line-number="4"></a>
-<a class="sourceLine" id="cb514-5" data-line-number="5">saved_model &lt;-<span class="st"> </span><span class="kw">h2o.loadModel</span>(model_path)</a></code></pre></div>
+<div class="sourceCode" id="cb542"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb542-1" data-line-number="1">model_path &lt;-<span class="st"> </span><span class="kw">h2o.saveModel</span>(h2o_glm_model,<span class="dt">path=</span><span class="kw">getwd</span>(),<span class="dt">force=</span><span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb542-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb542-3" data-line-number="3"><span class="co"># If you need to load a previously saved model</span></a>
+<a class="sourceLine" id="cb542-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb542-5" data-line-number="5">saved_model &lt;-<span class="st"> </span><span class="kw">h2o.loadModel</span>(model_path)</a></code></pre></div>
 </div>
 <div id="using-the-h2o-auto-ml-feature" class="section level2">
 <h2><span class="header-section-number">12.4</span> Using The h2o Auto ML Feature</h2>
@@ -518,37 +521,37 @@ version include:</p>
 <div id="launching-a-job" class="section level2">
 <h2><span class="header-section-number">12.5</span> Launching a Job</h2>
 <p>Of course, it all begins with the idea of specifying a performance metric such as RMSE or the area under a ROC curve. The idea here is that we specify some input, apply transformations, create a test/train pair, and then call the h2o auto function.</p>
-<div class="sourceCode" id="cb515"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb515-1" data-line-number="1">h2o_auto_mtcars &lt;-<span class="st"> </span><span class="kw">h2o.automl</span>(<span class="dt">y =</span> y, <span class="dt">x =</span> x,</a>
-<a class="sourceLine" id="cb515-2" data-line-number="2">                              <span class="dt">training_frame =</span> train_h2o,</a>
-<a class="sourceLine" id="cb515-3" data-line-number="3">                              <span class="dt">leaderboard_frame =</span> test_h2o,</a>
-<a class="sourceLine" id="cb515-4" data-line-number="4">                              <span class="dt">max_runtime_secs =</span> <span class="dv">60</span>,</a>
-<a class="sourceLine" id="cb515-5" data-line-number="5">                              <span class="dt">seed =</span> <span class="dv">1</span>,</a>
-<a class="sourceLine" id="cb515-6" data-line-number="6">                              <span class="dt">sort_metric =</span> <span class="st">&quot;RMSE&quot;</span>,</a>
-<a class="sourceLine" id="cb515-7" data-line-number="7">                              <span class="dt">project_name =</span> <span class="st">&quot;mtcars&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb543"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb543-1" data-line-number="1">h2o_auto_mtcars &lt;-<span class="st"> </span><span class="kw">h2o.automl</span>(<span class="dt">y =</span> y, <span class="dt">x =</span> x,</a>
+<a class="sourceLine" id="cb543-2" data-line-number="2">                              <span class="dt">training_frame =</span> train_h2o,</a>
+<a class="sourceLine" id="cb543-3" data-line-number="3">                              <span class="dt">leaderboard_frame =</span> test_h2o,</a>
+<a class="sourceLine" id="cb543-4" data-line-number="4">                              <span class="dt">max_runtime_secs =</span> <span class="dv">60</span>,</a>
+<a class="sourceLine" id="cb543-5" data-line-number="5">                              <span class="dt">seed =</span> <span class="dv">1</span>,</a>
+<a class="sourceLine" id="cb543-6" data-line-number="6">                              <span class="dt">sort_metric =</span> <span class="st">&quot;RMSE&quot;</span>,</a>
+<a class="sourceLine" id="cb543-7" data-line-number="7">                              <span class="dt">project_name =</span> <span class="st">&quot;mtcars&quot;</span>)</a></code></pre></div>
 <p>Let’s check out the object that is returned. It is an S4 object in R which means that it has “slots” which can be accessed via the “@” operator.</p>
-<div class="sourceCode" id="cb516"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb516-1" data-line-number="1"><span class="kw">slotNames</span>(h2o_auto_mtcars)</a>
-<a class="sourceLine" id="cb516-2" data-line-number="2">h2o_auto_mtcars<span class="op">@</span>leaderboard</a>
-<a class="sourceLine" id="cb516-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb516-4" data-line-number="4">[<span class="dv">1</span>] <span class="st">&quot;project_name&quot;</span>  <span class="st">&quot;leader&quot;</span>        <span class="st">&quot;leaderboard&quot;</span>   <span class="st">&quot;event_log&quot;</span>    </a>
-<a class="sourceLine" id="cb516-5" data-line-number="5">[<span class="dv">5</span>] <span class="st">&quot;training_info&quot;</span></a>
-<a class="sourceLine" id="cb516-6" data-line-number="6">                                        model_id</a>
-<a class="sourceLine" id="cb516-7" data-line-number="7"><span class="dv">1</span>     GBM_grid_<span class="dv">1</span>_AutoML_<span class="dv">20200101</span>_<span class="dv">202413</span>_model_<span class="dv">53</span></a>
-<a class="sourceLine" id="cb516-8" data-line-number="8"><span class="dv">2</span>          DeepLearning_<span class="dv">1</span>_AutoML_<span class="dv">20200101</span>_<span class="dv">202413</span></a>
-<a class="sourceLine" id="cb516-9" data-line-number="9"><span class="dv">3</span> XGBoost_grid_<span class="dv">1</span>_AutoML_<span class="dv">20200101</span>_<span class="dv">202413</span>_model_<span class="dv">14</span></a>
-<a class="sourceLine" id="cb516-10" data-line-number="10"><span class="dv">4</span>  XGBoost_grid_<span class="dv">1</span>_AutoML_<span class="dv">20200101</span>_<span class="dv">202413</span>_model_<span class="dv">5</span></a>
-<a class="sourceLine" id="cb516-11" data-line-number="11"><span class="dv">5</span>     GBM_grid_<span class="dv">1</span>_AutoML_<span class="dv">20200101</span>_<span class="dv">202413</span>_model_<span class="dv">52</span></a>
-<a class="sourceLine" id="cb516-12" data-line-number="12"><span class="dv">6</span>     GBM_grid_<span class="dv">1</span>_AutoML_<span class="dv">20200101</span>_<span class="dv">202413</span>_model_<span class="dv">16</span></a>
-<a class="sourceLine" id="cb516-13" data-line-number="13">  mean_residual_deviance      rmse       mse       mae      rmsle</a>
-<a class="sourceLine" id="cb516-14" data-line-number="14"><span class="dv">1</span>              <span class="fl">0.2147231</span> <span class="fl">0.4633822</span> <span class="fl">0.2147231</span> <span class="fl">0.4138704</span> <span class="fl">0.02128094</span></a>
-<a class="sourceLine" id="cb516-15" data-line-number="15"><span class="dv">2</span>              <span class="fl">0.3734735</span> <span class="fl">0.6111248</span> <span class="fl">0.3734735</span> <span class="fl">0.5076945</span> <span class="fl">0.02559229</span></a>
-<a class="sourceLine" id="cb516-16" data-line-number="16"><span class="dv">3</span>              <span class="fl">0.4586288</span> <span class="fl">0.6772213</span> <span class="fl">0.4586288</span> <span class="fl">0.6318582</span> <span class="fl">0.03060372</span></a>
-<a class="sourceLine" id="cb516-17" data-line-number="17"><span class="dv">4</span>              <span class="fl">0.4787276</span> <span class="fl">0.6919014</span> <span class="fl">0.4787276</span> <span class="fl">0.5760670</span> <span class="fl">0.03091116</span></a>
-<a class="sourceLine" id="cb516-18" data-line-number="18"><span class="dv">5</span>              <span class="fl">0.7571985</span> <span class="fl">0.8701716</span> <span class="fl">0.7571985</span> <span class="fl">0.7831136</span> <span class="fl">0.03729489</span></a>
-<a class="sourceLine" id="cb516-19" data-line-number="19"><span class="dv">6</span>              <span class="fl">0.7772694</span> <span class="fl">0.8816289</span> <span class="fl">0.7772694</span> <span class="fl">0.8020415</span> <span class="fl">0.03896093</span></a>
-<a class="sourceLine" id="cb516-20" data-line-number="20"></a>
-<a class="sourceLine" id="cb516-21" data-line-number="21">[<span class="dv">89</span> rows x <span class="dv">6</span> columns] </a></code></pre></div>
+<div class="sourceCode" id="cb544"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb544-1" data-line-number="1"><span class="kw">slotNames</span>(h2o_auto_mtcars)</a>
+<a class="sourceLine" id="cb544-2" data-line-number="2">h2o_auto_mtcars<span class="op">@</span>leaderboard</a>
+<a class="sourceLine" id="cb544-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb544-4" data-line-number="4">[<span class="dv">1</span>] <span class="st">&quot;project_name&quot;</span>  <span class="st">&quot;leader&quot;</span>        <span class="st">&quot;leaderboard&quot;</span>   <span class="st">&quot;event_log&quot;</span>    </a>
+<a class="sourceLine" id="cb544-5" data-line-number="5">[<span class="dv">5</span>] <span class="st">&quot;training_info&quot;</span></a>
+<a class="sourceLine" id="cb544-6" data-line-number="6">                                        model_id</a>
+<a class="sourceLine" id="cb544-7" data-line-number="7"><span class="dv">1</span>     GBM_grid_<span class="dv">1</span>_AutoML_<span class="dv">20200101</span>_<span class="dv">202413</span>_model_<span class="dv">53</span></a>
+<a class="sourceLine" id="cb544-8" data-line-number="8"><span class="dv">2</span>          DeepLearning_<span class="dv">1</span>_AutoML_<span class="dv">20200101</span>_<span class="dv">202413</span></a>
+<a class="sourceLine" id="cb544-9" data-line-number="9"><span class="dv">3</span> XGBoost_grid_<span class="dv">1</span>_AutoML_<span class="dv">20200101</span>_<span class="dv">202413</span>_model_<span class="dv">14</span></a>
+<a class="sourceLine" id="cb544-10" data-line-number="10"><span class="dv">4</span>  XGBoost_grid_<span class="dv">1</span>_AutoML_<span class="dv">20200101</span>_<span class="dv">202413</span>_model_<span class="dv">5</span></a>
+<a class="sourceLine" id="cb544-11" data-line-number="11"><span class="dv">5</span>     GBM_grid_<span class="dv">1</span>_AutoML_<span class="dv">20200101</span>_<span class="dv">202413</span>_model_<span class="dv">52</span></a>
+<a class="sourceLine" id="cb544-12" data-line-number="12"><span class="dv">6</span>     GBM_grid_<span class="dv">1</span>_AutoML_<span class="dv">20200101</span>_<span class="dv">202413</span>_model_<span class="dv">16</span></a>
+<a class="sourceLine" id="cb544-13" data-line-number="13">  mean_residual_deviance      rmse       mse       mae      rmsle</a>
+<a class="sourceLine" id="cb544-14" data-line-number="14"><span class="dv">1</span>              <span class="fl">0.2147231</span> <span class="fl">0.4633822</span> <span class="fl">0.2147231</span> <span class="fl">0.4138704</span> <span class="fl">0.02128094</span></a>
+<a class="sourceLine" id="cb544-15" data-line-number="15"><span class="dv">2</span>              <span class="fl">0.3734735</span> <span class="fl">0.6111248</span> <span class="fl">0.3734735</span> <span class="fl">0.5076945</span> <span class="fl">0.02559229</span></a>
+<a class="sourceLine" id="cb544-16" data-line-number="16"><span class="dv">3</span>              <span class="fl">0.4586288</span> <span class="fl">0.6772213</span> <span class="fl">0.4586288</span> <span class="fl">0.6318582</span> <span class="fl">0.03060372</span></a>
+<a class="sourceLine" id="cb544-17" data-line-number="17"><span class="dv">4</span>              <span class="fl">0.4787276</span> <span class="fl">0.6919014</span> <span class="fl">0.4787276</span> <span class="fl">0.5760670</span> <span class="fl">0.03091116</span></a>
+<a class="sourceLine" id="cb544-18" data-line-number="18"><span class="dv">5</span>              <span class="fl">0.7571985</span> <span class="fl">0.8701716</span> <span class="fl">0.7571985</span> <span class="fl">0.7831136</span> <span class="fl">0.03729489</span></a>
+<a class="sourceLine" id="cb544-19" data-line-number="19"><span class="dv">6</span>              <span class="fl">0.7772694</span> <span class="fl">0.8816289</span> <span class="fl">0.7772694</span> <span class="fl">0.8020415</span> <span class="fl">0.03896093</span></a>
+<a class="sourceLine" id="cb544-20" data-line-number="20"></a>
+<a class="sourceLine" id="cb544-21" data-line-number="21">[<span class="dv">89</span> rows x <span class="dv">6</span> columns] </a></code></pre></div>
 <p>Stop the H2O instance</p>
-<div class="sourceCode" id="cb517"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb517-1" data-line-number="1"><span class="kw">h2o.shutdown</span>(<span class="dt">prompt=</span><span class="ot">FALSE</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb545"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb545-1" data-line-number="1"><span class="kw">h2o.shutdown</span>(<span class="dt">prompt=</span><span class="ot">FALSE</span>)</a></code></pre></div>
 
 </div>
 </div>

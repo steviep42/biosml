@@ -249,11 +249,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="11.6" data-path="data-pre-processing.html"><a href="data-pre-processing.html#order-of-pre-processing"><i class="fa fa-check"></i><b>11.6</b> Order of Pre-Processing</a></li>
 <li class="chapter" data-level="11.7" data-path="data-pre-processing.html"><a href="data-pre-processing.html#identifying-redundant-features"><i class="fa fa-check"></i><b>11.7</b> Identifying Redundant Features</a><ul>
 <li class="chapter" data-level="11.7.1" data-path="data-pre-processing.html"><a href="data-pre-processing.html#highly-correlated-variables"><i class="fa fa-check"></i><b>11.7.1</b> Highly Correlated Variables</a></li>
+<li class="chapter" data-level="11.7.2" data-path="data-pre-processing.html"><a href="data-pre-processing.html#ranking-features"><i class="fa fa-check"></i><b>11.7.2</b> Ranking Features</a></li>
+<li class="chapter" data-level="11.7.3" data-path="data-pre-processing.html"><a href="data-pre-processing.html#feature-selection-1"><i class="fa fa-check"></i><b>11.7.3</b> Feature Selection</a></li>
 </ul></li>
-<li class="chapter" data-level="11.8" data-path="data-pre-processing.html"><a href="data-pre-processing.html#ranking-features"><i class="fa fa-check"></i><b>11.8</b> Ranking Features</a></li>
-<li class="chapter" data-level="11.9" data-path="data-pre-processing.html"><a href="data-pre-processing.html#feature-selection-1"><i class="fa fa-check"></i><b>11.9</b> Feature Selection</a></li>
-<li class="chapter" data-level="11.10" data-path="data-pre-processing.html"><a href="data-pre-processing.html#categorical-features"><i class="fa fa-check"></i><b>11.10</b> Categorical Features</a></li>
-<li class="chapter" data-level="11.11" data-path="data-pre-processing.html"><a href="data-pre-processing.html#binning"><i class="fa fa-check"></i><b>11.11</b> Binning</a></li>
+<li class="chapter" data-level="11.8" data-path="data-pre-processing.html"><a href="data-pre-processing.html#handling-categories"><i class="fa fa-check"></i><b>11.8</b> Handling Categories</a><ul>
+<li class="chapter" data-level="11.8.1" data-path="data-pre-processing.html"><a href="data-pre-processing.html#is-rank-a-category"><i class="fa fa-check"></i><b>11.8.1</b> Is Rank A Category ?</a></li>
+<li class="chapter" data-level="11.8.2" data-path="data-pre-processing.html"><a href="data-pre-processing.html#relationship-to-one-hot-encoding"><i class="fa fa-check"></i><b>11.8.2</b> Relationship To One Hot Encoding</a></li>
+</ul></li>
+<li class="chapter" data-level="11.9" data-path="data-pre-processing.html"><a href="data-pre-processing.html#binning"><i class="fa fa-check"></i><b>11.9</b> Binning</a></li>
 </ul></li>
 <li class="chapter" data-level="12" data-path="using-external-ml-frameworks.html"><a href="using-external-ml-frameworks.html"><i class="fa fa-check"></i><b>12</b> Using External ML Frameworks</a><ul>
 <li class="chapter" data-level="12.1" data-path="using-external-ml-frameworks.html"><a href="using-external-ml-frameworks.html#using-h2o"><i class="fa fa-check"></i><b>12.1</b> Using h2o</a></li>
@@ -281,7 +284,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="picking-the-best-model" class="section level1">
 <h1><span class="header-section-number">Chapter 10</span> Picking The Best Model</h1>
-<p>It’s always of interest to compare the results of one model to another (or even more) to determine the “best” model to share with some else. On the other hand, it’s easy to get carried away with trying out different models in an attempt to make perofrmance improvements especially when the might only be marginally better. It’s also wise to pick methods that you know how to reasonably defend over those that you can’t. For example, picking a Nueral Net model might result in better accuracy although if you are challened on the results in some way, would you be able to address all concerns ? If a logistic regression model resulted in a comparable result then you might should stick with that result since it’s a well-known method that few would question.</p>
+<p>It’s always of interest to compare the results of one model to another (or even more) to determine the “best” model to share with some else. On the other hand, it’s easy to get carried away with trying out different models in an attempt to make performance improvements especially when the might only be marginally better. It’s also wise to pick methods that you know how to reasonably defend over those that you can’t. For example, picking a Neural Net model might result in better accuracy although if you are challenged on the results in some way, would you be able to address all concerns ? If a logistic regression model resulted in a comparable result then you might should stick with that result since it’s a well-known method that few would question.</p>
 <div id="an-example" class="section level2">
 <h2><span class="header-section-number">10.1</span> An Example</h2>
 <p>As an example, let’s go back to the linear modeling example back in the section wherein we introduced the <strong>caret</strong> package.</p>
@@ -384,7 +387,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <div id="more-comparisons" class="section level2">
 <h2><span class="header-section-number">10.2</span> More Comparisons</h2>
-<p>Let’s keep going. We’ll use some more methods to see how they perform on the same data. The cool think about caret is that we can resuse the same control object and seeds to facilitate reproducibility. We’ll pick two other methods in addition to the ones we have to see how we can compare them all. In reality, this would be just the beginning of the process, not the end since if we pick a method with hyperparameters then we would want to tune those.</p>
+<p>Let’s keep going. We’ll use some more methods to see how they perform on the same data. The cool think about caret is that we can reuse the same control object and seeds to facilitate reproducibility. We’ll pick two other methods in addition to the ones we have to see how we can compare them all. In reality, this would be just the beginning of the process, not the end since if we pick a method with hyperparameters then we would want to tune those.</p>
 <div class="sourceCode" id="cb313"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb313-1" data-line-number="1">control &lt;-<span class="st"> </span><span class="kw">trainControl</span>(<span class="dt">method =</span> <span class="st">&quot;cv&quot;</span>,       <span class="co"># Cross Fold</span></a>
 <a class="sourceLine" id="cb313-2" data-line-number="2">                        <span class="dt">number =</span> <span class="dv">5</span>,          <span class="co"># 5 Folds</span></a>
 <a class="sourceLine" id="cb313-3" data-line-number="3">                        <span class="dt">verboseIter =</span> <span class="ot">FALSE</span>)  <span class="co"># Verbose</span></a></code></pre></div>

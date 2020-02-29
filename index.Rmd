@@ -170,7 +170,7 @@ Models that are biased generally have less variability when applied to new data 
 
 ## Some Important Terminology
 
-While we could stsart building a lot of models at this point it would be wise to review spme jargon in the world of predictive modeling so we can understand how to fully exploit the variabes (also known as "features") in our data. This is very important. Let's start out with a basic example involving the most (over)used data set in R Education - the "mtcars" data frame. 
+While we could start building a lot of models at this point it would be wise to review some jargon in the world of predictive modeling so we can understand how to fully exploit the variables (also known as "features") in our data. This is very important. Let's start out with a basic example involving the most (over)used data set in R Education - the "mtcars" data frame. 
 
 ```{r mtcarshelp,eval=FALSE}
 Motor Trend Car Road Tests
@@ -202,13 +202,13 @@ Or if we wanted to predict the transmission type - the jargon is the same but th
 
 ![](./pics/jargon2.png)
 
-In the first case we are attempting to predict a numeric quantity whereas in the second case we are predicting a binary outcome (a 0 or 1) which corresponds to, respectively, an automatic or manual transmission. The fact that it appears to be numeric is a bit deceptive since it's just a label - we wouldn't compute on this number. So how do we get to know the data ? Plotting it might be one way but there are a coupld of ways to get some clues up front using some code:
+In the first case we are attempting to predict a numeric quantity whereas in the second case we are predicting a binary outcome (a 0 or 1) which corresponds to, respectively, an automatic or manual transmission. The fact that it appears to be numeric is a bit deceptive since it's just a label - we wouldn't compute on this number. So how do we get to know the data ? Plotting it might be one way but there are a couple of ways to get some clues up front using some code:
 
 ```{r sapplen}
 mtcars %>% summarize_all(n_distinct)
 ```
 
-Be on the lookout for columns that don't have very many unique values such as vs, am, and cyl. These are more likley categoeries by which we might summarize the continuous quantities. As an example - what is the average mpg for each transmission type ? What is the average mpg for all cylinder types ? Even though all the variables appear to be numeric doesn't mean that they can be "computed" on. Does it make sense to take the average of the transmission type ? It's either 0 or 1 (auto or manual). There is no such thing as a car with a 0.40625  transmission. 
+Be on the lookout for columns that don't have very many unique values such as vs, am, and cyl. These are more likely categories by which we might summarize the continuous quantities. As an example - what is the average mpg for each transmission type ? What is the average mpg for all cylinder types ? Even though all the variables appear to be numeric doesn't mean that they can be "computed" on. Does it make sense to take the average of the transmission type ? It's either 0 or 1 (auto or manual). There is no such thing as a car with a 0.40625  transmission. 
 
 ```{r meanmpg}
 mean(mtcars$am)
@@ -223,7 +223,7 @@ table(mtcars$am)
 
 ## Levels of Measurement
 
-We should review the concepts behdind the "levels of measurement" which are helpful in classifying the variables we have in this, or other, data frames. Here is a graphic which summarizes them. (Note: see [this video](https://www.youtube.com/watch?v=LPHYPXBK_ks) from which the graphics were taken.)
+We should review the concepts behind the "levels of measurement" which are helpful in classifying the variables we have in this, or other, data frames. Here is a graphic which summarizes them. (Note: see [this video](https://www.youtube.com/watch?v=LPHYPXBK_ks) from which the graphics were taken.)
 
 
 ![](./pics/lom.png)
@@ -237,14 +237,14 @@ We should review the concepts behdind the "levels of measurement" which are help
   - Qualitative or Categorical
   
 Examples include gender (assuming binary M/F), colors ("red","blue","pink"), marital status, 
-religion, political affilation ("republican","democrat"), smoker ("Y/N"), names
+religion, political affiliation ("republican","democrat"), smoker ("Y/N"), names
 
 Possible measures for this type of information include Mode, Range, Percentage
 
 
 ### Ordinal
 
-   - Ordered Categries
+   - Ordered Categories
    - Relative Rankings
    - Unknown Distance Between Rankings
    - Zero Is Arbitrary
@@ -260,7 +260,7 @@ Possible measures include all those for nominal data with the addition of Median
   - Known and accepted unit of measurement
   - Zero is arbitrary
   
-The difference between two variables is on an interval. Farenheit or Celsius temp (0 does not represent and absolute lowest value). Interval scales tell us about order and differences. Elevation, time of day. 
+The difference between two variables is on an interval. Fahrenheit or Celsius temp (0 does not represent and absolute lowest value). Interval scales tell us about order and differences. Elevation, time of day. 
 
 Measures include all those for Ordinal with the addition of mean, standard deviation, addition, and subtraction. However, multiplication and division wouldn't make sense given that there is no absolute zero. Would a cylinder value of 0 make sense ? 
 
@@ -1420,7 +1420,7 @@ caret::confusionMatrix(glm_label_preds,glm_test$diabetes,positive="pos")
 
 # Classification Example
 
-Now that we've got an idea about how we might judge the performance quality of classification problem let's look at the mechanics of implementing a classificsastion model using the caret package. We've already seen it in action on a regression problem where we were predicting the MPG for the mtcars data frame. We'll be sticking with the Pima Indians dataset that we used previously  This data is provided by the **mlbench** package. The source of the information is the National Institute of Diabetes and Digestive and Kidney Diseases which in turn was hosted on the UCI Repository of Machine Learning. The variables are:
+Now that we've got an idea about how we might judge the performance quality of classification problem let's look at the mechanics of implementing a classification model using the caret package. We've already seen it in action on a regression problem where we were predicting the MPG for the mtcars data frame. We'll be sticking with the Pima Indians dataset that we used previously  This data is provided by the **mlbench** package. The source of the information is the National Institute of Diabetes and Digestive and Kidney Diseases which in turn was hosted on the UCI Repository of Machine Learning. The variables are:
 
     pregnant - Number of times pregnant
     glucose	 - Plasma glucose concentration (glucose tolerance test)
@@ -1440,7 +1440,7 @@ data("PimaIndiansDiabetes")
 pm <- PimaIndiansDiabetes
 ```
 
-So let's look at some exploratory plots to see if there is anything interesting happening. We'll use the Data Explorer pacakge to help us with this although both R and Python have various packages to help with this kind of thing. In fact, there are probably too many packages and more are being developed every 6 months or so. 
+So let's look at some exploratory plots to see if there is anything interesting happening. We'll use the Data Explorer package to help us with this although both R and Python have various packages to help with this kind of thing. In fact, there are probably too many packages and more are being developed every 6 months or so. 
 
 ## Exploratory Plots
 
@@ -1450,7 +1450,7 @@ We'll look use some stock plots from the [**DataExplorer**](https://github.com/e
 plot_intro(pm)
 ```
 
-Let's see if there are any string correltations we need to be aware of. 
+Let's see if there are any string correlations we need to be aware of. 
 
 ```{r decorr}
 plot_correlation(pm, type="continuous")
@@ -1475,7 +1475,7 @@ This plot will show us side by side boxplots of the features as a function of "p
 plot_boxplot(pm,by="diabetes")
 ```
 
-This plot will help us see if any of our features are normally distibuted:
+This plot will help us see if any of our features are normally distributed:
 
 
 ```{r pqq}
@@ -1490,7 +1490,7 @@ It turns out that Data Explorer will help us create a detailed report involving 
 create_report(pm, y = "diabetes")
 ```
 
-At this point we know that we want to predict "diabetes" and that perhaps glucose is an important variables in the data. We also don't observe many strong correlations in the data so mulitcollinrarity isn't a concern. We also don't see strong evidence in the PCA plot that the data would benefit from a PCA transformation. One thing that we might consider doing is scaling the data since the features do not share the same measurement scale. We'll take this into consideration. 
+At this point we know that we want to predict "diabetes" and that perhaps glucose is an important variables in the data. We also don't observe many strong correlations in the data so multicollinearity isn't a concern. We also don't see strong evidence in the PCA plot that the data would benefit from a PCA transformation. One thing that we might consider doing is scaling the data since the features do not share the same measurement scale. We'll take this into consideration. 
 
 ## Generalized Linear Models
 
@@ -1555,14 +1555,14 @@ pm_glm_mod
 pm_glm_mod$results
 ```
 
-So we get an estiamte of a 77% accuracy rate when the model is applied to out of sample data. This isn't so impressive but we aren't here to solve that problem (at least not just yet). So let's make some predictions use thing test data to see what the Accuracy rate is. 
+So we get an estimate of a 77% accuracy rate when the model is applied to out of sample data. This isn't so impressive but we aren't here to solve that problem (at least not just yet). So let's make some predictions use thing test data to see what the Accuracy rate is. 
 
 ```{r}
 pm_glm_pred_labels <- predict(pm_glm_mod,test)
 confusionMatrix(pm_glm_pred_labels,test$diabetes)
 ```
 
-The **train** function provides is with an object that contains lots of informstion but in no way interferes with the results of the glm model. It's as if you had built it using the standalone glm function which means that you can easily examine the model diagnostics:
+The **train** function provides is with an object that contains lots of information but in no way interferes with the results of the glm model. It's as if you had built it using the standalone glm function which means that you can easily examine the model diagnostics:
 
 
 ```{r glminspect}
@@ -1595,7 +1595,7 @@ pm_glm_mod <- train(form = diabetes ~ .,
 pm_glm_mod$results
 ```
 
-Notice that we get a different result back than before. Here we get the Area Under the ROC curve as well as the Sensitivity and Specifity. In many ways, this is all we need but if we wanted more we could use the MLeval package to help us. 
+Notice that we get a different result back than before. Here we get the Area Under the ROC curve as well as the Sensitivity and Specificity. In many ways, this is all we need but if we wanted more we could use the MLeval package to help us. 
 
 ```{r classmeval,message=FALSE}
 MLeval::evalm(pm_glm_mod)
@@ -1851,7 +1851,7 @@ segments(12,10,12,21,lty=2)
 
 ## Gini Index
 
-So we have to find a way to make the decisions such that the resulting regions are as pure as possible. This could be measuring the degree of impurity or purity - so we are either maximinizng purity or minimizing impurity The so called "Gini index"" gives us the degree or measure of impurity. 
+So we have to find a way to make the decisions such that the resulting regions are as pure as possible. This could be measuring the degree of impurity or purity - so we are either maximizing purity or minimizing impurity The so called "Gini index"" gives us the degree or measure of impurity. 
 
 The lower the Gini index, the lower the degree of impurity (this higher purity). The higher the Gini index the higher the degree of impurity (this lower purity). The decision tree will select the split that minimizes or lowers the Gini index. There are other measures or indices that can be used such as the "information" measure. 
 
@@ -2354,7 +2354,7 @@ args(randomForest)
 
 # Picking The Best Model
 
-It's always of interest to compare the results of one model to another (or even more) to determine the "best" model to share with some else. On the other hand, it's easy to get carried away with trying out different models in an attempt to make perofrmance improvements especially when the might only be marginally better. It's also wise to pick methods that you know how to reasonably defend over those that you can't. For example, picking a Nueral Net model might result in better accuracy although if you are challened on the results in some way, would you be able to address all concerns ? If a logistic regression model resulted in a comparable result then you might should stick with that result since it's a well-known method that few would question. 
+It's always of interest to compare the results of one model to another (or even more) to determine the "best" model to share with some else. On the other hand, it's easy to get carried away with trying out different models in an attempt to make performance improvements especially when the might only be marginally better. It's also wise to pick methods that you know how to reasonably defend over those that you can't. For example, picking a Neural Net model might result in better accuracy although if you are challenged on the results in some way, would you be able to address all concerns ? If a logistic regression model resulted in a comparable result then you might should stick with that result since it's a well-known method that few would question. 
 
 
 ## An Example 
@@ -2439,7 +2439,7 @@ cat("RMSE for smv is: ",compute_rmse(svm_preds,example_Test$mpg),"\n")
 
 ## More Comparisons
 
-Let's keep going. We'll use some more methods to see how they perform on the same data. The cool think about caret is that we can resuse the same control object and seeds to facilitate reproducibility. We'll pick two other methods in addition to the ones we have to see how we can compare them all. In reality, this would be just the beginning of the process, not the end since if we pick a method with hyperparameters then we would want to tune those. 
+Let's keep going. We'll use some more methods to see how they perform on the same data. The cool think about caret is that we can reuse the same control object and seeds to facilitate reproducibility. We'll pick two other methods in addition to the ones we have to see how we can compare them all. In reality, this would be just the beginning of the process, not the end since if we pick a method with hyperparameters then we would want to tune those. 
 
 
 ```{r pickthe5}
@@ -3012,7 +3012,7 @@ names(bbbDescr[,nearZeroVar(bbbDescr)])
 ## PCA - Principal Components Analysis
 
 So one of the problems with data can be what is called multicollinearity
-where high correlations exist between variables in a data set. Consider the mtcars data frame for example. Let's assume that we want to predict whether a given car has an automatic transmission (0) or maial (1). We'll remove other columns from the data frame that represent categorical data so we can focus on the continuous numeric variables. 
+where high correlations exist between variables in a data set. Consider the mtcars data frame for example. Let's assume that we want to predict whether a given car has an automatic transmission (0) or manual (1). We'll remove other columns from the data frame that represent categorical data so we can focus on the continuous numeric variables. 
 
 
 ### Identify The Factors
@@ -3021,14 +3021,14 @@ where high correlations exist between variables in a data set. Consider the mtca
 sapply(mtcars,function(x) length(unique(x)))
 ```
 
-Let's eliminate cyl,vs,gear, and carb. We'll also remove the rownames since, if we don't, then they will cause problems when we create the biplot of the principal compoments. 
+Let's eliminate cyl,vs,gear, and carb. We'll also remove the rownames since, if we don't, then they will cause problems when we create the biplot of the principal components. 
 
 ```{r pcaprep}
 mtcars_data <- mtcars[,c(1,3:7,9)]
 rownames(mtcars_data) <- NULL
 ```
 
-Now, let's look at the correlation matrix to see if we have highly correlated variabes. We do have several correlations that exceed .7 which is sufficiently high to consider that they might cause problems when building models. The caret package has a findCorrelation function that can remove predictors that exhibit a correlation above a certain threshold but we'll see how PCA can help - so we'll leave them in for now. 
+Now, let's look at the correlation matrix to see if we have highly correlated variables. We do have several correlations that exceed .7 which is sufficiently high to consider that they might cause problems when building models. The caret package has a findCorrelation function that can remove predictors that exhibit a correlation above a certain threshold but we'll see how PCA can help - so we'll leave them in for now. 
 
 
 ### Check For High Correlations
@@ -3048,7 +3048,7 @@ cor(mtcars_data[,-7])
 
 ### So Why Use PCA ? 
 
-There are several functions for doing Principal Components Analysis on this data. But why are we even thinking about PCA ? Well, it helps us deal with highly correlated data by **reducing** the dimensionality of a data set. In the mtcars data frame we don't have that many variabesl / columns but wouldn't it be nice to transform the data in a way that reduced the number of columns that we had to consider while also dealing with the multicollinrarity ? 
+There are several functions for doing Principal Components Analysis on this data. But why are we even thinking about PCA ? Well, it helps us deal with highly correlated data by **reducing** the dimensionality of a data set. In the mtcars data frame we don't have that many variables / columns but wouldn't it be nice to transform the data in a way that reduced the number of columns that we had to consider while also dealing with the multicollinearity ? 
 
 This is what PCA can do for us. In reality we are using the eigenvectors of the covariance matrix of the original data. We use them to transform the original data into a reduced number of columns to consider. To get the ball rolling, we'll use the **prcomp** function. 
 
@@ -3065,13 +3065,13 @@ summary(prcs)
 
 ### Check The BiPlot
 
-What we get from this summary is that PC1 accounts for roughly 70% of the variation in the data set. By the time we get to PC3, about 95% of the variation is accounted. We can also look at something called a biplot that allows us to see what variables in the first two components are influential. This information is also available just by viewing the default return information from the object itsel but the biplot makes it easier to see. 
+What we get from this summary is that PC1 accounts for roughly 70% of the variation in the data set. By the time we get to PC3, about 95% of the variation is accounted. We can also look at something called a biplot that allows us to see what variables in the first two components are influential. This information is also available just by viewing the default return information from the object itself but the biplot makes it easier to see. 
 
 ```{r pcabiplot}
 biplot(prcs)
 ```
 
-Back to the summary information, we cal use something called a **screeplot** whih will help us see how many of the components to use. We don't actually need the plot although it can help. Look at the plot and find the "elbow" which is the point at which the rate of change stabilizes. In the plot below it looks like the elbow is at PC3. In looking at the summary info, if we select three components then we are accounting for about 95% of the variation in the data. IF we selected two components then we would have about 89% of the variation accounted for. 
+Back to the summary information, we cal use something called a **screeplot** which will help us see how many of the components to use. We don't actually need the plot although it can help. Look at the plot and find the "elbow" which is the point at which the rate of change stabilizes. In the plot below it looks like the elbow is at PC3. In looking at the summary info, if we select three components then we are accounting for about 95% of the variation in the data. IF we selected two components then we would have about 89% of the variation accounted for. 
 
 ```{r pcasumm2}
 summary(prcs)
@@ -3083,7 +3083,7 @@ summary(prcs)
 screeplot(prcs,type="line")
 ```
 
-Let's pick two components. We'll multiply our data set (using (matrix multiplication) by the two "loadings" / components that we picked. This will give us our original data in terms of the two principla components.
+Let's pick two components. We'll multiply our data set (using (matrix multiplication) by the two "loadings" / components that we picked. This will give us our original data in terms of the two principal components.
 
 ```{r pcaloads}
 model2 <- prcs$loadings[,1:2]
@@ -3114,7 +3114,7 @@ cat("Accuracy for PCA mod: ",sum(diag(mod1t))/sum(mod1t),"\n")
 
 ### PLS 
 
-Partial Least Squares regression is related to PCA although, in classification probelms, the latter ignores the variable being predicted. PLS uses information from the variable to be predicted (the class labels) to help maximize the separation of the two classes. Of course, using pls as a method within caret is easy. 
+Partial Least Squares regression is related to PCA although, in classification problems, the latter ignores the variable being predicted. PLS uses information from the variable to be predicted (the class labels) to help maximize the separation of the two classes. Of course, using pls as a method within caret is easy. 
 
 ```{r pcaplsexamp}
 control <- trainControl(method="cv",number = 5)
@@ -3127,12 +3127,12 @@ caret_pls <- train(factor(am)~.,
                   trControl = control)
 ```
 
-We already knew that the mtcars data frame would benefit from PCA. Here we see that PLS uses the first three Principal Components to arrive at an accurcay of 0.97 on the data set.
+We already knew that the mtcars data frame would benefit from PCA. Here we see that PLS uses the first three Principal Components to arrive at an accuracy of 0.97 on the data set.
 
 
 ### Summary
 
-So the advantages of PCA should be clear in this case. We have effecively replaced the original data by a smaller data set while also dealing with the correlation issues. We used only two components. Now, a disdvantage here is that the model with the transformed data is in terms of the components which means that the model is less transparent. Perhaps a minor price to pay for better accuracy. In terms of the caret package we can do this using the **preProcess** function:
+So the advantages of PCA should be clear in this case. We have effectively replaced the original data by a smaller data set while also dealing with the correlation issues. We used only two components. Now, a disadvantage here is that the model with the transformed data is in terms of the components which means that the model is less transparent. Perhaps a minor price to pay for better accuracy. In terms of the caret package we can do this using the **preProcess** function:
 
 ```{r pcacaret}
 control <- trainControl(method="cv",number = 5)
@@ -3224,7 +3224,7 @@ decorrel_lm <- train(mpg~.,
 
 ```
 
-## Ranking Features 
+### Ranking Features 
 
 Another approach would be to identify the important variables as determined by a rigorous, reliable and statistically aware process. Some models will report this information as part of the computation. The **caret** package has a function called **varImp** which helps to calculate relative variable importance within an object produced by the **train** function. What this means for us is that we can take most models built with **train** and pass it to the **varImp** function.
 
@@ -3264,7 +3264,7 @@ myLm <- train(mpg~wt+disp+hp,
 summary(myLm)
 ```
 
-## Feature Selection
+### Feature Selection
 
 Being able to automatically include only the most important features is desirable (again an example might be Step Wise Regression). Caret provides its own function to do a simple backwards selection to recursively eliminate features based on how they contribute (or not) to the model. You could do all of this by hand yourself of course.
 
@@ -3295,83 +3295,165 @@ myLm <- train(mpg~wt+am+qsec,
 summary(myLm)
 ```
 
-## Categorical Features
+## Handling Categories 
 
-Categorical features are those that are labelled or character data which suggest categories (e.g. "male","female","smoker","non-snoker"). These variables, while useful, need to be recoded in a way to make them useful for machine learning methods. For example, read in the following data:
+If you haven't already, you should first read the section on "Levels Of Measurement" to reacquaint yourself with the differences between Nominal, Ordinal, Interval, and Ratio data. 
 
+In this section we'll deal with categories and factors which represent categories (e.g. "male","female","smoker","non-smoker"). These variables, while useful, need to be recoded in a way to make them useful for machine learning methods. For example, read in the following data which relates to admissions data for students applying to an academic program. This comes from [UCLA Statisitical Consulting](https://stats.idre.ucla.edu/r/dae/logit-regression/) site.
 
-```{r readetitanic}
-url <- "https://raw.githubusercontent.com/steviep42/bios534_spring_2020/master/data/etitanic.csv"
-etitanic <- read.csv(url)
+```{r factonehot1}
+admissions <- read.csv("https://stats.idre.ucla.edu/stat/data/binary.csv")
+head(admissions)
+str(admissions)
 ```
 
-If you insepct this data frame you will notice that there are already some "factors" in the data. This is good because we can begin to use this information in the development of models although this will be a function of what it is we are trying to predict. 
+Let's examine this data by determining the number of unique values assumed by each feature. This helps us understand if a variable is a category / factor variable or a continuous quantity. It appears that admit takes on only two distinct values and rank assumes only four which suggests that both might be more of a category than a quantity upon which we could perform lots of calculations. 
 
-```{r inspectetitanic}
-str(etitanic)
+```{r onefactsummdist}
+admissions %>% summarise_all(n_distinct)
 ```
 
-If we want to predict, for example, whether someone survived the catastrophe (the survived column), we'll need to turn that into a factor also since it represents a category. This happens a lot in classification. 
+You can always use the **summary** function to get a quick overview of the data. Notice here that admit is more of a binary entity although since R thinks it is just a number it will compute the percentiles for it. Same with the rest of the variables. We probably don't want this but let's hold off on doing anything about it for now since most newcomers to Data Analysis will make this mistake. Let's see what happens. 
+
+```{r factsumm}
+summary(admissions)
+```
+
+
+
+So with this data, an interesting problem might be to predict whether an applicant is admitted to the program based on the other variables in the data set. We could pick Logistic Regression for this activity. 
+
+```{r factonehot2}
+control <- trainControl(method="cv",number=3)
+
+try_to_classify_admit <- train(admit ~ .,
+                            data = admissions,
+                            method = "glm",
+                            trControl = control)
+
+```
+
+Why does this bomb out ? Well, the GLM method expects us to be predicting a binary outcome which, to the human eye, the admit variable  actually is. However, R doesn't know this as it currently thinks of the **admit** variable as being simply a number so it thinks we are trying to predict a numeric outcome hence the error. To fix this we need to make admit a **factor** which is a term used in statistics to refer to categories. So let's see the effect of doing this. While we are at it, let's also resummarize the data to see if R treats the **admit** variable any differently after the conversion to factor has been made. 
+
+
+```{r factonehot3}
+admissions_factor_1 <- admissions %>% mutate(admit=factor(admit))
+str(admissions_factor_1)
+
+cat("\n Now look at the summary","\n")
+
+summary(admissions_factor$admit)
+```
+
+So now R understands that **admit** is a category so it chooses to offer a table / count summary of the data as opposed to the summary statistics it would apply for numeric data. So now let's try again to build a predictive model for **admit**. 
+
+```{r classadmitf1}
+classify_admit_factor_1 <- train(admit ~ .,
+                                 data = admissions_factor,
+                                 method = "glm",
+                                 trControl = control)
+
+classify_admit_factor_1$results$Accuracy
+classify_admit_factor_1 %>% summary
+```
+
+### Is Rank A Category ? 
+
+Okay that was nice and it appears that all of our predictors are significant with **rank** ,in particular, being so. However, when looking at the **rank** variable it looks like it is an ordinal variable as opposed to an interval variable. It's interesting since rank is on an interval but is a rank of 0 significant ? This variable could be considered as an interval variable but it's more likely that it is ordinal in which case we would need to turn it into a factor. 
+
+```{r facthotonerank}
+admissions_factor_2 <- admissions_factor_1 %>% mutate(rank=factor(rank))
+str(admissions_factor_2)
+
+classify_admit_factor_2 <- train(admit ~ .,
+                            data = admissions_factor_2,
+                            method = "glm",
+                            trControl = control)
+
+classify_admit_factor_2$results$Accuracy
+classify_admit_factor_2 %>% summary
+
+```
+
+This is interesting in that the Accuracy from this model is less than the previous one although we see that the interpretation of Rank is more nuanced here in that ranks of 3 and 4 appear to be more significant than other rank values. We might take this into consideration when thinking about how to transform the features or modify our prediction formula. 
+
+### Relationship To One Hot Encoding
+
+Usually when you indicate to R that a variable is a factor then most procedures and functions will know how to handle that when computing various statistics and building models. Other languages might not do this for you in which case you need to employ an approach called **One Hot Encoding**. We can do this also in R but in many (most) cases it is not necessary as long as you explicitly create factors as indicated above. It might be helpful to first see what a one hot encoded version of the admissions data frame might look:
+
+```{r dummy1,eval=FALSE}
+  gre gpa    rank.1 rank.2 rank.3 rank.4
+1 380 3.61      0      0      1      0
+2 660 3.67      0      0      1      0
+3 800 4.00      1      0      0      0
+4 640 3.19      0      0      0      1
+5 520 2.93      0      0      0      1
+6 760 3.00      0      1      0      0
+```
+
+There are two things to notice here. The first is that the admit variable isn't present since that is the value we will be predicting. The second thing to notice is that for each "level" of the rank variable there is a corresponding column. Now, there is the concept of a "rank deficient" fit wherein you will generally want  one less variable than the number of categories present to avoid perfect collinearity. In this case the above encoding would look like:
+
+```{r dummy2,eval=FALSE}
+gre  gpa rank.2 rank.3 rank.4
+1 380 3.61      0      1      0
+2 660 3.67      0      1      0
+3 800 4.00      0      0      0
+4 640 3.19      0      0      1
+5 520 2.93      0      0      1
+6 760 3.00      1      0      0
+
+```
+
+
+So, in cases where all rank features (2,3 and 4) were 0 would correspond to a rank of 1. In any case, here is how we would handle the situation using the One Hot Encoding approach. First, we'll read in the data again:
+
+```{r admissionsagain}
+admissions <- read.csv("https://stats.idre.ucla.edu/stat/data/binary.csv")
+head(admissions)
+str(admissions)
+
+```
+
+Now since we want to predict admissions and we consider rank as a factor we'll turn those into factors. As mentioned, this is all that is necessary when using R but let's pretend that it isn't. 
+
+```{r dummyupvars}
+admissions_factors <- admissions %>% mutate(admit=factor(admit),
+                                             rank=factor(rank))
+str(admissions_factors)
+
+```
+
+So now we'll use the **dummyVars** function from caret to make dummy vars out using out admissions data frame. Since we are ultimately wanting to predict the **admit** feature, we'll tell **dummyVars** that we don't want that to be split across two columns. 
+
+```{r dummyuppredict}
+(dummy <- dummyVars("admit ~ .",admissions_factors,fullRank = TRUE))
+dummied_up_admissions <- data.frame(predict(dummy,newdata=admissions_factors))
+str(dummied_up_admissions)
+head(dummied_up_admissions)
+
+```
+
+So we could now use this data frame in our modeling attempts as before to see if it makes any difference. We'll also need to use an alternative calling sequence to the **train** function which allows us to specify the predicted column (admit) separately from the features we are using to make that prediction. 
+
+```{r}
+classify_admit_onehot <- train(x = dummied_up_admissions,
+                               y = admissions_factor[,'admit'],
+                               method = "glm",
+                               trControl = control)
+
+classify_admit_onehot$results$Accuracy
+classify_admit_onehot %>% summary
+
+```
+
+How does this compare to the model we built earlier where we told R that both admit and rank were factors ? It's pretty much the same. 
 
 
 ```{r}
-etitanic <- etitanic %>% mutate(survived = factor(survived))
-str(etitanic)
+classify_admit_factor_2$results$Accuracy
+classify_admit_factor_2 %>% summary
 ```
 
-Now we can build a model to predict survival:
-
-```{r etitanicmodcreate}
-control <- trainControl(method="cv",number=5)
-etitanic_model <- train(survived ~ .,etitanic,method="glm",trControl=control)
-```
-
-The Accuracy of the model, or the fact that we didn't make a train / test split, is beside the point here. We need to inform R that we have categories else it won't know what to do with them or, worse, it will do something unexpected. Let's look at another situation that frequently occurs where we might have categories that are numbers. Well, that was true in the above example but it was quite apparent that the 0 or 1 motif is a binary situation. So it was fairly obvious. Consider the mtcars data frame:
-
-```{r}
-str(mtcars)
-```
-
-Notice that the cyl, vs, am, gear, and carb features take on a few unique values. This suggests that they are actually categories. 
-
-```{r applyfact}
- sapply(mtcars,function(x) length(unique(x)))
-```
-
-For example, the cylinder variable is a classification of whether a car has 4,6, or 8 cylinders. There is no such thing as a 4.5 cylinder automobile. Nor is there a car that had a transmission type of 1.5. In these cases we should probably make factors out of these prior to use with a method.
-
-```{r factlm1}
-lm1 <- train(mpg~cyl+am,
-             data=mtcars,
-             method="lm",
-             trControl=trainControl(method="cv",number=3))
-
-lm1
-summary(lm1)
-```
-
-Now we will create some factors out of am and cyl to show that the resulting model will be different in terms of the coefficents. But first notice how creating a factor will assign an underling numeric value to the feature which is the key to making it usabale by downstream ML methods. 
-
-```{r createfacs}
-data(mtcars)
-mod_mtcars <- mtcars %>% mutate(cyl=factor(cyl),am=factor(am))
-
-levels(mod_mtcars$am)
-levels(mod_mtcars$cyl)
-```
-
-Now let's make a model
-
-```{r factlm2}
-data(mtcars)
-mod_mtcars <- mtcars %>% mutate(cyl=factor(cyl),am=factor(am))
-lm2 <- train(mpg~cyl+am,
-             data=mod_mtcars,
-             method="lm",
-             trControl=trainControl(method="cv",number=3))
-lm2
-summary(lm2)
-```
 
 ## Binning 
 
@@ -3383,7 +3465,7 @@ hist(pm_new$pregnant)
 
 ```
 
-We could build our models using the number of pregnancies without attemptin to transform the feature in any way. But let's bin this feature. In R, we can use the **cut** function to chop up a numerical range of data into a specified number of bins and according to some function such as the **quantile** function which would give us for bins labelled from 1 to 4. This will produce sample quantiles according to the 0, 25th, 50th, 75%, and 100% percentiles. 
+We could build our models using the number of pregnancies without attempting to transform the feature in any way. But let's bin this feature. In R, we can use the **cut** function to chop up a numerical range of data into a specified number of bins and according to some function such as the **quantile** function which would give us for bins labelled from 1 to 4. This will produce sample quantiles according to the 0, 25th, 50th, 75%, and 100% percentiles. 
 
 ```{r cutuppm}
 cut(pm_new$pregnant, breaks=quantile(pm$pregnant),
@@ -3423,7 +3505,7 @@ summary(cutmodel2$finalModel)
 varImp(cutmodel2)
 ```
 
-This is interesting in that pehaps it's the 4th bin of the pregnancy feature that has the major influence on the model. So if we look at the distribution of positive cases we see that in the positive cases there are more people from the 4th bin:
+This is interesting in that perhaps it's the 4th bin of the pregnancy feature that has the major influence on the model. So if we look at the distribution of positive cases we see that in the positive cases there are more people from the 4th bin:
 
 ```{r plot4bin}
 pm_new %>% group_by(diabetes,pregnant) %>% 

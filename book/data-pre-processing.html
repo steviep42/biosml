@@ -249,11 +249,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="11.6" data-path="data-pre-processing.html"><a href="data-pre-processing.html#order-of-pre-processing"><i class="fa fa-check"></i><b>11.6</b> Order of Pre-Processing</a></li>
 <li class="chapter" data-level="11.7" data-path="data-pre-processing.html"><a href="data-pre-processing.html#identifying-redundant-features"><i class="fa fa-check"></i><b>11.7</b> Identifying Redundant Features</a><ul>
 <li class="chapter" data-level="11.7.1" data-path="data-pre-processing.html"><a href="data-pre-processing.html#highly-correlated-variables"><i class="fa fa-check"></i><b>11.7.1</b> Highly Correlated Variables</a></li>
+<li class="chapter" data-level="11.7.2" data-path="data-pre-processing.html"><a href="data-pre-processing.html#ranking-features"><i class="fa fa-check"></i><b>11.7.2</b> Ranking Features</a></li>
+<li class="chapter" data-level="11.7.3" data-path="data-pre-processing.html"><a href="data-pre-processing.html#feature-selection-1"><i class="fa fa-check"></i><b>11.7.3</b> Feature Selection</a></li>
 </ul></li>
-<li class="chapter" data-level="11.8" data-path="data-pre-processing.html"><a href="data-pre-processing.html#ranking-features"><i class="fa fa-check"></i><b>11.8</b> Ranking Features</a></li>
-<li class="chapter" data-level="11.9" data-path="data-pre-processing.html"><a href="data-pre-processing.html#feature-selection-1"><i class="fa fa-check"></i><b>11.9</b> Feature Selection</a></li>
-<li class="chapter" data-level="11.10" data-path="data-pre-processing.html"><a href="data-pre-processing.html#categorical-features"><i class="fa fa-check"></i><b>11.10</b> Categorical Features</a></li>
-<li class="chapter" data-level="11.11" data-path="data-pre-processing.html"><a href="data-pre-processing.html#binning"><i class="fa fa-check"></i><b>11.11</b> Binning</a></li>
+<li class="chapter" data-level="11.8" data-path="data-pre-processing.html"><a href="data-pre-processing.html#handling-categories"><i class="fa fa-check"></i><b>11.8</b> Handling Categories</a><ul>
+<li class="chapter" data-level="11.8.1" data-path="data-pre-processing.html"><a href="data-pre-processing.html#is-rank-a-category"><i class="fa fa-check"></i><b>11.8.1</b> Is Rank A Category ?</a></li>
+<li class="chapter" data-level="11.8.2" data-path="data-pre-processing.html"><a href="data-pre-processing.html#relationship-to-one-hot-encoding"><i class="fa fa-check"></i><b>11.8.2</b> Relationship To One Hot Encoding</a></li>
+</ul></li>
+<li class="chapter" data-level="11.9" data-path="data-pre-processing.html"><a href="data-pre-processing.html#binning"><i class="fa fa-check"></i><b>11.9</b> Binning</a></li>
 </ul></li>
 <li class="chapter" data-level="12" data-path="using-external-ml-frameworks.html"><a href="using-external-ml-frameworks.html"><i class="fa fa-check"></i><b>12</b> Using External ML Frameworks</a><ul>
 <li class="chapter" data-level="12.1" data-path="using-external-ml-frameworks.html"><a href="using-external-ml-frameworks.html#using-h2o"><i class="fa fa-check"></i><b>12.1</b> Using h2o</a></li>
@@ -804,16 +807,16 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="pca---principal-components-analysis" class="section level2">
 <h2><span class="header-section-number">11.5</span> PCA - Principal Components Analysis</h2>
 <p>So one of the problems with data can be what is called multicollinearity
-where high correlations exist between variables in a data set. Consider the mtcars data frame for example. Let’s assume that we want to predict whether a given car has an automatic transmission (0) or maial (1). We’ll remove other columns from the data frame that represent categorical data so we can focus on the continuous numeric variables.</p>
+where high correlations exist between variables in a data set. Consider the mtcars data frame for example. Let’s assume that we want to predict whether a given car has an automatic transmission (0) or manual (1). We’ll remove other columns from the data frame that represent categorical data so we can focus on the continuous numeric variables.</p>
 <div id="identify-the-factors" class="section level3">
 <h3><span class="header-section-number">11.5.1</span> Identify The Factors</h3>
 <div class="sourceCode" id="cb423"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb423-1" data-line-number="1"><span class="kw">sapply</span>(mtcars,<span class="cf">function</span>(x) <span class="kw">length</span>(<span class="kw">unique</span>(x)))</a></code></pre></div>
 <pre><code>##  mpg  cyl disp   hp drat   wt qsec   vs   am gear carb 
 ##   25    3   27   22   22   29   30    2    2    3    6</code></pre>
-<p>Let’s eliminate cyl,vs,gear, and carb. We’ll also remove the rownames since, if we don’t, then they will cause problems when we create the biplot of the principal compoments.</p>
+<p>Let’s eliminate cyl,vs,gear, and carb. We’ll also remove the rownames since, if we don’t, then they will cause problems when we create the biplot of the principal components.</p>
 <div class="sourceCode" id="cb425"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb425-1" data-line-number="1">mtcars_data &lt;-<span class="st"> </span>mtcars[,<span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">3</span><span class="op">:</span><span class="dv">7</span>,<span class="dv">9</span>)]</a>
 <a class="sourceLine" id="cb425-2" data-line-number="2"><span class="kw">rownames</span>(mtcars_data) &lt;-<span class="st"> </span><span class="ot">NULL</span></a></code></pre></div>
-<p>Now, let’s look at the correlation matrix to see if we have highly correlated variabes. We do have several correlations that exceed .7 which is sufficiently high to consider that they might cause problems when building models. The caret package has a findCorrelation function that can remove predictors that exhibit a correlation above a certain threshold but we’ll see how PCA can help - so we’ll leave them in for now.</p>
+<p>Now, let’s look at the correlation matrix to see if we have highly correlated variables. We do have several correlations that exceed .7 which is sufficiently high to consider that they might cause problems when building models. The caret package has a findCorrelation function that can remove predictors that exhibit a correlation above a certain threshold but we’ll see how PCA can help - so we’ll leave them in for now.</p>
 </div>
 <div id="check-for-high-correlations" class="section level3">
 <h3><span class="header-section-number">11.5.2</span> Check For High Correlations</h3>
@@ -832,7 +835,7 @@ where high correlations exist between variables in a data set. Consider the mtca
 </div>
 <div id="so-why-use-pca" class="section level3">
 <h3><span class="header-section-number">11.5.3</span> So Why Use PCA ?</h3>
-<p>There are several functions for doing Principal Components Analysis on this data. But why are we even thinking about PCA ? Well, it helps us deal with highly correlated data by <strong>reducing</strong> the dimensionality of a data set. In the mtcars data frame we don’t have that many variabesl / columns but wouldn’t it be nice to transform the data in a way that reduced the number of columns that we had to consider while also dealing with the multicollinrarity ?</p>
+<p>There are several functions for doing Principal Components Analysis on this data. But why are we even thinking about PCA ? Well, it helps us deal with highly correlated data by <strong>reducing</strong> the dimensionality of a data set. In the mtcars data frame we don’t have that many variables / columns but wouldn’t it be nice to transform the data in a way that reduced the number of columns that we had to consider while also dealing with the multicollinearity ?</p>
 <p>This is what PCA can do for us. In reality we are using the eigenvectors of the covariance matrix of the original data. We use them to transform the original data into a reduced number of columns to consider. To get the ball rolling, we’ll use the <strong>prcomp</strong> function.</p>
 <div class="sourceCode" id="cb429"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb429-1" data-line-number="1">scaled_mtcars_data &lt;-<span class="st"> </span><span class="kw">scale</span>(mtcars_data[,<span class="op">-</span><span class="dv">7</span>])</a>
 <a class="sourceLine" id="cb429-2" data-line-number="2">prcs &lt;-<span class="st"> </span><span class="kw">princomp</span>(scaled_mtcars_data)</a>
@@ -854,10 +857,10 @@ where high correlations exist between variables in a data set. Consider the mtca
 </div>
 <div id="check-the-biplot" class="section level3">
 <h3><span class="header-section-number">11.5.4</span> Check The BiPlot</h3>
-<p>What we get from this summary is that PC1 accounts for roughly 70% of the variation in the data set. By the time we get to PC3, about 95% of the variation is accounted. We can also look at something called a biplot that allows us to see what variables in the first two components are influential. This information is also available just by viewing the default return information from the object itsel but the biplot makes it easier to see.</p>
+<p>What we get from this summary is that PC1 accounts for roughly 70% of the variation in the data set. By the time we get to PC3, about 95% of the variation is accounted. We can also look at something called a biplot that allows us to see what variables in the first two components are influential. This information is also available just by viewing the default return information from the object itself but the biplot makes it easier to see.</p>
 <div class="sourceCode" id="cb433"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb433-1" data-line-number="1"><span class="kw">biplot</span>(prcs)</a></code></pre></div>
 <p><img src="biosml_files/figure-html/pcabiplot-1.png" width="672" /></p>
-<p>Back to the summary information, we cal use something called a <strong>screeplot</strong> whih will help us see how many of the components to use. We don’t actually need the plot although it can help. Look at the plot and find the “elbow” which is the point at which the rate of change stabilizes. In the plot below it looks like the elbow is at PC3. In looking at the summary info, if we select three components then we are accounting for about 95% of the variation in the data. IF we selected two components then we would have about 89% of the variation accounted for.</p>
+<p>Back to the summary information, we cal use something called a <strong>screeplot</strong> which will help us see how many of the components to use. We don’t actually need the plot although it can help. Look at the plot and find the “elbow” which is the point at which the rate of change stabilizes. In the plot below it looks like the elbow is at PC3. In looking at the summary info, if we select three components then we are accounting for about 95% of the variation in the data. IF we selected two components then we would have about 89% of the variation accounted for.</p>
 <div class="sourceCode" id="cb434"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb434-1" data-line-number="1"><span class="kw">summary</span>(prcs)</a></code></pre></div>
 <pre><code>## Importance of components:
 ##                           Comp.1    Comp.2     Comp.3     Comp.4     Comp.5      Comp.6
@@ -869,7 +872,7 @@ where high correlations exist between variables in a data set. Consider the mtca
 <h3><span class="header-section-number">11.5.5</span> Check The ScreePlot</h3>
 <div class="sourceCode" id="cb436"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb436-1" data-line-number="1"><span class="kw">screeplot</span>(prcs,<span class="dt">type=</span><span class="st">&quot;line&quot;</span>)</a></code></pre></div>
 <p><img src="biosml_files/figure-html/pcascree1-1.png" width="672" /></p>
-<p>Let’s pick two components. We’ll multiply our data set (using (matrix multiplication) by the two “loadings” / components that we picked. This will give us our original data in terms of the two principla components.</p>
+<p>Let’s pick two components. We’ll multiply our data set (using (matrix multiplication) by the two “loadings” / components that we picked. This will give us our original data in terms of the two principal components.</p>
 <div class="sourceCode" id="cb437"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb437-1" data-line-number="1">model2 &lt;-<span class="st"> </span>prcs<span class="op">$</span>loadings[,<span class="dv">1</span><span class="op">:</span><span class="dv">2</span>]</a>
 <a class="sourceLine" id="cb437-2" data-line-number="2">model2_scores &lt;-<span class="st"> </span><span class="kw">as.matrix</span>(scaled_mtcars_data) <span class="op">%*%</span><span class="st"> </span>model2</a></code></pre></div>
 </div>
@@ -896,7 +899,7 @@ where high correlations exist between variables in a data set. Consider the mtca
 </div>
 <div id="pls" class="section level3">
 <h3><span class="header-section-number">11.5.7</span> PLS</h3>
-<p>Partial Least Squares regression is related to PCA although, in classification probelms, the latter ignores the variable being predicted. PLS uses information from the variable to be predicted (the class labels) to help maximize the separation of the two classes. Of course, using pls as a method within caret is easy.</p>
+<p>Partial Least Squares regression is related to PCA although, in classification problems, the latter ignores the variable being predicted. PLS uses information from the variable to be predicted (the class labels) to help maximize the separation of the two classes. Of course, using pls as a method within caret is easy.</p>
 <div class="sourceCode" id="cb446"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb446-1" data-line-number="1">control &lt;-<span class="st"> </span><span class="kw">trainControl</span>(<span class="dt">method=</span><span class="st">&quot;cv&quot;</span>,<span class="dt">number =</span> <span class="dv">5</span>)</a>
 <a class="sourceLine" id="cb446-2" data-line-number="2"></a>
 <a class="sourceLine" id="cb446-3" data-line-number="3"><span class="co">#</span></a>
@@ -905,11 +908,11 @@ where high correlations exist between variables in a data set. Consider the mtca
 <a class="sourceLine" id="cb446-6" data-line-number="6">                  <span class="dt">method=</span><span class="st">&quot;pls&quot;</span>,</a>
 <a class="sourceLine" id="cb446-7" data-line-number="7">                  <span class="dt">preProcess=</span><span class="kw">c</span>(<span class="st">&quot;center&quot;</span>,<span class="st">&quot;scale&quot;</span>),</a>
 <a class="sourceLine" id="cb446-8" data-line-number="8">                  <span class="dt">trControl =</span> control)</a></code></pre></div>
-<p>We already knew that the mtcars data frame would benefit from PCA. Here we see that PLS uses the first three Principal Components to arrive at an accurcay of 0.97 on the data set.</p>
+<p>We already knew that the mtcars data frame would benefit from PCA. Here we see that PLS uses the first three Principal Components to arrive at an accuracy of 0.97 on the data set.</p>
 </div>
 <div id="summary-1" class="section level3">
 <h3><span class="header-section-number">11.5.8</span> Summary</h3>
-<p>So the advantages of PCA should be clear in this case. We have effecively replaced the original data by a smaller data set while also dealing with the correlation issues. We used only two components. Now, a disdvantage here is that the model with the transformed data is in terms of the components which means that the model is less transparent. Perhaps a minor price to pay for better accuracy. In terms of the caret package we can do this using the <strong>preProcess</strong> function:</p>
+<p>So the advantages of PCA should be clear in this case. We have effectively replaced the original data by a smaller data set while also dealing with the correlation issues. We used only two components. Now, a disadvantage here is that the model with the transformed data is in terms of the components which means that the model is less transparent. Perhaps a minor price to pay for better accuracy. In terms of the caret package we can do this using the <strong>preProcess</strong> function:</p>
 <div class="sourceCode" id="cb447"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb447-1" data-line-number="1">control &lt;-<span class="st"> </span><span class="kw">trainControl</span>(<span class="dt">method=</span><span class="st">&quot;cv&quot;</span>,<span class="dt">number =</span> <span class="dv">5</span>)</a>
 <a class="sourceLine" id="cb447-2" data-line-number="2"></a>
 <a class="sourceLine" id="cb447-3" data-line-number="3"><span class="co">#</span></a>
@@ -983,9 +986,8 @@ where high correlations exist between variables in a data set. Consider the mtca
 <a class="sourceLine" id="cb459-10" data-line-number="10">                     <span class="dt">metric =</span> <span class="st">&quot;RMSE&quot;</span></a>
 <a class="sourceLine" id="cb459-11" data-line-number="11">                     )</a></code></pre></div>
 </div>
-</div>
-<div id="ranking-features" class="section level2">
-<h2><span class="header-section-number">11.8</span> Ranking Features</h2>
+<div id="ranking-features" class="section level3">
+<h3><span class="header-section-number">11.7.2</span> Ranking Features</h3>
 <p>Another approach would be to identify the important variables as determined by a rigorous, reliable and statistically aware process. Some models will report this information as part of the computation. The <strong>caret</strong> package has a function called <strong>varImp</strong> which helps to calculate relative variable importance within an object produced by the <strong>train</strong> function. What this means for us is that we can take most models built with <strong>train</strong> and pass it to the <strong>varImp</strong> function.</p>
 <div class="sourceCode" id="cb460"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb460-1" data-line-number="1">idx &lt;-<span class="st"> </span><span class="kw">createDataPartition</span>(mtcars<span class="op">$</span>mpg, <span class="dt">p =</span> <span class="fl">.8</span>, </a>
 <a class="sourceLine" id="cb460-2" data-line-number="2">                                  <span class="dt">list =</span> <span class="ot">FALSE</span>, </a>
@@ -1060,8 +1062,8 @@ where high correlations exist between variables in a data set. Consider the mtca
 ## Multiple R-squared:  0.809,  Adjusted R-squared:  0.7852 
 ## F-statistic: 33.89 on 3 and 24 DF,  p-value: 8.601e-09</code></pre>
 </div>
-<div id="feature-selection-1" class="section level2">
-<h2><span class="header-section-number">11.9</span> Feature Selection</h2>
+<div id="feature-selection-1" class="section level3">
+<h3><span class="header-section-number">11.7.3</span> Feature Selection</h3>
 <p>Being able to automatically include only the most important features is desirable (again an example might be Step Wise Regression). Caret provides its own function to do a simple backwards selection to recursively eliminate features based on how they contribute (or not) to the model. You could do all of this by hand yourself of course.</p>
 <p>Automatic feature selection methods can be used to build many models with different subsets of a dataset and identify those attributes that are and are not required to build an accurate model. The <strong>caret</strong> package has a function called *rfe** to implement this. However, it involves some additional setup:</p>
 <div class="sourceCode" id="cb467"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb467-1" data-line-number="1">rfeControl &lt;-<span class="st"> </span><span class="kw">rfeControl</span>(<span class="dt">functions=</span>lmFuncs, <span class="dt">method=</span><span class="st">&quot;cv&quot;</span>, <span class="dt">number=</span><span class="dv">10</span>)</a>
@@ -1122,153 +1124,288 @@ where high correlations exist between variables in a data set. Consider the mtca
 ## Multiple R-squared:  0.8437, Adjusted R-squared:  0.8242 
 ## F-statistic: 43.19 on 3 and 24 DF,  p-value: 7.907e-10</code></pre>
 </div>
-<div id="categorical-features" class="section level2">
-<h2><span class="header-section-number">11.10</span> Categorical Features</h2>
-<p>Categorical features are those that are labelled or character data which suggest categories (e.g. “male”,“female”,“smoker”,“non-snoker”). These variables, while useful, need to be recoded in a way to make them useful for machine learning methods. For example, read in the following data:</p>
-<div class="sourceCode" id="cb472"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb472-1" data-line-number="1">url &lt;-<span class="st"> &quot;https://raw.githubusercontent.com/steviep42/bios534_spring_2020/master/data/etitanic.csv&quot;</span></a>
-<a class="sourceLine" id="cb472-2" data-line-number="2">etitanic &lt;-<span class="st"> </span><span class="kw">read.csv</span>(url)</a></code></pre></div>
-<p>If you insepct this data frame you will notice that there are already some “factors” in the data. This is good because we can begin to use this information in the development of models although this will be a function of what it is we are trying to predict.</p>
-<div class="sourceCode" id="cb473"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb473-1" data-line-number="1"><span class="kw">str</span>(etitanic)</a></code></pre></div>
-<pre><code>## &#39;data.frame&#39;:    1046 obs. of  6 variables:
-##  $ pclass  : Factor w/ 3 levels &quot;1st&quot;,&quot;2nd&quot;,&quot;3rd&quot;: 1 1 1 1 1 1 1 1 1 1 ...
-##  $ survived: int  1 1 0 0 0 1 1 0 1 0 ...
-##  $ sex     : Factor w/ 2 levels &quot;female&quot;,&quot;male&quot;: 1 2 1 2 1 2 1 2 1 2 ...
-##  $ age     : num  29 0.917 2 30 25 ...
-##  $ sibsp   : int  0 1 1 1 1 0 1 0 2 0 ...
-##  $ parch   : int  0 2 2 2 2 0 0 0 0 0 ...</code></pre>
-<p>If we want to predict, for example, whether someone survived the catastrophe (the survived column), we’ll need to turn that into a factor also since it represents a category. This happens a lot in classification.</p>
-<div class="sourceCode" id="cb475"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb475-1" data-line-number="1">etitanic &lt;-<span class="st"> </span>etitanic <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mutate</span>(<span class="dt">survived =</span> <span class="kw">factor</span>(survived))</a>
-<a class="sourceLine" id="cb475-2" data-line-number="2"><span class="kw">str</span>(etitanic)</a></code></pre></div>
-<pre><code>## &#39;data.frame&#39;:    1046 obs. of  6 variables:
-##  $ pclass  : Factor w/ 3 levels &quot;1st&quot;,&quot;2nd&quot;,&quot;3rd&quot;: 1 1 1 1 1 1 1 1 1 1 ...
-##  $ survived: Factor w/ 2 levels &quot;0&quot;,&quot;1&quot;: 2 2 1 1 1 2 2 1 2 1 ...
-##  $ sex     : Factor w/ 2 levels &quot;female&quot;,&quot;male&quot;: 1 2 1 2 1 2 1 2 1 2 ...
-##  $ age     : num  29 0.917 2 30 25 ...
-##  $ sibsp   : int  0 1 1 1 1 0 1 0 2 0 ...
-##  $ parch   : int  0 2 2 2 2 0 0 0 0 0 ...</code></pre>
-<p>Now we can build a model to predict survival:</p>
-<div class="sourceCode" id="cb477"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb477-1" data-line-number="1">control &lt;-<span class="st"> </span><span class="kw">trainControl</span>(<span class="dt">method=</span><span class="st">&quot;cv&quot;</span>,<span class="dt">number=</span><span class="dv">5</span>)</a>
-<a class="sourceLine" id="cb477-2" data-line-number="2">etitanic_model &lt;-<span class="st"> </span><span class="kw">train</span>(survived <span class="op">~</span><span class="st"> </span>.,etitanic,<span class="dt">method=</span><span class="st">&quot;glm&quot;</span>,<span class="dt">trControl=</span>control)</a></code></pre></div>
-<p>The Accuracy of the model, or the fact that we didn’t make a train / test split, is beside the point here. We need to inform R that we have categories else it won’t know what to do with them or, worse, it will do something unexpected. Let’s look at another situation that frequently occurs where we might have categories that are numbers. Well, that was true in the above example but it was quite apparent that the 0 or 1 motif is a binary situation. So it was fairly obvious. Consider the mtcars data frame:</p>
-<div class="sourceCode" id="cb478"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb478-1" data-line-number="1"><span class="kw">str</span>(mtcars)</a></code></pre></div>
-<pre><code>## &#39;data.frame&#39;:    32 obs. of  11 variables:
-##  $ mpg : num  21 21 22.8 21.4 18.7 18.1 14.3 24.4 22.8 19.2 ...
-##  $ cyl : num  6 6 4 6 8 6 8 4 4 6 ...
-##  $ disp: num  160 160 108 258 360 ...
-##  $ hp  : num  110 110 93 110 175 105 245 62 95 123 ...
-##  $ drat: num  3.9 3.9 3.85 3.08 3.15 2.76 3.21 3.69 3.92 3.92 ...
-##  $ wt  : num  2.62 2.88 2.32 3.21 3.44 ...
-##  $ qsec: num  16.5 17 18.6 19.4 17 ...
-##  $ vs  : num  0 0 1 1 0 1 0 1 1 1 ...
-##  $ am  : num  1 1 1 0 0 0 0 0 0 0 ...
-##  $ gear: num  4 4 4 3 3 3 3 4 4 4 ...
-##  $ carb: num  4 4 1 1 2 1 4 2 2 4 ...</code></pre>
-<p>Notice that the cyl, vs, am, gear, and carb features take on a few unique values. This suggests that they are actually categories.</p>
-<div class="sourceCode" id="cb480"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb480-1" data-line-number="1"> <span class="kw">sapply</span>(mtcars,<span class="cf">function</span>(x) <span class="kw">length</span>(<span class="kw">unique</span>(x)))</a></code></pre></div>
-<pre><code>##  mpg  cyl disp   hp drat   wt qsec   vs   am gear carb 
-##   25    3   27   22   22   29   30    2    2    3    6</code></pre>
-<p>For example, the cylinder variable is a classification of whether a car has 4,6, or 8 cylinders. There is no such thing as a 4.5 cylinder automobile. Nor is there a car that had a transmission type of 1.5. In these cases we should probably make factors out of these prior to use with a method.</p>
-<div class="sourceCode" id="cb482"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb482-1" data-line-number="1">lm1 &lt;-<span class="st"> </span><span class="kw">train</span>(mpg<span class="op">~</span>cyl<span class="op">+</span>am,</a>
-<a class="sourceLine" id="cb482-2" data-line-number="2">             <span class="dt">data=</span>mtcars,</a>
-<a class="sourceLine" id="cb482-3" data-line-number="3">             <span class="dt">method=</span><span class="st">&quot;lm&quot;</span>,</a>
-<a class="sourceLine" id="cb482-4" data-line-number="4">             <span class="dt">trControl=</span><span class="kw">trainControl</span>(<span class="dt">method=</span><span class="st">&quot;cv&quot;</span>,<span class="dt">number=</span><span class="dv">3</span>))</a>
-<a class="sourceLine" id="cb482-5" data-line-number="5"></a>
-<a class="sourceLine" id="cb482-6" data-line-number="6">lm1</a></code></pre></div>
-<pre><code>## Linear Regression 
-## 
-## 32 samples
-##  2 predictor
-## 
-## No pre-processing
-## Resampling: Cross-Validated (3 fold) 
-## Summary of sample sizes: 20, 21, 23 
-## Resampling results:
-## 
-##   RMSE     Rsquared   MAE     
-##   2.99686  0.7656034  2.467292
-## 
-## Tuning parameter &#39;intercept&#39; was held constant at a value of TRUE</code></pre>
-<div class="sourceCode" id="cb484"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb484-1" data-line-number="1"><span class="kw">summary</span>(lm1)</a></code></pre></div>
+</div>
+<div id="handling-categories" class="section level2">
+<h2><span class="header-section-number">11.8</span> Handling Categories</h2>
+<p>If you haven’t already, you should first read the section on “Levels Of Measurement” to reacquaint yourself with the differences between Nominal, Ordinal, Interval, and Ratio data.</p>
+<p>In this section we’ll deal with categories and factors which represent categories (e.g. “male”,“female”,“smoker”,“non-smoker”). These variables, while useful, need to be recoded in a way to make them useful for machine learning methods. For example, read in the following data which relates to admissions data for students applying to an academic program. This comes from <a href="https://stats.idre.ucla.edu/r/dae/logit-regression/">UCLA Statisitical Consulting</a> site.</p>
+<div class="sourceCode" id="cb472"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb472-1" data-line-number="1">admissions &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;https://stats.idre.ucla.edu/stat/data/binary.csv&quot;</span>)</a>
+<a class="sourceLine" id="cb472-2" data-line-number="2"><span class="kw">head</span>(admissions)</a></code></pre></div>
+<pre><code>##   admit gre  gpa rank
+## 1     0 380 3.61    3
+## 2     1 660 3.67    3
+## 3     1 800 4.00    1
+## 4     1 640 3.19    4
+## 5     0 520 2.93    4
+## 6     1 760 3.00    2</code></pre>
+<div class="sourceCode" id="cb474"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb474-1" data-line-number="1"><span class="kw">str</span>(admissions)</a></code></pre></div>
+<pre><code>## &#39;data.frame&#39;:    400 obs. of  4 variables:
+##  $ admit: int  0 1 1 1 0 1 1 0 1 0 ...
+##  $ gre  : int  380 660 800 640 520 760 560 400 540 700 ...
+##  $ gpa  : num  3.61 3.67 4 3.19 2.93 3 2.98 3.08 3.39 3.92 ...
+##  $ rank : int  3 3 1 4 4 2 1 2 3 2 ...</code></pre>
+<p>Let’s examine this data by determining the number of unique values assumed by each feature. This helps us understand if a variable is a category / factor variable or a continuous quantity. It appears that admit takes on only two distinct values and rank assumes only four which suggests that both might be more of a category than a quantity upon which we could perform lots of calculations.</p>
+<div class="sourceCode" id="cb476"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb476-1" data-line-number="1">admissions <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">summarise_all</span>(n_distinct)</a></code></pre></div>
+<pre><code>##   admit gre gpa rank
+## 1     2  26 132    4</code></pre>
+<p>You can always use the <strong>summary</strong> function to get a quick overview of the data. Notice here that admit is more of a binary entity although since R thinks it is just a number it will compute the percentiles for it. Same with the rest of the variables. We probably don’t want this but let’s hold off on doing anything about it for now since most newcomers to Data Analysis will make this mistake. Let’s see what happens.</p>
+<div class="sourceCode" id="cb478"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb478-1" data-line-number="1"><span class="kw">summary</span>(admissions)</a></code></pre></div>
+<pre><code>##      admit             gre             gpa             rank      
+##  Min.   :0.0000   Min.   :220.0   Min.   :2.260   Min.   :1.000  
+##  1st Qu.:0.0000   1st Qu.:520.0   1st Qu.:3.130   1st Qu.:2.000  
+##  Median :0.0000   Median :580.0   Median :3.395   Median :2.000  
+##  Mean   :0.3175   Mean   :587.7   Mean   :3.390   Mean   :2.485  
+##  3rd Qu.:1.0000   3rd Qu.:660.0   3rd Qu.:3.670   3rd Qu.:3.000  
+##  Max.   :1.0000   Max.   :800.0   Max.   :4.000   Max.   :4.000</code></pre>
+<p>So with this data, an interesting problem might be to predict whether an applicant is admitted to the program based on the other variables in the data set. We could pick Logistic Regression for this activity.</p>
+<div class="sourceCode" id="cb480"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb480-1" data-line-number="1">control &lt;-<span class="st"> </span><span class="kw">trainControl</span>(<span class="dt">method=</span><span class="st">&quot;cv&quot;</span>,<span class="dt">number=</span><span class="dv">3</span>)</a>
+<a class="sourceLine" id="cb480-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb480-3" data-line-number="3">try_to_classify_admit &lt;-<span class="st"> </span><span class="kw">train</span>(admit <span class="op">~</span><span class="st"> </span>.,</a>
+<a class="sourceLine" id="cb480-4" data-line-number="4">                            <span class="dt">data =</span> admissions,</a>
+<a class="sourceLine" id="cb480-5" data-line-number="5">                            <span class="dt">method =</span> <span class="st">&quot;glm&quot;</span>,</a>
+<a class="sourceLine" id="cb480-6" data-line-number="6">                            <span class="dt">trControl =</span> control)</a></code></pre></div>
+<pre><code>## Warning in train.default(x, y, weights = w, ...): You are trying to do regression and your
+## outcome only has two possible values Are you trying to do classification? If so, use a 2 level
+## factor as your outcome column.</code></pre>
+<p>Why does this bomb out ? Well, the GLM method expects us to be predicting a binary outcome which, to the human eye, the admit variable actually is. However, R doesn’t know this as it currently thinks of the <strong>admit</strong> variable as being simply a number so it thinks we are trying to predict a numeric outcome hence the error. To fix this we need to make admit a <strong>factor</strong> which is a term used in statistics to refer to categories. So let’s see the effect of doing this. While we are at it, let’s also resummarize the data to see if R treats the <strong>admit</strong> variable any differently after the conversion to factor has been made.</p>
+<div class="sourceCode" id="cb482"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb482-1" data-line-number="1">admissions_factor_<span class="dv">1</span> &lt;-<span class="st"> </span>admissions <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mutate</span>(<span class="dt">admit=</span><span class="kw">factor</span>(admit))</a>
+<a class="sourceLine" id="cb482-2" data-line-number="2"><span class="kw">str</span>(admissions_factor_<span class="dv">1</span>)</a></code></pre></div>
+<pre><code>## &#39;data.frame&#39;:    400 obs. of  4 variables:
+##  $ admit: Factor w/ 2 levels &quot;0&quot;,&quot;1&quot;: 1 2 2 2 1 2 2 1 2 1 ...
+##  $ gre  : int  380 660 800 640 520 760 560 400 540 700 ...
+##  $ gpa  : num  3.61 3.67 4 3.19 2.93 3 2.98 3.08 3.39 3.92 ...
+##  $ rank : int  3 3 1 4 4 2 1 2 3 2 ...</code></pre>
+<div class="sourceCode" id="cb484"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb484-1" data-line-number="1"><span class="kw">cat</span>(<span class="st">&quot;</span><span class="ch">\n</span><span class="st"> Now look at the summary&quot;</span>,<span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>)</a></code></pre></div>
+<pre><code>## 
+##  Now look at the summary</code></pre>
+<div class="sourceCode" id="cb486"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb486-1" data-line-number="1"><span class="kw">summary</span>(admissions_factor<span class="op">$</span>admit)</a></code></pre></div>
+<pre><code>##   0   1 
+## 273 127</code></pre>
+<p>So now R understands that <strong>admit</strong> is a category so it chooses to offer a table / count summary of the data as opposed to the summary statistics it would apply for numeric data. So now let’s try again to build a predictive model for <strong>admit</strong>.</p>
+<div class="sourceCode" id="cb488"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb488-1" data-line-number="1">classify_admit_factor_<span class="dv">1</span> &lt;-<span class="st"> </span><span class="kw">train</span>(admit <span class="op">~</span><span class="st"> </span>.,</a>
+<a class="sourceLine" id="cb488-2" data-line-number="2">                                 <span class="dt">data =</span> admissions_factor,</a>
+<a class="sourceLine" id="cb488-3" data-line-number="3">                                 <span class="dt">method =</span> <span class="st">&quot;glm&quot;</span>,</a>
+<a class="sourceLine" id="cb488-4" data-line-number="4">                                 <span class="dt">trControl =</span> control)</a>
+<a class="sourceLine" id="cb488-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb488-6" data-line-number="6">classify_admit_factor_<span class="dv">1</span><span class="op">$</span>results<span class="op">$</span>Accuracy</a></code></pre></div>
+<pre><code>## [1] 0.6950772</code></pre>
+<div class="sourceCode" id="cb490"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb490-1" data-line-number="1">classify_admit_factor_<span class="dv">1</span> <span class="op">%&gt;%</span><span class="st"> </span>summary</a></code></pre></div>
 <pre><code>## 
 ## Call:
-## lm(formula = .outcome ~ ., data = dat)
+## NULL
 ## 
-## Residuals:
-##     Min      1Q  Median      3Q     Max 
-## -5.6856 -1.7172 -0.2657  1.8838  6.8144 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -1.5802  -0.8848  -0.6382   1.1575   2.1732  
 ## 
 ## Coefficients:
-##             Estimate Std. Error t value Pr(&gt;|t|)    
-## (Intercept)  34.5224     2.6032  13.262 7.69e-14 ***
-## cyl          -2.5010     0.3608  -6.931 1.28e-07 ***
-## am            2.5670     1.2914   1.988   0.0564 .  
+##              Estimate Std. Error z value Pr(&gt;|z|)    
+## (Intercept) -3.449548   1.132846  -3.045  0.00233 ** 
+## gre          0.002294   0.001092   2.101  0.03564 *  
+## gpa          0.777014   0.327484   2.373  0.01766 *  
+## rank        -0.560031   0.127137  -4.405 1.06e-05 ***
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
-## Residual standard error: 3.059 on 29 degrees of freedom
-## Multiple R-squared:  0.759,  Adjusted R-squared:  0.7424 
-## F-statistic: 45.67 on 2 and 29 DF,  p-value: 1.094e-09</code></pre>
-<p>Now we will create some factors out of am and cyl to show that the resulting model will be different in terms of the coefficents. But first notice how creating a factor will assign an underling numeric value to the feature which is the key to making it usabale by downstream ML methods.</p>
-<div class="sourceCode" id="cb486"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb486-1" data-line-number="1"><span class="kw">data</span>(mtcars)</a>
-<a class="sourceLine" id="cb486-2" data-line-number="2">mod_mtcars &lt;-<span class="st"> </span>mtcars <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mutate</span>(<span class="dt">cyl=</span><span class="kw">factor</span>(cyl),<span class="dt">am=</span><span class="kw">factor</span>(am))</a>
-<a class="sourceLine" id="cb486-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb486-4" data-line-number="4"><span class="kw">levels</span>(mod_mtcars<span class="op">$</span>am)</a></code></pre></div>
-<pre><code>## [1] &quot;0&quot; &quot;1&quot;</code></pre>
-<div class="sourceCode" id="cb488"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb488-1" data-line-number="1"><span class="kw">levels</span>(mod_mtcars<span class="op">$</span>cyl)</a></code></pre></div>
-<pre><code>## [1] &quot;4&quot; &quot;6&quot; &quot;8&quot;</code></pre>
-<p>Now let’s make a model</p>
-<div class="sourceCode" id="cb490"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb490-1" data-line-number="1"><span class="kw">data</span>(mtcars)</a>
-<a class="sourceLine" id="cb490-2" data-line-number="2">mod_mtcars &lt;-<span class="st"> </span>mtcars <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mutate</span>(<span class="dt">cyl=</span><span class="kw">factor</span>(cyl),<span class="dt">am=</span><span class="kw">factor</span>(am))</a>
-<a class="sourceLine" id="cb490-3" data-line-number="3">lm2 &lt;-<span class="st"> </span><span class="kw">train</span>(mpg<span class="op">~</span>cyl<span class="op">+</span>am,</a>
-<a class="sourceLine" id="cb490-4" data-line-number="4">             <span class="dt">data=</span>mod_mtcars,</a>
-<a class="sourceLine" id="cb490-5" data-line-number="5">             <span class="dt">method=</span><span class="st">&quot;lm&quot;</span>,</a>
-<a class="sourceLine" id="cb490-6" data-line-number="6">             <span class="dt">trControl=</span><span class="kw">trainControl</span>(<span class="dt">method=</span><span class="st">&quot;cv&quot;</span>,<span class="dt">number=</span><span class="dv">3</span>))</a>
-<a class="sourceLine" id="cb490-7" data-line-number="7">lm2</a></code></pre></div>
-<pre><code>## Linear Regression 
+## (Dispersion parameter for binomial family taken to be 1)
 ## 
-## 32 samples
-##  2 predictor
+##     Null deviance: 499.98  on 399  degrees of freedom
+## Residual deviance: 459.44  on 396  degrees of freedom
+## AIC: 467.44
 ## 
-## No pre-processing
-## Resampling: Cross-Validated (3 fold) 
-## Summary of sample sizes: 21, 21, 22 
-## Resampling results:
-## 
-##   RMSE      Rsquared   MAE     
-##   3.058989  0.7537272  2.325309
-## 
-## Tuning parameter &#39;intercept&#39; was held constant at a value of TRUE</code></pre>
-<div class="sourceCode" id="cb492"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb492-1" data-line-number="1"><span class="kw">summary</span>(lm2)</a></code></pre></div>
+## Number of Fisher Scoring iterations: 4</code></pre>
+<div id="is-rank-a-category" class="section level3">
+<h3><span class="header-section-number">11.8.1</span> Is Rank A Category ?</h3>
+<p>Okay that was nice and it appears that all of our predictors are significant with <strong>rank</strong> ,in particular, being so. However, when looking at the <strong>rank</strong> variable it looks like it is an ordinal variable as opposed to an interval variable. It’s interesting since rank is on an interval but is a rank of 0 significant ? This variable could be considered as an interval variable but it’s more likely that it is ordinal in which case we would need to turn it into a factor.</p>
+<div class="sourceCode" id="cb492"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb492-1" data-line-number="1">admissions_factor_<span class="dv">2</span> &lt;-<span class="st"> </span>admissions_factor_<span class="dv">1</span> <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mutate</span>(<span class="dt">rank=</span><span class="kw">factor</span>(rank))</a>
+<a class="sourceLine" id="cb492-2" data-line-number="2"><span class="kw">str</span>(admissions_factor_<span class="dv">2</span>)</a></code></pre></div>
+<pre><code>## &#39;data.frame&#39;:    400 obs. of  4 variables:
+##  $ admit: Factor w/ 2 levels &quot;0&quot;,&quot;1&quot;: 1 2 2 2 1 2 2 1 2 1 ...
+##  $ gre  : int  380 660 800 640 520 760 560 400 540 700 ...
+##  $ gpa  : num  3.61 3.67 4 3.19 2.93 3 2.98 3.08 3.39 3.92 ...
+##  $ rank : Factor w/ 4 levels &quot;1&quot;,&quot;2&quot;,&quot;3&quot;,&quot;4&quot;: 3 3 1 4 4 2 1 2 3 2 ...</code></pre>
+<div class="sourceCode" id="cb494"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb494-1" data-line-number="1">classify_admit_factor_<span class="dv">2</span> &lt;-<span class="st"> </span><span class="kw">train</span>(admit <span class="op">~</span><span class="st"> </span>.,</a>
+<a class="sourceLine" id="cb494-2" data-line-number="2">                            <span class="dt">data =</span> admissions_factor_<span class="dv">2</span>,</a>
+<a class="sourceLine" id="cb494-3" data-line-number="3">                            <span class="dt">method =</span> <span class="st">&quot;glm&quot;</span>,</a>
+<a class="sourceLine" id="cb494-4" data-line-number="4">                            <span class="dt">trControl =</span> control)</a>
+<a class="sourceLine" id="cb494-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb494-6" data-line-number="6">classify_admit_factor_<span class="dv">2</span><span class="op">$</span>results<span class="op">$</span>Accuracy</a></code></pre></div>
+<pre><code>## [1] 0.6924401</code></pre>
+<div class="sourceCode" id="cb496"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb496-1" data-line-number="1">classify_admit_factor_<span class="dv">2</span> <span class="op">%&gt;%</span><span class="st"> </span>summary</a></code></pre></div>
 <pre><code>## 
 ## Call:
-## lm(formula = .outcome ~ ., data = dat)
+## NULL
 ## 
-## Residuals:
-##     Min      1Q  Median      3Q     Max 
-## -5.9618 -1.4971 -0.2057  1.8907  6.5382 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -1.6268  -0.8662  -0.6388   1.1490   2.0790  
 ## 
 ## Coefficients:
-##             Estimate Std. Error t value Pr(&gt;|t|)    
-## (Intercept)   24.802      1.323  18.752  &lt; 2e-16 ***
-## cyl6          -6.156      1.536  -4.009 0.000411 ***
-## cyl8         -10.068      1.452  -6.933 1.55e-07 ***
-## am1            2.560      1.298   1.973 0.058457 .  
+##              Estimate Std. Error z value Pr(&gt;|z|)    
+## (Intercept) -3.989979   1.139951  -3.500 0.000465 ***
+## gre          0.002264   0.001094   2.070 0.038465 *  
+## gpa          0.804038   0.331819   2.423 0.015388 *  
+## rank2       -0.675443   0.316490  -2.134 0.032829 *  
+## rank3       -1.340204   0.345306  -3.881 0.000104 ***
+## rank4       -1.551464   0.417832  -3.713 0.000205 ***
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
-## Residual standard error: 3.073 on 28 degrees of freedom
-## Multiple R-squared:  0.7651, Adjusted R-squared:  0.7399 
-## F-statistic:  30.4 on 3 and 28 DF,  p-value: 5.959e-09</code></pre>
+## (Dispersion parameter for binomial family taken to be 1)
+## 
+##     Null deviance: 499.98  on 399  degrees of freedom
+## Residual deviance: 458.52  on 394  degrees of freedom
+## AIC: 470.52
+## 
+## Number of Fisher Scoring iterations: 4</code></pre>
+<p>This is interesting in that the Accuracy from this model is less than the previous one although we see that the interpretation of Rank is more nuanced here in that ranks of 3 and 4 appear to be more significant than other rank values. We might take this into consideration when thinking about how to transform the features or modify our prediction formula.</p>
+</div>
+<div id="relationship-to-one-hot-encoding" class="section level3">
+<h3><span class="header-section-number">11.8.2</span> Relationship To One Hot Encoding</h3>
+<p>Usually when you indicate to R that a variable is a factor then most procedures and functions will know how to handle that when computing various statistics and building models. Other languages might not do this for you in which case you need to employ an approach called <strong>One Hot Encoding</strong>. We can do this also in R but in many (most) cases it is not necessary as long as you explicitly create factors as indicated above. It might be helpful to first see what a one hot encoded version of the admissions data frame might look:</p>
+<div class="sourceCode" id="cb498"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb498-1" data-line-number="1">  gre gpa    rank<span class="fl">.1</span> rank<span class="fl">.2</span> rank<span class="fl">.3</span> rank<span class="fl">.4</span></a>
+<a class="sourceLine" id="cb498-2" data-line-number="2"><span class="dv">1</span> <span class="dv">380</span> <span class="fl">3.61</span>      <span class="dv">0</span>      <span class="dv">0</span>      <span class="dv">1</span>      <span class="dv">0</span></a>
+<a class="sourceLine" id="cb498-3" data-line-number="3"><span class="dv">2</span> <span class="dv">660</span> <span class="fl">3.67</span>      <span class="dv">0</span>      <span class="dv">0</span>      <span class="dv">1</span>      <span class="dv">0</span></a>
+<a class="sourceLine" id="cb498-4" data-line-number="4"><span class="dv">3</span> <span class="dv">800</span> <span class="fl">4.00</span>      <span class="dv">1</span>      <span class="dv">0</span>      <span class="dv">0</span>      <span class="dv">0</span></a>
+<a class="sourceLine" id="cb498-5" data-line-number="5"><span class="dv">4</span> <span class="dv">640</span> <span class="fl">3.19</span>      <span class="dv">0</span>      <span class="dv">0</span>      <span class="dv">0</span>      <span class="dv">1</span></a>
+<a class="sourceLine" id="cb498-6" data-line-number="6"><span class="dv">5</span> <span class="dv">520</span> <span class="fl">2.93</span>      <span class="dv">0</span>      <span class="dv">0</span>      <span class="dv">0</span>      <span class="dv">1</span></a>
+<a class="sourceLine" id="cb498-7" data-line-number="7"><span class="dv">6</span> <span class="dv">760</span> <span class="fl">3.00</span>      <span class="dv">0</span>      <span class="dv">1</span>      <span class="dv">0</span>      <span class="dv">0</span></a></code></pre></div>
+<p>There are two things to notice here. The first is that the admit variable isn’t present since that is the value we will be predicting. The second thing to notice is that for each “level” of the rank variable there is a corresponding column. Now, there is the concept of a “rank deficient” fit wherein you will generally want one less variable than the number of categories present to avoid perfect collinearity. In this case the above encoding would look like:</p>
+<div class="sourceCode" id="cb499"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb499-1" data-line-number="1">gre  gpa rank<span class="fl">.2</span> rank<span class="fl">.3</span> rank<span class="fl">.4</span></a>
+<a class="sourceLine" id="cb499-2" data-line-number="2"><span class="dv">1</span> <span class="dv">380</span> <span class="fl">3.61</span>      <span class="dv">0</span>      <span class="dv">1</span>      <span class="dv">0</span></a>
+<a class="sourceLine" id="cb499-3" data-line-number="3"><span class="dv">2</span> <span class="dv">660</span> <span class="fl">3.67</span>      <span class="dv">0</span>      <span class="dv">1</span>      <span class="dv">0</span></a>
+<a class="sourceLine" id="cb499-4" data-line-number="4"><span class="dv">3</span> <span class="dv">800</span> <span class="fl">4.00</span>      <span class="dv">0</span>      <span class="dv">0</span>      <span class="dv">0</span></a>
+<a class="sourceLine" id="cb499-5" data-line-number="5"><span class="dv">4</span> <span class="dv">640</span> <span class="fl">3.19</span>      <span class="dv">0</span>      <span class="dv">0</span>      <span class="dv">1</span></a>
+<a class="sourceLine" id="cb499-6" data-line-number="6"><span class="dv">5</span> <span class="dv">520</span> <span class="fl">2.93</span>      <span class="dv">0</span>      <span class="dv">0</span>      <span class="dv">1</span></a>
+<a class="sourceLine" id="cb499-7" data-line-number="7"><span class="dv">6</span> <span class="dv">760</span> <span class="fl">3.00</span>      <span class="dv">1</span>      <span class="dv">0</span>      <span class="dv">0</span></a></code></pre></div>
+<p>So, in cases where all rank features (2,3 and 4) were 0 would correspond to a rank of 1. In any case, here is how we would handle the situation using the One Hot Encoding approach. First, we’ll read in the data again:</p>
+<div class="sourceCode" id="cb500"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb500-1" data-line-number="1">admissions &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;https://stats.idre.ucla.edu/stat/data/binary.csv&quot;</span>)</a>
+<a class="sourceLine" id="cb500-2" data-line-number="2"><span class="kw">head</span>(admissions)</a></code></pre></div>
+<pre><code>##   admit gre  gpa rank
+## 1     0 380 3.61    3
+## 2     1 660 3.67    3
+## 3     1 800 4.00    1
+## 4     1 640 3.19    4
+## 5     0 520 2.93    4
+## 6     1 760 3.00    2</code></pre>
+<div class="sourceCode" id="cb502"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb502-1" data-line-number="1"><span class="kw">str</span>(admissions)</a></code></pre></div>
+<pre><code>## &#39;data.frame&#39;:    400 obs. of  4 variables:
+##  $ admit: int  0 1 1 1 0 1 1 0 1 0 ...
+##  $ gre  : int  380 660 800 640 520 760 560 400 540 700 ...
+##  $ gpa  : num  3.61 3.67 4 3.19 2.93 3 2.98 3.08 3.39 3.92 ...
+##  $ rank : int  3 3 1 4 4 2 1 2 3 2 ...</code></pre>
+<p>Now since we want to predict admissions and we consider rank as a factor we’ll turn those into factors. As mentioned, this is all that is necessary when using R but let’s pretend that it isn’t.</p>
+<div class="sourceCode" id="cb504"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb504-1" data-line-number="1">admissions_factors &lt;-<span class="st"> </span>admissions <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mutate</span>(<span class="dt">admit=</span><span class="kw">factor</span>(admit),</a>
+<a class="sourceLine" id="cb504-2" data-line-number="2">                                             <span class="dt">rank=</span><span class="kw">factor</span>(rank))</a>
+<a class="sourceLine" id="cb504-3" data-line-number="3"><span class="kw">str</span>(admissions_factors)</a></code></pre></div>
+<pre><code>## &#39;data.frame&#39;:    400 obs. of  4 variables:
+##  $ admit: Factor w/ 2 levels &quot;0&quot;,&quot;1&quot;: 1 2 2 2 1 2 2 1 2 1 ...
+##  $ gre  : int  380 660 800 640 520 760 560 400 540 700 ...
+##  $ gpa  : num  3.61 3.67 4 3.19 2.93 3 2.98 3.08 3.39 3.92 ...
+##  $ rank : Factor w/ 4 levels &quot;1&quot;,&quot;2&quot;,&quot;3&quot;,&quot;4&quot;: 3 3 1 4 4 2 1 2 3 2 ...</code></pre>
+<p>So now we’ll use the <strong>dummyVars</strong> function from caret to make dummy vars out using out admissions data frame. Since we are ultimately wanting to predict the <strong>admit</strong> feature, we’ll tell <strong>dummyVars</strong> that we don’t want that to be split across two columns.</p>
+<div class="sourceCode" id="cb506"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb506-1" data-line-number="1">(dummy &lt;-<span class="st"> </span><span class="kw">dummyVars</span>(<span class="st">&quot;admit ~ .&quot;</span>,admissions_factors,<span class="dt">fullRank =</span> <span class="ot">TRUE</span>))</a></code></pre></div>
+<pre><code>## Dummy Variable Object
+## 
+## Formula: admit ~ .
+## &lt;environment: 0x7fb1dc76a9f0&gt;
+## 4 variables, 2 factors
+## Variables and levels will be separated by &#39;.&#39;
+## A full rank encoding is used</code></pre>
+<div class="sourceCode" id="cb508"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb508-1" data-line-number="1">dummied_up_admissions &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="kw">predict</span>(dummy,<span class="dt">newdata=</span>admissions_factors))</a></code></pre></div>
+<pre><code>## Warning in model.frame.default(Terms, newdata, na.action = na.action, xlev = object$lvls):
+## variable &#39;admit&#39; is not a factor</code></pre>
+<div class="sourceCode" id="cb510"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb510-1" data-line-number="1"><span class="kw">str</span>(dummied_up_admissions)</a></code></pre></div>
+<pre><code>## &#39;data.frame&#39;:    400 obs. of  5 variables:
+##  $ gre   : num  380 660 800 640 520 760 560 400 540 700 ...
+##  $ gpa   : num  3.61 3.67 4 3.19 2.93 3 2.98 3.08 3.39 3.92 ...
+##  $ rank.2: num  0 0 0 0 0 1 0 1 0 1 ...
+##  $ rank.3: num  1 1 0 0 0 0 0 0 1 0 ...
+##  $ rank.4: num  0 0 0 1 1 0 0 0 0 0 ...</code></pre>
+<div class="sourceCode" id="cb512"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb512-1" data-line-number="1"><span class="kw">head</span>(dummied_up_admissions)</a></code></pre></div>
+<pre><code>##   gre  gpa rank.2 rank.3 rank.4
+## 1 380 3.61      0      1      0
+## 2 660 3.67      0      1      0
+## 3 800 4.00      0      0      0
+## 4 640 3.19      0      0      1
+## 5 520 2.93      0      0      1
+## 6 760 3.00      1      0      0</code></pre>
+<p>So we could now use this data frame in our modeling attempts as before to see if it makes any difference. We’ll also need to use an alternative calling sequence to the <strong>train</strong> function which allows us to specify the predicted column (admit) separately from the features we are using to make that prediction.</p>
+<div class="sourceCode" id="cb514"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb514-1" data-line-number="1">classify_admit_onehot &lt;-<span class="st"> </span><span class="kw">train</span>(<span class="dt">x =</span> dummied_up_admissions,</a>
+<a class="sourceLine" id="cb514-2" data-line-number="2">                               <span class="dt">y =</span> admissions_factor[,<span class="st">&#39;admit&#39;</span>],</a>
+<a class="sourceLine" id="cb514-3" data-line-number="3">                               <span class="dt">method =</span> <span class="st">&quot;glm&quot;</span>,</a>
+<a class="sourceLine" id="cb514-4" data-line-number="4">                               <span class="dt">trControl =</span> control)</a>
+<a class="sourceLine" id="cb514-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb514-6" data-line-number="6">classify_admit_onehot<span class="op">$</span>results<span class="op">$</span>Accuracy</a></code></pre></div>
+<pre><code>## [1] 0.7050462</code></pre>
+<div class="sourceCode" id="cb516"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb516-1" data-line-number="1">classify_admit_onehot <span class="op">%&gt;%</span><span class="st"> </span>summary</a></code></pre></div>
+<pre><code>## 
+## Call:
+## NULL
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -1.6268  -0.8662  -0.6388   1.1490   2.0790  
+## 
+## Coefficients:
+##              Estimate Std. Error z value Pr(&gt;|z|)    
+## (Intercept) -3.989979   1.139951  -3.500 0.000465 ***
+## gre          0.002264   0.001094   2.070 0.038465 *  
+## gpa          0.804038   0.331819   2.423 0.015388 *  
+## rank.2      -0.675443   0.316490  -2.134 0.032829 *  
+## rank.3      -1.340204   0.345306  -3.881 0.000104 ***
+## rank.4      -1.551464   0.417832  -3.713 0.000205 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## (Dispersion parameter for binomial family taken to be 1)
+## 
+##     Null deviance: 499.98  on 399  degrees of freedom
+## Residual deviance: 458.52  on 394  degrees of freedom
+## AIC: 470.52
+## 
+## Number of Fisher Scoring iterations: 4</code></pre>
+<p>How does this compare to the model we built earlier where we told R that both admit and rank were factors ? It’s pretty much the same.</p>
+<div class="sourceCode" id="cb518"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb518-1" data-line-number="1">classify_admit_factor_<span class="dv">2</span><span class="op">$</span>results<span class="op">$</span>Accuracy</a></code></pre></div>
+<pre><code>## [1] 0.6924401</code></pre>
+<div class="sourceCode" id="cb520"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb520-1" data-line-number="1">classify_admit_factor_<span class="dv">2</span> <span class="op">%&gt;%</span><span class="st"> </span>summary</a></code></pre></div>
+<pre><code>## 
+## Call:
+## NULL
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -1.6268  -0.8662  -0.6388   1.1490   2.0790  
+## 
+## Coefficients:
+##              Estimate Std. Error z value Pr(&gt;|z|)    
+## (Intercept) -3.989979   1.139951  -3.500 0.000465 ***
+## gre          0.002264   0.001094   2.070 0.038465 *  
+## gpa          0.804038   0.331819   2.423 0.015388 *  
+## rank2       -0.675443   0.316490  -2.134 0.032829 *  
+## rank3       -1.340204   0.345306  -3.881 0.000104 ***
+## rank4       -1.551464   0.417832  -3.713 0.000205 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## (Dispersion parameter for binomial family taken to be 1)
+## 
+##     Null deviance: 499.98  on 399  degrees of freedom
+## Residual deviance: 458.52  on 394  degrees of freedom
+## AIC: 470.52
+## 
+## Number of Fisher Scoring iterations: 4</code></pre>
+</div>
 </div>
 <div id="binning" class="section level2">
-<h2><span class="header-section-number">11.11</span> Binning</h2>
+<h2><span class="header-section-number">11.9</span> Binning</h2>
 <p>Sometimes we have data that spans a range of values such that it might make more sense to “bin” or collect the values into “buckets” represented by categories. This is akin to what a histogram does. Look at the PimaIndiansDiabetes data set for an example. Specifically, look at the <strong>pregnant</strong> feature in the form of a histogram. Most of those surveyed had less than 5 pregnancies although there are those who had at least that number of pregnancies and more.</p>
-<div class="sourceCode" id="cb494"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb494-1" data-line-number="1">pm_new &lt;-<span class="st"> </span>PimaIndiansDiabetes</a>
-<a class="sourceLine" id="cb494-2" data-line-number="2"><span class="kw">hist</span>(pm_new<span class="op">$</span>pregnant)</a></code></pre></div>
+<div class="sourceCode" id="cb522"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb522-1" data-line-number="1">pm_new &lt;-<span class="st"> </span>PimaIndiansDiabetes</a>
+<a class="sourceLine" id="cb522-2" data-line-number="2"><span class="kw">hist</span>(pm_new<span class="op">$</span>pregnant)</a></code></pre></div>
 <p><img src="biosml_files/figure-html/pmbin1-1.png" width="672" /></p>
-<p>We could build our models using the number of pregnancies without attemptin to transform the feature in any way. But let’s bin this feature. In R, we can use the <strong>cut</strong> function to chop up a numerical range of data into a specified number of bins and according to some function such as the <strong>quantile</strong> function which would give us for bins labelled from 1 to 4. This will produce sample quantiles according to the 0, 25th, 50th, 75%, and 100% percentiles.</p>
-<div class="sourceCode" id="cb495"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb495-1" data-line-number="1"><span class="kw">cut</span>(pm_new<span class="op">$</span>pregnant, <span class="dt">breaks=</span><span class="kw">quantile</span>(pm<span class="op">$</span>pregnant),</a>
-<a class="sourceLine" id="cb495-2" data-line-number="2">                     <span class="dt">include.lowest =</span> <span class="ot">TRUE</span>,<span class="dt">labels=</span><span class="dv">1</span><span class="op">:</span><span class="dv">4</span>)</a></code></pre></div>
+<p>We could build our models using the number of pregnancies without attempting to transform the feature in any way. But let’s bin this feature. In R, we can use the <strong>cut</strong> function to chop up a numerical range of data into a specified number of bins and according to some function such as the <strong>quantile</strong> function which would give us for bins labelled from 1 to 4. This will produce sample quantiles according to the 0, 25th, 50th, 75%, and 100% percentiles.</p>
+<div class="sourceCode" id="cb523"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb523-1" data-line-number="1"><span class="kw">cut</span>(pm_new<span class="op">$</span>pregnant, <span class="dt">breaks=</span><span class="kw">quantile</span>(pm<span class="op">$</span>pregnant),</a>
+<a class="sourceLine" id="cb523-2" data-line-number="2">                     <span class="dt">include.lowest =</span> <span class="ot">TRUE</span>,<span class="dt">labels=</span><span class="dv">1</span><span class="op">:</span><span class="dv">4</span>)</a></code></pre></div>
 <pre><code>##   [1] 3 1 4 1 1 3 2 4 2 4 3 4 4 1 3 4 1 4 1 1 2 4 4 4 4 4 4 1 4 3 3 2 2 3 4 3 4 4 2 3 2 4 4 4 4
 ##  [46] 1 1 2 4 4 1 1 3 4 4 1 4 1 1 1 2 4 3 2 4 3 1 2 1 3 2 3 4 3 1 1 4 3 1 2 2 2 4 1 3 2 4 2 4 1
 ##  [91] 1 3 4 3 2 3 2 1 3 1 1 1 1 1 2 1 1 3 2 1 2 4 1 3 4 3 3 3 3 3 1 3 2 3 1 1 2 1 1 1 3 4 2 4 2
@@ -1288,20 +1425,20 @@ where high correlations exist between variables in a data set. Consider the mtca
 ## [721] 3 1 1 3 1 3 1 1 2 2 2 4 2 2 2 3 1 4 2 1 4 2 1 4 4 4 1 1 2 3 3 1 2 1 4 1 4 1 1 3 2 4 4 4 2
 ## [766] 3 1 1
 ## Levels: 1 2 3 4</code></pre>
-<div class="sourceCode" id="cb497"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb497-1" data-line-number="1">pm_new &lt;-<span class="st"> </span>pm_new <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb497-2" data-line-number="2"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">pregnant=</span><span class="kw">cut</span>(pregnant,<span class="dt">breaks=</span><span class="kw">quantile</span>(pregnant),</a>
-<a class="sourceLine" id="cb497-3" data-line-number="3">                      <span class="dt">include.lowest=</span><span class="ot">TRUE</span>,<span class="dt">labels=</span><span class="dv">1</span><span class="op">:</span><span class="dv">4</span>))</a>
-<a class="sourceLine" id="cb497-4" data-line-number="4"></a>
-<a class="sourceLine" id="cb497-5" data-line-number="5"><span class="kw">str</span>(pm_new<span class="op">$</span>pregnant)</a></code></pre></div>
+<div class="sourceCode" id="cb525"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb525-1" data-line-number="1">pm_new &lt;-<span class="st"> </span>pm_new <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb525-2" data-line-number="2"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">pregnant=</span><span class="kw">cut</span>(pregnant,<span class="dt">breaks=</span><span class="kw">quantile</span>(pregnant),</a>
+<a class="sourceLine" id="cb525-3" data-line-number="3">                      <span class="dt">include.lowest=</span><span class="ot">TRUE</span>,<span class="dt">labels=</span><span class="dv">1</span><span class="op">:</span><span class="dv">4</span>))</a>
+<a class="sourceLine" id="cb525-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb525-5" data-line-number="5"><span class="kw">str</span>(pm_new<span class="op">$</span>pregnant)</a></code></pre></div>
 <pre><code>##  Factor w/ 4 levels &quot;1&quot;,&quot;2&quot;,&quot;3&quot;,&quot;4&quot;: 3 1 4 1 1 3 2 4 2 4 ...</code></pre>
 <p>So we could now build a model using this newly binned information. It might not make a big difference although it might give some insight into to what extent the number of pregnancies influence the model. More specifically, which bin of the pregnancy variable would be influential - if it all ? First, let’s create a model using the untransformed data as found in the PimaIndiansDiabetes data frame.</p>
-<div class="sourceCode" id="cb499"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb499-1" data-line-number="1">control &lt;-<span class="st"> </span><span class="kw">trainControl</span>(<span class="dt">method=</span><span class="st">&quot;cv&quot;</span>,<span class="dt">number=</span><span class="dv">5</span>)</a>
-<a class="sourceLine" id="cb499-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb499-3" data-line-number="3">cutmodel1 &lt;-<span class="st"> </span><span class="kw">train</span>(diabetes<span class="op">~</span>.,</a>
-<a class="sourceLine" id="cb499-4" data-line-number="4">                   <span class="dt">data=</span>PimaIndiansDiabetes,</a>
-<a class="sourceLine" id="cb499-5" data-line-number="5">                   <span class="dt">method=</span><span class="st">&quot;glm&quot;</span>,</a>
-<a class="sourceLine" id="cb499-6" data-line-number="6">                   <span class="dt">trControl=</span>control)</a>
-<a class="sourceLine" id="cb499-7" data-line-number="7"><span class="kw">summary</span>(cutmodel1<span class="op">$</span>finalModel)</a></code></pre></div>
+<div class="sourceCode" id="cb527"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb527-1" data-line-number="1">control &lt;-<span class="st"> </span><span class="kw">trainControl</span>(<span class="dt">method=</span><span class="st">&quot;cv&quot;</span>,<span class="dt">number=</span><span class="dv">5</span>)</a>
+<a class="sourceLine" id="cb527-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb527-3" data-line-number="3">cutmodel1 &lt;-<span class="st"> </span><span class="kw">train</span>(diabetes<span class="op">~</span>.,</a>
+<a class="sourceLine" id="cb527-4" data-line-number="4">                   <span class="dt">data=</span>PimaIndiansDiabetes,</a>
+<a class="sourceLine" id="cb527-5" data-line-number="5">                   <span class="dt">method=</span><span class="st">&quot;glm&quot;</span>,</a>
+<a class="sourceLine" id="cb527-6" data-line-number="6">                   <span class="dt">trControl=</span>control)</a>
+<a class="sourceLine" id="cb527-7" data-line-number="7"><span class="kw">summary</span>(cutmodel1<span class="op">$</span>finalModel)</a></code></pre></div>
 <pre><code>## 
 ## Call:
 ## NULL
@@ -1331,7 +1468,7 @@ where high correlations exist between variables in a data set. Consider the mtca
 ## AIC: 741.45
 ## 
 ## Number of Fisher Scoring iterations: 5</code></pre>
-<div class="sourceCode" id="cb501"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb501-1" data-line-number="1"><span class="kw">varImp</span>(cutmodel1)</a></code></pre></div>
+<div class="sourceCode" id="cb529"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb529-1" data-line-number="1"><span class="kw">varImp</span>(cutmodel1)</a></code></pre></div>
 <pre><code>## glm variable importance
 ## 
 ##          Overall
@@ -1344,12 +1481,12 @@ where high correlations exist between variables in a data set. Consider the mtca
 ## insulin    13.12
 ## triceps     0.00</code></pre>
 <p>We definitely see that pregnancy is an important feature here although, again, we don’t know what sub population might have influence, if any, on the overall model. Let’s rerun this analysis on the transformed version of the data frame.</p>
-<div class="sourceCode" id="cb503"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb503-1" data-line-number="1">cutmodel2 &lt;-<span class="st"> </span><span class="kw">train</span>(diabetes<span class="op">~</span>.,</a>
-<a class="sourceLine" id="cb503-2" data-line-number="2">                   <span class="dt">data=</span>pm_new,</a>
-<a class="sourceLine" id="cb503-3" data-line-number="3">                   <span class="dt">method=</span><span class="st">&quot;glm&quot;</span>,</a>
-<a class="sourceLine" id="cb503-4" data-line-number="4">                   <span class="dt">trControl=</span>control)</a>
-<a class="sourceLine" id="cb503-5" data-line-number="5"></a>
-<a class="sourceLine" id="cb503-6" data-line-number="6"><span class="kw">summary</span>(cutmodel2<span class="op">$</span>finalModel)</a></code></pre></div>
+<div class="sourceCode" id="cb531"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb531-1" data-line-number="1">cutmodel2 &lt;-<span class="st"> </span><span class="kw">train</span>(diabetes<span class="op">~</span>.,</a>
+<a class="sourceLine" id="cb531-2" data-line-number="2">                   <span class="dt">data=</span>pm_new,</a>
+<a class="sourceLine" id="cb531-3" data-line-number="3">                   <span class="dt">method=</span><span class="st">&quot;glm&quot;</span>,</a>
+<a class="sourceLine" id="cb531-4" data-line-number="4">                   <span class="dt">trControl=</span>control)</a>
+<a class="sourceLine" id="cb531-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb531-6" data-line-number="6"><span class="kw">summary</span>(cutmodel2<span class="op">$</span>finalModel)</a></code></pre></div>
 <pre><code>## 
 ## Call:
 ## NULL
@@ -1381,7 +1518,7 @@ where high correlations exist between variables in a data set. Consider the mtca
 ## AIC: 744.27
 ## 
 ## Number of Fisher Scoring iterations: 5</code></pre>
-<div class="sourceCode" id="cb505"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb505-1" data-line-number="1"><span class="kw">varImp</span>(cutmodel2)</a></code></pre></div>
+<div class="sourceCode" id="cb533"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb533-1" data-line-number="1"><span class="kw">varImp</span>(cutmodel2)</a></code></pre></div>
 <pre><code>## glm variable importance
 ## 
 ##           Overall
@@ -1395,10 +1532,10 @@ where high correlations exist between variables in a data set. Consider the mtca
 ## insulin    12.981
 ## pregnant2   6.724
 ## triceps     0.000</code></pre>
-<p>This is interesting in that pehaps it’s the 4th bin of the pregnancy feature that has the major influence on the model. So if we look at the distribution of positive cases we see that in the positive cases there are more people from the 4th bin:</p>
-<div class="sourceCode" id="cb507"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb507-1" data-line-number="1">pm_new <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">group_by</span>(diabetes,pregnant) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb507-2" data-line-number="2"><span class="st">  </span><span class="kw">count</span>() <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb507-3" data-line-number="3"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x=</span>diabetes,<span class="dt">y=</span>n,<span class="dt">fill=</span>pregnant)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_bar</span>(<span class="dt">stat=</span><span class="st">&quot;identity&quot;</span>)</a></code></pre></div>
+<p>This is interesting in that perhaps it’s the 4th bin of the pregnancy feature that has the major influence on the model. So if we look at the distribution of positive cases we see that in the positive cases there are more people from the 4th bin:</p>
+<div class="sourceCode" id="cb535"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb535-1" data-line-number="1">pm_new <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">group_by</span>(diabetes,pregnant) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb535-2" data-line-number="2"><span class="st">  </span><span class="kw">count</span>() <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb535-3" data-line-number="3"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x=</span>diabetes,<span class="dt">y=</span>n,<span class="dt">fill=</span>pregnant)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_bar</span>(<span class="dt">stat=</span><span class="st">&quot;identity&quot;</span>)</a></code></pre></div>
 <p><img src="biosml_files/figure-html/plot4bin-1.png" width="672" /></p>
 </div>
 </div>
