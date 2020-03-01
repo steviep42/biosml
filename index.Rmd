@@ -2223,106 +2223,142 @@ head(pm_rf_model$err.rate)
 
 
 
-# Using Methods Other Than lm
+# Using Methods Other Than lm 
 
-Let's look at random forests for this to see if it improves the situation. Note that we aren't, at least at this point, trying to understand the underlying details and subtleties of any of alternative functions we might use although that is ultimately very important. However, in the interest of motivating action, we'll defer the conversation until later.
+So when considering our inital example of using the **lm** function I think (hope) that I have convinced you that using caret to call lm is the way to go since it generalizes the process of cross fold validation and the presentation of results. It's also quite convenient in that we can use other methods than lm to do some preductions. 
 
-https://stats.stackexchange.com/questions/330153/predictors-in-random-forest#330154
+To that end, let's look at random forests to see if it improves the situation. Note that we aren't, at least at this point, trying to understand the underlying details and subtleties of any of the alternative functions we might use although that is ultimately very important. However, we'll defer the conversation until later. Many people are surprised to learn that random Forests (or even a single Decision Tree) can be used to predict a numeric outcome, but they can be. The advantages of using random Forests include the following:
 
-> The random forest algorithm, as implemented by Breiman, is designed such that each predictor is given a fair chance to manifest its importance in the overall forest model. Each tree is built by taking a random set of features, and then choosing the feature with the best split at each node, starting with the root. Features/predictors which are relevant will influence the tree heavily in the first few splits."
+    - easy to use
+    - resistant to overfitting
+    - accurate use for non linear models
 
-So we can somewhat blindly use the function to get a sense of what the most important predictors are as well as how many trees to "grow" in order to minimize errors. We could also adjust the **mtry** parameter to see influence how many variables are randomly sampled at each tree split. For now. well stick with some basic defaults:
+Some problems include:
 
-```{r datasplit}
-percent <- .80
-idx <- sample(1:nrow(mtcars),round(percent*nrow(mtcars)))
+    - the rd function requires setting hyperparameters 
+    - adjustment of hyperparameters can be specific to the data set
+    - default vlaues will requie adjustment or "tuning"
 
-train <- mtcars[idx,]
-test  <- mtcars[-idx,]
 
+For now, let's set up a "shoot out" between the **lm** function and the **rf** function to see if the latter yields a lower RMSE than the former (or vice versa). 
+
+
+```{r reprolm}
+set.seed(124)
+
+new_idx <- createDataPartition(mtcars$mpg,p=.80,list=FALSE)
+new_train <- mtcars[new_idx,]
+new_test  <- mtcars[-new_idx,]
+
+
+caret_lm <- train(mpg ~ .,
+                  data = new_train,
+                  method = "lm")
+
+caret_lm$results
+Metrics::rmse(new_test$mpg, predict(caret_lm,new_test))
+```
+
+So let's see what the random forest function will give us with the same data. Because we are using caret, all we have to is sub in the desired method which is "rf".
+
+```{r reprorf}
+caret_rf <- train(mpg ~ .,
+                  data = new_train,
+                  method = "rf")
+
+caret_rf$results
+Metrics::rmse(new_test$mpg, predict(caret_rf,new_test))
 ```
 
 
-```{r loadrflib}
-suppressMessages(library(randomForest))
+So the random Forest approach, in this case, produces a much lower RMSE for the test data frame. The larger question relates to why there is more information in the output for the rf model. What is the **mtry** argument and why does it take on three different values during the execution of the function ? 
 
-# See https://www.r-bloggers.com/part-4a-modelling-predicting-the-amount-of-rain/
+```{r}
+caret_rf
+```
 
-my_rf <- randomForest(mpg~.,
-                      data=train,
+
+The **mtry** argument is a **hyperparameter** which represents information that is supplied in the form of an argument prior to the call to the. These parameters might not be something one can intelligently set without some experimentation. 
+
+## Parameters vs Hyperparameters 
+
+**Model parameters** are things that are generated as part of the modeling process. They are the product or result of model fitting. These might be things like slope and intercept from a linear model - or coefficients. 
+
+**Hyperparameters** have default values for various arguments but this does not mean that the defaults are appropriate for all cases. 
+
+So with **rf** there is a hyperarameter called **mtry** that influences the outcome but is not necessarily something that we know how to optimally set. The **mtry** value is the number of variables that are randomly sampled at each tree split.
+
+If we had called the random Forest function without using caret we could supply a number of values for mtry to try to arrive at the "best" value to produce the lowest RMSE. 
+
+
+```{r loadrflib,message=FALSE}
+library(randomForest)
+
+non_caret_rf <- randomForest(mpg~.,
+                      data= new_train,
                       mtry=3,      # This is the default 
                       importance=TRUE)
 
-# Check out the predictions
-
-(test_pred_forest <- predict(my_rf,test))
-
-(rmse_rf <- compute_rmse(test_pred_forest,test$mpg))
-
-#
-mean(rmse_rf)
-```
-
-
-```{r rfimport}
-imp <- varImp(my_rf)
-imp.features <- tibble(variables = row.names(imp), 
-                       importance = imp[, 1])
-#
-
-ggplot(imp.features, 
-       aes(x= reorder(variables, importance) , 
-           y = importance)) +
-                  geom_bar(stat = "identity") + 
-                  coord_flip() +
-                  theme_bw() +
-                  xlab("") + 
-                  ylab("important")+
-                  ggtitle("Key Variables \n") +
-          theme(plot.title = element_text(size=18))
+# Check out the RMSE of the preditcions 
+Metrics::rmse(new_test$mpg,predict(non_caret_rf,new_test))
 
 ```
 
-So the thing here is that we have a parameter called **mtry** that influences the outcome but is not necessarily something that we know how to optimally set without some experimentation. The **mtry** value is the number of variables that are randomly sampled at each tree split.
-
-The method will pick a default value based on the number of predictor variables but it's not guaranteed to be the best value - it's just a starting point.  We could write a loop to "walk through" various values of the **mtry** parameter. 
-
+We could also write a loop to do this for multiple values of mtry. 
 
 ```{r rffunctiondef}
 make_mtcars_rf <- function(mtry=3) {
     my_rf <- randomForest(mpg~.,
-                   data=train,
-                   mtry=mtry,
-                   importance=TRUE)
+                   data = new_train,
+                   mtry = mtry,
+                   importance = TRUE)
 
 # Check out the predictions
-    (test_pred_rf <- predict(my_rf,test))
-    (rmse_rf <- compute_rmse(test_pred_rf,test$mpg))
+    rmse_rf <- Metrics::rmse(new_test$mpg,predict(my_rf,new_test))
 
     return(rmse_rf)
 }
 ```
 
-So now we could check out RMSE for varying values of **mtry**. The following will call the **randomForest** package 5 times. Starting with the first iteration, the value of **mtry** will be 3, the next time it will be 4, and so on until the last iteration where it will be 8. This is just an experiment to see if varying **mtry** will help minimize the RMSE of our model. We also have to be careful not to pick incorrect values for **mtry** so reading the help page for the **randomForest** package would be helpful. For now, let's assume that what we are doing is okay.
+
+The following will call the **randomForest** package 5 times. Starting with the first iteration, the value of **mtry** will be 3, the next time it will be 4, and so on until the last iteration where it will be 8. This is just an experiment to see if varying **mtry** will help minimize the RMSE of our model. We also have to be careful not to pick incorrect values for **mtry** so reading the help page for the **randomForest** package would be helpful. For now, let's assume that what we are doing is okay.
+
 
 ```{r rfloop}
 sapply(3:8,make_mtcars_rf)
 ```
 
-While this is fine, it would be nice if there were an easier way to handle this process. Besides, if we pick another method (e.g. the **ranger** function) then we have to deal with whatever arguments that method requires. This leads to a more general discussion on **model parameters** vs **hyperparameters**.
+While this is fine, it would be nice if there were an easier way to handle this process. Besides, if we pick another method (e.g. the **ranger** function) then we have to deal with whatever arguments and hyperparameters that method requires.  
 
-## Parameters vs Hyperparameters
+The above is an example of what we would have to do if we didn't have someting like caret to help us try out different values of the **mtry** hyperparameter. As we saw from our earlier work, the model **caret_rf** tried three different values of the **mtry** hyperparameter:
 
-**Model parameters** are things that are generated as part of the modeling process. They are the product or result of model fitting. These might be things like slope and intercept from a linear model.
+```{r}
+caret_rf
+```
 
-**Hyperparameters** (sometimes called **metaparameters**) represent information that is supplied in the form of an argument prior the call to the method to generate results. These parameters might not be something one can intelligently set without some experimentation. 
+As a matter of fact we can plot this model and it will show us something interesting. In particular, we now see that using values less than 6 predictors / columns / features results in lower RMSE. If we use more, than the RMSE goes up. This is the power of methods that use hyperparamters. If we move through a number of values for the **mtry** then perhaps we can find the best value to get the best result. 
 
-Of course most modeling functions one would call in R have default values for various arguments but this does not mean that the defaults are appropriate for all cases. 
+```{r}
+plot(caret_rf)
+```
 
-To see the hyper parameters of the **lm** function, check the help page or use the **args** function. As an example, the **method** argument is a hyper parameter which has a default value of **qr**. This could be changed but one would need a reason to do so. 
+Telling **caret** to use more valies of **mtry** is possible. This will explicitly try all values from 1 - 10 inclusive. Note that the model gets built for each value of **mtry**. This causes the model building process to take longer than it normally would. 
 
-```{r lmarg}
-args(lm)
+```{r caretrftune}
+caret_rf <- train(mpg ~ .,
+                  data = new_train,
+                  method = "rf",
+                  tuneLength = 10)
+
+caret_rf$results
+Metrics::rmse(new_test$mpg, predict(caret_rf,new_test))
+```
+
+
+It looks like a value of 4 will produce the lowest value for RMSE. 
+
+```{r plotcaretrf}
+plot(caret_rf)
 ```
 
 
@@ -2330,26 +2366,46 @@ args(lm)
 
 The process of finding the "right" values for these parameters is generally referred to as "hypermarket tuning". Different values are supplied for each invocation of a method (as we did in the above example) to see the effect on the model. We might do this many times to arrive at the optimal parameter set to produce a model that offers the "best" explanatory and predictive power. 
 
-Just to review - things like coefficients and residuals are parameters that are generated by a call to the **lm** function. They don't actually exist until the function does some work. However, the "weights" parameter referred to in the help page for the **lm** function is a **hyperparameter** since one sets this (or accepts the default value) prior to running the command. So **hyperparameters** are specific to whatever algorithm (and supporting R function) you are using. Concepts such as coefficients and intercept, however, are parameters that would be generated by any method that implements linear regression. 
+Just to review - things like coefficients and residuals are parameters that are generated by a call to the **lm** function. They don't actually exist until the function does some work. The **hyperparameters** are specific to whatever algorithm (and supporting R function) you are using. Concepts such as coefficients and intercept, however, are parameters that would be generated in this case by lm.
 
-More generally, what if we wanted to use other functions to do some predicting ? There are some reasonable alternatives to the humble **lm** function. But they would require some investigation prior to use to understand what parameters are supported by those respective functions. 
+More generally, what if we wanted to use other functions to do some predicting ? You can check this page for a list of caret supported methods along with any hyperparamters available for tuning. Obviously, if you know the underlying method you can refer to the help page for it to see what paramters exist. 
 
-```{r printargs}
-print("rpart arguments")
-args(rpart)
-#
+### Multiple Hyperparameters ? 
 
-print("glm arguments")
-args(glm)
-#
+Let's look at another method for random forests such as the **ranger** function which allages to build trees very rapidly. We can easily call it via the **train** function. If you consult the reference manual for the caret implementation of **ranger** you will see that it supports three hyperparameters: **mtry, splitrule**, and **min.node.size**.
 
-print("pls args")
-args(plsr)
 
-print("random Forest arguments")
-args(randomForest)
+```{r rangerinoke}
+caret_ranger <- train(mpg ~ .,
+                  data = new_train,
+                  method = "ranger")
+
+caret_ranger$results
+Metrics::rmse(new_test$mpg, predict(caret_ranger,new_test))
+
 ```
 
+And then we can plot these results to get a more intutive view of the output. 
+
+```{r plotrangerinvoke}
+plot(caret_ranger)
+```
+
+
+```{r rangetuner}
+caret_ranger <- train(mpg ~ .,
+                  data = new_train,
+                  method = "ranger",
+                  tuneLength = 10)
+
+caret_ranger$results
+Metrics::rmse(new_test$mpg, predict(caret_ranger,new_test))
+
+```
+
+```{r plotnewranger}
+plot(caret_ranger)
+```
 
 
 # Picking The Best Model
