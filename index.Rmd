@@ -2295,9 +2295,9 @@ If we had called the random Forest function without using caret we could supply 
 library(randomForest)
 
 non_caret_rf <- randomForest(mpg~.,
-                      data= new_train,
-                      mtry=3,      # This is the default 
-                      importance=TRUE)
+                             data= new_train,
+                             mtry=3,      # This is the default 
+                             importance=TRUE)
 
 # Check out the RMSE of the preditcions 
 Metrics::rmse(new_test$mpg,predict(non_caret_rf,new_test))
@@ -2309,9 +2309,9 @@ We could also write a loop to do this for multiple values of mtry.
 ```{r rffunctiondef}
 make_mtcars_rf <- function(mtry=3) {
     my_rf <- randomForest(mpg~.,
-                   data = new_train,
-                   mtry = mtry,
-                   importance = TRUE)
+                          data = new_train,
+                          mtry = mtry,
+                          importance = TRUE)
 
 # Check out the predictions
     rmse_rf <- Metrics::rmse(new_test$mpg,predict(my_rf,new_test))
@@ -2377,8 +2377,8 @@ Let's look at another method for random forests such as the **ranger** function 
 
 ```{r rangerinoke}
 caret_ranger <- train(mpg ~ .,
-                  data = new_train,
-                  method = "ranger")
+                      data = new_train,
+                      method = "ranger")
 
 caret_ranger$results
 Metrics::rmse(new_test$mpg, predict(caret_ranger,new_test))
@@ -2394,9 +2394,9 @@ plot(caret_ranger)
 
 ```{r rangetuner}
 caret_ranger <- train(mpg ~ .,
-                  data = new_train,
-                  method = "ranger",
-                  tuneLength = 10)
+                      data = new_train,
+                      method = "ranger",
+                      tuneLength = 10)
 
 caret_ranger$results
 Metrics::rmse(new_test$mpg, predict(caret_ranger,new_test))
@@ -2405,6 +2405,29 @@ Metrics::rmse(new_test$mpg, predict(caret_ranger,new_test))
 
 ```{r plotnewranger}
 plot(caret_ranger)
+```
+
+### Custom Tuning Grid
+
+So it's possible to go even deeper when tuning hyperparameters. We can create a custom tuning grid instead of letting caret pick the values. Of course, using **tuneLength** is fine but the custom tuning grid allows for finer grained control. It's easy, all we need to do is to specify our own "tuneGrid" and then pass it to **train**.
+
+```{r customgrid}
+MyGrid <- data.frame(
+   mtry = c(2, 4, 6),
+   splitrule = "variance",
+   min.node.size = 4
+)
+
+# Now we supply it when calling train
+
+caret_ranger <- train(mpg ~ .,
+                  data = new_train,
+                  method = "ranger",
+                  tuneGrid = MyGrid)
+
+caret_ranger$results
+Metrics::rmse(new_test$mpg, predict(caret_ranger,new_test))
+
 ```
 
 
