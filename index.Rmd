@@ -1079,6 +1079,34 @@ compute_rmse(predict(my_ranger,Test),Test$mpg)
 plot(my_ranger)
 ```
 
+## Alternative Calling Sequence
+
+It is native to R to want to use a formula when specifying the goal of the modeling process. We've been using something along the lines of "mpg ~ ." because R uses this format for many different statistical functions. However, it is also possible to specify the predictor variables as X and the predicted variable as Y. In the above example, this would look like:
+
+
+```{r alterna}
+my_ctrl <- trainControl(
+    method = "cv", 
+    number = 3,
+    verboseIter = FALSE 
+  )
+
+my_ranger <- train(
+  x = Train[,-1],    # Everything BUT the MPG column
+  y = Train[,1],     # The MPG column
+  method = "ranger",
+  tuneLength = 6,    
+  trControl = my_ctrl
+)
+
+my_ranger
+
+compute_rmse(predict(my_ranger,Test),Test$mpg)
+
+plot(my_ranger)
+```
+
+
 # Classification Problems
 
 Next up we consider the issue of building a model to predict a binary (e.g. "yes" / "no" or "positive / "negative") outcome although we might also predict more than one class. For the sake of explanation we'll keep our attention to the "two class" situation. 
@@ -2430,6 +2458,12 @@ Metrics::rmse(new_test$mpg, predict(caret_ranger,new_test))
 
 ```
 
+## Using Validation Data Sets
+
+When building a model, we generate a training and test data set. We use the former to build a model and, if we are using something like the caret package, that process involves cross fold validation or bootstrap sampling to generate a good estimate for out-of-sample error. We then apply the model to the test data frame.
+
+If we are using a method that has hyperparamters then maybe we want an intermediate data set to help validate our ultimate choice of hyperparameters. By taking this approach we can still keep our test data set off to the side for later use  with the trained and validated model. Using this idea doesn't require us to do much beyond generating a third data set. 
+
 
 # Picking The Best Model
 
@@ -3406,10 +3440,9 @@ So with this data, an interesting problem might be to predict whether an applica
 control <- trainControl(method="cv",number=3)
 
 try_to_classify_admit <- train(admit ~ .,
-                            data = admissions,
-                            method = "glm",
-                            trControl = control)
-
+                               data = admissions,
+                               method = "glm",
+                               trControl = control)
 ```
 
 Why does this bomb out ? Well, the GLM method expects us to be predicting a binary outcome which, to the human eye, the admit variable  actually is. However, R doesn't know this as it currently thinks of the **admit** variable as being simply a number so it thinks we are trying to predict a numeric outcome hence the error. To fix this we need to make admit a **factor** which is a term used in statistics to refer to categories. So let's see the effect of doing this. While we are at it, let's also resummarize the data to see if R treats the **admit** variable any differently after the conversion to factor has been made. 
@@ -3421,14 +3454,14 @@ str(admissions_factor_1)
 
 cat("\n Now look at the summary","\n")
 
-summary(admissions_factor$admit)
+summary(admissions_factor_1$admit)
 ```
 
 So now R understands that **admit** is a category so it chooses to offer a table / count summary of the data as opposed to the summary statistics it would apply for numeric data. So now let's try again to build a predictive model for **admit**. 
 
 ```{r classadmitf1}
 classify_admit_factor_1 <- train(admit ~ .,
-                                 data = admissions_factor,
+                                 data = admissions_factor_1,
                                  method = "glm",
                                  trControl = control)
 
@@ -3516,7 +3549,7 @@ So we could now use this data frame in our modeling attempts as before to see if
 
 ```{r}
 classify_admit_onehot <- train(x = dummied_up_admissions,
-                               y = admissions_factor[,'admit'],
+                               y = admissions_factors[,'admit'],
                                method = "glm",
                                trControl = control)
 
