@@ -134,7 +134,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="1.5" data-path="index.html"><a href="index.html#black-box"><i class="fa fa-check"></i><b>1.5</b> Black Box</a></li>
 </ul></li>
 <li class="chapter" data-level="2" data-path="predictive-supervised-learning.html"><a href="predictive-supervised-learning.html"><i class="fa fa-check"></i><b>2</b> Predictive / Supervised Learning</a><ul>
-<li class="chapter" data-level="2.1" data-path="predictive-supervised-learning.html"><a href="predictive-supervised-learning.html#explanation-vs-prediction"><i class="fa fa-check"></i><b>2.1</b> Explanation vs Prediction</a></li>
+<li class="chapter" data-level="2.1" data-path="predictive-supervised-learning.html"><a href="predictive-supervised-learning.html#explanation-vs-prediction"><i class="fa fa-check"></i><b>2.1</b> Explanation vs Prediction</a><ul>
+<li class="chapter" data-level="2.1.1" data-path="predictive-supervised-learning.html"><a href="predictive-supervised-learning.html#titanic-data"><i class="fa fa-check"></i><b>2.1.1</b> Titanic Data</a></li>
+<li class="chapter" data-level="2.1.2" data-path="predictive-supervised-learning.html"><a href="predictive-supervised-learning.html#does-this-data-matter"><i class="fa fa-check"></i><b>2.1.2</b> Does This Data Matter ?</a></li>
+</ul></li>
 <li class="chapter" data-level="2.2" data-path="predictive-supervised-learning.html"><a href="predictive-supervised-learning.html#two-types-of-predictive-models"><i class="fa fa-check"></i><b>2.2</b> Two Types of Predictive Models:</a></li>
 <li class="chapter" data-level="2.3" data-path="predictive-supervised-learning.html"><a href="predictive-supervised-learning.html#bias-vs-variance"><i class="fa fa-check"></i><b>2.3</b> Bias vs Variance</a><ul>
 <li class="chapter" data-level="2.3.1" data-path="predictive-supervised-learning.html"><a href="predictive-supervised-learning.html#bias"><i class="fa fa-check"></i><b>2.3.1</b> Bias</a></li>
@@ -305,14 +308,68 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>Given a data set, there might be some variable therein that you would like to predict in terms of other variables. Ideally you would like to automate this process but not at the expense of understanding the underlying statistical considerations. The process should also be done in a way that allows one to define a specific performance measure / metric that can then be used to compare performance across a number of “models”.</p>
 <p>Relative to explanatory work you wish to drill down into the data to better understand it and are less concerned about how any resulting model might apply to unseen or new data. In this case you might not look at other data sets or permutated versions of the data in which case you just build different models against the same data while trying out different features to arrive a the “best” model.</p>
 <p>In predictive work, we typically use techniques such as cross fold validation and bootstrapping to provide us with different versions of the data to “train” a model after which we validate it on some “test” data that has been held out. So in this context, you will probably be looking at multiple versions of the original data set which adds to the overhead somewhat.</p>
+<div id="titanic-data" class="section level3">
+<h3><span class="header-section-number">2.1.1</span> Titanic Data</h3>
 <p>A good example of explanatory work is the often referred to “Titanic” data set that has lots of information on the passengers who traveled on the ill-fated Titanic ship. This data set is used in many Data Science type educational contexts to talk about building models.</p>
-<p><img src="pics/agedist.png" /></p>
-<ul>
-<li>While it is interesting, it’s doubtful we will save anyone’s life</li>
-<li>Conclusions won’t apply to modern ship travel</li>
-<li>Can experiment with different algorithms without consequence</li>
-<li>Useful for Educational Purposes</li>
-</ul>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">url &lt;-<span class="st"> &quot;https://raw.githubusercontent.com/steviep42/bios534_spring_2020/master/data/etitanic.csv&quot;</span></a>
+<a class="sourceLine" id="cb2-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb2-3" data-line-number="3">titan &lt;-<span class="st"> </span><span class="kw">read.csv</span>(url)</a>
+<a class="sourceLine" id="cb2-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb2-5" data-line-number="5"><span class="kw">head</span>(titan)</a></code></pre></div>
+<pre><code>##   pclass survived    sex     age sibsp parch
+## 1    1st        1 female 29.0000     0     0
+## 2    1st        1   male  0.9167     1     2
+## 3    1st        0 female  2.0000     1     2
+## 4    1st        0   male 30.0000     1     2
+## 5    1st        0 female 25.0000     1     2
+## 6    1st        1   male 48.0000     0     0</code></pre>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">This data set provides information on the fate of passengers on the fatal maiden voyage of the ocean liner ‘Titanic’, summarized according to economic <span class="kw">status</span> (class), sex, age and survival.</a>
+<a class="sourceLine" id="cb4-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb4-3" data-line-number="3">pclass    Passenger <span class="kw">Class</span>  (<span class="dv">1</span> =<span class="st"> </span>1st; <span class="dv">2</span> =<span class="st"> </span>2nd; <span class="dv">3</span> =<span class="st"> </span>3rd)</a>
+<a class="sourceLine" id="cb4-4" data-line-number="4">survival  <span class="kw">Survival</span>  (<span class="dv">0</span> =<span class="st"> </span>No; <span class="dv">1</span> =<span class="st"> </span>Yes)</a>
+<a class="sourceLine" id="cb4-5" data-line-number="5">sex       Sex</a>
+<a class="sourceLine" id="cb4-6" data-line-number="6">age       Age</a>
+<a class="sourceLine" id="cb4-7" data-line-number="7">sibsp     Number of Siblings<span class="op">/</span>Spouses Aboard</a>
+<a class="sourceLine" id="cb4-8" data-line-number="8">parch     Number of Parents<span class="op">/</span>Children Aboard</a></code></pre></div>
+<p>So then we look at different plots to become aquainted with the data:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">titan <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">survived=</span><span class="kw">factor</span>(survived,<span class="dt">labels=</span><span class="kw">c</span>(<span class="st">&quot;Died&quot;</span>,<span class="st">&quot;Survived&quot;</span>))) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb5-3" data-line-number="3"><span class="st">  </span><span class="kw">group_by</span>(survived,sex)  <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb5-4" data-line-number="4"><span class="st">  </span><span class="kw">count</span>() <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb5-5" data-line-number="5"><span class="st">  </span><span class="kw">ungroup</span>() <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb5-6" data-line-number="6"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">sex =</span> <span class="kw">fct_reorder</span>(sex,n)) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb5-7" data-line-number="7"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x=</span>sex,<span class="dt">y=</span>n,<span class="dt">fill=</span>survived)) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb5-8" data-line-number="8"><span class="st">  </span><span class="kw">geom_col</span>() <span class="op">+</span><span class="st"> </span><span class="kw">theme_light</span>() <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb5-9" data-line-number="9"><span class="st">  </span><span class="kw">xlab</span>(<span class="st">&quot;Gender&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">ylab</span>(<span class="st">&quot;Number of Persons&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb5-10" data-line-number="10"><span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">&quot;Titanic Survival By Gender&quot;</span>)</a></code></pre></div>
+<p><img src="biosml_files/figure-html/ggplotitan-1.png" width="672" /></p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">titan <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb6-2" data-line-number="2"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">survived=</span><span class="kw">factor</span>(survived,<span class="dt">labels=</span><span class="kw">c</span>(<span class="st">&quot;Died&quot;</span>,<span class="st">&quot;Survived&quot;</span>))) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb6-3" data-line-number="3"><span class="st">  </span><span class="kw">group_by</span>(survived,pclass)  <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb6-4" data-line-number="4"><span class="st">  </span><span class="kw">count</span>() <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb6-5" data-line-number="5"><span class="st">  </span><span class="kw">ungroup</span>() <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb6-6" data-line-number="6"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">pclass =</span> <span class="kw">fct_reorder</span>(pclass,n)) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb6-7" data-line-number="7"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x=</span>pclass,<span class="dt">y=</span>n,<span class="dt">fill=</span>survived)) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb6-8" data-line-number="8"><span class="st">  </span><span class="kw">geom_col</span>() <span class="op">+</span><span class="st"> </span><span class="kw">theme_light</span>() <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb6-9" data-line-number="9"><span class="st">  </span><span class="kw">xlab</span>(<span class="st">&quot;Passenger Class&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">ylab</span>(<span class="st">&quot;Number of Persons&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb6-10" data-line-number="10"><span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">&quot;Titanic Survival By Passenger Class&quot;</span>)</a></code></pre></div>
+<p><img src="biosml_files/figure-html/ggplotitan2-1.png" width="672" /></p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1">titan <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb7-2" data-line-number="2"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">survived=</span><span class="kw">factor</span>(survived,<span class="dt">labels=</span><span class="kw">c</span>(<span class="st">&quot;Died&quot;</span>,<span class="st">&quot;Survived&quot;</span>))) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb7-3" data-line-number="3"><span class="st">  </span><span class="kw">group_by</span>(survived,pclass)  <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb7-4" data-line-number="4"><span class="st">  </span><span class="kw">count</span>() <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb7-5" data-line-number="5"><span class="st">  </span><span class="kw">ungroup</span>() <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb7-6" data-line-number="6"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">pclass =</span> <span class="kw">fct_reorder</span>(pclass,n)) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb7-7" data-line-number="7"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x=</span>pclass,<span class="dt">y=</span>n,<span class="dt">fill=</span>survived)) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb7-8" data-line-number="8"><span class="st">  </span><span class="kw">geom_col</span>() <span class="op">+</span><span class="st"> </span><span class="kw">theme_light</span>() <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb7-9" data-line-number="9"><span class="st">  </span><span class="kw">xlab</span>(<span class="st">&quot;Passenger Class&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">ylab</span>(<span class="st">&quot;Number of Persons&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb7-10" data-line-number="10"><span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">&quot;Titanic Survival By Passenger Class&quot;</span>)</a></code></pre></div>
+<p><img src="biosml_files/figure-html/ggplotitan3-1.png" width="672" /></p>
+</div>
+<div id="does-this-data-matter" class="section level3">
+<h3><span class="header-section-number">2.1.2</span> Does This Data Matter ?</h3>
+<p>While this is all very interesting, it’s doubtful that anything we learn will save anyone’s life. It’s unlikley that any conclusions we reach would apply to modern ship travel. However, we can experiment with different algorithms without consequence as we build models. Nonetheless, it remains very useful for educational purposes</p>
+</div>
 </div>
 <div id="two-types-of-predictive-models" class="section level2">
 <h2><span class="header-section-number">2.2</span> Two Types of Predictive Models:</h2>
@@ -355,38 +412,38 @@ RMSE = \sqrt\frac{\sum_i^n(P_i-O_i)^2}{n}
 <div id="some-important-terminology" class="section level2">
 <h2><span class="header-section-number">2.5</span> Some Important Terminology</h2>
 <p>While we could start building a lot of models at this point it would be wise to review some jargon in the world of predictive modeling so we can understand how to fully exploit the variables (also known as “features”) in our data. This is very important. Let’s start out with a basic example involving the most (over)used data set in R Education - the “mtcars” data frame.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">Motor Trend Car Road Tests</a>
-<a class="sourceLine" id="cb2-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb2-3" data-line-number="3">The data was extracted from the <span class="dv">1974</span> Motor Trend US magazine, </a>
-<a class="sourceLine" id="cb2-4" data-line-number="4">and comprises fuel consumption and <span class="dv">10</span> aspects of automobile </a>
-<a class="sourceLine" id="cb2-5" data-line-number="5">design and performance <span class="cf">for</span> <span class="dv">32</span> <span class="kw">automobiles</span> (1973–<span class="dv">74</span> models).</a>
-<a class="sourceLine" id="cb2-6" data-line-number="6"></a>
-<a class="sourceLine" id="cb2-7" data-line-number="7">A data frame with <span class="dv">32</span> observations on <span class="dv">11</span> (numeric) variables.</a>
-<a class="sourceLine" id="cb2-8" data-line-number="8"></a>
-<a class="sourceLine" id="cb2-9" data-line-number="9">[, <span class="dv">1</span>]   mpg   Miles<span class="op">/</span>(US) gallon</a>
-<a class="sourceLine" id="cb2-10" data-line-number="10">[, <span class="dv">2</span>]   cyl   Number of cylinders</a>
-<a class="sourceLine" id="cb2-11" data-line-number="11">[, <span class="dv">3</span>]   disp  <span class="kw">Displacement</span> (cu.in.)</a>
-<a class="sourceLine" id="cb2-12" data-line-number="12">[, <span class="dv">4</span>]   hp    Gross horsepower</a>
-<a class="sourceLine" id="cb2-13" data-line-number="13">[, <span class="dv">5</span>]   drat    Rear axle ratio</a>
-<a class="sourceLine" id="cb2-14" data-line-number="14">[, <span class="dv">6</span>]   wt    <span class="kw">Weight</span> (<span class="dv">1000</span> lbs)</a>
-<a class="sourceLine" id="cb2-15" data-line-number="15">[, <span class="dv">7</span>]   qsec    <span class="dv">1</span><span class="op">/</span><span class="dv">4</span> mile time</a>
-<a class="sourceLine" id="cb2-16" data-line-number="16">[, <span class="dv">8</span>]   vs    <span class="kw">Engine</span> (<span class="dv">0</span> =<span class="st"> </span>V<span class="op">-</span>shaped, <span class="dv">1</span> =<span class="st"> </span>straight)</a>
-<a class="sourceLine" id="cb2-17" data-line-number="17">[, <span class="dv">9</span>]   am    <span class="kw">Transmission</span> (<span class="dv">0</span> =<span class="st"> </span>automatic, <span class="dv">1</span> =<span class="st"> </span>manual)</a>
-<a class="sourceLine" id="cb2-18" data-line-number="18">[,<span class="dv">10</span>]   gear    Number of forward gears</a>
-<a class="sourceLine" id="cb2-19" data-line-number="19">[,<span class="dv">11</span>]   carb    Number of carburetors</a></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1">Motor Trend Car Road Tests</a>
+<a class="sourceLine" id="cb8-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb8-3" data-line-number="3">The data was extracted from the <span class="dv">1974</span> Motor Trend US magazine, </a>
+<a class="sourceLine" id="cb8-4" data-line-number="4">and comprises fuel consumption and <span class="dv">10</span> aspects of automobile </a>
+<a class="sourceLine" id="cb8-5" data-line-number="5">design and performance <span class="cf">for</span> <span class="dv">32</span> <span class="kw">automobiles</span> (1973–<span class="dv">74</span> models).</a>
+<a class="sourceLine" id="cb8-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb8-7" data-line-number="7">A data frame with <span class="dv">32</span> observations on <span class="dv">11</span> (numeric) variables.</a>
+<a class="sourceLine" id="cb8-8" data-line-number="8"></a>
+<a class="sourceLine" id="cb8-9" data-line-number="9">[, <span class="dv">1</span>]   mpg   Miles<span class="op">/</span>(US) gallon</a>
+<a class="sourceLine" id="cb8-10" data-line-number="10">[, <span class="dv">2</span>]   cyl   Number of cylinders</a>
+<a class="sourceLine" id="cb8-11" data-line-number="11">[, <span class="dv">3</span>]   disp  <span class="kw">Displacement</span> (cu.in.)</a>
+<a class="sourceLine" id="cb8-12" data-line-number="12">[, <span class="dv">4</span>]   hp    Gross horsepower</a>
+<a class="sourceLine" id="cb8-13" data-line-number="13">[, <span class="dv">5</span>]   drat    Rear axle ratio</a>
+<a class="sourceLine" id="cb8-14" data-line-number="14">[, <span class="dv">6</span>]   wt    <span class="kw">Weight</span> (<span class="dv">1000</span> lbs)</a>
+<a class="sourceLine" id="cb8-15" data-line-number="15">[, <span class="dv">7</span>]   qsec    <span class="dv">1</span><span class="op">/</span><span class="dv">4</span> mile time</a>
+<a class="sourceLine" id="cb8-16" data-line-number="16">[, <span class="dv">8</span>]   vs    <span class="kw">Engine</span> (<span class="dv">0</span> =<span class="st"> </span>V<span class="op">-</span>shaped, <span class="dv">1</span> =<span class="st"> </span>straight)</a>
+<a class="sourceLine" id="cb8-17" data-line-number="17">[, <span class="dv">9</span>]   am    <span class="kw">Transmission</span> (<span class="dv">0</span> =<span class="st"> </span>automatic, <span class="dv">1</span> =<span class="st"> </span>manual)</a>
+<a class="sourceLine" id="cb8-18" data-line-number="18">[,<span class="dv">10</span>]   gear    Number of forward gears</a>
+<a class="sourceLine" id="cb8-19" data-line-number="19">[,<span class="dv">11</span>]   carb    Number of carburetors</a></code></pre></div>
 <p>We need to understand the variables in this data frame beyond the superficial. Let’s say that we wanted to predict the mpg for a given car using other variables in the data frame. We might also want to predict whether a car has an automatic or manual transmission based on some other variables. Some jargon would be useful here. For example, if we wanted to predict the mpg, consider the following graphic:</p>
 <p><img src="pics/jargon1.png" /></p>
 <p>Or if we wanted to predict the transmission type - the jargon is the same but the variable type is different:</p>
 <p><img src="pics/jargon2.png" /></p>
 <p>In the first case we are attempting to predict a numeric quantity whereas in the second case we are predicting a binary outcome (a 0 or 1) which corresponds to, respectively, an automatic or manual transmission. The fact that it appears to be numeric is a bit deceptive since it’s just a label - we wouldn’t compute on this number. So how do we get to know the data ? Plotting it might be one way but there are a couple of ways to get some clues up front using some code:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">mtcars <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">summarize_all</span>(n_distinct)</a></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1">mtcars <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">summarize_all</span>(n_distinct)</a></code></pre></div>
 <pre><code>##   mpg cyl disp hp drat wt qsec vs am gear carb
 ## 1  25   3   27 22   22 29   30  2  2    3    6</code></pre>
 <p>Be on the lookout for columns that don’t have very many unique values such as vs, am, and cyl. These are more likely categories by which we might summarize the continuous quantities. As an example - what is the average mpg for each transmission type ? What is the average mpg for all cylinder types ? Even though all the variables appear to be numeric doesn’t mean that they can be “computed” on. Does it make sense to take the average of the transmission type ? It’s either 0 or 1 (auto or manual). There is no such thing as a car with a 0.40625 transmission.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw">mean</span>(mtcars<span class="op">$</span>am)</a></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="kw">mean</span>(mtcars<span class="op">$</span>am)</a></code></pre></div>
 <pre><code>## [1] 0.40625</code></pre>
 <p>Perhaps it’s better to count the number of times each transmission type occurs.</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw">table</span>(mtcars<span class="op">$</span>am)</a></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1"><span class="kw">table</span>(mtcars<span class="op">$</span>am)</a></code></pre></div>
 <pre><code>## 
 ##  0  1 
 ## 19 13</code></pre>

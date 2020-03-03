@@ -134,7 +134,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="1.5" data-path="index.html"><a href="index.html#black-box"><i class="fa fa-check"></i><b>1.5</b> Black Box</a></li>
 </ul></li>
 <li class="chapter" data-level="2" data-path="predictive-supervised-learning.html"><a href="predictive-supervised-learning.html"><i class="fa fa-check"></i><b>2</b> Predictive / Supervised Learning</a><ul>
-<li class="chapter" data-level="2.1" data-path="predictive-supervised-learning.html"><a href="predictive-supervised-learning.html#explanation-vs-prediction"><i class="fa fa-check"></i><b>2.1</b> Explanation vs Prediction</a></li>
+<li class="chapter" data-level="2.1" data-path="predictive-supervised-learning.html"><a href="predictive-supervised-learning.html#explanation-vs-prediction"><i class="fa fa-check"></i><b>2.1</b> Explanation vs Prediction</a><ul>
+<li class="chapter" data-level="2.1.1" data-path="predictive-supervised-learning.html"><a href="predictive-supervised-learning.html#titanic-data"><i class="fa fa-check"></i><b>2.1.1</b> Titanic Data</a></li>
+<li class="chapter" data-level="2.1.2" data-path="predictive-supervised-learning.html"><a href="predictive-supervised-learning.html#does-this-data-matter"><i class="fa fa-check"></i><b>2.1.2</b> Does This Data Matter ?</a></li>
+</ul></li>
 <li class="chapter" data-level="2.2" data-path="predictive-supervised-learning.html"><a href="predictive-supervised-learning.html#two-types-of-predictive-models"><i class="fa fa-check"></i><b>2.2</b> Two Types of Predictive Models:</a></li>
 <li class="chapter" data-level="2.3" data-path="predictive-supervised-learning.html"><a href="predictive-supervised-learning.html#bias-vs-variance"><i class="fa fa-check"></i><b>2.3</b> Bias vs Variance</a><ul>
 <li class="chapter" data-level="2.3.1" data-path="predictive-supervised-learning.html"><a href="predictive-supervised-learning.html#bias"><i class="fa fa-check"></i><b>2.3.1</b> Bias</a></li>
@@ -312,99 +315,52 @@ Summarize evaluation score (e.g. mean of RMSE)</code></pre>
 <p><img src="pics/cv1.png" /></p>
 <p>So the second iteration would then take the second fold as the holdout / test data frame and combine Folds 1,3, and 4 into a training data frame.</p>
 <p><img src="pics/cv2.png" /></p>
-<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb36-1" data-line-number="1"><span class="co"># Generates Some Folds</span></a>
-<a class="sourceLine" id="cb36-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb36-3" data-line-number="3">num_of_folds &lt;-<span class="st"> </span><span class="dv">4</span></a>
-<a class="sourceLine" id="cb36-4" data-line-number="4"></a>
-<a class="sourceLine" id="cb36-5" data-line-number="5"><span class="co"># This generates 8 groups of 4 indices such that each</span></a>
-<a class="sourceLine" id="cb36-6" data-line-number="6"><span class="co"># group has unique observations. No observation is used</span></a>
-<a class="sourceLine" id="cb36-7" data-line-number="7"><span class="co"># more than once - although we could use bootstrapping</span></a>
-<a class="sourceLine" id="cb36-8" data-line-number="8"></a>
-<a class="sourceLine" id="cb36-9" data-line-number="9">folds &lt;-<span class="st"> </span><span class="kw">split</span>(<span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(mtcars)),<span class="dv">1</span><span class="op">:</span>num_of_folds) </a>
-<a class="sourceLine" id="cb36-10" data-line-number="10"></a>
-<a class="sourceLine" id="cb36-11" data-line-number="11"><span class="co"># We should have 32 indicies across the 8 groups </span></a>
-<a class="sourceLine" id="cb36-12" data-line-number="12"><span class="kw">sum</span>(<span class="kw">sapply</span>(folds,length))</a></code></pre></div>
+<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb42-1" data-line-number="1"><span class="co"># Generates Some Folds</span></a>
+<a class="sourceLine" id="cb42-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb42-3" data-line-number="3">num_of_folds &lt;-<span class="st"> </span><span class="dv">4</span></a>
+<a class="sourceLine" id="cb42-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb42-5" data-line-number="5"><span class="co"># This generates 8 groups of 4 indices such that each</span></a>
+<a class="sourceLine" id="cb42-6" data-line-number="6"><span class="co"># group has unique observations. No observation is used</span></a>
+<a class="sourceLine" id="cb42-7" data-line-number="7"><span class="co"># more than once - although we could use bootstrapping</span></a>
+<a class="sourceLine" id="cb42-8" data-line-number="8"></a>
+<a class="sourceLine" id="cb42-9" data-line-number="9">folds &lt;-<span class="st"> </span><span class="kw">split</span>(<span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(mtcars)),<span class="dv">1</span><span class="op">:</span>num_of_folds) </a>
+<a class="sourceLine" id="cb42-10" data-line-number="10"></a>
+<a class="sourceLine" id="cb42-11" data-line-number="11"><span class="co"># We should have 32 indicies across the 8 groups </span></a>
+<a class="sourceLine" id="cb42-12" data-line-number="12"><span class="kw">sum</span>(<span class="kw">sapply</span>(folds,length))</a></code></pre></div>
 <pre><code>## [1] 32</code></pre>
 <p>Check out the folds to get a better understanding of what is going on. We generated a list that has 8 elements each of which holds a 4 element vector corresponding to indices for records in the mtcars data frame.</p>
-<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb38-1" data-line-number="1">folds</a></code></pre></div>
+<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb44-1" data-line-number="1">folds</a></code></pre></div>
 <pre><code>## $`1`
-## [1] 12 25 10 16  6 21 20 29
+## [1] 14  3  5  8 22  4 23 32
 ## 
 ## $`2`
-## [1] 31 30 13 11  8  2 27 26
+## [1] 18 15 10 16 11  6 26 19
 ## 
 ## $`3`
-## [1]  1 22 23  9  5 15 28  4
+## [1] 29  1 30 20 13  9 25  7
 ## 
 ## $`4`
-## [1]  7 24 14 32 17  3 18 19</code></pre>
+## [1] 12 24 17  2 21 31 28 27</code></pre>
 <p>Again, each list element has the indices of eight unique observations from the data frame. We have four folds with eight elements each for a total of 32 numbers corresponding to row numbers from the mtcars data frame.</p>
 <div id="cross-fold-validation" class="section level2">
 <h2><span class="header-section-number">4.1</span> Cross Fold Validation</h2>
 <p>To implement the cross validation, we will create a processing loop that will execute once for each of the 8 folds. During each execution of the loop we will create a model using data combined from all folds <strong>except</strong> the fold corresponding to the current loop number (e.g, 1, 2, .. 4).</p>
 <p>Once the model is built we then test it on the fold number corresponding to the current loop number.</p>
 <p>So now we can create some lists to contain the models that we make along withe the associated predictions, errors and computed RMSE. We we can inspect any of the intermediate results after the fact to validate our work or look more closely at any specific result.</p>
-<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb40-1" data-line-number="1"><span class="co"># Next we setup some blank lists to stash results</span></a>
-<a class="sourceLine" id="cb40-2" data-line-number="2">folddf    &lt;-<span class="st"> </span><span class="kw">list</span>()  <span class="co"># Contains folds</span></a>
-<a class="sourceLine" id="cb40-3" data-line-number="3">modl      &lt;-<span class="st"> </span><span class="kw">list</span>()  <span class="co"># Hold each of the K models</span></a>
-<a class="sourceLine" id="cb40-4" data-line-number="4">predl     &lt;-<span class="st"> </span><span class="kw">list</span>()  <span class="co"># Hold rach of the K predictions</span></a>
-<a class="sourceLine" id="cb40-5" data-line-number="5">rmse      &lt;-<span class="st"> </span><span class="kw">list</span>()  <span class="co"># Hold the computed rmse for a given model</span></a>
-<a class="sourceLine" id="cb40-6" data-line-number="6"></a>
-<a class="sourceLine" id="cb40-7" data-line-number="7"><span class="co"># Now, for each of the 8 subgroups of holdout data we will </span></a>
-<a class="sourceLine" id="cb40-8" data-line-number="8"><span class="co"># create a lda model based on all the data *except* the </span></a>
-<a class="sourceLine" id="cb40-9" data-line-number="9"><span class="co"># holdout group</span></a>
-<a class="sourceLine" id="cb40-10" data-line-number="10"></a>
-<a class="sourceLine" id="cb40-11" data-line-number="11"><span class="cf">for</span> (ii <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(folds)) {</a>
-<a class="sourceLine" id="cb40-12" data-line-number="12">  </a>
-<a class="sourceLine" id="cb40-13" data-line-number="13">  <span class="co"># This list holds the actual model we create for each of the </span></a>
-<a class="sourceLine" id="cb40-14" data-line-number="14">  <span class="co"># 10 folds</span></a>
-<a class="sourceLine" id="cb40-15" data-line-number="15">  </a>
-<a class="sourceLine" id="cb40-16" data-line-number="16">  modl[[ii]] &lt;-<span class="st"> </span><span class="kw">lm</span>(<span class="dt">formula =</span> myform, </a>
-<a class="sourceLine" id="cb40-17" data-line-number="17">                   <span class="dt">data =</span> mtcars[<span class="op">-</span>folds[[ii]],] </a>
-<a class="sourceLine" id="cb40-18" data-line-number="18">                )</a>
-<a class="sourceLine" id="cb40-19" data-line-number="19">  </a>
-<a class="sourceLine" id="cb40-20" data-line-number="20">  <span class="co"># This list will contain / hold the models build on the fold</span></a>
-<a class="sourceLine" id="cb40-21" data-line-number="21">  </a>
-<a class="sourceLine" id="cb40-22" data-line-number="22">  predl[[ii]]  &lt;-<span class="st"> </span><span class="kw">predict</span>(modl[[ii]],</a>
-<a class="sourceLine" id="cb40-23" data-line-number="23">                          <span class="dt">newdata=</span>mtcars[folds[[ii]],],</a>
-<a class="sourceLine" id="cb40-24" data-line-number="24">                          <span class="dt">type=</span><span class="st">&quot;response&quot;</span>)</a>
-<a class="sourceLine" id="cb40-25" data-line-number="25">  </a>
-<a class="sourceLine" id="cb40-26" data-line-number="26">  <span class="co"># This list will hold the results of the confusion matrix </span></a>
-<a class="sourceLine" id="cb40-27" data-line-number="27">  <span class="co"># function. This obkect will contain info on the </span></a>
-<a class="sourceLine" id="cb40-28" data-line-number="28">  <span class="co"># accuracy,  sensitivity/recall, specificity</span></a>
-<a class="sourceLine" id="cb40-29" data-line-number="29">  <span class="co"># and so on for each model per fold</span></a>
-<a class="sourceLine" id="cb40-30" data-line-number="30">  </a>
-<a class="sourceLine" id="cb40-31" data-line-number="31">    errors &lt;-<span class="st"> </span>predl[[ii]]<span class="op">-</span>mtcars[folds[[ii]],]<span class="op">$</span>mpg</a>
-<a class="sourceLine" id="cb40-32" data-line-number="32">    rmse[[ii]] &lt;-<span class="st"> </span><span class="kw">sqrt</span>(<span class="kw">mean</span>(errors<span class="op">^</span><span class="dv">2</span>))</a>
-<a class="sourceLine" id="cb40-33" data-line-number="33">}</a></code></pre></div>
-<p>The above list structures allow us to drill down into any aspect of the models and predictions we have made for each of the 4 folds. More importantly we can see how well the model works against each of the individual holdout / test data sets. In the end, we just want to be able to look at the average RMSE across the folds. This gives us clues as to how good the model might perform against new data.</p>
-<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb41-1" data-line-number="1">rmse &lt;-<span class="st"> </span><span class="kw">unlist</span>(rmse)</a>
-<a class="sourceLine" id="cb41-2" data-line-number="2">lattice<span class="op">::</span><span class="kw">dotplot</span>(rmse,</a>
-<a class="sourceLine" id="cb41-3" data-line-number="3">                 <span class="dt">main=</span><span class="st">&quot;RMSE Across Folds Using K-Fold CV&quot;</span>)</a></code></pre></div>
-<p><img src="biosml_files/figure-html/latticeplot-1.png" width="672" /></p>
-<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb42-1" data-line-number="1"><span class="kw">mean</span>(rmse)</a></code></pre></div>
-<pre><code>## [1] 2.883084</code></pre>
-<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb44-1" data-line-number="1"><span class="kw">sd</span>(rmse)</a></code></pre></div>
-<pre><code>## [1] 0.8370006</code></pre>
-</div>
-<div id="create-a-function-to-automate-things" class="section level2">
-<h2><span class="header-section-number">4.2</span> Create A Function To Automate Things</h2>
-<p>Since we have gone to the trouble of creating a loop structure to process the folds, we could easily turn this into a function to automate the splitting of the data frame across some arbitrary number of folds just to get an idea of how the RMSE looks for different numbers of folds.</p>
-<p>We could even have our function accommodate different formula if we wanted but we won’t focus on that right now. You will soon discover that the <strong>caret</strong> package does these kinds of things for you but we aren’t quite there yet.</p>
-<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb46-1" data-line-number="1">make_mtcars_model &lt;-<span class="st"> </span><span class="cf">function</span>(<span class="dt">formula=</span>myform, <span class="dt">num_of_folds=</span><span class="dv">8</span>) {</a>
-<a class="sourceLine" id="cb46-2" data-line-number="2">  folds &lt;-<span class="st"> </span><span class="kw">split</span>(<span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(mtcars)),<span class="dv">1</span><span class="op">:</span>num_of_folds) </a>
-<a class="sourceLine" id="cb46-3" data-line-number="3">  </a>
-<a class="sourceLine" id="cb46-4" data-line-number="4">  modl      &lt;-<span class="st"> </span><span class="kw">list</span>()</a>
-<a class="sourceLine" id="cb46-5" data-line-number="5">  predl     &lt;-<span class="st"> </span><span class="kw">list</span>()</a>
-<a class="sourceLine" id="cb46-6" data-line-number="6">  rmse      &lt;-<span class="st"> </span><span class="kw">list</span>()</a>
-<a class="sourceLine" id="cb46-7" data-line-number="7"></a>
-<a class="sourceLine" id="cb46-8" data-line-number="8">  <span class="co"># Now, for each of the 10 subgroups of holdout data we will </span></a>
-<a class="sourceLine" id="cb46-9" data-line-number="9">  <span class="co"># create a lda model based on all the data *except* the </span></a>
-<a class="sourceLine" id="cb46-10" data-line-number="10">  <span class="co"># holdout group</span></a>
-<a class="sourceLine" id="cb46-11" data-line-number="11"></a>
-<a class="sourceLine" id="cb46-12" data-line-number="12">  <span class="cf">for</span> (ii <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(folds)) {</a>
-<a class="sourceLine" id="cb46-13" data-line-number="13">  </a>
-<a class="sourceLine" id="cb46-14" data-line-number="14">  <span class="co"># This list holds the actual model we create for each of the folds</span></a>
+<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb46-1" data-line-number="1"><span class="co"># Next we setup some blank lists to stash results</span></a>
+<a class="sourceLine" id="cb46-2" data-line-number="2">folddf    &lt;-<span class="st"> </span><span class="kw">list</span>()  <span class="co"># Contains folds</span></a>
+<a class="sourceLine" id="cb46-3" data-line-number="3">modl      &lt;-<span class="st"> </span><span class="kw">list</span>()  <span class="co"># Hold each of the K models</span></a>
+<a class="sourceLine" id="cb46-4" data-line-number="4">predl     &lt;-<span class="st"> </span><span class="kw">list</span>()  <span class="co"># Hold rach of the K predictions</span></a>
+<a class="sourceLine" id="cb46-5" data-line-number="5">rmse      &lt;-<span class="st"> </span><span class="kw">list</span>()  <span class="co"># Hold the computed rmse for a given model</span></a>
+<a class="sourceLine" id="cb46-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb46-7" data-line-number="7"><span class="co"># Now, for each of the 8 subgroups of holdout data we will </span></a>
+<a class="sourceLine" id="cb46-8" data-line-number="8"><span class="co"># create a lda model based on all the data *except* the </span></a>
+<a class="sourceLine" id="cb46-9" data-line-number="9"><span class="co"># holdout group</span></a>
+<a class="sourceLine" id="cb46-10" data-line-number="10"></a>
+<a class="sourceLine" id="cb46-11" data-line-number="11"><span class="cf">for</span> (ii <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(folds)) {</a>
+<a class="sourceLine" id="cb46-12" data-line-number="12">  </a>
+<a class="sourceLine" id="cb46-13" data-line-number="13">  <span class="co"># This list holds the actual model we create for each of the </span></a>
+<a class="sourceLine" id="cb46-14" data-line-number="14">  <span class="co"># 10 folds</span></a>
 <a class="sourceLine" id="cb46-15" data-line-number="15">  </a>
 <a class="sourceLine" id="cb46-16" data-line-number="16">  modl[[ii]] &lt;-<span class="st"> </span><span class="kw">lm</span>(<span class="dt">formula =</span> myform, </a>
 <a class="sourceLine" id="cb46-17" data-line-number="17">                   <span class="dt">data =</span> mtcars[<span class="op">-</span>folds[[ii]],] </a>
@@ -416,182 +372,229 @@ Summarize evaluation score (e.g. mean of RMSE)</code></pre>
 <a class="sourceLine" id="cb46-23" data-line-number="23">                          <span class="dt">newdata=</span>mtcars[folds[[ii]],],</a>
 <a class="sourceLine" id="cb46-24" data-line-number="24">                          <span class="dt">type=</span><span class="st">&quot;response&quot;</span>)</a>
 <a class="sourceLine" id="cb46-25" data-line-number="25">  </a>
-<a class="sourceLine" id="cb46-26" data-line-number="26">  <span class="co"># Let&#39;s compute the RMSE and save it</span></a>
-<a class="sourceLine" id="cb46-27" data-line-number="27">  </a>
-<a class="sourceLine" id="cb46-28" data-line-number="28">    errors &lt;-<span class="st"> </span>predl[[ii]]<span class="op">-</span>mtcars[folds[[ii]],]<span class="op">$</span>mpg</a>
-<a class="sourceLine" id="cb46-29" data-line-number="29">    rmse[[ii]] &lt;-<span class="st"> </span><span class="kw">sqrt</span>(<span class="kw">mean</span>(errors<span class="op">^</span><span class="dv">2</span>))</a>
-<a class="sourceLine" id="cb46-30" data-line-number="30">  }</a>
-<a class="sourceLine" id="cb46-31" data-line-number="31">  <span class="kw">return</span>(<span class="dt">rmse=</span><span class="kw">unlist</span>(rmse))</a>
-<a class="sourceLine" id="cb46-32" data-line-number="32">}</a></code></pre></div>
-<p>Let’s look at the average RMSE across 8 folds.</p>
-<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb47-1" data-line-number="1">num_of_folds &lt;-<span class="st"> </span><span class="dv">8</span></a>
-<a class="sourceLine" id="cb47-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb47-3" data-line-number="3">rmse &lt;-<span class="st"> </span><span class="kw">make_mtcars_model</span>(num_of_folds)</a>
-<a class="sourceLine" id="cb47-4" data-line-number="4"></a>
-<a class="sourceLine" id="cb47-5" data-line-number="5">title &lt;-<span class="st"> </span><span class="kw">paste</span>(<span class="st">&quot;RMSE Across&quot;</span>,num_of_folds,</a>
-<a class="sourceLine" id="cb47-6" data-line-number="6">               <span class="st">&quot;folds - &quot;</span>,<span class="kw">as.character</span>(<span class="kw">deparse</span>(myform)),<span class="dt">sep=</span><span class="st">&quot; &quot;</span>)</a>
-<a class="sourceLine" id="cb47-7" data-line-number="7"></a>
-<a class="sourceLine" id="cb47-8" data-line-number="8"></a>
-<a class="sourceLine" id="cb47-9" data-line-number="9"><span class="kw">print</span>(<span class="kw">mean</span>(rmse))</a></code></pre></div>
-<pre><code>## [1] 3.003069</code></pre>
-<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb49-1" data-line-number="1">lattice<span class="op">::</span><span class="kw">dotplot</span>(rmse,</a>
-<a class="sourceLine" id="cb49-2" data-line-number="2">                 <span class="dt">main=</span><span class="st">&quot;RMSE Across Folds Using K-Fold CV&quot;</span>)</a></code></pre></div>
-<p><img src="biosml_files/figure-html/fourfold-1.png" width="672" /></p>
+<a class="sourceLine" id="cb46-26" data-line-number="26">  <span class="co"># This list will hold the results of the confusion matrix </span></a>
+<a class="sourceLine" id="cb46-27" data-line-number="27">  <span class="co"># function. This obkect will contain info on the </span></a>
+<a class="sourceLine" id="cb46-28" data-line-number="28">  <span class="co"># accuracy,  sensitivity/recall, specificity</span></a>
+<a class="sourceLine" id="cb46-29" data-line-number="29">  <span class="co"># and so on for each model per fold</span></a>
+<a class="sourceLine" id="cb46-30" data-line-number="30">  </a>
+<a class="sourceLine" id="cb46-31" data-line-number="31">    errors &lt;-<span class="st"> </span>predl[[ii]]<span class="op">-</span>mtcars[folds[[ii]],]<span class="op">$</span>mpg</a>
+<a class="sourceLine" id="cb46-32" data-line-number="32">    rmse[[ii]] &lt;-<span class="st"> </span><span class="kw">sqrt</span>(<span class="kw">mean</span>(errors<span class="op">^</span><span class="dv">2</span>))</a>
+<a class="sourceLine" id="cb46-33" data-line-number="33">}</a></code></pre></div>
+<p>The above list structures allow us to drill down into any aspect of the models and predictions we have made for each of the 4 folds. More importantly we can see how well the model works against each of the individual holdout / test data sets. In the end, we just want to be able to look at the average RMSE across the folds. This gives us clues as to how good the model might perform against new data.</p>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb47-1" data-line-number="1">rmse &lt;-<span class="st"> </span><span class="kw">unlist</span>(rmse)</a>
+<a class="sourceLine" id="cb47-2" data-line-number="2">lattice<span class="op">::</span><span class="kw">dotplot</span>(rmse,</a>
+<a class="sourceLine" id="cb47-3" data-line-number="3">                 <span class="dt">main=</span><span class="st">&quot;RMSE Across Folds Using K-Fold CV&quot;</span>)</a></code></pre></div>
+<p><img src="biosml_files/figure-html/latticeplot-1.png" width="672" /></p>
+<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb48-1" data-line-number="1"><span class="kw">mean</span>(rmse)</a></code></pre></div>
+<pre><code>## [1] 3.105645</code></pre>
 <div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb50-1" data-line-number="1"><span class="kw">sd</span>(rmse)</a></code></pre></div>
-<pre><code>## [1] 1.024252</code></pre>
-<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb52-1" data-line-number="1"><span class="kw">boxplot</span>(rmse,<span class="dt">main=</span>title)</a></code></pre></div>
+<pre><code>## [1] 0.4216511</code></pre>
+</div>
+<div id="create-a-function-to-automate-things" class="section level2">
+<h2><span class="header-section-number">4.2</span> Create A Function To Automate Things</h2>
+<p>Since we have gone to the trouble of creating a loop structure to process the folds, we could easily turn this into a function to automate the splitting of the data frame across some arbitrary number of folds just to get an idea of how the RMSE looks for different numbers of folds.</p>
+<p>We could even have our function accommodate different formula if we wanted but we won’t focus on that right now. You will soon discover that the <strong>caret</strong> package does these kinds of things for you but we aren’t quite there yet.</p>
+<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb52-1" data-line-number="1">make_mtcars_model &lt;-<span class="st"> </span><span class="cf">function</span>(<span class="dt">formula=</span>myform, <span class="dt">num_of_folds=</span><span class="dv">8</span>) {</a>
+<a class="sourceLine" id="cb52-2" data-line-number="2">  folds &lt;-<span class="st"> </span><span class="kw">split</span>(<span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(mtcars)),<span class="dv">1</span><span class="op">:</span>num_of_folds) </a>
+<a class="sourceLine" id="cb52-3" data-line-number="3">  </a>
+<a class="sourceLine" id="cb52-4" data-line-number="4">  modl      &lt;-<span class="st"> </span><span class="kw">list</span>()</a>
+<a class="sourceLine" id="cb52-5" data-line-number="5">  predl     &lt;-<span class="st"> </span><span class="kw">list</span>()</a>
+<a class="sourceLine" id="cb52-6" data-line-number="6">  rmse      &lt;-<span class="st"> </span><span class="kw">list</span>()</a>
+<a class="sourceLine" id="cb52-7" data-line-number="7"></a>
+<a class="sourceLine" id="cb52-8" data-line-number="8">  <span class="co"># Now, for each of the 10 subgroups of holdout data we will </span></a>
+<a class="sourceLine" id="cb52-9" data-line-number="9">  <span class="co"># create a lda model based on all the data *except* the </span></a>
+<a class="sourceLine" id="cb52-10" data-line-number="10">  <span class="co"># holdout group</span></a>
+<a class="sourceLine" id="cb52-11" data-line-number="11"></a>
+<a class="sourceLine" id="cb52-12" data-line-number="12">  <span class="cf">for</span> (ii <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(folds)) {</a>
+<a class="sourceLine" id="cb52-13" data-line-number="13">  </a>
+<a class="sourceLine" id="cb52-14" data-line-number="14">  <span class="co"># This list holds the actual model we create for each of the folds</span></a>
+<a class="sourceLine" id="cb52-15" data-line-number="15">  </a>
+<a class="sourceLine" id="cb52-16" data-line-number="16">  modl[[ii]] &lt;-<span class="st"> </span><span class="kw">lm</span>(<span class="dt">formula =</span> myform, </a>
+<a class="sourceLine" id="cb52-17" data-line-number="17">                   <span class="dt">data =</span> mtcars[<span class="op">-</span>folds[[ii]],] </a>
+<a class="sourceLine" id="cb52-18" data-line-number="18">                )</a>
+<a class="sourceLine" id="cb52-19" data-line-number="19">  </a>
+<a class="sourceLine" id="cb52-20" data-line-number="20">  <span class="co"># This list will contain / hold the models build on the fold</span></a>
+<a class="sourceLine" id="cb52-21" data-line-number="21">  </a>
+<a class="sourceLine" id="cb52-22" data-line-number="22">  predl[[ii]]  &lt;-<span class="st"> </span><span class="kw">predict</span>(modl[[ii]],</a>
+<a class="sourceLine" id="cb52-23" data-line-number="23">                          <span class="dt">newdata=</span>mtcars[folds[[ii]],],</a>
+<a class="sourceLine" id="cb52-24" data-line-number="24">                          <span class="dt">type=</span><span class="st">&quot;response&quot;</span>)</a>
+<a class="sourceLine" id="cb52-25" data-line-number="25">  </a>
+<a class="sourceLine" id="cb52-26" data-line-number="26">  <span class="co"># Let&#39;s compute the RMSE and save it</span></a>
+<a class="sourceLine" id="cb52-27" data-line-number="27">  </a>
+<a class="sourceLine" id="cb52-28" data-line-number="28">    errors &lt;-<span class="st"> </span>predl[[ii]]<span class="op">-</span>mtcars[folds[[ii]],]<span class="op">$</span>mpg</a>
+<a class="sourceLine" id="cb52-29" data-line-number="29">    rmse[[ii]] &lt;-<span class="st"> </span><span class="kw">sqrt</span>(<span class="kw">mean</span>(errors<span class="op">^</span><span class="dv">2</span>))</a>
+<a class="sourceLine" id="cb52-30" data-line-number="30">  }</a>
+<a class="sourceLine" id="cb52-31" data-line-number="31">  <span class="kw">return</span>(<span class="dt">rmse=</span><span class="kw">unlist</span>(rmse))</a>
+<a class="sourceLine" id="cb52-32" data-line-number="32">}</a></code></pre></div>
+<p>Let’s look at the average RMSE across 8 folds.</p>
+<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb53-1" data-line-number="1">num_of_folds &lt;-<span class="st"> </span><span class="dv">8</span></a>
+<a class="sourceLine" id="cb53-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb53-3" data-line-number="3">rmse &lt;-<span class="st"> </span><span class="kw">make_mtcars_model</span>(num_of_folds)</a>
+<a class="sourceLine" id="cb53-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb53-5" data-line-number="5">title &lt;-<span class="st"> </span><span class="kw">paste</span>(<span class="st">&quot;RMSE Across&quot;</span>,num_of_folds,</a>
+<a class="sourceLine" id="cb53-6" data-line-number="6">               <span class="st">&quot;folds - &quot;</span>,<span class="kw">as.character</span>(<span class="kw">deparse</span>(myform)),<span class="dt">sep=</span><span class="st">&quot; &quot;</span>)</a>
+<a class="sourceLine" id="cb53-7" data-line-number="7"></a>
+<a class="sourceLine" id="cb53-8" data-line-number="8"></a>
+<a class="sourceLine" id="cb53-9" data-line-number="9"><span class="kw">print</span>(<span class="kw">mean</span>(rmse))</a></code></pre></div>
+<pre><code>## [1] 2.919867</code></pre>
+<div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb55-1" data-line-number="1">lattice<span class="op">::</span><span class="kw">dotplot</span>(rmse,</a>
+<a class="sourceLine" id="cb55-2" data-line-number="2">                 <span class="dt">main=</span><span class="st">&quot;RMSE Across Folds Using K-Fold CV&quot;</span>)</a></code></pre></div>
+<p><img src="biosml_files/figure-html/fourfold-1.png" width="672" /></p>
+<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb56-1" data-line-number="1"><span class="kw">sd</span>(rmse)</a></code></pre></div>
+<pre><code>## [1] 1.112087</code></pre>
+<div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb58-1" data-line-number="1"><span class="kw">boxplot</span>(rmse,<span class="dt">main=</span>title)</a></code></pre></div>
 <p><img src="biosml_files/figure-html/fourfold-2.png" width="672" /></p>
 </div>
 <div id="repeated-cross-validation" class="section level2">
 <h2><span class="header-section-number">4.3</span> Repeated Cross Validation</h2>
 <p>Since we already have an existing function we can up the ante by repeating the cross validation. This will provide more data on how the RMSE might be distributed across multiple runs, each of which does Cross Fold validation. This example will repeat a 4 Fold Cross Validation , 20 times.</p>
-<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb53-1" data-line-number="1">num_of_folds &lt;-<span class="st"> </span><span class="dv">4</span></a>
-<a class="sourceLine" id="cb53-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb53-3" data-line-number="3"><span class="co"># Just to be clear - here is what happens when we call the function</span></a>
-<a class="sourceLine" id="cb53-4" data-line-number="4"><span class="co"># once. We get back 4 RMSE values - one for each fold</span></a>
-<a class="sourceLine" id="cb53-5" data-line-number="5"></a>
-<a class="sourceLine" id="cb53-6" data-line-number="6">(rmse &lt;-<span class="st"> </span><span class="kw">make_mtcars_model</span>(num_of_folds))</a></code></pre></div>
-<pre><code>## [1] 2.410485 4.516488 4.141016 1.265046 2.323908 1.297464 3.079435 4.262581</code></pre>
-<div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb55-1" data-line-number="1"><span class="co"># Now we repeat this some number of times - like 10. So we get back</span></a>
-<a class="sourceLine" id="cb55-2" data-line-number="2"><span class="co"># 80 RMSE values </span></a>
-<a class="sourceLine" id="cb55-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb55-4" data-line-number="4">repeated_cv_rmse &lt;-<span class="st"> </span><span class="kw">sapply</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">20</span>,make_mtcars_model)</a>
-<a class="sourceLine" id="cb55-5" data-line-number="5"></a>
-<a class="sourceLine" id="cb55-6" data-line-number="6"><span class="kw">boxplot</span>(repeated_cv_rmse, </a>
-<a class="sourceLine" id="cb55-7" data-line-number="7">        <span class="dt">main=</span><span class="st">&quot;RMSE Across 20 Repeats of 4 CV Folds&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb59"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb59-1" data-line-number="1">num_of_folds &lt;-<span class="st"> </span><span class="dv">4</span></a>
+<a class="sourceLine" id="cb59-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb59-3" data-line-number="3"><span class="co"># Just to be clear - here is what happens when we call the function</span></a>
+<a class="sourceLine" id="cb59-4" data-line-number="4"><span class="co"># once. We get back 4 RMSE values - one for each fold</span></a>
+<a class="sourceLine" id="cb59-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb59-6" data-line-number="6">(rmse &lt;-<span class="st"> </span><span class="kw">make_mtcars_model</span>(num_of_folds))</a></code></pre></div>
+<pre><code>## [1] 2.381686 1.607155 2.052948 4.731249 4.243040 3.844114 2.964386 2.788304</code></pre>
+<div class="sourceCode" id="cb61"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb61-1" data-line-number="1"><span class="co"># Now we repeat this some number of times - like 10. So we get back</span></a>
+<a class="sourceLine" id="cb61-2" data-line-number="2"><span class="co"># 80 RMSE values </span></a>
+<a class="sourceLine" id="cb61-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb61-4" data-line-number="4">repeated_cv_rmse &lt;-<span class="st"> </span><span class="kw">sapply</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">20</span>,make_mtcars_model)</a>
+<a class="sourceLine" id="cb61-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb61-6" data-line-number="6"><span class="kw">boxplot</span>(repeated_cv_rmse, </a>
+<a class="sourceLine" id="cb61-7" data-line-number="7">        <span class="dt">main=</span><span class="st">&quot;RMSE Across 20 Repeats of 4 CV Folds&quot;</span>)</a></code></pre></div>
 <p><img src="biosml_files/figure-html/rc1-1.png" width="672" /></p>
-<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb56-1" data-line-number="1">title &lt;-<span class="st"> </span><span class="kw">paste</span>(<span class="st">&quot;RMSE Across&quot;</span>,num_of_folds,</a>
-<a class="sourceLine" id="cb56-2" data-line-number="2">               <span class="st">&quot;folds - &quot;</span>,<span class="kw">as.character</span>(<span class="kw">deparse</span>(myform)),<span class="dt">sep=</span><span class="st">&quot; &quot;</span>)</a>
-<a class="sourceLine" id="cb56-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb56-4" data-line-number="4"><span class="kw">mean</span>(<span class="kw">as.vector</span>(repeated_cv_rmse))</a></code></pre></div>
-<pre><code>## [1] 3.001455</code></pre>
-<div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb58-1" data-line-number="1"><span class="kw">boxplot</span>(repeated_cv_rmse)</a></code></pre></div>
+<div class="sourceCode" id="cb62"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb62-1" data-line-number="1">title &lt;-<span class="st"> </span><span class="kw">paste</span>(<span class="st">&quot;RMSE Across&quot;</span>,num_of_folds,</a>
+<a class="sourceLine" id="cb62-2" data-line-number="2">               <span class="st">&quot;folds - &quot;</span>,<span class="kw">as.character</span>(<span class="kw">deparse</span>(myform)),<span class="dt">sep=</span><span class="st">&quot; &quot;</span>)</a>
+<a class="sourceLine" id="cb62-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb62-4" data-line-number="4"><span class="kw">mean</span>(<span class="kw">as.vector</span>(repeated_cv_rmse))</a></code></pre></div>
+<pre><code>## [1] 3.052603</code></pre>
+<div class="sourceCode" id="cb64"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb64-1" data-line-number="1"><span class="kw">boxplot</span>(repeated_cv_rmse)</a></code></pre></div>
 <p><img src="biosml_files/figure-html/rc1-2.png" width="672" /></p>
-<div class="sourceCode" id="cb59"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb59-1" data-line-number="1"><span class="kw">summary</span>(repeated_cv_rmse)</a></code></pre></div>
-<pre><code>##        V1              V2              V3              V4              V5       
-##  Min.   :1.377   Min.   :0.937   Min.   :1.758   Min.   :1.868   Min.   :2.274  
-##  1st Qu.:2.648   1st Qu.:1.802   1st Qu.:1.867   1st Qu.:2.238   1st Qu.:2.711  
-##  Median :2.998   Median :2.723   Median :2.594   Median :3.122   Median :2.989  
-##  Mean   :3.039   Mean   :2.890   Mean   :2.937   Mean   :3.131   Mean   :3.232  
-##  3rd Qu.:3.876   3rd Qu.:4.234   3rd Qu.:3.537   3rd Qu.:3.741   3rd Qu.:4.093  
-##  Max.   :4.108   Max.   :4.790   Max.   :5.084   Max.   :4.875   Max.   :4.217  
-##        V6               V7               V8              V9             V10       
-##  Min.   :0.9624   Min.   :0.9939   Min.   :1.254   Min.   :1.454   Min.   :1.515  
-##  1st Qu.:2.5657   1st Qu.:2.2450   1st Qu.:2.276   1st Qu.:2.255   1st Qu.:2.052  
-##  Median :2.9978   Median :2.7440   Median :3.221   Median :2.499   Median :2.301  
-##  Mean   :3.0787   Mean   :2.9336   Mean   :3.042   Mean   :2.881   Mean   :2.899  
-##  3rd Qu.:3.3013   3rd Qu.:3.9617   3rd Qu.:3.877   3rd Qu.:3.261   3rd Qu.:3.942  
-##  Max.   :6.1473   Max.   :4.7894   Max.   :4.319   Max.   :5.056   Max.   :5.146  
+<div class="sourceCode" id="cb65"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb65-1" data-line-number="1"><span class="kw">summary</span>(repeated_cv_rmse)</a></code></pre></div>
+<pre><code>##        V1               V2               V3              V4              V5       
+##  Min.   :0.6022   Min.   :0.9039   Min.   :1.904   Min.   :1.132   Min.   :2.191  
+##  1st Qu.:2.2021   1st Qu.:2.5968   1st Qu.:2.617   1st Qu.:1.718   1st Qu.:2.289  
+##  Median :2.8839   Median :2.9378   Median :2.941   Median :2.714   Median :2.615  
+##  Mean   :2.9370   Mean   :3.0104   Mean   :3.162   Mean   :2.990   Mean   :3.094  
+##  3rd Qu.:4.2793   3rd Qu.:3.9970   3rd Qu.:3.854   3rd Qu.:4.356   3rd Qu.:3.960  
+##  Max.   :4.9986   Max.   :4.1574   Max.   :4.591   Max.   :4.974   Max.   :4.755  
+##        V6               V7              V8              V9             V10       
+##  Min.   :0.5555   Min.   :2.414   Min.   :1.578   Min.   :1.532   Min.   :1.964  
+##  1st Qu.:2.0882   1st Qu.:2.739   1st Qu.:2.450   1st Qu.:2.189   1st Qu.:2.755  
+##  Median :2.6806   Median :3.143   Median :3.149   Median :3.012   Median :3.194  
+##  Mean   :2.8893   Mean   :3.250   Mean   :3.091   Mean   :3.083   Mean   :3.172  
+##  3rd Qu.:3.2655   3rd Qu.:3.798   3rd Qu.:3.997   3rd Qu.:4.029   3rd Qu.:3.865  
+##  Max.   :6.4001   Max.   :4.178   Max.   :4.123   Max.   :4.707   Max.   :4.170  
 ##       V11             V12             V13             V14             V15       
-##  Min.   :1.180   Min.   :1.130   Min.   :1.278   Min.   :1.336   Min.   :1.393  
-##  1st Qu.:2.164   1st Qu.:2.797   1st Qu.:2.128   1st Qu.:2.296   1st Qu.:1.873  
-##  Median :3.082   Median :3.061   Median :3.111   Median :2.610   Median :3.146  
-##  Mean   :3.047   Mean   :3.095   Mean   :3.006   Mean   :2.975   Mean   :2.999  
-##  3rd Qu.:3.952   3rd Qu.:3.915   3rd Qu.:3.999   3rd Qu.:3.964   3rd Qu.:4.065  
-##  Max.   :4.764   Max.   :4.151   Max.   :4.295   Max.   :4.458   Max.   :4.568  
-##       V16             V17              V18             V19             V20       
-##  Min.   :1.320   Min.   :0.9245   Min.   :1.091   Min.   :1.495   Min.   :1.716  
-##  1st Qu.:2.102   1st Qu.:2.1561   1st Qu.:1.698   1st Qu.:2.277   1st Qu.:2.498  
-##  Median :3.118   Median :2.6587   Median :2.521   Median :2.895   Median :3.234  
-##  Mean   :2.982   Mean   :2.9572   Mean   :2.777   Mean   :3.005   Mean   :3.122  
-##  3rd Qu.:3.875   3rd Qu.:4.2019   3rd Qu.:3.299   3rd Qu.:4.051   3rd Qu.:3.809  
-##  Max.   :4.567   Max.   :4.5870   Max.   :5.417   Max.   :4.301   Max.   :4.232</code></pre>
+##  Min.   :1.670   Min.   :1.507   Min.   :1.715   Min.   :1.804   Min.   :1.168  
+##  1st Qu.:2.421   1st Qu.:2.469   1st Qu.:2.315   1st Qu.:2.547   1st Qu.:1.587  
+##  Median :2.878   Median :3.004   Median :2.806   Median :3.114   Median :2.993  
+##  Mean   :3.058   Mean   :3.141   Mean   :3.053   Mean   :3.118   Mean   :2.871  
+##  3rd Qu.:4.032   3rd Qu.:4.107   3rd Qu.:3.946   3rd Qu.:3.868   3rd Qu.:3.842  
+##  Max.   :4.324   Max.   :4.557   Max.   :4.528   Max.   :4.155   Max.   :4.580  
+##       V16             V17             V18             V19             V20       
+##  Min.   :1.807   Min.   :1.665   Min.   :1.483   Min.   :1.623   Min.   :1.389  
+##  1st Qu.:2.399   1st Qu.:1.927   1st Qu.:2.124   1st Qu.:2.099   1st Qu.:2.065  
+##  Median :2.802   Median :3.224   Median :2.535   Median :2.489   Median :2.546  
+##  Mean   :3.095   Mean   :3.101   Mean   :3.051   Mean   :2.925   Mean   :2.959  
+##  3rd Qu.:3.944   3rd Qu.:4.182   3rd Qu.:3.765   3rd Qu.:4.029   3rd Qu.:3.895  
+##  Max.   :4.704   Max.   :4.411   Max.   :5.619   Max.   :4.795   Max.   :4.927</code></pre>
 </div>
 <div id="bootstrap" class="section level2">
 <h2><span class="header-section-number">4.4</span> Bootstrap</h2>
 <p>An alternative to K-Fold Cross Validation is to use the bootstrap sampling approach which will produce training data sets the same size as the original data set although some observations might be repeated as the sampling process is done with replacement. The observations that do not appear in each of the training sets are then used as a test set. These observations are known as “out of bag samples”. We’ll make a function to do bootstrap sampling.</p>
-<div class="sourceCode" id="cb61"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb61-1" data-line-number="1">make_mtcars_boot &lt;-<span class="st"> </span><span class="cf">function</span>(<span class="dt">formula=</span>myform, <span class="dt">num_of_folds=</span><span class="dv">8</span>) {</a>
-<a class="sourceLine" id="cb61-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb61-3" data-line-number="3">  modl      &lt;-<span class="st"> </span><span class="kw">list</span>()</a>
-<a class="sourceLine" id="cb61-4" data-line-number="4">  predl     &lt;-<span class="st"> </span><span class="kw">list</span>()</a>
-<a class="sourceLine" id="cb61-5" data-line-number="5">  rmse      &lt;-<span class="st"> </span><span class="kw">list</span>()</a>
-<a class="sourceLine" id="cb61-6" data-line-number="6"></a>
-<a class="sourceLine" id="cb61-7" data-line-number="7">  <span class="co"># Now, for each of the 10 subgroups of holdout data we will </span></a>
-<a class="sourceLine" id="cb61-8" data-line-number="8">  <span class="co"># create a lda model based on all the data *except* the </span></a>
-<a class="sourceLine" id="cb61-9" data-line-number="9">  <span class="co"># holdout group</span></a>
-<a class="sourceLine" id="cb61-10" data-line-number="10"></a>
-<a class="sourceLine" id="cb61-11" data-line-number="11">  <span class="cf">for</span> (ii <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(folds)) {</a>
-<a class="sourceLine" id="cb61-12" data-line-number="12">  </a>
-<a class="sourceLine" id="cb61-13" data-line-number="13">    training_boot_idx &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(mtcars),<span class="dt">replace=</span><span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb61-14" data-line-number="14">    test_boot_idx &lt;-<span class="st"> </span><span class="op">!</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">32</span> <span class="op">%in%</span><span class="st"> </span>training_boot_idx)</a>
-<a class="sourceLine" id="cb61-15" data-line-number="15">    </a>
-<a class="sourceLine" id="cb61-16" data-line-number="16">  <span class="co"># This list holds the actual model we create for each of the folds</span></a>
-<a class="sourceLine" id="cb61-17" data-line-number="17">  </a>
-<a class="sourceLine" id="cb61-18" data-line-number="18">  modl[[ii]] &lt;-<span class="st"> </span><span class="kw">lm</span>(<span class="dt">formula =</span> myform, </a>
-<a class="sourceLine" id="cb61-19" data-line-number="19">                   <span class="dt">data =</span> mtcars[training_boot_idx,] </a>
-<a class="sourceLine" id="cb61-20" data-line-number="20">                )</a>
-<a class="sourceLine" id="cb61-21" data-line-number="21">  </a>
-<a class="sourceLine" id="cb61-22" data-line-number="22">  <span class="co"># This list will contain / hold the models build on the fold</span></a>
-<a class="sourceLine" id="cb61-23" data-line-number="23">  </a>
-<a class="sourceLine" id="cb61-24" data-line-number="24">  predl[[ii]]  &lt;-<span class="st"> </span><span class="kw">predict</span>(modl[[ii]],</a>
-<a class="sourceLine" id="cb61-25" data-line-number="25">                          <span class="dt">newdata=</span>mtcars[test_boot_idx,],</a>
-<a class="sourceLine" id="cb61-26" data-line-number="26">                          <span class="dt">type=</span><span class="st">&quot;response&quot;</span>)</a>
-<a class="sourceLine" id="cb61-27" data-line-number="27">  </a>
-<a class="sourceLine" id="cb61-28" data-line-number="28">  <span class="co"># Let&#39;s compute the RMSE and save it</span></a>
-<a class="sourceLine" id="cb61-29" data-line-number="29">  </a>
-<a class="sourceLine" id="cb61-30" data-line-number="30">    errors &lt;-<span class="st"> </span>predl[[ii]]<span class="op">-</span>mtcars[test_boot_idx,]<span class="op">$</span>mpg</a>
-<a class="sourceLine" id="cb61-31" data-line-number="31">    rmse[[ii]] &lt;-<span class="st"> </span><span class="kw">sqrt</span>(<span class="kw">mean</span>(errors<span class="op">^</span><span class="dv">2</span>))</a>
-<a class="sourceLine" id="cb61-32" data-line-number="32">  }</a>
-<a class="sourceLine" id="cb61-33" data-line-number="33">  <span class="kw">return</span>(<span class="dt">rmse=</span><span class="kw">unlist</span>(rmse))</a>
-<a class="sourceLine" id="cb61-34" data-line-number="34">}</a></code></pre></div>
-<div class="sourceCode" id="cb62"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb62-1" data-line-number="1">num_of_folds &lt;-<span class="st"> </span><span class="dv">8</span></a>
-<a class="sourceLine" id="cb62-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb62-3" data-line-number="3"><span class="co"># Just to be clear - here is what happens when we call the function</span></a>
-<a class="sourceLine" id="cb62-4" data-line-number="4"><span class="co"># once. We get back 8 RMSE values - one for each fold</span></a>
-<a class="sourceLine" id="cb62-5" data-line-number="5">(rmse &lt;-<span class="st"> </span><span class="kw">make_mtcars_boot</span>(num_of_folds))</a></code></pre></div>
-<pre><code>## [1] 3.368607 3.815165 2.982231 3.243718</code></pre>
-<div class="sourceCode" id="cb64"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb64-1" data-line-number="1"><span class="co"># Now we repeat this some number of times - like 10. So we get back</span></a>
-<a class="sourceLine" id="cb64-2" data-line-number="2"><span class="co"># 80 RMSE values </span></a>
-<a class="sourceLine" id="cb64-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb64-4" data-line-number="4">repeated_rmse &lt;-<span class="st"> </span><span class="kw">sapply</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">20</span>,make_mtcars_boot)</a>
-<a class="sourceLine" id="cb64-5" data-line-number="5"></a>
-<a class="sourceLine" id="cb64-6" data-line-number="6"><span class="kw">boxplot</span>(repeated_rmse,<span class="dt">main=</span><span class="st">&quot;RMSE Across 20 Repeats of 4 Boostrap Folds&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb67-1" data-line-number="1">make_mtcars_boot &lt;-<span class="st"> </span><span class="cf">function</span>(<span class="dt">formula=</span>myform, <span class="dt">num_of_folds=</span><span class="dv">8</span>) {</a>
+<a class="sourceLine" id="cb67-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb67-3" data-line-number="3">  modl      &lt;-<span class="st"> </span><span class="kw">list</span>()</a>
+<a class="sourceLine" id="cb67-4" data-line-number="4">  predl     &lt;-<span class="st"> </span><span class="kw">list</span>()</a>
+<a class="sourceLine" id="cb67-5" data-line-number="5">  rmse      &lt;-<span class="st"> </span><span class="kw">list</span>()</a>
+<a class="sourceLine" id="cb67-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb67-7" data-line-number="7">  <span class="co"># Now, for each of the 10 subgroups of holdout data we will </span></a>
+<a class="sourceLine" id="cb67-8" data-line-number="8">  <span class="co"># create a lda model based on all the data *except* the </span></a>
+<a class="sourceLine" id="cb67-9" data-line-number="9">  <span class="co"># holdout group</span></a>
+<a class="sourceLine" id="cb67-10" data-line-number="10"></a>
+<a class="sourceLine" id="cb67-11" data-line-number="11">  <span class="cf">for</span> (ii <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(folds)) {</a>
+<a class="sourceLine" id="cb67-12" data-line-number="12">  </a>
+<a class="sourceLine" id="cb67-13" data-line-number="13">    training_boot_idx &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(mtcars),<span class="dt">replace=</span><span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb67-14" data-line-number="14">    test_boot_idx &lt;-<span class="st"> </span><span class="op">!</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">32</span> <span class="op">%in%</span><span class="st"> </span>training_boot_idx)</a>
+<a class="sourceLine" id="cb67-15" data-line-number="15">    </a>
+<a class="sourceLine" id="cb67-16" data-line-number="16">  <span class="co"># This list holds the actual model we create for each of the folds</span></a>
+<a class="sourceLine" id="cb67-17" data-line-number="17">  </a>
+<a class="sourceLine" id="cb67-18" data-line-number="18">  modl[[ii]] &lt;-<span class="st"> </span><span class="kw">lm</span>(<span class="dt">formula =</span> myform, </a>
+<a class="sourceLine" id="cb67-19" data-line-number="19">                   <span class="dt">data =</span> mtcars[training_boot_idx,] </a>
+<a class="sourceLine" id="cb67-20" data-line-number="20">                )</a>
+<a class="sourceLine" id="cb67-21" data-line-number="21">  </a>
+<a class="sourceLine" id="cb67-22" data-line-number="22">  <span class="co"># This list will contain / hold the models build on the fold</span></a>
+<a class="sourceLine" id="cb67-23" data-line-number="23">  </a>
+<a class="sourceLine" id="cb67-24" data-line-number="24">  predl[[ii]]  &lt;-<span class="st"> </span><span class="kw">predict</span>(modl[[ii]],</a>
+<a class="sourceLine" id="cb67-25" data-line-number="25">                          <span class="dt">newdata=</span>mtcars[test_boot_idx,],</a>
+<a class="sourceLine" id="cb67-26" data-line-number="26">                          <span class="dt">type=</span><span class="st">&quot;response&quot;</span>)</a>
+<a class="sourceLine" id="cb67-27" data-line-number="27">  </a>
+<a class="sourceLine" id="cb67-28" data-line-number="28">  <span class="co"># Let&#39;s compute the RMSE and save it</span></a>
+<a class="sourceLine" id="cb67-29" data-line-number="29">  </a>
+<a class="sourceLine" id="cb67-30" data-line-number="30">    errors &lt;-<span class="st"> </span>predl[[ii]]<span class="op">-</span>mtcars[test_boot_idx,]<span class="op">$</span>mpg</a>
+<a class="sourceLine" id="cb67-31" data-line-number="31">    rmse[[ii]] &lt;-<span class="st"> </span><span class="kw">sqrt</span>(<span class="kw">mean</span>(errors<span class="op">^</span><span class="dv">2</span>))</a>
+<a class="sourceLine" id="cb67-32" data-line-number="32">  }</a>
+<a class="sourceLine" id="cb67-33" data-line-number="33">  <span class="kw">return</span>(<span class="dt">rmse=</span><span class="kw">unlist</span>(rmse))</a>
+<a class="sourceLine" id="cb67-34" data-line-number="34">}</a></code></pre></div>
+<div class="sourceCode" id="cb68"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb68-1" data-line-number="1">num_of_folds &lt;-<span class="st"> </span><span class="dv">8</span></a>
+<a class="sourceLine" id="cb68-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb68-3" data-line-number="3"><span class="co"># Just to be clear - here is what happens when we call the function</span></a>
+<a class="sourceLine" id="cb68-4" data-line-number="4"><span class="co"># once. We get back 8 RMSE values - one for each fold</span></a>
+<a class="sourceLine" id="cb68-5" data-line-number="5">(rmse &lt;-<span class="st"> </span><span class="kw">make_mtcars_boot</span>(num_of_folds))</a></code></pre></div>
+<pre><code>## [1] 2.605446 3.520830 2.422832 2.761948</code></pre>
+<div class="sourceCode" id="cb70"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb70-1" data-line-number="1"><span class="co"># Now we repeat this some number of times - like 10. So we get back</span></a>
+<a class="sourceLine" id="cb70-2" data-line-number="2"><span class="co"># 80 RMSE values </span></a>
+<a class="sourceLine" id="cb70-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb70-4" data-line-number="4">repeated_rmse &lt;-<span class="st"> </span><span class="kw">sapply</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">20</span>,make_mtcars_boot)</a>
+<a class="sourceLine" id="cb70-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb70-6" data-line-number="6"><span class="kw">boxplot</span>(repeated_rmse,<span class="dt">main=</span><span class="st">&quot;RMSE Across 20 Repeats of 4 Boostrap Folds&quot;</span>)</a></code></pre></div>
 <p><img src="biosml_files/figure-html/bs2-1.png" width="672" /></p>
-<div class="sourceCode" id="cb65"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb65-1" data-line-number="1">title &lt;-<span class="st"> </span><span class="kw">paste</span>(<span class="st">&quot;RMSE Across&quot;</span>,num_of_folds,</a>
-<a class="sourceLine" id="cb65-2" data-line-number="2">               <span class="st">&quot;folds - &quot;</span>,<span class="kw">as.character</span>(<span class="kw">deparse</span>(myform)),<span class="dt">sep=</span><span class="st">&quot; &quot;</span>)</a>
-<a class="sourceLine" id="cb65-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb65-4" data-line-number="4">boot_repeated_rmse &lt;-<span class="st"> </span><span class="kw">as.vector</span>(repeated_rmse)</a>
-<a class="sourceLine" id="cb65-5" data-line-number="5"><span class="kw">boxplot</span>(boot_repeated_rmse)</a></code></pre></div>
+<div class="sourceCode" id="cb71"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb71-1" data-line-number="1">title &lt;-<span class="st"> </span><span class="kw">paste</span>(<span class="st">&quot;RMSE Across&quot;</span>,num_of_folds,</a>
+<a class="sourceLine" id="cb71-2" data-line-number="2">               <span class="st">&quot;folds - &quot;</span>,<span class="kw">as.character</span>(<span class="kw">deparse</span>(myform)),<span class="dt">sep=</span><span class="st">&quot; &quot;</span>)</a>
+<a class="sourceLine" id="cb71-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb71-4" data-line-number="4">boot_repeated_rmse &lt;-<span class="st"> </span><span class="kw">as.vector</span>(repeated_rmse)</a>
+<a class="sourceLine" id="cb71-5" data-line-number="5"><span class="kw">boxplot</span>(boot_repeated_rmse)</a></code></pre></div>
 <p><img src="biosml_files/figure-html/bs2-2.png" width="672" /></p>
-<div class="sourceCode" id="cb66"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb66-1" data-line-number="1"><span class="co"># How does the RMSE from the boostrap approach compare to the </span></a>
-<a class="sourceLine" id="cb66-2" data-line-number="2"><span class="co"># K-Fold CV approach ? </span></a>
-<a class="sourceLine" id="cb66-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb66-4" data-line-number="4"><span class="kw">print</span>(<span class="st">&quot;Summary of Bootstrap RMSE&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb72"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb72-1" data-line-number="1"><span class="co"># How does the RMSE from the boostrap approach compare to the </span></a>
+<a class="sourceLine" id="cb72-2" data-line-number="2"><span class="co"># K-Fold CV approach ? </span></a>
+<a class="sourceLine" id="cb72-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb72-4" data-line-number="4"><span class="kw">print</span>(<span class="st">&quot;Summary of Bootstrap RMSE&quot;</span>)</a></code></pre></div>
 <pre><code>## [1] &quot;Summary of Bootstrap RMSE&quot;</code></pre>
-<div class="sourceCode" id="cb68"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb68-1" data-line-number="1"><span class="kw">summary</span>(boot_repeated_rmse)</a></code></pre></div>
+<div class="sourceCode" id="cb74"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb74-1" data-line-number="1"><span class="kw">summary</span>(boot_repeated_rmse)</a></code></pre></div>
 <pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-##   1.718   2.763   3.218   3.265   3.714   4.752</code></pre>
-<div class="sourceCode" id="cb70"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb70-1" data-line-number="1"><span class="kw">print</span>(<span class="st">&quot;Summary of CV&quot;</span>)</a></code></pre></div>
+##   1.551   2.851   3.199   3.277   3.723   5.493</code></pre>
+<div class="sourceCode" id="cb76"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb76-1" data-line-number="1"><span class="kw">print</span>(<span class="st">&quot;Summary of CV&quot;</span>)</a></code></pre></div>
 <pre><code>## [1] &quot;Summary of CV&quot;</code></pre>
-<div class="sourceCode" id="cb72"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb72-1" data-line-number="1"><span class="kw">summary</span>(repeated_cv_rmse)</a></code></pre></div>
-<pre><code>##        V1              V2              V3              V4              V5       
-##  Min.   :1.377   Min.   :0.937   Min.   :1.758   Min.   :1.868   Min.   :2.274  
-##  1st Qu.:2.648   1st Qu.:1.802   1st Qu.:1.867   1st Qu.:2.238   1st Qu.:2.711  
-##  Median :2.998   Median :2.723   Median :2.594   Median :3.122   Median :2.989  
-##  Mean   :3.039   Mean   :2.890   Mean   :2.937   Mean   :3.131   Mean   :3.232  
-##  3rd Qu.:3.876   3rd Qu.:4.234   3rd Qu.:3.537   3rd Qu.:3.741   3rd Qu.:4.093  
-##  Max.   :4.108   Max.   :4.790   Max.   :5.084   Max.   :4.875   Max.   :4.217  
-##        V6               V7               V8              V9             V10       
-##  Min.   :0.9624   Min.   :0.9939   Min.   :1.254   Min.   :1.454   Min.   :1.515  
-##  1st Qu.:2.5657   1st Qu.:2.2450   1st Qu.:2.276   1st Qu.:2.255   1st Qu.:2.052  
-##  Median :2.9978   Median :2.7440   Median :3.221   Median :2.499   Median :2.301  
-##  Mean   :3.0787   Mean   :2.9336   Mean   :3.042   Mean   :2.881   Mean   :2.899  
-##  3rd Qu.:3.3013   3rd Qu.:3.9617   3rd Qu.:3.877   3rd Qu.:3.261   3rd Qu.:3.942  
-##  Max.   :6.1473   Max.   :4.7894   Max.   :4.319   Max.   :5.056   Max.   :5.146  
+<div class="sourceCode" id="cb78"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb78-1" data-line-number="1"><span class="kw">summary</span>(repeated_cv_rmse)</a></code></pre></div>
+<pre><code>##        V1               V2               V3              V4              V5       
+##  Min.   :0.6022   Min.   :0.9039   Min.   :1.904   Min.   :1.132   Min.   :2.191  
+##  1st Qu.:2.2021   1st Qu.:2.5968   1st Qu.:2.617   1st Qu.:1.718   1st Qu.:2.289  
+##  Median :2.8839   Median :2.9378   Median :2.941   Median :2.714   Median :2.615  
+##  Mean   :2.9370   Mean   :3.0104   Mean   :3.162   Mean   :2.990   Mean   :3.094  
+##  3rd Qu.:4.2793   3rd Qu.:3.9970   3rd Qu.:3.854   3rd Qu.:4.356   3rd Qu.:3.960  
+##  Max.   :4.9986   Max.   :4.1574   Max.   :4.591   Max.   :4.974   Max.   :4.755  
+##        V6               V7              V8              V9             V10       
+##  Min.   :0.5555   Min.   :2.414   Min.   :1.578   Min.   :1.532   Min.   :1.964  
+##  1st Qu.:2.0882   1st Qu.:2.739   1st Qu.:2.450   1st Qu.:2.189   1st Qu.:2.755  
+##  Median :2.6806   Median :3.143   Median :3.149   Median :3.012   Median :3.194  
+##  Mean   :2.8893   Mean   :3.250   Mean   :3.091   Mean   :3.083   Mean   :3.172  
+##  3rd Qu.:3.2655   3rd Qu.:3.798   3rd Qu.:3.997   3rd Qu.:4.029   3rd Qu.:3.865  
+##  Max.   :6.4001   Max.   :4.178   Max.   :4.123   Max.   :4.707   Max.   :4.170  
 ##       V11             V12             V13             V14             V15       
-##  Min.   :1.180   Min.   :1.130   Min.   :1.278   Min.   :1.336   Min.   :1.393  
-##  1st Qu.:2.164   1st Qu.:2.797   1st Qu.:2.128   1st Qu.:2.296   1st Qu.:1.873  
-##  Median :3.082   Median :3.061   Median :3.111   Median :2.610   Median :3.146  
-##  Mean   :3.047   Mean   :3.095   Mean   :3.006   Mean   :2.975   Mean   :2.999  
-##  3rd Qu.:3.952   3rd Qu.:3.915   3rd Qu.:3.999   3rd Qu.:3.964   3rd Qu.:4.065  
-##  Max.   :4.764   Max.   :4.151   Max.   :4.295   Max.   :4.458   Max.   :4.568  
-##       V16             V17              V18             V19             V20       
-##  Min.   :1.320   Min.   :0.9245   Min.   :1.091   Min.   :1.495   Min.   :1.716  
-##  1st Qu.:2.102   1st Qu.:2.1561   1st Qu.:1.698   1st Qu.:2.277   1st Qu.:2.498  
-##  Median :3.118   Median :2.6587   Median :2.521   Median :2.895   Median :3.234  
-##  Mean   :2.982   Mean   :2.9572   Mean   :2.777   Mean   :3.005   Mean   :3.122  
-##  3rd Qu.:3.875   3rd Qu.:4.2019   3rd Qu.:3.299   3rd Qu.:4.051   3rd Qu.:3.809  
-##  Max.   :4.567   Max.   :4.5870   Max.   :5.417   Max.   :4.301   Max.   :4.232</code></pre>
+##  Min.   :1.670   Min.   :1.507   Min.   :1.715   Min.   :1.804   Min.   :1.168  
+##  1st Qu.:2.421   1st Qu.:2.469   1st Qu.:2.315   1st Qu.:2.547   1st Qu.:1.587  
+##  Median :2.878   Median :3.004   Median :2.806   Median :3.114   Median :2.993  
+##  Mean   :3.058   Mean   :3.141   Mean   :3.053   Mean   :3.118   Mean   :2.871  
+##  3rd Qu.:4.032   3rd Qu.:4.107   3rd Qu.:3.946   3rd Qu.:3.868   3rd Qu.:3.842  
+##  Max.   :4.324   Max.   :4.557   Max.   :4.528   Max.   :4.155   Max.   :4.580  
+##       V16             V17             V18             V19             V20       
+##  Min.   :1.807   Min.   :1.665   Min.   :1.483   Min.   :1.623   Min.   :1.389  
+##  1st Qu.:2.399   1st Qu.:1.927   1st Qu.:2.124   1st Qu.:2.099   1st Qu.:2.065  
+##  Median :2.802   Median :3.224   Median :2.535   Median :2.489   Median :2.546  
+##  Mean   :3.095   Mean   :3.101   Mean   :3.051   Mean   :2.925   Mean   :2.959  
+##  3rd Qu.:3.944   3rd Qu.:4.182   3rd Qu.:3.765   3rd Qu.:4.029   3rd Qu.:3.895  
+##  Max.   :4.704   Max.   :4.411   Max.   :5.619   Max.   :4.795   Max.   :4.927</code></pre>
 </div>
 </div>
             </section>

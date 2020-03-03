@@ -134,7 +134,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="1.5" data-path="index.html"><a href="index.html#black-box"><i class="fa fa-check"></i><b>1.5</b> Black Box</a></li>
 </ul></li>
 <li class="chapter" data-level="2" data-path="predictive-supervised-learning.html"><a href="predictive-supervised-learning.html"><i class="fa fa-check"></i><b>2</b> Predictive / Supervised Learning</a><ul>
-<li class="chapter" data-level="2.1" data-path="predictive-supervised-learning.html"><a href="predictive-supervised-learning.html#explanation-vs-prediction"><i class="fa fa-check"></i><b>2.1</b> Explanation vs Prediction</a></li>
+<li class="chapter" data-level="2.1" data-path="predictive-supervised-learning.html"><a href="predictive-supervised-learning.html#explanation-vs-prediction"><i class="fa fa-check"></i><b>2.1</b> Explanation vs Prediction</a><ul>
+<li class="chapter" data-level="2.1.1" data-path="predictive-supervised-learning.html"><a href="predictive-supervised-learning.html#titanic-data"><i class="fa fa-check"></i><b>2.1.1</b> Titanic Data</a></li>
+<li class="chapter" data-level="2.1.2" data-path="predictive-supervised-learning.html"><a href="predictive-supervised-learning.html#does-this-data-matter"><i class="fa fa-check"></i><b>2.1.2</b> Does This Data Matter ?</a></li>
+</ul></li>
 <li class="chapter" data-level="2.2" data-path="predictive-supervised-learning.html"><a href="predictive-supervised-learning.html#two-types-of-predictive-models"><i class="fa fa-check"></i><b>2.2</b> Two Types of Predictive Models:</a></li>
 <li class="chapter" data-level="2.3" data-path="predictive-supervised-learning.html"><a href="predictive-supervised-learning.html#bias-vs-variance"><i class="fa fa-check"></i><b>2.3</b> Bias vs Variance</a><ul>
 <li class="chapter" data-level="2.3.1" data-path="predictive-supervised-learning.html"><a href="predictive-supervised-learning.html#bias"><i class="fa fa-check"></i><b>2.3.1</b> Bias</a></li>
@@ -332,11 +335,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="splitting" class="section level2">
 <h2><span class="header-section-number">5.3</span> Splitting</h2>
 <p><strong>createDataPartition</strong> can be used to create test and train data splits according to some proportion. There is a function called <strong>createFolds</strong> can be used to generate balanced cross–validation groupings from a set of data. <strong>createResample</strong> can be used to make simple bootstrap samples. For now, we’ll just stick with <strong>createDataPartition</strong> for creating a test/train pair.</p>
-<div class="sourceCode" id="cb74"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb74-1" data-line-number="1"><span class="kw">set.seed</span>(<span class="dv">123</span>) <span class="co"># Make this example reproducible</span></a>
-<a class="sourceLine" id="cb74-2" data-line-number="2">idx &lt;-<span class="st"> </span><span class="kw">createDataPartition</span>(mtcars<span class="op">$</span>mpg, <span class="dt">p =</span> <span class="fl">.8</span>, </a>
-<a class="sourceLine" id="cb74-3" data-line-number="3">                                  <span class="dt">list =</span> <span class="ot">FALSE</span>, </a>
-<a class="sourceLine" id="cb74-4" data-line-number="4">                                  <span class="dt">times =</span> <span class="dv">1</span>)</a>
-<a class="sourceLine" id="cb74-5" data-line-number="5"><span class="kw">head</span>(idx)</a></code></pre></div>
+<div class="sourceCode" id="cb80"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb80-1" data-line-number="1"><span class="kw">set.seed</span>(<span class="dv">123</span>) <span class="co"># Make this example reproducible</span></a>
+<a class="sourceLine" id="cb80-2" data-line-number="2">idx &lt;-<span class="st"> </span><span class="kw">createDataPartition</span>(mtcars<span class="op">$</span>mpg, <span class="dt">p =</span> <span class="fl">.8</span>, </a>
+<a class="sourceLine" id="cb80-3" data-line-number="3">                                  <span class="dt">list =</span> <span class="ot">FALSE</span>, </a>
+<a class="sourceLine" id="cb80-4" data-line-number="4">                                  <span class="dt">times =</span> <span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb80-5" data-line-number="5"><span class="kw">head</span>(idx)</a></code></pre></div>
 <pre><code>##      Resample1
 ## [1,]         1
 ## [2,]         3
@@ -344,13 +347,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## [4,]         5
 ## [5,]         6
 ## [6,]         8</code></pre>
-<div class="sourceCode" id="cb76"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb76-1" data-line-number="1">Train &lt;-<span class="st"> </span>mtcars[ idx,]</a>
-<a class="sourceLine" id="cb76-2" data-line-number="2">Test  &lt;-<span class="st"> </span>mtcars[<span class="op">-</span>idx,]</a>
-<a class="sourceLine" id="cb76-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb76-4" data-line-number="4"><span class="co">#</span></a>
-<a class="sourceLine" id="cb76-5" data-line-number="5"><span class="kw">nrow</span>(Train)</a></code></pre></div>
+<div class="sourceCode" id="cb82"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb82-1" data-line-number="1">Train &lt;-<span class="st"> </span>mtcars[ idx,]</a>
+<a class="sourceLine" id="cb82-2" data-line-number="2">Test  &lt;-<span class="st"> </span>mtcars[<span class="op">-</span>idx,]</a>
+<a class="sourceLine" id="cb82-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb82-4" data-line-number="4"><span class="co">#</span></a>
+<a class="sourceLine" id="cb82-5" data-line-number="5"><span class="kw">nrow</span>(Train)</a></code></pre></div>
 <pre><code>## [1] 28</code></pre>
-<div class="sourceCode" id="cb78"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb78-1" data-line-number="1"><span class="kw">nrow</span>(Test)</a></code></pre></div>
+<div class="sourceCode" id="cb84"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb84-1" data-line-number="1"><span class="kw">nrow</span>(Test)</a></code></pre></div>
 <pre><code>## [1] 4</code></pre>
 </div>
 <div id="calling-the-train-function" class="section level2">
@@ -366,13 +369,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li>A desired scoring metric. In this case we seek to minimize RMSE on
 future predictions</li>
 </ol>
-<div class="sourceCode" id="cb80"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb80-1" data-line-number="1"><span class="kw">set.seed</span>(<span class="dv">123</span>) <span class="co"># Make this example reproducible</span></a>
-<a class="sourceLine" id="cb80-2" data-line-number="2">lm_fit &lt;-<span class="st"> </span><span class="kw">train</span>(mpg<span class="op">~</span>wt,</a>
-<a class="sourceLine" id="cb80-3" data-line-number="3">                <span class="dt">data=</span>Train,</a>
-<a class="sourceLine" id="cb80-4" data-line-number="4">                <span class="dt">method=</span><span class="st">&quot;lm&quot;</span>,</a>
-<a class="sourceLine" id="cb80-5" data-line-number="5">                <span class="dt">metric=</span><span class="st">&quot;RMSE&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb86"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb86-1" data-line-number="1"><span class="kw">set.seed</span>(<span class="dv">123</span>) <span class="co"># Make this example reproducible</span></a>
+<a class="sourceLine" id="cb86-2" data-line-number="2">lm_fit &lt;-<span class="st"> </span><span class="kw">train</span>(mpg<span class="op">~</span>wt,</a>
+<a class="sourceLine" id="cb86-3" data-line-number="3">                <span class="dt">data=</span>Train,</a>
+<a class="sourceLine" id="cb86-4" data-line-number="4">                <span class="dt">method=</span><span class="st">&quot;lm&quot;</span>,</a>
+<a class="sourceLine" id="cb86-5" data-line-number="5">                <span class="dt">metric=</span><span class="st">&quot;RMSE&quot;</span>)</a></code></pre></div>
 <p>We get back a single object that contains a lot of information that could help us figure out if the model is worth anything. But first, just type the name of fit object to see what you can see. This shows us information that has been derived from some re sampling activity across a number of bootstrapped samples.</p>
-<div class="sourceCode" id="cb81"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb81-1" data-line-number="1">lm_fit</a></code></pre></div>
+<div class="sourceCode" id="cb87"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb87-1" data-line-number="1">lm_fit</a></code></pre></div>
 <pre><code>## Linear Regression 
 ## 
 ## 28 samples
@@ -387,7 +390,7 @@ future predictions</li>
 ##   2.676533  0.79883   2.138882
 ## 
 ## Tuning parameter &#39;intercept&#39; was held constant at a value of TRUE</code></pre>
-<div class="sourceCode" id="cb83"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb83-1" data-line-number="1"><span class="kw">summary</span>(lm_fit)</a></code></pre></div>
+<div class="sourceCode" id="cb89"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb89-1" data-line-number="1"><span class="kw">summary</span>(lm_fit)</a></code></pre></div>
 <pre><code>## 
 ## Call:
 ## lm(formula = .outcome ~ ., data = dat)
@@ -407,16 +410,16 @@ future predictions</li>
 ## Multiple R-squared:  0.7769, Adjusted R-squared:  0.7684 
 ## F-statistic: 90.56 on 1 and 26 DF,  p-value: 5.889e-10</code></pre>
 <p>Note that the summary of the model “summary(lm_fit)” returns the same information that would be returned had we used the <strong>lm</strong> function directly as we did in the previous section. The point is that the <strong>train</strong> function doesn’t not seek to replace or obscure the resulting model in any way. We can always get whatever information we need from it. So let’s apply this model to the test data frame</p>
-<div class="sourceCode" id="cb85"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb85-1" data-line-number="1"><span class="kw">compute_rmse</span>(<span class="kw">predict</span>(lm_fit,Test),Test<span class="op">$</span>mpg)</a></code></pre></div>
+<div class="sourceCode" id="cb91"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb91-1" data-line-number="1"><span class="kw">compute_rmse</span>(<span class="kw">predict</span>(lm_fit,Test),Test<span class="op">$</span>mpg)</a></code></pre></div>
 <pre><code>## [1] 4.622936</code></pre>
 <p>There is more here than meets the eye.</p>
-<div class="sourceCode" id="cb87"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb87-1" data-line-number="1"><span class="kw">names</span>(lm_fit)</a></code></pre></div>
+<div class="sourceCode" id="cb93"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb93-1" data-line-number="1"><span class="kw">names</span>(lm_fit)</a></code></pre></div>
 <pre><code>##  [1] &quot;method&quot;       &quot;modelInfo&quot;    &quot;modelType&quot;    &quot;results&quot;      &quot;pred&quot;        
 ##  [6] &quot;bestTune&quot;     &quot;call&quot;         &quot;dots&quot;         &quot;metric&quot;       &quot;control&quot;     
 ## [11] &quot;finalModel&quot;   &quot;preProcess&quot;   &quot;trainingData&quot; &quot;resample&quot;     &quot;resampledCM&quot; 
 ## [16] &quot;perfNames&quot;    &quot;maximize&quot;     &quot;yLimits&quot;      &quot;times&quot;        &quot;levels&quot;      
 ## [21] &quot;terms&quot;        &quot;coefnames&quot;    &quot;xlevels&quot;</code></pre>
-<div class="sourceCode" id="cb89"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb89-1" data-line-number="1"><span class="kw">str</span>(lm_fit<span class="op">$</span>control,<span class="dv">1</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb95"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb95-1" data-line-number="1"><span class="kw">str</span>(lm_fit<span class="op">$</span>control,<span class="dv">1</span>)</a></code></pre></div>
 <pre><code>## List of 28
 ##  $ method           : chr &quot;boot&quot;
 ##  $ number           : num 25
@@ -447,7 +450,7 @@ future predictions</li>
 ##  $ allowParallel    : logi TRUE
 ##  $ yLimits          : num [1:2] 9.3 33.5</code></pre>
 <p>Check out the some of the model characteristics</p>
-<div class="sourceCode" id="cb91"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb91-1" data-line-number="1"><span class="kw">summary</span>(lm_fit)</a></code></pre></div>
+<div class="sourceCode" id="cb97"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb97-1" data-line-number="1"><span class="kw">summary</span>(lm_fit)</a></code></pre></div>
 <pre><code>## 
 ## Call:
 ## lm(formula = .outcome ~ ., data = dat)
@@ -466,10 +469,10 @@ future predictions</li>
 ## Residual standard error: 2.75 on 26 degrees of freedom
 ## Multiple R-squared:  0.7769, Adjusted R-squared:  0.7684 
 ## F-statistic: 90.56 on 1 and 26 DF,  p-value: 5.889e-10</code></pre>
-<div class="sourceCode" id="cb93"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb93-1" data-line-number="1"><span class="kw">summary</span>(lm_fit<span class="op">$</span>finalModel)<span class="op">$</span>r.squared</a></code></pre></div>
+<div class="sourceCode" id="cb99"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb99-1" data-line-number="1"><span class="kw">summary</span>(lm_fit<span class="op">$</span>finalModel)<span class="op">$</span>r.squared</a></code></pre></div>
 <pre><code>## [1] 0.7769458</code></pre>
 <p>We can go right to the final Model which contains the information for the</p>
-<div class="sourceCode" id="cb95"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb95-1" data-line-number="1">lm_fit<span class="op">$</span>finalModel</a></code></pre></div>
+<div class="sourceCode" id="cb101"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb101-1" data-line-number="1">lm_fit<span class="op">$</span>finalModel</a></code></pre></div>
 <pre><code>## 
 ## Call:
 ## lm(formula = .outcome ~ ., data = dat)
@@ -480,17 +483,17 @@ future predictions</li>
 <p>So it looks like caret did some re sampling for us by default. Actually, it was bootstrap sampling that we discussed earlier. However, we can specify cross fold validation if we wanted to. This requires a slightly more involved form of the <strong>train</strong> function.</p>
 <p>You can influence the <strong>train</strong> function by passing a “special” list / object to it via the <strong>trControl</strong> argument. This gets a bit confusing because the primary function to train models is called <strong>train</strong> and the command used to create the special is called <strong>trainControl</strong> and the argument in the <strong>train</strong> function is called <strong>trControl</strong>. With use, it becomes easier to remember the difference though at first it’s confusing.</p>
 <p>Here we train the model as before but specifically requesting a Cross Fold Validation method. We are requesting verbose output.</p>
-<div class="sourceCode" id="cb97"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb97-1" data-line-number="1">control &lt;-<span class="st"> </span><span class="kw">trainControl</span>(<span class="dt">method =</span> <span class="st">&quot;cv&quot;</span>,       <span class="co"># Cross Fold</span></a>
-<a class="sourceLine" id="cb97-2" data-line-number="2">                        <span class="dt">number =</span> <span class="dv">5</span>,          <span class="co"># 5 Folds</span></a>
-<a class="sourceLine" id="cb97-3" data-line-number="3">                        <span class="dt">verboseIter =</span> <span class="ot">TRUE</span>)  <span class="co"># Verbose</span></a>
-<a class="sourceLine" id="cb97-4" data-line-number="4"><span class="co"># Train the model</span></a>
-<a class="sourceLine" id="cb97-5" data-line-number="5"><span class="kw">set.seed</span>(<span class="dv">123</span>) <span class="co"># Make this example reproducible</span></a>
-<a class="sourceLine" id="cb97-6" data-line-number="6">my_lm &lt;-<span class="st"> </span><span class="kw">train</span>(</a>
-<a class="sourceLine" id="cb97-7" data-line-number="7">  mpg <span class="op">~</span><span class="st"> </span>., </a>
-<a class="sourceLine" id="cb97-8" data-line-number="8">  Train,</a>
-<a class="sourceLine" id="cb97-9" data-line-number="9">  <span class="dt">method =</span> <span class="st">&quot;lm&quot;</span>,</a>
-<a class="sourceLine" id="cb97-10" data-line-number="10">  <span class="dt">trControl =</span> control</a>
-<a class="sourceLine" id="cb97-11" data-line-number="11">)</a></code></pre></div>
+<div class="sourceCode" id="cb103"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb103-1" data-line-number="1">control &lt;-<span class="st"> </span><span class="kw">trainControl</span>(<span class="dt">method =</span> <span class="st">&quot;cv&quot;</span>,       <span class="co"># Cross Fold</span></a>
+<a class="sourceLine" id="cb103-2" data-line-number="2">                        <span class="dt">number =</span> <span class="dv">5</span>,          <span class="co"># 5 Folds</span></a>
+<a class="sourceLine" id="cb103-3" data-line-number="3">                        <span class="dt">verboseIter =</span> <span class="ot">TRUE</span>)  <span class="co"># Verbose</span></a>
+<a class="sourceLine" id="cb103-4" data-line-number="4"><span class="co"># Train the model</span></a>
+<a class="sourceLine" id="cb103-5" data-line-number="5"><span class="kw">set.seed</span>(<span class="dv">123</span>) <span class="co"># Make this example reproducible</span></a>
+<a class="sourceLine" id="cb103-6" data-line-number="6">my_lm &lt;-<span class="st"> </span><span class="kw">train</span>(</a>
+<a class="sourceLine" id="cb103-7" data-line-number="7">  mpg <span class="op">~</span><span class="st"> </span>., </a>
+<a class="sourceLine" id="cb103-8" data-line-number="8">  Train,</a>
+<a class="sourceLine" id="cb103-9" data-line-number="9">  <span class="dt">method =</span> <span class="st">&quot;lm&quot;</span>,</a>
+<a class="sourceLine" id="cb103-10" data-line-number="10">  <span class="dt">trControl =</span> control</a>
+<a class="sourceLine" id="cb103-11" data-line-number="11">)</a></code></pre></div>
 <pre><code>## + Fold1: intercept=TRUE 
 ## - Fold1: intercept=TRUE 
 ## + Fold2: intercept=TRUE 
@@ -504,7 +507,7 @@ future predictions</li>
 ## Aggregating results
 ## Fitting final model on full training set</code></pre>
 <p>So the object returned from caret gives us an estimate of how well the model will perform (based on RMSE) for out of sample data.</p>
-<div class="sourceCode" id="cb99"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb99-1" data-line-number="1">my_lm</a></code></pre></div>
+<div class="sourceCode" id="cb105"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb105-1" data-line-number="1">my_lm</a></code></pre></div>
 <pre><code>## Linear Regression 
 ## 
 ## 28 samples
@@ -519,42 +522,42 @@ future predictions</li>
 ##   2.955532  0.7487594  2.528231
 ## 
 ## Tuning parameter &#39;intercept&#39; was held constant at a value of TRUE</code></pre>
-<div class="sourceCode" id="cb101"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb101-1" data-line-number="1"><span class="kw">compute_rmse</span>(<span class="kw">predict</span>(my_lm,Test),Test<span class="op">$</span>mpg)</a></code></pre></div>
+<div class="sourceCode" id="cb107"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb107-1" data-line-number="1"><span class="kw">compute_rmse</span>(<span class="kw">predict</span>(my_lm,Test),Test<span class="op">$</span>mpg)</a></code></pre></div>
 <pre><code>## [1] 4.808981</code></pre>
 <p>We could also repeat the 5 times CV validation an arbitrary number of times to generate greater confidence in the RMSE estimates returned by the model. Remember, a major reason for using K Fold validation is to better estimate the out of sample error by holding out a portion of the data frame being trained upon.</p>
-<div class="sourceCode" id="cb103"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb103-1" data-line-number="1">control &lt;-<span class="st"> </span><span class="kw">trainControl</span>(<span class="dt">method =</span> <span class="st">&quot;repeatedcv&quot;</span>,  <span class="co"># Repeated Cross Fold</span></a>
-<a class="sourceLine" id="cb103-2" data-line-number="2">                        <span class="dt">number  =</span> <span class="dv">3</span>,          <span class="co"># 5 Folds</span></a>
-<a class="sourceLine" id="cb103-3" data-line-number="3">                        <span class="dt">repeats =</span> <span class="dv">3</span>,         <span class="co"># Repeats</span></a>
-<a class="sourceLine" id="cb103-4" data-line-number="4">                        <span class="dt">verboseIter =</span> <span class="ot">FALSE</span>)  <span class="co"># Verbose</span></a>
-<a class="sourceLine" id="cb103-5" data-line-number="5"></a>
-<a class="sourceLine" id="cb103-6" data-line-number="6"><span class="kw">set.seed</span>(<span class="dv">123</span>) <span class="co"># Make this example reproducible</span></a>
-<a class="sourceLine" id="cb103-7" data-line-number="7"></a>
-<a class="sourceLine" id="cb103-8" data-line-number="8">my_lm &lt;-<span class="st"> </span><span class="kw">train</span>(</a>
-<a class="sourceLine" id="cb103-9" data-line-number="9">  mpg <span class="op">~</span><span class="st"> </span>., </a>
-<a class="sourceLine" id="cb103-10" data-line-number="10">  Train,</a>
-<a class="sourceLine" id="cb103-11" data-line-number="11">  <span class="dt">method =</span> <span class="st">&quot;lm&quot;</span>,</a>
-<a class="sourceLine" id="cb103-12" data-line-number="12">  <span class="dt">trControl =</span> control</a>
-<a class="sourceLine" id="cb103-13" data-line-number="13">)</a>
-<a class="sourceLine" id="cb103-14" data-line-number="14"></a>
-<a class="sourceLine" id="cb103-15" data-line-number="15"><span class="kw">compute_rmse</span>(<span class="kw">predict</span>(my_lm,Test),Test<span class="op">$</span>mpg)</a></code></pre></div>
+<div class="sourceCode" id="cb109"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb109-1" data-line-number="1">control &lt;-<span class="st"> </span><span class="kw">trainControl</span>(<span class="dt">method =</span> <span class="st">&quot;repeatedcv&quot;</span>,  <span class="co"># Repeated Cross Fold</span></a>
+<a class="sourceLine" id="cb109-2" data-line-number="2">                        <span class="dt">number  =</span> <span class="dv">3</span>,          <span class="co"># 5 Folds</span></a>
+<a class="sourceLine" id="cb109-3" data-line-number="3">                        <span class="dt">repeats =</span> <span class="dv">3</span>,         <span class="co"># Repeats</span></a>
+<a class="sourceLine" id="cb109-4" data-line-number="4">                        <span class="dt">verboseIter =</span> <span class="ot">FALSE</span>)  <span class="co"># Verbose</span></a>
+<a class="sourceLine" id="cb109-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb109-6" data-line-number="6"><span class="kw">set.seed</span>(<span class="dv">123</span>) <span class="co"># Make this example reproducible</span></a>
+<a class="sourceLine" id="cb109-7" data-line-number="7"></a>
+<a class="sourceLine" id="cb109-8" data-line-number="8">my_lm &lt;-<span class="st"> </span><span class="kw">train</span>(</a>
+<a class="sourceLine" id="cb109-9" data-line-number="9">  mpg <span class="op">~</span><span class="st"> </span>., </a>
+<a class="sourceLine" id="cb109-10" data-line-number="10">  Train,</a>
+<a class="sourceLine" id="cb109-11" data-line-number="11">  <span class="dt">method =</span> <span class="st">&quot;lm&quot;</span>,</a>
+<a class="sourceLine" id="cb109-12" data-line-number="12">  <span class="dt">trControl =</span> control</a>
+<a class="sourceLine" id="cb109-13" data-line-number="13">)</a>
+<a class="sourceLine" id="cb109-14" data-line-number="14"></a>
+<a class="sourceLine" id="cb109-15" data-line-number="15"><span class="kw">compute_rmse</span>(<span class="kw">predict</span>(my_lm,Test),Test<span class="op">$</span>mpg)</a></code></pre></div>
 <pre><code>## [1] 4.808981</code></pre>
 </div>
 <div id="one-size-fits-all" class="section level2">
 <h2><span class="header-section-number">5.5</span> One Size Fits All</h2>
 <p>So this is where things get interesting. If we wanted to use another method such as Random Forests, we do NOT have to change much at all. We just provide the name of the desired method which in this case, is <strong>ranger</strong> which is a function we’ve already seen.</p>
-<div class="sourceCode" id="cb105"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb105-1" data-line-number="1">control &lt;-<span class="st"> </span><span class="kw">trainControl</span>(<span class="dt">method =</span> <span class="st">&quot;cv&quot;</span>, </a>
-<a class="sourceLine" id="cb105-2" data-line-number="2">                        <span class="dt">number =</span> <span class="dv">5</span>)</a>
-<a class="sourceLine" id="cb105-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb105-4" data-line-number="4"><span class="kw">set.seed</span>(<span class="dv">123</span>) <span class="co"># Make this example reproducible</span></a>
-<a class="sourceLine" id="cb105-5" data-line-number="5"></a>
-<a class="sourceLine" id="cb105-6" data-line-number="6">my_ranger &lt;-<span class="st"> </span><span class="kw">train</span>(</a>
-<a class="sourceLine" id="cb105-7" data-line-number="7">  mpg <span class="op">~</span><span class="st"> </span>., </a>
-<a class="sourceLine" id="cb105-8" data-line-number="8">  Train,</a>
-<a class="sourceLine" id="cb105-9" data-line-number="9">  <span class="dt">method =</span> <span class="st">&quot;ranger&quot;</span>,</a>
-<a class="sourceLine" id="cb105-10" data-line-number="10">  <span class="dt">trControl =</span> control</a>
-<a class="sourceLine" id="cb105-11" data-line-number="11">)</a>
-<a class="sourceLine" id="cb105-12" data-line-number="12"></a>
-<a class="sourceLine" id="cb105-13" data-line-number="13">my_ranger</a></code></pre></div>
+<div class="sourceCode" id="cb111"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb111-1" data-line-number="1">control &lt;-<span class="st"> </span><span class="kw">trainControl</span>(<span class="dt">method =</span> <span class="st">&quot;cv&quot;</span>, </a>
+<a class="sourceLine" id="cb111-2" data-line-number="2">                        <span class="dt">number =</span> <span class="dv">5</span>)</a>
+<a class="sourceLine" id="cb111-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb111-4" data-line-number="4"><span class="kw">set.seed</span>(<span class="dv">123</span>) <span class="co"># Make this example reproducible</span></a>
+<a class="sourceLine" id="cb111-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb111-6" data-line-number="6">my_ranger &lt;-<span class="st"> </span><span class="kw">train</span>(</a>
+<a class="sourceLine" id="cb111-7" data-line-number="7">  mpg <span class="op">~</span><span class="st"> </span>., </a>
+<a class="sourceLine" id="cb111-8" data-line-number="8">  Train,</a>
+<a class="sourceLine" id="cb111-9" data-line-number="9">  <span class="dt">method =</span> <span class="st">&quot;ranger&quot;</span>,</a>
+<a class="sourceLine" id="cb111-10" data-line-number="10">  <span class="dt">trControl =</span> control</a>
+<a class="sourceLine" id="cb111-11" data-line-number="11">)</a>
+<a class="sourceLine" id="cb111-12" data-line-number="12"></a>
+<a class="sourceLine" id="cb111-13" data-line-number="13">my_ranger</a></code></pre></div>
 <pre><code>## Random Forest 
 ## 
 ## 28 samples
@@ -575,33 +578,33 @@ future predictions</li>
 ## 
 ## Tuning parameter &#39;min.node.size&#39; was held constant at a value of 5
 ## RMSE was used to select the optimal model using the smallest value.
-## The final values used for the model were mtry = 6, splitrule = variance and min.node.size
-##  = 5.</code></pre>
-<div class="sourceCode" id="cb107"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb107-1" data-line-number="1"><span class="kw">compute_rmse</span>(<span class="kw">predict</span>(my_ranger,Test),Test<span class="op">$</span>mpg)</a></code></pre></div>
+## The final values used for the model were mtry = 6, splitrule = variance
+##  and min.node.size = 5.</code></pre>
+<div class="sourceCode" id="cb113"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb113-1" data-line-number="1"><span class="kw">compute_rmse</span>(<span class="kw">predict</span>(my_ranger,Test),Test<span class="op">$</span>mpg)</a></code></pre></div>
 <pre><code>## [1] 2.288412</code></pre>
 </div>
 <div id="hyperparameters" class="section level2">
 <h2><span class="header-section-number">5.6</span> Hyperparameters</h2>
 <p>This model returns more information than say the <strong>lm</strong> function because this method uses something called “hyperparameters” which are arguments to a given method that gets set before you call the method. In this case there are two hyperparameters called <strong>mtry</strong> and <strong>splitrule</strong> that assume default variables if we don’t supply values.</p>
 <p>We can get a plot of how the RMSE and R squared value varied with different values of <strong>mtry</strong> as well the <strong>splitrule</strong>. Here we see that an mtry value of 6 randomly selected columns / variables provides the lowest RMSE.</p>
-<div class="sourceCode" id="cb109"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb109-1" data-line-number="1"><span class="kw">ggplot</span>(my_ranger) <span class="op">+</span><span class="st"> </span><span class="kw">theme</span>(<span class="dt">legend.position =</span> <span class="st">&quot;top&quot;</span>)</a></code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<div class="sourceCode" id="cb115"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb115-1" data-line-number="1"><span class="kw">ggplot</span>(my_ranger) <span class="op">+</span><span class="st"> </span><span class="kw">theme</span>(<span class="dt">legend.position =</span> <span class="st">&quot;top&quot;</span>)</a></code></pre></div>
+<p><img src="biosml_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
 <p>We can use the <strong>tuneLength</strong> argument to tell the <strong>train</strong> function to use N different values of <strong>mtry</strong> which is a <strong>hyperparameter</strong> to the randomForest package. The value relates to the number of columns in the data frame. We have 11 total and we are trying to predict one of them (mpg). So we can tell the <strong>train</strong> function to randomly select N variables (up to 10) when a tree is split.</p>
-<div class="sourceCode" id="cb110"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb110-1" data-line-number="1">my_ctrl &lt;-<span class="st"> </span><span class="kw">trainControl</span>(</a>
-<a class="sourceLine" id="cb110-2" data-line-number="2">    <span class="dt">method =</span> <span class="st">&quot;cv&quot;</span>, </a>
-<a class="sourceLine" id="cb110-3" data-line-number="3">    <span class="dt">number =</span> <span class="dv">5</span>,</a>
-<a class="sourceLine" id="cb110-4" data-line-number="4">    <span class="dt">verboseIter =</span> <span class="ot">TRUE</span></a>
-<a class="sourceLine" id="cb110-5" data-line-number="5">  )</a>
-<a class="sourceLine" id="cb110-6" data-line-number="6"></a>
-<a class="sourceLine" id="cb110-7" data-line-number="7"><span class="kw">set.seed</span>(<span class="dv">123</span>) <span class="co"># Make this example reproducible</span></a>
-<a class="sourceLine" id="cb110-8" data-line-number="8"></a>
-<a class="sourceLine" id="cb110-9" data-line-number="9">my_rf &lt;-<span class="st"> </span><span class="kw">train</span>(</a>
-<a class="sourceLine" id="cb110-10" data-line-number="10">  mpg <span class="op">~</span><span class="st"> </span>., </a>
-<a class="sourceLine" id="cb110-11" data-line-number="11">  Train,</a>
-<a class="sourceLine" id="cb110-12" data-line-number="12">  <span class="dt">method =</span> <span class="st">&quot;rf&quot;</span>,</a>
-<a class="sourceLine" id="cb110-13" data-line-number="13">  <span class="dt">tuneLength =</span> <span class="dv">9</span>,    <span class="co"># We&#39;ll use 9 different values</span></a>
-<a class="sourceLine" id="cb110-14" data-line-number="14">  <span class="dt">trControl =</span> my_ctrl</a>
-<a class="sourceLine" id="cb110-15" data-line-number="15">)</a></code></pre></div>
+<div class="sourceCode" id="cb116"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb116-1" data-line-number="1">my_ctrl &lt;-<span class="st"> </span><span class="kw">trainControl</span>(</a>
+<a class="sourceLine" id="cb116-2" data-line-number="2">    <span class="dt">method =</span> <span class="st">&quot;cv&quot;</span>, </a>
+<a class="sourceLine" id="cb116-3" data-line-number="3">    <span class="dt">number =</span> <span class="dv">5</span>,</a>
+<a class="sourceLine" id="cb116-4" data-line-number="4">    <span class="dt">verboseIter =</span> <span class="ot">TRUE</span></a>
+<a class="sourceLine" id="cb116-5" data-line-number="5">  )</a>
+<a class="sourceLine" id="cb116-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb116-7" data-line-number="7"><span class="kw">set.seed</span>(<span class="dv">123</span>) <span class="co"># Make this example reproducible</span></a>
+<a class="sourceLine" id="cb116-8" data-line-number="8"></a>
+<a class="sourceLine" id="cb116-9" data-line-number="9">my_rf &lt;-<span class="st"> </span><span class="kw">train</span>(</a>
+<a class="sourceLine" id="cb116-10" data-line-number="10">  mpg <span class="op">~</span><span class="st"> </span>., </a>
+<a class="sourceLine" id="cb116-11" data-line-number="11">  Train,</a>
+<a class="sourceLine" id="cb116-12" data-line-number="12">  <span class="dt">method =</span> <span class="st">&quot;rf&quot;</span>,</a>
+<a class="sourceLine" id="cb116-13" data-line-number="13">  <span class="dt">tuneLength =</span> <span class="dv">9</span>,    <span class="co"># We&#39;ll use 9 different values</span></a>
+<a class="sourceLine" id="cb116-14" data-line-number="14">  <span class="dt">trControl =</span> my_ctrl</a>
+<a class="sourceLine" id="cb116-15" data-line-number="15">)</a></code></pre></div>
 <pre><code>## + Fold1: mtry= 2 
 ## - Fold1: mtry= 2 
 ## + Fold1: mtry= 3 
@@ -695,7 +698,7 @@ future predictions</li>
 ## Aggregating results
 ## Selecting tuning parameters
 ## Fitting mtry = 6 on full training set</code></pre>
-<div class="sourceCode" id="cb112"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb112-1" data-line-number="1">my_rf</a></code></pre></div>
+<div class="sourceCode" id="cb118"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb118-1" data-line-number="1">my_rf</a></code></pre></div>
 <pre><code>## Random Forest 
 ## 
 ## 28 samples
@@ -719,51 +722,51 @@ future predictions</li>
 ## 
 ## RMSE was used to select the optimal model using the smallest value.
 ## The final value used for the model was mtry = 6.</code></pre>
-<div class="sourceCode" id="cb114"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb114-1" data-line-number="1"><span class="kw">plot</span>(my_rf)</a></code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
-<div class="sourceCode" id="cb115"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb115-1" data-line-number="1"><span class="kw">compute_rmse</span>(<span class="kw">predict</span>(my_rf,Test),Test<span class="op">$</span>mpg)</a></code></pre></div>
+<div class="sourceCode" id="cb120"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb120-1" data-line-number="1"><span class="kw">plot</span>(my_rf)</a></code></pre></div>
+<p><img src="biosml_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<div class="sourceCode" id="cb121"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb121-1" data-line-number="1"><span class="kw">compute_rmse</span>(<span class="kw">predict</span>(my_rf,Test),Test<span class="op">$</span>mpg)</a></code></pre></div>
 <pre><code>## [1] 2.23303</code></pre>
 <p>If you have a questions about what hyper parameters can be tuned for a given method then you can refer to the online <a href="https://topepo.github.io/caret/available-models.html">caret documentation</a> Here is a screenshot of the table of supported models and associated tuning parameters.</p>
 <p><img src="pics/avmodels.png" /></p>
 <p>Another way to do this within the caret package itself is that if you already know the abbreviation for the specific method you wish to use (e.g. “rf”) then you can use some built in functions to help you. Remember that <strong>caret</strong> does not replace or rewrite functions, it merely provides a nice wrapper around them. Since each underlying model is it a standalone R package and associated set of functions you can always call them directly.</p>
-<div class="sourceCode" id="cb117"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb117-1" data-line-number="1"><span class="kw">modelLookup</span>(<span class="st">&quot;rf&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb123"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb123-1" data-line-number="1"><span class="kw">modelLookup</span>(<span class="st">&quot;rf&quot;</span>)</a></code></pre></div>
 <pre><code>##   model parameter                         label forReg forClass probModel
 ## 1    rf      mtry #Randomly Selected Predictors   TRUE     TRUE      TRUE</code></pre>
 <p>Here we get the hyper parameters for the <strong>ranger</strong> function. We see that it has three hyper parameters that could be varied in some way to influence a final model.</p>
-<div class="sourceCode" id="cb119"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb119-1" data-line-number="1"><span class="kw">modelLookup</span>(<span class="st">&quot;ranger&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb125"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb125-1" data-line-number="1"><span class="kw">modelLookup</span>(<span class="st">&quot;ranger&quot;</span>)</a></code></pre></div>
 <pre><code>##    model     parameter                         label forReg forClass probModel
 ## 1 ranger          mtry #Randomly Selected Predictors   TRUE     TRUE      TRUE
 ## 2 ranger     splitrule                Splitting Rule   TRUE     TRUE      TRUE
 ## 3 ranger min.node.size             Minimal Node Size   TRUE     TRUE      TRUE</code></pre>
 <p>If you just want a list of all the models supported by caret then do something like this:</p>
-<div class="sourceCode" id="cb121"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb121-1" data-line-number="1">models &lt;-<span class="st"> </span><span class="kw">modelLookup</span>()[,<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>]</a>
-<a class="sourceLine" id="cb121-2" data-line-number="2"><span class="kw">nrow</span>(models)</a></code></pre></div>
+<div class="sourceCode" id="cb127"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb127-1" data-line-number="1">models &lt;-<span class="st"> </span><span class="kw">modelLookup</span>()[,<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>]</a>
+<a class="sourceLine" id="cb127-2" data-line-number="2"><span class="kw">nrow</span>(models)</a></code></pre></div>
 <pre><code>## [1] 502</code></pre>
-<div class="sourceCode" id="cb123"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb123-1" data-line-number="1"><span class="co"># Search for a Model</span></a>
-<a class="sourceLine" id="cb123-2" data-line-number="2">models[models<span class="op">$</span>model<span class="op">==</span><span class="st">&quot;rf&quot;</span>,]</a></code></pre></div>
+<div class="sourceCode" id="cb129"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb129-1" data-line-number="1"><span class="co"># Search for a Model</span></a>
+<a class="sourceLine" id="cb129-2" data-line-number="2">models[models<span class="op">$</span>model<span class="op">==</span><span class="st">&quot;rf&quot;</span>,]</a></code></pre></div>
 <pre><code>##     model parameter                         label
 ## 365    rf      mtry #Randomly Selected Predictors</code></pre>
-<div class="sourceCode" id="cb125"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb125-1" data-line-number="1">models[models<span class="op">$</span>model<span class="op">==</span><span class="st">&quot;ranger&quot;</span>,]</a></code></pre></div>
+<div class="sourceCode" id="cb131"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb131-1" data-line-number="1">models[models<span class="op">$</span>model<span class="op">==</span><span class="st">&quot;ranger&quot;</span>,]</a></code></pre></div>
 <pre><code>##      model     parameter                         label
 ## 351 ranger          mtry #Randomly Selected Predictors
 ## 352 ranger     splitrule                Splitting Rule
 ## 353 ranger min.node.size             Minimal Node Size</code></pre>
 <p>So in the case of the <strong>ranger</strong> function there are actually three hyper parameters that could be tuned.</p>
-<div class="sourceCode" id="cb127"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb127-1" data-line-number="1">my_ctrl &lt;-<span class="st"> </span><span class="kw">trainControl</span>(</a>
-<a class="sourceLine" id="cb127-2" data-line-number="2">    <span class="dt">method =</span> <span class="st">&quot;cv&quot;</span>, </a>
-<a class="sourceLine" id="cb127-3" data-line-number="3">    <span class="dt">number =</span> <span class="dv">3</span>,</a>
-<a class="sourceLine" id="cb127-4" data-line-number="4">    <span class="dt">verboseIter =</span> <span class="ot">FALSE</span> </a>
-<a class="sourceLine" id="cb127-5" data-line-number="5">  )</a>
-<a class="sourceLine" id="cb127-6" data-line-number="6"></a>
-<a class="sourceLine" id="cb127-7" data-line-number="7">my_ranger &lt;-<span class="st"> </span><span class="kw">train</span>(</a>
-<a class="sourceLine" id="cb127-8" data-line-number="8">  mpg <span class="op">~</span><span class="st"> </span>., </a>
-<a class="sourceLine" id="cb127-9" data-line-number="9">  Train,</a>
-<a class="sourceLine" id="cb127-10" data-line-number="10">  <span class="dt">method =</span> <span class="st">&quot;ranger&quot;</span>,</a>
-<a class="sourceLine" id="cb127-11" data-line-number="11">  <span class="dt">tuneLength =</span> <span class="dv">6</span>,    </a>
-<a class="sourceLine" id="cb127-12" data-line-number="12">  <span class="dt">trControl =</span> my_ctrl</a>
-<a class="sourceLine" id="cb127-13" data-line-number="13">)</a>
-<a class="sourceLine" id="cb127-14" data-line-number="14"></a>
-<a class="sourceLine" id="cb127-15" data-line-number="15">my_ranger</a></code></pre></div>
+<div class="sourceCode" id="cb133"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb133-1" data-line-number="1">my_ctrl &lt;-<span class="st"> </span><span class="kw">trainControl</span>(</a>
+<a class="sourceLine" id="cb133-2" data-line-number="2">    <span class="dt">method =</span> <span class="st">&quot;cv&quot;</span>, </a>
+<a class="sourceLine" id="cb133-3" data-line-number="3">    <span class="dt">number =</span> <span class="dv">3</span>,</a>
+<a class="sourceLine" id="cb133-4" data-line-number="4">    <span class="dt">verboseIter =</span> <span class="ot">FALSE</span> </a>
+<a class="sourceLine" id="cb133-5" data-line-number="5">  )</a>
+<a class="sourceLine" id="cb133-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb133-7" data-line-number="7">my_ranger &lt;-<span class="st"> </span><span class="kw">train</span>(</a>
+<a class="sourceLine" id="cb133-8" data-line-number="8">  mpg <span class="op">~</span><span class="st"> </span>., </a>
+<a class="sourceLine" id="cb133-9" data-line-number="9">  Train,</a>
+<a class="sourceLine" id="cb133-10" data-line-number="10">  <span class="dt">method =</span> <span class="st">&quot;ranger&quot;</span>,</a>
+<a class="sourceLine" id="cb133-11" data-line-number="11">  <span class="dt">tuneLength =</span> <span class="dv">6</span>,    </a>
+<a class="sourceLine" id="cb133-12" data-line-number="12">  <span class="dt">trControl =</span> my_ctrl</a>
+<a class="sourceLine" id="cb133-13" data-line-number="13">)</a>
+<a class="sourceLine" id="cb133-14" data-line-number="14"></a>
+<a class="sourceLine" id="cb133-15" data-line-number="15">my_ranger</a></code></pre></div>
 <pre><code>## Random Forest 
 ## 
 ## 28 samples
@@ -790,31 +793,31 @@ future predictions</li>
 ## 
 ## Tuning parameter &#39;min.node.size&#39; was held constant at a value of 5
 ## RMSE was used to select the optimal model using the smallest value.
-## The final values used for the model were mtry = 2, splitrule = extratrees and
-##  min.node.size = 5.</code></pre>
-<div class="sourceCode" id="cb129"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb129-1" data-line-number="1"><span class="kw">compute_rmse</span>(<span class="kw">predict</span>(my_ranger,Test),Test<span class="op">$</span>mpg)</a></code></pre></div>
+## The final values used for the model were mtry = 2, splitrule = extratrees
+##  and min.node.size = 5.</code></pre>
+<div class="sourceCode" id="cb135"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb135-1" data-line-number="1"><span class="kw">compute_rmse</span>(<span class="kw">predict</span>(my_ranger,Test),Test<span class="op">$</span>mpg)</a></code></pre></div>
 <pre><code>## [1] 3.042224</code></pre>
-<div class="sourceCode" id="cb131"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb131-1" data-line-number="1"><span class="kw">plot</span>(my_ranger)</a></code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
+<div class="sourceCode" id="cb137"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb137-1" data-line-number="1"><span class="kw">plot</span>(my_ranger)</a></code></pre></div>
+<p><img src="biosml_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
 </div>
 <div id="alternative-calling-sequence" class="section level2">
 <h2><span class="header-section-number">5.7</span> Alternative Calling Sequence</h2>
 <p>It is native to R to want to use a formula when specifying the goal of the modeling process. We’ve been using something along the lines of “mpg ~ .” because R uses this format for many different statistical functions. However, it is also possible to specify the predictor variables as X and the predicted variable as Y. In the above example, this would look like:</p>
-<div class="sourceCode" id="cb132"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb132-1" data-line-number="1">my_ctrl &lt;-<span class="st"> </span><span class="kw">trainControl</span>(</a>
-<a class="sourceLine" id="cb132-2" data-line-number="2">    <span class="dt">method =</span> <span class="st">&quot;cv&quot;</span>, </a>
-<a class="sourceLine" id="cb132-3" data-line-number="3">    <span class="dt">number =</span> <span class="dv">3</span>,</a>
-<a class="sourceLine" id="cb132-4" data-line-number="4">    <span class="dt">verboseIter =</span> <span class="ot">FALSE</span> </a>
-<a class="sourceLine" id="cb132-5" data-line-number="5">  )</a>
-<a class="sourceLine" id="cb132-6" data-line-number="6"></a>
-<a class="sourceLine" id="cb132-7" data-line-number="7">my_ranger &lt;-<span class="st"> </span><span class="kw">train</span>(</a>
-<a class="sourceLine" id="cb132-8" data-line-number="8">  <span class="dt">x =</span> Train[,<span class="op">-</span><span class="dv">1</span>],    <span class="co"># Everything BUT the MPG column</span></a>
-<a class="sourceLine" id="cb132-9" data-line-number="9">  <span class="dt">y =</span> Train[,<span class="dv">1</span>],     <span class="co"># The MPG column</span></a>
-<a class="sourceLine" id="cb132-10" data-line-number="10">  <span class="dt">method =</span> <span class="st">&quot;ranger&quot;</span>,</a>
-<a class="sourceLine" id="cb132-11" data-line-number="11">  <span class="dt">tuneLength =</span> <span class="dv">6</span>,    </a>
-<a class="sourceLine" id="cb132-12" data-line-number="12">  <span class="dt">trControl =</span> my_ctrl</a>
-<a class="sourceLine" id="cb132-13" data-line-number="13">)</a>
-<a class="sourceLine" id="cb132-14" data-line-number="14"></a>
-<a class="sourceLine" id="cb132-15" data-line-number="15">my_ranger</a></code></pre></div>
+<div class="sourceCode" id="cb138"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb138-1" data-line-number="1">my_ctrl &lt;-<span class="st"> </span><span class="kw">trainControl</span>(</a>
+<a class="sourceLine" id="cb138-2" data-line-number="2">    <span class="dt">method =</span> <span class="st">&quot;cv&quot;</span>, </a>
+<a class="sourceLine" id="cb138-3" data-line-number="3">    <span class="dt">number =</span> <span class="dv">3</span>,</a>
+<a class="sourceLine" id="cb138-4" data-line-number="4">    <span class="dt">verboseIter =</span> <span class="ot">FALSE</span> </a>
+<a class="sourceLine" id="cb138-5" data-line-number="5">  )</a>
+<a class="sourceLine" id="cb138-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb138-7" data-line-number="7">my_ranger &lt;-<span class="st"> </span><span class="kw">train</span>(</a>
+<a class="sourceLine" id="cb138-8" data-line-number="8">  <span class="dt">x =</span> Train[,<span class="op">-</span><span class="dv">1</span>],    <span class="co"># Everything BUT the MPG column</span></a>
+<a class="sourceLine" id="cb138-9" data-line-number="9">  <span class="dt">y =</span> Train[,<span class="dv">1</span>],     <span class="co"># The MPG column</span></a>
+<a class="sourceLine" id="cb138-10" data-line-number="10">  <span class="dt">method =</span> <span class="st">&quot;ranger&quot;</span>,</a>
+<a class="sourceLine" id="cb138-11" data-line-number="11">  <span class="dt">tuneLength =</span> <span class="dv">6</span>,    </a>
+<a class="sourceLine" id="cb138-12" data-line-number="12">  <span class="dt">trControl =</span> my_ctrl</a>
+<a class="sourceLine" id="cb138-13" data-line-number="13">)</a>
+<a class="sourceLine" id="cb138-14" data-line-number="14"></a>
+<a class="sourceLine" id="cb138-15" data-line-number="15">my_ranger</a></code></pre></div>
 <pre><code>## Random Forest 
 ## 
 ## 28 samples
@@ -841,11 +844,11 @@ future predictions</li>
 ## 
 ## Tuning parameter &#39;min.node.size&#39; was held constant at a value of 5
 ## RMSE was used to select the optimal model using the smallest value.
-## The final values used for the model were mtry = 6, splitrule = variance and min.node.size
-##  = 5.</code></pre>
-<div class="sourceCode" id="cb134"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb134-1" data-line-number="1"><span class="kw">compute_rmse</span>(<span class="kw">predict</span>(my_ranger,Test),Test<span class="op">$</span>mpg)</a></code></pre></div>
+## The final values used for the model were mtry = 6, splitrule = variance
+##  and min.node.size = 5.</code></pre>
+<div class="sourceCode" id="cb140"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb140-1" data-line-number="1"><span class="kw">compute_rmse</span>(<span class="kw">predict</span>(my_ranger,Test),Test<span class="op">$</span>mpg)</a></code></pre></div>
 <pre><code>## [1] 2.233185</code></pre>
-<div class="sourceCode" id="cb136"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb136-1" data-line-number="1"><span class="kw">plot</span>(my_ranger)</a></code></pre></div>
+<div class="sourceCode" id="cb142"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb142-1" data-line-number="1"><span class="kw">plot</span>(my_ranger)</a></code></pre></div>
 <p><img src="biosml_files/figure-html/alterna-1.png" width="672" /></p>
 </div>
 </div>

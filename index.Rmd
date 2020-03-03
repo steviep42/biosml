@@ -107,14 +107,78 @@ Relative to explanatory work you wish to drill down into the data to better unde
 
 In predictive work, we typically use techniques such as cross fold validation and bootstrapping to provide us with different versions of the data to "train" a model after which we validate it on some "test" data that has been held out. So in this context, you will probably be looking at multiple versions of the original data set which adds to the overhead somewhat. 
 
+### Titanic Data
+
 A good example of explanatory work is the often referred to "Titanic" data set that has lots of information on the passengers who traveled on the ill-fated Titanic ship. This data set is used in many Data Science type educational contexts to talk about building models.
 
-![](./pics/agedist.png)
+```{r titanicstuff, message=FALSE}
+url <- "https://raw.githubusercontent.com/steviep42/bios534_spring_2020/master/data/etitanic.csv"
 
-- While it is interesting, it’s doubtful we will save anyone’s life 
-- Conclusions won’t apply to modern ship travel
-- Can experiment with different algorithms without consequence
-- Useful for Educational Purposes
+titan <- read.csv(url)
+
+head(titan)
+```
+
+```{r mantit,eval=FALSE}
+This data set provides information on the fate of passengers on the fatal maiden voyage of the ocean liner ‘Titanic’, summarized according to economic status (class), sex, age and survival.
+
+pclass    Passenger Class  (1 = 1st; 2 = 2nd; 3 = 3rd)
+survival  Survival  (0 = No; 1 = Yes)
+sex       Sex
+age       Age
+sibsp     Number of Siblings/Spouses Aboard
+parch     Number of Parents/Children Aboard
+```
+
+So then we look at different plots to become aquainted with the data:
+
+
+```{r ggplotitan}
+titan %>% 
+  mutate(survived=factor(survived,labels=c("Died","Survived"))) %>%
+  group_by(survived,sex)  %>% 
+  count() %>% 
+  ungroup() %>% 
+  mutate(sex = fct_reorder(sex,n)) %>% 
+  ggplot(aes(x=sex,y=n,fill=survived)) + 
+  geom_col() + theme_light() + 
+  xlab("Gender") + ylab("Number of Persons") +
+  ggtitle("Titanic Survival By Gender")
+```
+
+
+
+```{r ggplotitan2}
+titan %>% 
+  mutate(survived=factor(survived,labels=c("Died","Survived"))) %>%
+  group_by(survived,pclass)  %>% 
+  count() %>% 
+  ungroup() %>% 
+  mutate(pclass = fct_reorder(pclass,n)) %>% 
+  ggplot(aes(x=pclass,y=n,fill=survived)) + 
+  geom_col() + theme_light() + 
+  xlab("Passenger Class") + ylab("Number of Persons") +
+  ggtitle("Titanic Survival By Passenger Class")
+```
+
+
+
+```{r ggplotitan3}
+titan %>% 
+  mutate(survived=factor(survived,labels=c("Died","Survived"))) %>%
+  group_by(survived,pclass)  %>% 
+  count() %>% 
+  ungroup() %>% 
+  mutate(pclass = fct_reorder(pclass,n)) %>% 
+  ggplot(aes(x=pclass,y=n,fill=survived)) + 
+  geom_col() + theme_light() + 
+  xlab("Passenger Class") + ylab("Number of Persons") +
+  ggtitle("Titanic Survival By Passenger Class")
+```
+
+### Does This Data  Matter ? 
+
+While this is all very interesting, it’s doubtful that anything we learn  will save anyone’s life. It's unlikley that any conclusions we reach would apply to modern ship travel. However, we can experiment with different algorithms without consequence as we build models. Nonetheless, it remains very useful for educational purposes
 
 
 ## Two Types of Predictive Models:
