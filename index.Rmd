@@ -1254,9 +1254,16 @@ grid()
 
 ## Selecting The Correct Alpha
 
-The temptation is to select 0.5 as the threshold such that if a returned probability exceeds 0.5 then we classify the associated subject as being "positive" for the disease. But then this assumes that the probabilities are distributed accordingly. This is frequently not the case though it doesn't stop people from using 0.5. 
+The temptation is to select 0.5 as the threshold such that if a returned probability exceeds 0.5 then we classify the associated subject as being "positive" for the disease. But then this assumes that the probabilities are distributed accordingly. This is frequently not the case though it doesn't stop people from using 0.5. Here is another view of the situation. 
 
-We might first wish to look at the distribution of the returned probabilities before making a decision about where to set the threshold. We can see clearly that selecting 0.5 in this case would not be appropriate. 
+![](./pics/pc.png)
+
+The above represents a perfect classififier wherein we can cleanly distinguish between True Positives and Negatives. Note that, the cutoff point is at 0.5 which represents an ideal case. However, in most situations, what we have is something like this: 
+
+![](./pics/tnfp.png)
+
+
+We might first wish to look at the distribution of the returned probabilities before making a decision about where to set the threshold. You should now be able to clearly that simply selecting 0.5 in a general case might not be the best approach.
 
 ```{r bxplotalpha}
 boxplot(glm_preds, 

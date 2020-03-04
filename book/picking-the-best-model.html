@@ -372,8 +372,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ##   1.00  3.385047  0.7691903  2.689159
 ## 
 ## Tuning parameter &#39;sigma&#39; was held constant at a value of 23.06516
-## RMSE was used to select the optimal model using the smallest value.
-## The final values used for the model were sigma = 23.06516 and C = 1.</code></pre>
+## RMSE was used to select the optimal model using the
+##  smallest value.
+## The final values used for the model were sigma = 23.06516 and C
+##  = 1.</code></pre>
 <p>So let’s plot the training data as well as the resulting regression line (in the color black) coming from the lm object. We’ll also plot the results from the Support Vector Machine predictions on the same graph (in red). From this plot it appears that the Support Vector Machine does a better job of “following” the actual data - at least for the training data. We might even be able to improve the SVM performance if we tune the hyperparameters but the default without tuning seems better than the lm. It’s this type of observation that leads one to consider if there are yet other methods that would result in even better results.</p>
 <div class="sourceCode" id="cb333"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb333-1" data-line-number="1"><span class="kw">plot</span>(mpg<span class="op">~</span>wt,<span class="dt">data=</span>example_Train,<span class="dt">main=</span><span class="st">&quot;Train Data&quot;</span>)</a>
 <a class="sourceLine" id="cb333-2" data-line-number="2"><span class="kw">abline</span>(lm_fit<span class="op">$</span>finalModel)</a>
@@ -444,8 +446,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <a class="sourceLine" id="cb340-6" data-line-number="6">results</a></code></pre></div>
 <pre><code>## 
 ## Call:
-## resamples.default(x = list(LM = comp_mod_lm, SVM = comp_mod_svm, GLMNET
-##  = comp_mod_glmnet, RANGER = comp_mod_ranger))
+## resamples.default(x = list(LM = comp_mod_lm, SVM =
+##  comp_mod_svm, GLMNET = comp_mod_glmnet, RANGER = comp_mod_ranger))
 ## 
 ## Models: LM, SVM, GLMNET, RANGER 
 ## Number of resamples: 5 
