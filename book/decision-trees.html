@@ -21,7 +21,7 @@
   
   
 
-<meta name="author" content="Steve Pittard" />
+<meta name="author" content="Steve Pittard - wsp@emory.edu" />
 
 
 
@@ -154,7 +154,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="3" data-path="a-motivating-example.html"><a href="a-motivating-example.html"><i class="fa fa-check"></i><b>3</b> A Motivating Example</a><ul>
 <li class="chapter" data-level="3.1" data-path="a-motivating-example.html"><a href="a-motivating-example.html#suggested-workflow"><i class="fa fa-check"></i><b>3.1</b> Suggested Workflow</a></li>
-<li class="chapter" data-level="3.2" data-path="a-motivating-example.html"><a href="a-motivating-example.html#scatterplot"><i class="fa fa-check"></i><b>3.2</b> Scatterplot</a></li>
+<li class="chapter" data-level="3.2" data-path="a-motivating-example.html"><a href="a-motivating-example.html#visualizations"><i class="fa fa-check"></i><b>3.2</b> Visualizations</a><ul>
+<li class="chapter" data-level="3.2.1" data-path="a-motivating-example.html"><a href="a-motivating-example.html#scatterplots"><i class="fa fa-check"></i><b>3.2.1</b> Scatterplots</a></li>
+<li class="chapter" data-level="3.2.2" data-path="a-motivating-example.html"><a href="a-motivating-example.html#boxplots"><i class="fa fa-check"></i><b>3.2.2</b> Boxplots</a></li>
+<li class="chapter" data-level="3.2.3" data-path="a-motivating-example.html"><a href="a-motivating-example.html#histograms"><i class="fa fa-check"></i><b>3.2.3</b> Histograms</a></li>
+<li class="chapter" data-level="3.2.4" data-path="a-motivating-example.html"><a href="a-motivating-example.html#tables"><i class="fa fa-check"></i><b>3.2.4</b> Tables</a></li>
+</ul></li>
 <li class="chapter" data-level="3.3" data-path="a-motivating-example.html"><a href="a-motivating-example.html#correlations"><i class="fa fa-check"></i><b>3.3</b> Correlations</a></li>
 <li class="chapter" data-level="3.4" data-path="a-motivating-example.html"><a href="a-motivating-example.html#building-a-model---in-sample-error"><i class="fa fa-check"></i><b>3.4</b> Building A Model - In Sample Error</a></li>
 <li class="chapter" data-level="3.5" data-path="a-motivating-example.html"><a href="a-motivating-example.html#out-of-sample-data"><i class="fa fa-check"></i><b>3.5</b> Out Of Sample Data</a></li>
@@ -295,22 +300,22 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h1><span class="header-section-number">Chapter 8</span> Decision Trees</h1>
 <p>You might also know about the topic of Classification Trees under the name of <strong>CART</strong> which stands for <strong>C</strong>lassification <strong>A</strong>nd <strong>R</strong>egression Trees. Decision trees can be used to predict numeric outcomes or to classify binary outcomes such as a disease result “yes” or “now”, “positive or negative”.</p>
 <p>The theme common to both types of trees is that you are trying to predict some outcome variable as a function of some number and combination of predictor variables from the same data set. The outcome will be a “tree” that can usually be easily understood and interpreted. As an example, a very simple decision tree can be generated that predicts / classifies the transmission type of cars in the mtcars data frame.</p>
-<div class="sourceCode" id="cb242"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb242-1" data-line-number="1"><span class="kw">data</span>(mtcars)</a>
-<a class="sourceLine" id="cb242-2" data-line-number="2">rpart_class_mtcars &lt;-<span class="st"> </span><span class="kw">rpart</span>(am<span class="op">~</span>.,<span class="dt">data=</span>mtcars,<span class="dt">method=</span><span class="st">&quot;class&quot;</span>)</a>
-<a class="sourceLine" id="cb242-3" data-line-number="3"><span class="kw">rpart.plot</span>(rpart_class_mtcars,<span class="dt">yesno =</span> <span class="dv">2</span>, <span class="dt">type =</span> <span class="dv">0</span>, <span class="dt">extra =</span> <span class="dv">0</span>)</a></code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-41-1.png" width="672" /></p>
+<div class="sourceCode" id="cb252"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb252-1" data-line-number="1"><span class="kw">data</span>(mtcars)</a>
+<a class="sourceLine" id="cb252-2" data-line-number="2">rpart_class_mtcars &lt;-<span class="st"> </span><span class="kw">rpart</span>(am<span class="op">~</span>.,<span class="dt">data=</span>mtcars,<span class="dt">method=</span><span class="st">&quot;class&quot;</span>)</a>
+<a class="sourceLine" id="cb252-3" data-line-number="3"><span class="kw">rpart.plot</span>(rpart_class_mtcars,<span class="dt">yesno =</span> <span class="dv">2</span>, <span class="dt">type =</span> <span class="dv">0</span>, <span class="dt">extra =</span> <span class="dv">0</span>)</a></code></pre></div>
+<p><img src="biosml_files/figure-html/unnamed-chunk-39-1.png" width="672" /></p>
 <p>If the weight of the car is greater than 3.2 tons then the tree would classify it as having a manual (1) transmission. How well did we do here ? Not too bad actually. We’ll talk more about measuring performance of a classifier in a bit.</p>
-<div class="sourceCode" id="cb243"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb243-1" data-line-number="1">preds &lt;-<span class="st"> </span><span class="kw">ifelse</span>(mtcars<span class="op">$</span>wt <span class="op">&gt;=</span><span class="st"> </span><span class="dv">3</span>,<span class="dv">0</span>,<span class="dv">1</span>)</a>
-<a class="sourceLine" id="cb243-2" data-line-number="2"><span class="kw">table</span>(<span class="dt">predicted=</span>preds,<span class="dt">actual=</span>mtcars<span class="op">$</span>am)</a></code></pre></div>
+<div class="sourceCode" id="cb253"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb253-1" data-line-number="1">preds &lt;-<span class="st"> </span><span class="kw">ifelse</span>(mtcars<span class="op">$</span>wt <span class="op">&gt;=</span><span class="st"> </span><span class="dv">3</span>,<span class="dv">0</span>,<span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb253-2" data-line-number="2"><span class="kw">table</span>(<span class="dt">predicted=</span>preds,<span class="dt">actual=</span>mtcars<span class="op">$</span>am)</a></code></pre></div>
 <pre><code>##          actual
 ## predicted  0  1
 ##         0 18  2
 ##         1  1 11</code></pre>
 <p>If, however, we wanted to predict the MPG of a car from the mtcars data frame we could still use the <strong>rpart</strong> function but we would adjust some arguments - notably the “method” argument. In any case, we get a prediction for MPG based on some criteria.</p>
-<div class="sourceCode" id="cb245"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb245-1" data-line-number="1"><span class="kw">data</span>(mtcars)</a>
-<a class="sourceLine" id="cb245-2" data-line-number="2">rpart_regress_mtcars &lt;-<span class="st"> </span><span class="kw">rpart</span>(mpg<span class="op">~</span>.,<span class="dt">data=</span>mtcars,<span class="dt">method=</span><span class="st">&quot;anova&quot;</span>)</a>
-<a class="sourceLine" id="cb245-3" data-line-number="3"><span class="kw">rpart.plot</span>(rpart_regress_mtcars,<span class="dt">yesno =</span> <span class="dv">2</span>, <span class="dt">type =</span> <span class="dv">0</span>, <span class="dt">extra =</span> <span class="dv">0</span>)</a></code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-43-1.png" width="672" /></p>
+<div class="sourceCode" id="cb255"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb255-1" data-line-number="1"><span class="kw">data</span>(mtcars)</a>
+<a class="sourceLine" id="cb255-2" data-line-number="2">rpart_regress_mtcars &lt;-<span class="st"> </span><span class="kw">rpart</span>(mpg<span class="op">~</span>.,<span class="dt">data=</span>mtcars,<span class="dt">method=</span><span class="st">&quot;anova&quot;</span>)</a>
+<a class="sourceLine" id="cb255-3" data-line-number="3"><span class="kw">rpart.plot</span>(rpart_regress_mtcars,<span class="dt">yesno =</span> <span class="dv">2</span>, <span class="dt">type =</span> <span class="dv">0</span>, <span class="dt">extra =</span> <span class="dv">0</span>)</a></code></pre></div>
+<p><img src="biosml_files/figure-html/unnamed-chunk-41-1.png" width="672" /></p>
 <div id="advantages" class="section level2">
 <h2><span class="header-section-number">8.1</span> Advantages</h2>
 <p>The advantages of tree-based methods include that 1
@@ -338,35 +343,35 @@ mass       - Body mass index (weight in kg/(height in m)\^2)
 pedigree - Diabetes pedigree function
 age      - Age (years)
 diabetes - Class variable (test for diabetes)</code></pre>
-<div class="sourceCode" id="cb247"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb247-1" data-line-number="1"><span class="kw">library</span>(mlbench)</a>
-<a class="sourceLine" id="cb247-2" data-line-number="2"><span class="kw">data</span>(PimaIndiansDiabetes)</a>
-<a class="sourceLine" id="cb247-3" data-line-number="3">pm &lt;-<span class="st"> </span>PimaIndiansDiabetes</a>
-<a class="sourceLine" id="cb247-4" data-line-number="4"></a>
-<a class="sourceLine" id="cb247-5" data-line-number="5">diabetes_mod &lt;-<span class="st"> </span><span class="kw">rpart</span>(diabetes <span class="op">~</span><span class="st"> </span>.,pm,<span class="dt">method=</span><span class="st">&quot;class&quot;</span>)</a>
-<a class="sourceLine" id="cb247-6" data-line-number="6"><span class="kw">rpart.plot</span>(<span class="dt">x =</span> diabetes_mod, <span class="dt">yesno =</span> <span class="dv">2</span>, <span class="dt">type =</span> <span class="dv">0</span>, <span class="dt">extra =</span> <span class="dv">0</span>)</a></code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-44-1.png" width="672" /></p>
+<div class="sourceCode" id="cb257"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb257-1" data-line-number="1"><span class="kw">library</span>(mlbench)</a>
+<a class="sourceLine" id="cb257-2" data-line-number="2"><span class="kw">data</span>(PimaIndiansDiabetes)</a>
+<a class="sourceLine" id="cb257-3" data-line-number="3">pm &lt;-<span class="st"> </span>PimaIndiansDiabetes</a>
+<a class="sourceLine" id="cb257-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb257-5" data-line-number="5">diabetes_mod &lt;-<span class="st"> </span><span class="kw">rpart</span>(diabetes <span class="op">~</span><span class="st"> </span>.,pm,<span class="dt">method=</span><span class="st">&quot;class&quot;</span>)</a>
+<a class="sourceLine" id="cb257-6" data-line-number="6"><span class="kw">rpart.plot</span>(<span class="dt">x =</span> diabetes_mod, <span class="dt">yesno =</span> <span class="dv">2</span>, <span class="dt">type =</span> <span class="dv">0</span>, <span class="dt">extra =</span> <span class="dv">0</span>)</a></code></pre></div>
+<p><img src="biosml_files/figure-html/unnamed-chunk-42-1.png" width="672" /></p>
 <p>That’s pretty understandable but it starts to border on being a bit hard to follow by hand. Nonetheless, you could show this to someone who does not know (or care) about the underlying mathematics of decision trees and they would be able to understand the path to a classification of someone having diabetes or not.</p>
 <p>It’s common in these scenarios to create what is known as a test / training split so that we can train our model on a test set that we can then use on a test or hold out data set to see how well the model performs. There is much more to say about this but we’ll keep it simple here. We can create a training set that comprises %80 of the data with a holdout set of 20%. This easy to do.</p>
 <p>Let’s create a Train / Test Split</p>
-<div class="sourceCode" id="cb248"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb248-1" data-line-number="1"><span class="kw">set.seed</span>(<span class="dv">123</span>)</a>
-<a class="sourceLine" id="cb248-2" data-line-number="2">percent &lt;-<span class="st"> </span><span class="fl">.80</span></a>
-<a class="sourceLine" id="cb248-3" data-line-number="3">train_idx &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(pm),</a>
-<a class="sourceLine" id="cb248-4" data-line-number="4">                      <span class="kw">round</span>(percent<span class="op">*</span><span class="kw">nrow</span>(pm)))</a>
-<a class="sourceLine" id="cb248-5" data-line-number="5"></a>
-<a class="sourceLine" id="cb248-6" data-line-number="6">train_idx[<span class="dv">1</span><span class="op">:</span><span class="dv">10</span>]</a></code></pre></div>
+<div class="sourceCode" id="cb258"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb258-1" data-line-number="1"><span class="kw">set.seed</span>(<span class="dv">123</span>)</a>
+<a class="sourceLine" id="cb258-2" data-line-number="2">percent &lt;-<span class="st"> </span><span class="fl">.80</span></a>
+<a class="sourceLine" id="cb258-3" data-line-number="3">train_idx &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(pm),</a>
+<a class="sourceLine" id="cb258-4" data-line-number="4">                      <span class="kw">round</span>(percent<span class="op">*</span><span class="kw">nrow</span>(pm)))</a>
+<a class="sourceLine" id="cb258-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb258-6" data-line-number="6">train_idx[<span class="dv">1</span><span class="op">:</span><span class="dv">10</span>]</a></code></pre></div>
 <pre><code>##  [1] 415 463 179 526 195 118 299 229 244  14</code></pre>
-<div class="sourceCode" id="cb250"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb250-1" data-line-number="1"><span class="co"># Subset the pm data frame to training indices only</span></a>
-<a class="sourceLine" id="cb250-2" data-line-number="2">pm_train &lt;-<span class="st"> </span>pm[train_idx, ]  </a>
-<a class="sourceLine" id="cb250-3" data-line-number="3">  </a>
-<a class="sourceLine" id="cb250-4" data-line-number="4"><span class="co"># Exclude the training indices to create the test set</span></a>
-<a class="sourceLine" id="cb250-5" data-line-number="5">pm_test &lt;-<span class="st"> </span>pm[<span class="op">-</span>train_idx, ]  </a></code></pre></div>
-<div class="sourceCode" id="cb251"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb251-1" data-line-number="1"><span class="co"># Train the model (to predict &#39;default&#39;)</span></a>
-<a class="sourceLine" id="cb251-2" data-line-number="2">pm_class_tree &lt;-<span class="st"> </span><span class="kw">rpart</span>(<span class="dt">formula =</span> diabetes <span class="op">~</span><span class="st"> </span>., </a>
-<a class="sourceLine" id="cb251-3" data-line-number="3">                      <span class="dt">data =</span> pm_train, </a>
-<a class="sourceLine" id="cb251-4" data-line-number="4">                      <span class="dt">method =</span> <span class="st">&quot;class&quot;</span>)</a>
-<a class="sourceLine" id="cb251-5" data-line-number="5"></a>
-<a class="sourceLine" id="cb251-6" data-line-number="6"><span class="co"># Look at the model output                      </span></a>
-<a class="sourceLine" id="cb251-7" data-line-number="7">pm_class_tree</a></code></pre></div>
+<div class="sourceCode" id="cb260"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb260-1" data-line-number="1"><span class="co"># Subset the pm data frame to training indices only</span></a>
+<a class="sourceLine" id="cb260-2" data-line-number="2">pm_train &lt;-<span class="st"> </span>pm[train_idx, ]  </a>
+<a class="sourceLine" id="cb260-3" data-line-number="3">  </a>
+<a class="sourceLine" id="cb260-4" data-line-number="4"><span class="co"># Exclude the training indices to create the test set</span></a>
+<a class="sourceLine" id="cb260-5" data-line-number="5">pm_test &lt;-<span class="st"> </span>pm[<span class="op">-</span>train_idx, ]  </a></code></pre></div>
+<div class="sourceCode" id="cb261"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb261-1" data-line-number="1"><span class="co"># Train the model (to predict &#39;default&#39;)</span></a>
+<a class="sourceLine" id="cb261-2" data-line-number="2">pm_class_tree &lt;-<span class="st"> </span><span class="kw">rpart</span>(<span class="dt">formula =</span> diabetes <span class="op">~</span><span class="st"> </span>., </a>
+<a class="sourceLine" id="cb261-3" data-line-number="3">                      <span class="dt">data =</span> pm_train, </a>
+<a class="sourceLine" id="cb261-4" data-line-number="4">                      <span class="dt">method =</span> <span class="st">&quot;class&quot;</span>)</a>
+<a class="sourceLine" id="cb261-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb261-6" data-line-number="6"><span class="co"># Look at the model output                      </span></a>
+<a class="sourceLine" id="cb261-7" data-line-number="7">pm_class_tree</a></code></pre></div>
 <pre><code>## n= 614 
 ## 
 ## node), split, n, loss, yval, (yprob)
@@ -394,15 +399,15 @@ diabetes - Class variable (test for diabetes)</code></pre>
 <div id="evaluating-performance" class="section level3">
 <h3><span class="header-section-number">8.2.1</span> Evaluating performance</h3>
 <p>So this is where things get interesting. We’ll use a confusion matrix to help us figure some things out about this model.</p>
-<div class="sourceCode" id="cb253"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb253-1" data-line-number="1"><span class="co"># Generate predicted classes using the model object</span></a>
-<a class="sourceLine" id="cb253-2" data-line-number="2">pm_class_pred &lt;-<span class="st"> </span><span class="kw">predict</span>(<span class="dt">object =</span> pm_class_tree,  </a>
-<a class="sourceLine" id="cb253-3" data-line-number="3">                        <span class="dt">newdata =</span> pm_test,   </a>
-<a class="sourceLine" id="cb253-4" data-line-number="4">                        <span class="dt">type =</span> <span class="st">&quot;class&quot;</span>)  </a>
-<a class="sourceLine" id="cb253-5" data-line-number="5">                            </a>
-<a class="sourceLine" id="cb253-6" data-line-number="6"><span class="co"># Calculate the confusion matrix for the test set</span></a>
-<a class="sourceLine" id="cb253-7" data-line-number="7">caret<span class="op">::</span><span class="kw">confusionMatrix</span>(pm_class_pred,       </a>
-<a class="sourceLine" id="cb253-8" data-line-number="8">                       pm_test<span class="op">$</span>diabetes,</a>
-<a class="sourceLine" id="cb253-9" data-line-number="9">                       <span class="dt">positive=</span><span class="st">&quot;pos&quot;</span>)  </a></code></pre></div>
+<div class="sourceCode" id="cb263"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb263-1" data-line-number="1"><span class="co"># Generate predicted classes using the model object</span></a>
+<a class="sourceLine" id="cb263-2" data-line-number="2">pm_class_pred &lt;-<span class="st"> </span><span class="kw">predict</span>(<span class="dt">object =</span> pm_class_tree,  </a>
+<a class="sourceLine" id="cb263-3" data-line-number="3">                        <span class="dt">newdata =</span> pm_test,   </a>
+<a class="sourceLine" id="cb263-4" data-line-number="4">                        <span class="dt">type =</span> <span class="st">&quot;class&quot;</span>)  </a>
+<a class="sourceLine" id="cb263-5" data-line-number="5">                            </a>
+<a class="sourceLine" id="cb263-6" data-line-number="6"><span class="co"># Calculate the confusion matrix for the test set</span></a>
+<a class="sourceLine" id="cb263-7" data-line-number="7">caret<span class="op">::</span><span class="kw">confusionMatrix</span>(pm_class_pred,       </a>
+<a class="sourceLine" id="cb263-8" data-line-number="8">                       pm_test<span class="op">$</span>diabetes,</a>
+<a class="sourceLine" id="cb263-9" data-line-number="9">                       <span class="dt">positive=</span><span class="st">&quot;pos&quot;</span>)  </a></code></pre></div>
 <pre><code>## Confusion Matrix and Statistics
 ## 
 ##           Reference
@@ -431,30 +436,25 @@ diabetes - Class variable (test for diabetes)</code></pre>
 ##        &#39;Positive&#39; Class : pos           
 ## </code></pre>
 <p>We can also look at the Area Under the ROC Curve.</p>
-<div class="sourceCode" id="cb255"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb255-1" data-line-number="1"><span class="kw">library</span>(Metrics)</a></code></pre></div>
-<pre><code>## 
-## Attaching package: &#39;Metrics&#39;</code></pre>
-<pre><code>## The following objects are masked from &#39;package:caret&#39;:
-## 
-##     precision, recall</code></pre>
-<div class="sourceCode" id="cb258"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb258-1" data-line-number="1">dt_pred &lt;-<span class="st"> </span><span class="kw">predict</span>(pm_class_tree,</a>
-<a class="sourceLine" id="cb258-2" data-line-number="2">                       <span class="dt">newdata =</span> pm_test, <span class="dt">type=</span><span class="st">&quot;prob&quot;</span>)</a>
-<a class="sourceLine" id="cb258-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb258-4" data-line-number="4">converted &lt;-<span class="st"> </span><span class="kw">ifelse</span>(pm_test<span class="op">$</span>diabetes <span class="op">==</span><span class="st"> &quot;pos&quot;</span>,<span class="dv">1</span>,<span class="dv">0</span>)</a>
-<a class="sourceLine" id="cb258-5" data-line-number="5"></a>
-<a class="sourceLine" id="cb258-6" data-line-number="6">aucval    &lt;-<span class="st"> </span>Metrics<span class="op">::</span><span class="kw">auc</span>(<span class="dt">actual =</span> converted,</a>
-<a class="sourceLine" id="cb258-7" data-line-number="7">                    <span class="dt">predicted =</span> dt_pred[,<span class="dv">2</span>])</a>
-<a class="sourceLine" id="cb258-8" data-line-number="8"></a>
-<a class="sourceLine" id="cb258-9" data-line-number="9">aucval</a></code></pre></div>
+<div class="sourceCode" id="cb265"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb265-1" data-line-number="1"><span class="kw">library</span>(Metrics)</a>
+<a class="sourceLine" id="cb265-2" data-line-number="2">dt_pred &lt;-<span class="st"> </span><span class="kw">predict</span>(pm_class_tree,</a>
+<a class="sourceLine" id="cb265-3" data-line-number="3">                       <span class="dt">newdata =</span> pm_test, <span class="dt">type=</span><span class="st">&quot;prob&quot;</span>)</a>
+<a class="sourceLine" id="cb265-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb265-5" data-line-number="5">converted &lt;-<span class="st"> </span><span class="kw">ifelse</span>(pm_test<span class="op">$</span>diabetes <span class="op">==</span><span class="st"> &quot;pos&quot;</span>,<span class="dv">1</span>,<span class="dv">0</span>)</a>
+<a class="sourceLine" id="cb265-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb265-7" data-line-number="7">aucval    &lt;-<span class="st"> </span>Metrics<span class="op">::</span><span class="kw">auc</span>(<span class="dt">actual =</span> converted,</a>
+<a class="sourceLine" id="cb265-8" data-line-number="8">                    <span class="dt">predicted =</span> dt_pred[,<span class="dv">2</span>])</a>
+<a class="sourceLine" id="cb265-9" data-line-number="9"></a>
+<a class="sourceLine" id="cb265-10" data-line-number="10">aucval</a></code></pre></div>
 <pre><code>## [1] 0.7391591</code></pre>
 </div>
 <div id="tree-splitting" class="section level3">
 <h3><span class="header-section-number">8.2.2</span> Tree Splitting</h3>
 <p>The resulting tree can be thought of as an upside down tree with the root at the top. The “trunk” proceeds downward and splits into subsets based on some decision (hence the word “decision” in the title). When classifying data the idea is to segment or partition data into groups/regions where each group contains or represents a single class (“yes/no”, “positive/negative”).</p>
 <p>These groups or regions would represent a “pure” region. This is not always possible so a best effort is made. These regions are separated by decision boundaries which are used to make decisions. We’ll plot some example data to illustrate the case.</p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-47-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-48-1.png" width="672" /></p>
 <p><img src="biosml_files/figure-html/unnamed-chunk-49-1.png" width="672" /></p>
-<p><img src="biosml_files/figure-html/unnamed-chunk-50-1.png" width="672" /></p>
-<p><img src="biosml_files/figure-html/unnamed-chunk-51-1.png" width="672" /></p>
 </div>
 </div>
 <div id="gini-index" class="section level2">
@@ -462,35 +462,35 @@ diabetes - Class variable (test for diabetes)</code></pre>
 <p>So we have to find a way to make the decisions such that the resulting regions are as pure as possible. This could be measuring the degree of impurity or purity - so we are either maximizing purity or minimizing impurity The so called “Gini index”&quot; gives us the degree or measure of impurity.</p>
 <p>The lower the Gini index, the lower the degree of impurity (this higher purity). The higher the Gini index the higher the degree of impurity (this lower purity). The decision tree will select the split that minimizes or lowers the Gini index. There are other measures or indices that can be used such as the “information” measure.</p>
 <p>Let’s train two models that use a different splitting criterion (“gini” and “information”) and then use the test set to choose a “best” model. To do this you’ll use the <strong>parms</strong> argument of the <strong>rpart</strong> function. This argument takes a named list that contains values of different parameters to influence how the model is trained. Finally, to assess the models we’ll use the <strong>ce</strong> function from the <strong>Metrics</strong> package to show the proportion of elements in actual that are not equal to the corresponding element in predicted.</p>
-<div class="sourceCode" id="cb260"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb260-1" data-line-number="1"><span class="co"># Train a gini-based model</span></a>
-<a class="sourceLine" id="cb260-2" data-line-number="2">pm_gini_mod &lt;-<span class="st"> </span><span class="kw">rpart</span>(<span class="dt">formula =</span> diabetes <span class="op">~</span><span class="st"> </span>., </a>
-<a class="sourceLine" id="cb260-3" data-line-number="3">                       <span class="dt">data =</span> pm_train, </a>
-<a class="sourceLine" id="cb260-4" data-line-number="4">                       <span class="dt">method =</span> <span class="st">&quot;class&quot;</span>,</a>
-<a class="sourceLine" id="cb260-5" data-line-number="5">                       <span class="dt">parms =</span> <span class="kw">list</span>(<span class="dt">split =</span> <span class="st">&quot;gini&quot;</span>))</a>
-<a class="sourceLine" id="cb260-6" data-line-number="6"></a>
-<a class="sourceLine" id="cb260-7" data-line-number="7"><span class="co"># Train an information-based model</span></a>
-<a class="sourceLine" id="cb260-8" data-line-number="8">pm_info_mod &lt;-<span class="st"> </span><span class="kw">rpart</span>(<span class="dt">formula =</span> diabetes <span class="op">~</span><span class="st"> </span>., </a>
-<a class="sourceLine" id="cb260-9" data-line-number="9">                       <span class="dt">data =</span> pm_train, </a>
-<a class="sourceLine" id="cb260-10" data-line-number="10">                       <span class="dt">method =</span> <span class="st">&quot;class&quot;</span>,</a>
-<a class="sourceLine" id="cb260-11" data-line-number="11">                       <span class="dt">parms =</span> <span class="kw">list</span>(<span class="dt">split =</span> <span class="st">&quot;information&quot;</span>))</a>
-<a class="sourceLine" id="cb260-12" data-line-number="12"></a>
-<a class="sourceLine" id="cb260-13" data-line-number="13"><span class="co"># Create some predictions</span></a>
-<a class="sourceLine" id="cb260-14" data-line-number="14">gini_pred &lt;-<span class="st"> </span><span class="kw">predict</span>(<span class="dt">object =</span> pm_gini_mod, </a>
-<a class="sourceLine" id="cb260-15" data-line-number="15">             <span class="dt">newdata =</span> pm_test,</a>
-<a class="sourceLine" id="cb260-16" data-line-number="16">             <span class="dt">type =</span> <span class="st">&quot;class&quot;</span>)    </a>
-<a class="sourceLine" id="cb260-17" data-line-number="17"></a>
-<a class="sourceLine" id="cb260-18" data-line-number="18"><span class="co"># Generate predictions on the validation set using the information model</span></a>
-<a class="sourceLine" id="cb260-19" data-line-number="19">info_pred &lt;-<span class="st"> </span><span class="kw">predict</span>(<span class="dt">object =</span> pm_info_mod, </a>
-<a class="sourceLine" id="cb260-20" data-line-number="20">             <span class="dt">newdata =</span> pm_test,</a>
-<a class="sourceLine" id="cb260-21" data-line-number="21">             <span class="dt">type =</span> <span class="st">&quot;class&quot;</span>)</a>
-<a class="sourceLine" id="cb260-22" data-line-number="22"></a>
-<a class="sourceLine" id="cb260-23" data-line-number="23"><span class="co"># Compare classification error</span></a>
-<a class="sourceLine" id="cb260-24" data-line-number="24"></a>
-<a class="sourceLine" id="cb260-25" data-line-number="25">Metrics<span class="op">::</span><span class="kw">ce</span>(<span class="dt">actual =</span> pm_test<span class="op">$</span>diabetes, </a>
-<a class="sourceLine" id="cb260-26" data-line-number="26">   <span class="dt">predicted =</span> gini_pred)</a></code></pre></div>
+<div class="sourceCode" id="cb267"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb267-1" data-line-number="1"><span class="co"># Train a gini-based model</span></a>
+<a class="sourceLine" id="cb267-2" data-line-number="2">pm_gini_mod &lt;-<span class="st"> </span><span class="kw">rpart</span>(<span class="dt">formula =</span> diabetes <span class="op">~</span><span class="st"> </span>., </a>
+<a class="sourceLine" id="cb267-3" data-line-number="3">                       <span class="dt">data =</span> pm_train, </a>
+<a class="sourceLine" id="cb267-4" data-line-number="4">                       <span class="dt">method =</span> <span class="st">&quot;class&quot;</span>,</a>
+<a class="sourceLine" id="cb267-5" data-line-number="5">                       <span class="dt">parms =</span> <span class="kw">list</span>(<span class="dt">split =</span> <span class="st">&quot;gini&quot;</span>))</a>
+<a class="sourceLine" id="cb267-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb267-7" data-line-number="7"><span class="co"># Train an information-based model</span></a>
+<a class="sourceLine" id="cb267-8" data-line-number="8">pm_info_mod &lt;-<span class="st"> </span><span class="kw">rpart</span>(<span class="dt">formula =</span> diabetes <span class="op">~</span><span class="st"> </span>., </a>
+<a class="sourceLine" id="cb267-9" data-line-number="9">                       <span class="dt">data =</span> pm_train, </a>
+<a class="sourceLine" id="cb267-10" data-line-number="10">                       <span class="dt">method =</span> <span class="st">&quot;class&quot;</span>,</a>
+<a class="sourceLine" id="cb267-11" data-line-number="11">                       <span class="dt">parms =</span> <span class="kw">list</span>(<span class="dt">split =</span> <span class="st">&quot;information&quot;</span>))</a>
+<a class="sourceLine" id="cb267-12" data-line-number="12"></a>
+<a class="sourceLine" id="cb267-13" data-line-number="13"><span class="co"># Create some predictions</span></a>
+<a class="sourceLine" id="cb267-14" data-line-number="14">gini_pred &lt;-<span class="st"> </span><span class="kw">predict</span>(<span class="dt">object =</span> pm_gini_mod, </a>
+<a class="sourceLine" id="cb267-15" data-line-number="15">             <span class="dt">newdata =</span> pm_test,</a>
+<a class="sourceLine" id="cb267-16" data-line-number="16">             <span class="dt">type =</span> <span class="st">&quot;class&quot;</span>)    </a>
+<a class="sourceLine" id="cb267-17" data-line-number="17"></a>
+<a class="sourceLine" id="cb267-18" data-line-number="18"><span class="co"># Generate predictions on the validation set using the information model</span></a>
+<a class="sourceLine" id="cb267-19" data-line-number="19">info_pred &lt;-<span class="st"> </span><span class="kw">predict</span>(<span class="dt">object =</span> pm_info_mod, </a>
+<a class="sourceLine" id="cb267-20" data-line-number="20">             <span class="dt">newdata =</span> pm_test,</a>
+<a class="sourceLine" id="cb267-21" data-line-number="21">             <span class="dt">type =</span> <span class="st">&quot;class&quot;</span>)</a>
+<a class="sourceLine" id="cb267-22" data-line-number="22"></a>
+<a class="sourceLine" id="cb267-23" data-line-number="23"><span class="co"># Compare classification error</span></a>
+<a class="sourceLine" id="cb267-24" data-line-number="24"></a>
+<a class="sourceLine" id="cb267-25" data-line-number="25">Metrics<span class="op">::</span><span class="kw">ce</span>(<span class="dt">actual =</span> pm_test<span class="op">$</span>diabetes, </a>
+<a class="sourceLine" id="cb267-26" data-line-number="26">   <span class="dt">predicted =</span> gini_pred)</a></code></pre></div>
 <pre><code>## [1] 0.2792208</code></pre>
-<div class="sourceCode" id="cb262"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb262-1" data-line-number="1">Metrics<span class="op">::</span><span class="kw">ce</span>(<span class="dt">actual =</span> pm_test<span class="op">$</span>diabetes, </a>
-<a class="sourceLine" id="cb262-2" data-line-number="2">   <span class="dt">predicted =</span> info_pred)  </a></code></pre></div>
+<div class="sourceCode" id="cb269"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb269-1" data-line-number="1">Metrics<span class="op">::</span><span class="kw">ce</span>(<span class="dt">actual =</span> pm_test<span class="op">$</span>diabetes, </a>
+<a class="sourceLine" id="cb269-2" data-line-number="2">   <span class="dt">predicted =</span> info_pred)  </a></code></pre></div>
 <pre><code>## [1] 0.2597403</code></pre>
 </div>
 <div id="regression-trees" class="section level2">
@@ -503,20 +503,20 @@ diabetes - Class variable (test for diabetes)</code></pre>
 RMSE = \sqrt\frac{\sum_i^n(P_i-O_i)^2}{n}
 \]</span></p>
 <p>We could even write our own function for this although the <strong>Metrics</strong> package has a function called <strong>rmse</strong> to do this:</p>
-<div class="sourceCode" id="cb264"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb264-1" data-line-number="1"><span class="co"># Lets define a rmse function for future use</span></a>
-<a class="sourceLine" id="cb264-2" data-line-number="2">compute_rmse &lt;-<span class="st"> </span><span class="cf">function</span>(preds,known) {</a>
-<a class="sourceLine" id="cb264-3" data-line-number="3">  errors &lt;-<span class="st"> </span>preds<span class="op">-</span>known</a>
-<a class="sourceLine" id="cb264-4" data-line-number="4">  rmse   &lt;-<span class="st"> </span><span class="kw">sqrt</span>(<span class="kw">mean</span>(errors<span class="op">^</span><span class="dv">2</span>))</a>
-<a class="sourceLine" id="cb264-5" data-line-number="5">  <span class="kw">return</span>(rmse)</a>
-<a class="sourceLine" id="cb264-6" data-line-number="6">}</a></code></pre></div>
+<div class="sourceCode" id="cb271"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb271-1" data-line-number="1"><span class="co"># Lets define a rmse function for future use</span></a>
+<a class="sourceLine" id="cb271-2" data-line-number="2">compute_rmse &lt;-<span class="st"> </span><span class="cf">function</span>(preds,known) {</a>
+<a class="sourceLine" id="cb271-3" data-line-number="3">  errors &lt;-<span class="st"> </span>preds<span class="op">-</span>known</a>
+<a class="sourceLine" id="cb271-4" data-line-number="4">  rmse   &lt;-<span class="st"> </span><span class="kw">sqrt</span>(<span class="kw">mean</span>(errors<span class="op">^</span><span class="dv">2</span>))</a>
+<a class="sourceLine" id="cb271-5" data-line-number="5">  <span class="kw">return</span>(rmse)</a>
+<a class="sourceLine" id="cb271-6" data-line-number="6">}</a></code></pre></div>
 <p>Let’s build a classification tree model on the Pima Indians data to predict the body mass of a participant.</p>
-<div class="sourceCode" id="cb265"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb265-1" data-line-number="1"><span class="co"># Train the model</span></a>
-<a class="sourceLine" id="cb265-2" data-line-number="2">mass_pima_mod &lt;-<span class="st"> </span><span class="kw">rpart</span>(<span class="dt">formula =</span> mass <span class="op">~</span><span class="st"> </span>., </a>
-<a class="sourceLine" id="cb265-3" data-line-number="3">                     <span class="dt">data =</span> pm_train, </a>
-<a class="sourceLine" id="cb265-4" data-line-number="4">                     <span class="dt">method =</span> <span class="st">&quot;anova&quot;</span>)</a>
-<a class="sourceLine" id="cb265-5" data-line-number="5"></a>
-<a class="sourceLine" id="cb265-6" data-line-number="6"><span class="co"># Look at the model output                      </span></a>
-<a class="sourceLine" id="cb265-7" data-line-number="7"><span class="kw">print</span>(mass_pima_mod)</a></code></pre></div>
+<div class="sourceCode" id="cb272"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb272-1" data-line-number="1"><span class="co"># Train the model</span></a>
+<a class="sourceLine" id="cb272-2" data-line-number="2">mass_pima_mod &lt;-<span class="st"> </span><span class="kw">rpart</span>(<span class="dt">formula =</span> mass <span class="op">~</span><span class="st"> </span>., </a>
+<a class="sourceLine" id="cb272-3" data-line-number="3">                     <span class="dt">data =</span> pm_train, </a>
+<a class="sourceLine" id="cb272-4" data-line-number="4">                     <span class="dt">method =</span> <span class="st">&quot;anova&quot;</span>)</a>
+<a class="sourceLine" id="cb272-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb272-6" data-line-number="6"><span class="co"># Look at the model output                      </span></a>
+<a class="sourceLine" id="cb272-7" data-line-number="7"><span class="kw">print</span>(mass_pima_mod)</a></code></pre></div>
 <pre><code>## n= 614 
 ## 
 ## node), split, n, deviance, yval
@@ -545,18 +545,18 @@ RMSE = \sqrt\frac{\sum_i^n(P_i-O_i)^2}{n}
 ##       15) glucose&gt;=128.5 26  1565.0400 43.70000  
 ##         30) pressure&lt; 75 10   122.8810 38.67000 *
 ##         31) pressure&gt;=75 16  1031.0190 46.84375 *</code></pre>
-<div class="sourceCode" id="cb267"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb267-1" data-line-number="1"><span class="co"># Plot the tree model</span></a>
-<a class="sourceLine" id="cb267-2" data-line-number="2"><span class="kw">rpart.plot</span>(<span class="dt">x =</span> mass_pima_mod, </a>
-<a class="sourceLine" id="cb267-3" data-line-number="3">           <span class="dt">yesno =</span> <span class="dv">2</span>, <span class="dt">type =</span> <span class="dv">0</span>, <span class="dt">extra =</span> <span class="dv">0</span>)</a></code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-55-1.png" width="672" /></p>
+<div class="sourceCode" id="cb274"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb274-1" data-line-number="1"><span class="co"># Plot the tree model</span></a>
+<a class="sourceLine" id="cb274-2" data-line-number="2"><span class="kw">rpart.plot</span>(<span class="dt">x =</span> mass_pima_mod, </a>
+<a class="sourceLine" id="cb274-3" data-line-number="3">           <span class="dt">yesno =</span> <span class="dv">2</span>, <span class="dt">type =</span> <span class="dv">0</span>, <span class="dt">extra =</span> <span class="dv">0</span>)</a></code></pre></div>
+<p><img src="biosml_files/figure-html/unnamed-chunk-53-1.png" width="672" /></p>
 <p>Let’s compute the RMSE for this model.</p>
-<div class="sourceCode" id="cb268"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb268-1" data-line-number="1"><span class="co"># Generate predictions on a test set</span></a>
-<a class="sourceLine" id="cb268-2" data-line-number="2">pred &lt;-<span class="st"> </span><span class="kw">predict</span>(<span class="dt">object =</span> mass_pima_mod,   <span class="co"># model object </span></a>
-<a class="sourceLine" id="cb268-3" data-line-number="3">                <span class="dt">newdata =</span> pm_test)  <span class="co"># test dataset</span></a>
-<a class="sourceLine" id="cb268-4" data-line-number="4"></a>
-<a class="sourceLine" id="cb268-5" data-line-number="5"><span class="co"># Compute the RMSE</span></a>
-<a class="sourceLine" id="cb268-6" data-line-number="6">Metrics<span class="op">::</span><span class="kw">rmse</span>(<span class="dt">actual =</span> pm_test<span class="op">$</span>mass, </a>
-<a class="sourceLine" id="cb268-7" data-line-number="7">     <span class="dt">predicted =</span> pred)</a></code></pre></div>
+<div class="sourceCode" id="cb275"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb275-1" data-line-number="1"><span class="co"># Generate predictions on a test set</span></a>
+<a class="sourceLine" id="cb275-2" data-line-number="2">pred &lt;-<span class="st"> </span><span class="kw">predict</span>(<span class="dt">object =</span> mass_pima_mod,   <span class="co"># model object </span></a>
+<a class="sourceLine" id="cb275-3" data-line-number="3">                <span class="dt">newdata =</span> pm_test)  <span class="co"># test dataset</span></a>
+<a class="sourceLine" id="cb275-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb275-5" data-line-number="5"><span class="co"># Compute the RMSE</span></a>
+<a class="sourceLine" id="cb275-6" data-line-number="6">Metrics<span class="op">::</span><span class="kw">rmse</span>(<span class="dt">actual =</span> pm_test<span class="op">$</span>mass, </a>
+<a class="sourceLine" id="cb275-7" data-line-number="7">     <span class="dt">predicted =</span> pred)</a></code></pre></div>
 <pre><code>## [1] 6.627414</code></pre>
 <p>Is this Good ? Bad ? Okay ? We don’t know. We’ll need to do some things like Cross Validation. And then there are additional arguments to the <strong>rpart</strong> function that we could use to influence how the model does its job. These are referred to as “hyperparamters”.</p>
 </div>
@@ -575,11 +575,11 @@ RMSE = \sqrt\frac{\sum_i^n(P_i-O_i)^2}{n}
 </ul>
 <p>There are other hyper parameters but we can start with these. The <strong>rpart.control</strong> function will do something called cross validation which involves repeatedly running the <strong>rpart</strong> some number of times (10 by default) while internally specifying different values for the above mentioned hyper parameters.</p>
 <p>In effect, it is doing some work for you so you don’t have to. At the end of the run it will produce a table for inspection. The results of this table can then be used to “prune” the tree model to get a “better” tree - one that performs better than an “un pruned” tree. Let’s look at the pima mass model:</p>
-<div class="sourceCode" id="cb270"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb270-1" data-line-number="1"><span class="co"># You can plot the modelling object</span></a>
-<a class="sourceLine" id="cb270-2" data-line-number="2"><span class="kw">plot</span>(mass_pima_mod)</a></code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-57-1.png" width="672" /></p>
-<div class="sourceCode" id="cb271"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb271-1" data-line-number="1"><span class="co"># You can inspect the table manually</span></a>
-<a class="sourceLine" id="cb271-2" data-line-number="2">mass_pima_mod<span class="op">$</span>cptable</a></code></pre></div>
+<div class="sourceCode" id="cb277"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb277-1" data-line-number="1"><span class="co"># You can plot the modelling object</span></a>
+<a class="sourceLine" id="cb277-2" data-line-number="2"><span class="kw">plot</span>(mass_pima_mod)</a></code></pre></div>
+<p><img src="biosml_files/figure-html/unnamed-chunk-55-1.png" width="672" /></p>
+<div class="sourceCode" id="cb278"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb278-1" data-line-number="1"><span class="co"># You can inspect the table manually</span></a>
+<a class="sourceLine" id="cb278-2" data-line-number="2">mass_pima_mod<span class="op">$</span>cptable</a></code></pre></div>
 <pre><code>##            CP nsplit rel error    xerror       xstd
 ## 1  0.18153603      0 1.0000000 1.0015656 0.09381646
 ## 2  0.05698963      1 0.8184640 0.8447727 0.08092338
@@ -593,36 +593,36 @@ RMSE = \sqrt\frac{\sum_i^n(P_i-O_i)^2}{n}
 ## 10 0.01113909     10 0.6121219 0.8022725 0.07716219
 ## 11 0.01000000     11 0.6009828 0.8042465 0.07301588</code></pre>
 <p>We want to pick the value of CP from the table that corresponds to the minimum <strong>xerror</strong> value. This can also be deduced from the plot but let’s work with the table:</p>
-<div class="sourceCode" id="cb273"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb273-1" data-line-number="1">cpt &lt;-<span class="st"> </span><span class="kw">as.data.frame.matrix</span>(mass_pima_mod<span class="op">$</span>cptable) </a>
-<a class="sourceLine" id="cb273-2" data-line-number="2">cpt_val &lt;-<span class="st"> </span>cpt[<span class="kw">order</span>(cpt<span class="op">$</span>xerror),][<span class="dv">1</span>,]<span class="op">$</span>CP</a></code></pre></div>
+<div class="sourceCode" id="cb280"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb280-1" data-line-number="1">cpt &lt;-<span class="st"> </span><span class="kw">as.data.frame.matrix</span>(mass_pima_mod<span class="op">$</span>cptable) </a>
+<a class="sourceLine" id="cb280-2" data-line-number="2">cpt_val &lt;-<span class="st"> </span>cpt[<span class="kw">order</span>(cpt<span class="op">$</span>xerror),][<span class="dv">1</span>,]<span class="op">$</span>CP</a></code></pre></div>
 <p>We’ll use the CP value associated with the minimum error which in this case turns out to be 0.01. This is now passed to the <strong>prune</strong> function.</p>
-<div class="sourceCode" id="cb274"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb274-1" data-line-number="1">mass_pima_mod_opt &lt;-<span class="st"> </span><span class="kw">prune</span>(mass_pima_mod, </a>
-<a class="sourceLine" id="cb274-2" data-line-number="2">                           <span class="dt">cp =</span> cpt_val)</a>
-<a class="sourceLine" id="cb274-3" data-line-number="3">                          </a>
-<a class="sourceLine" id="cb274-4" data-line-number="4"><span class="co"># Plot the optimized model</span></a>
-<a class="sourceLine" id="cb274-5" data-line-number="5"><span class="kw">rpart.plot</span>(mass_pima_mod_opt, <span class="dt">yesno =</span> <span class="dv">2</span>, <span class="dt">type =</span> <span class="dv">0</span>, <span class="dt">extra =</span> <span class="dv">0</span>)</a></code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-59-1.png" width="672" /></p>
+<div class="sourceCode" id="cb281"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb281-1" data-line-number="1">mass_pima_mod_opt &lt;-<span class="st"> </span><span class="kw">prune</span>(mass_pima_mod, </a>
+<a class="sourceLine" id="cb281-2" data-line-number="2">                           <span class="dt">cp =</span> cpt_val)</a>
+<a class="sourceLine" id="cb281-3" data-line-number="3">                          </a>
+<a class="sourceLine" id="cb281-4" data-line-number="4"><span class="co"># Plot the optimized model</span></a>
+<a class="sourceLine" id="cb281-5" data-line-number="5"><span class="kw">rpart.plot</span>(mass_pima_mod_opt, <span class="dt">yesno =</span> <span class="dv">2</span>, <span class="dt">type =</span> <span class="dv">0</span>, <span class="dt">extra =</span> <span class="dv">0</span>)</a></code></pre></div>
+<p><img src="biosml_files/figure-html/unnamed-chunk-57-1.png" width="672" /></p>
 <p>Does this optimized model perform any better ? Not really, because the optimal CP value turned out to be 0.01 which is actually the same as the default.</p>
-<div class="sourceCode" id="cb275"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb275-1" data-line-number="1"><span class="co"># Generate predictions on a test set</span></a>
-<a class="sourceLine" id="cb275-2" data-line-number="2">pred &lt;-<span class="st"> </span><span class="kw">predict</span>(<span class="dt">object =</span> mass_pima_mod_opt,   <span class="co"># model object </span></a>
-<a class="sourceLine" id="cb275-3" data-line-number="3">                <span class="dt">newdata =</span> pm_test)  <span class="co"># test dataset</span></a>
-<a class="sourceLine" id="cb275-4" data-line-number="4"></a>
-<a class="sourceLine" id="cb275-5" data-line-number="5"><span class="co"># Compute the RMSE</span></a>
-<a class="sourceLine" id="cb275-6" data-line-number="6">Metrics<span class="op">::</span><span class="kw">rmse</span>(<span class="dt">actual =</span> pm_test<span class="op">$</span>mass, </a>
-<a class="sourceLine" id="cb275-7" data-line-number="7">     <span class="dt">predicted =</span> pred)</a></code></pre></div>
+<div class="sourceCode" id="cb282"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb282-1" data-line-number="1"><span class="co"># Generate predictions on a test set</span></a>
+<a class="sourceLine" id="cb282-2" data-line-number="2">pred &lt;-<span class="st"> </span><span class="kw">predict</span>(<span class="dt">object =</span> mass_pima_mod_opt,   <span class="co"># model object </span></a>
+<a class="sourceLine" id="cb282-3" data-line-number="3">                <span class="dt">newdata =</span> pm_test)  <span class="co"># test dataset</span></a>
+<a class="sourceLine" id="cb282-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb282-5" data-line-number="5"><span class="co"># Compute the RMSE</span></a>
+<a class="sourceLine" id="cb282-6" data-line-number="6">Metrics<span class="op">::</span><span class="kw">rmse</span>(<span class="dt">actual =</span> pm_test<span class="op">$</span>mass, </a>
+<a class="sourceLine" id="cb282-7" data-line-number="7">     <span class="dt">predicted =</span> pred)</a></code></pre></div>
 <pre><code>## [1] 6.790943</code></pre>
 </div>
 <div id="grid-searching" class="section level2">
 <h2><span class="header-section-number">8.6</span> Grid Searching</h2>
 <p>We might want to review several different models that correspond to various hyperparamter sets. Our goal is to find the best performing model based on a systematic approach that allows us to assess each model in a fair way. There are functions that can help us build a “grid” of hyperparameter values that can then “feed” the function arguments. So we train models on a combination of these values and compare them using the RMSE for regression or ROC / Confusion Matrix for classification setups.</p>
 <p>Setting up the grid involves a manual process (although as we will eventually see) the <strong>caret</strong> package can help automate this for us. Knowing about the valid values for a hyperparameter is critical so some experimentation is important. The following process sets up a data frame of two columns each of which corresponds to a hyperparamter of the <strong>rpart</strong> function. The intent here is to call <strong>rpart</strong> a number of times using each row of the below data frame to supply the values for the respective arguments in <strong>rpart</strong>.</p>
-<div class="sourceCode" id="cb277"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb277-1" data-line-number="1">mysplits &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="dv">1</span>, <span class="dv">35</span>, <span class="dv">5</span>)</a>
-<a class="sourceLine" id="cb277-2" data-line-number="2">mydepths &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="dv">5</span>,<span class="dv">40</span>, <span class="dv">10</span>)</a>
-<a class="sourceLine" id="cb277-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb277-4" data-line-number="4">my_cool_grid &lt;-<span class="st"> </span><span class="kw">expand.grid</span>(<span class="dt">minsplit =</span> mysplits,</a>
-<a class="sourceLine" id="cb277-5" data-line-number="5">                            <span class="dt">maxdepth =</span> mydepths)</a>
-<a class="sourceLine" id="cb277-6" data-line-number="6"></a>
-<a class="sourceLine" id="cb277-7" data-line-number="7"><span class="kw">head</span>(my_cool_grid)</a></code></pre></div>
+<div class="sourceCode" id="cb284"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb284-1" data-line-number="1">mysplits &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="dv">1</span>, <span class="dv">35</span>, <span class="dv">5</span>)</a>
+<a class="sourceLine" id="cb284-2" data-line-number="2">mydepths &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="dv">5</span>,<span class="dv">40</span>, <span class="dv">10</span>)</a>
+<a class="sourceLine" id="cb284-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb284-4" data-line-number="4">my_cool_grid &lt;-<span class="st"> </span><span class="kw">expand.grid</span>(<span class="dt">minsplit =</span> mysplits,</a>
+<a class="sourceLine" id="cb284-5" data-line-number="5">                            <span class="dt">maxdepth =</span> mydepths)</a>
+<a class="sourceLine" id="cb284-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb284-7" data-line-number="7"><span class="kw">head</span>(my_cool_grid)</a></code></pre></div>
 <pre><code>##   minsplit maxdepth
 ## 1        1        5
 ## 2        6        5
@@ -631,51 +631,51 @@ RMSE = \sqrt\frac{\sum_i^n(P_i-O_i)^2}{n}
 ## 5       21        5
 ## 6       26        5</code></pre>
 <p>We’ll generate models, predictions, and RMSE values and stash them for later review. Once again, we’ll be predicting the mass variable in the Pima Indians data frame.</p>
-<div class="sourceCode" id="cb279"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb279-1" data-line-number="1">do_grid_search &lt;-<span class="st"> </span><span class="cf">function</span>(minsplit,maxdepth) {</a>
-<a class="sourceLine" id="cb279-2" data-line-number="2">  </a>
-<a class="sourceLine" id="cb279-3" data-line-number="3">  <span class="co"># Setup some book keeping structures</span></a>
-<a class="sourceLine" id="cb279-4" data-line-number="4">  </a>
-<a class="sourceLine" id="cb279-5" data-line-number="5">  mods  &lt;-<span class="st"> </span><span class="kw">list</span>()</a>
-<a class="sourceLine" id="cb279-6" data-line-number="6">  preds &lt;-<span class="st"> </span><span class="kw">list</span>()</a>
-<a class="sourceLine" id="cb279-7" data-line-number="7">  myrmse  &lt;-<span class="st"> </span><span class="kw">vector</span>()</a>
-<a class="sourceLine" id="cb279-8" data-line-number="8">  </a>
-<a class="sourceLine" id="cb279-9" data-line-number="9">  mygrid &lt;-<span class="st"> </span><span class="kw">expand.grid</span>(<span class="dt">minsplit=</span>minsplit,</a>
-<a class="sourceLine" id="cb279-10" data-line-number="10">                        <span class="dt">maxdepth=</span>maxdepth)</a>
-<a class="sourceLine" id="cb279-11" data-line-number="11">  </a>
-<a class="sourceLine" id="cb279-12" data-line-number="12">  <span class="cf">for</span> (ii <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(mygrid)) {</a>
-<a class="sourceLine" id="cb279-13" data-line-number="13">    minsplit &lt;-<span class="st"> </span>mygrid[ii,]<span class="op">$</span>minsplit</a>
-<a class="sourceLine" id="cb279-14" data-line-number="14">    maxdepth &lt;-<span class="st"> </span>mygrid[ii,]<span class="op">$</span>maxdepth</a>
-<a class="sourceLine" id="cb279-15" data-line-number="15">    </a>
-<a class="sourceLine" id="cb279-16" data-line-number="16">    <span class="co"># Build the Model</span></a>
-<a class="sourceLine" id="cb279-17" data-line-number="17">    mods[[ii]] &lt;-<span class="st"> </span><span class="kw">rpart</span>(mass <span class="op">~</span><span class="st"> </span>., </a>
-<a class="sourceLine" id="cb279-18" data-line-number="18">                        <span class="dt">data =</span> pm_train,</a>
-<a class="sourceLine" id="cb279-19" data-line-number="19">                        <span class="dt">method =</span> <span class="st">&quot;anova&quot;</span>,</a>
-<a class="sourceLine" id="cb279-20" data-line-number="20">                        <span class="dt">minsplit =</span> minsplit,</a>
-<a class="sourceLine" id="cb279-21" data-line-number="21">                        <span class="dt">maxdepth =</span> maxdepth)</a>
-<a class="sourceLine" id="cb279-22" data-line-number="22">    </a>
-<a class="sourceLine" id="cb279-23" data-line-number="23">    <span class="co"># Now predict against the test data</span></a>
-<a class="sourceLine" id="cb279-24" data-line-number="24">    preds[[ii]] &lt;-<span class="st"> </span><span class="kw">predict</span>(mods[[ii]],</a>
-<a class="sourceLine" id="cb279-25" data-line-number="25">                           <span class="dt">newdata =</span> pm_test)</a>
-<a class="sourceLine" id="cb279-26" data-line-number="26">    </a>
-<a class="sourceLine" id="cb279-27" data-line-number="27">    <span class="co"># Get RMSE</span></a>
-<a class="sourceLine" id="cb279-28" data-line-number="28">    myrmse[ii] &lt;-<span class="st"> </span>Metrics<span class="op">::</span><span class="kw">rmse</span>(<span class="dt">actual =</span> pm_test<span class="op">$</span>mass, </a>
-<a class="sourceLine" id="cb279-29" data-line-number="29">                                <span class="dt">predicted =</span> preds[[ii]])</a>
-<a class="sourceLine" id="cb279-30" data-line-number="30">  }</a>
-<a class="sourceLine" id="cb279-31" data-line-number="31">  </a>
-<a class="sourceLine" id="cb279-32" data-line-number="32">  <span class="co"># Find the model that has the lowest rmse</span></a>
-<a class="sourceLine" id="cb279-33" data-line-number="33">  idx &lt;-<span class="st"> </span><span class="kw">which.min</span>(myrmse)</a>
-<a class="sourceLine" id="cb279-34" data-line-number="34">  </a>
-<a class="sourceLine" id="cb279-35" data-line-number="35">  <span class="co"># Get the control parameters for the best model</span></a>
-<a class="sourceLine" id="cb279-36" data-line-number="36">  optimal_model &lt;-<span class="st"> </span>mods[[idx]]</a>
-<a class="sourceLine" id="cb279-37" data-line-number="37">  rmseval &lt;-<span class="st"> </span>myrmse[idx]</a>
-<a class="sourceLine" id="cb279-38" data-line-number="38">  </a>
-<a class="sourceLine" id="cb279-39" data-line-number="39">  <span class="kw">return</span>(<span class="kw">list</span>(<span class="dt">optimal_model=</span>optimal_model,<span class="dt">optim_rmse=</span>rmseval))</a>
-<a class="sourceLine" id="cb279-40" data-line-number="40">}</a></code></pre></div>
+<div class="sourceCode" id="cb286"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb286-1" data-line-number="1">do_grid_search &lt;-<span class="st"> </span><span class="cf">function</span>(minsplit,maxdepth) {</a>
+<a class="sourceLine" id="cb286-2" data-line-number="2">  </a>
+<a class="sourceLine" id="cb286-3" data-line-number="3">  <span class="co"># Setup some book keeping structures</span></a>
+<a class="sourceLine" id="cb286-4" data-line-number="4">  </a>
+<a class="sourceLine" id="cb286-5" data-line-number="5">  mods  &lt;-<span class="st"> </span><span class="kw">list</span>()</a>
+<a class="sourceLine" id="cb286-6" data-line-number="6">  preds &lt;-<span class="st"> </span><span class="kw">list</span>()</a>
+<a class="sourceLine" id="cb286-7" data-line-number="7">  myrmse  &lt;-<span class="st"> </span><span class="kw">vector</span>()</a>
+<a class="sourceLine" id="cb286-8" data-line-number="8">  </a>
+<a class="sourceLine" id="cb286-9" data-line-number="9">  mygrid &lt;-<span class="st"> </span><span class="kw">expand.grid</span>(<span class="dt">minsplit=</span>minsplit,</a>
+<a class="sourceLine" id="cb286-10" data-line-number="10">                        <span class="dt">maxdepth=</span>maxdepth)</a>
+<a class="sourceLine" id="cb286-11" data-line-number="11">  </a>
+<a class="sourceLine" id="cb286-12" data-line-number="12">  <span class="cf">for</span> (ii <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(mygrid)) {</a>
+<a class="sourceLine" id="cb286-13" data-line-number="13">    minsplit &lt;-<span class="st"> </span>mygrid[ii,]<span class="op">$</span>minsplit</a>
+<a class="sourceLine" id="cb286-14" data-line-number="14">    maxdepth &lt;-<span class="st"> </span>mygrid[ii,]<span class="op">$</span>maxdepth</a>
+<a class="sourceLine" id="cb286-15" data-line-number="15">    </a>
+<a class="sourceLine" id="cb286-16" data-line-number="16">    <span class="co"># Build the Model</span></a>
+<a class="sourceLine" id="cb286-17" data-line-number="17">    mods[[ii]] &lt;-<span class="st"> </span><span class="kw">rpart</span>(mass <span class="op">~</span><span class="st"> </span>., </a>
+<a class="sourceLine" id="cb286-18" data-line-number="18">                        <span class="dt">data =</span> pm_train,</a>
+<a class="sourceLine" id="cb286-19" data-line-number="19">                        <span class="dt">method =</span> <span class="st">&quot;anova&quot;</span>,</a>
+<a class="sourceLine" id="cb286-20" data-line-number="20">                        <span class="dt">minsplit =</span> minsplit,</a>
+<a class="sourceLine" id="cb286-21" data-line-number="21">                        <span class="dt">maxdepth =</span> maxdepth)</a>
+<a class="sourceLine" id="cb286-22" data-line-number="22">    </a>
+<a class="sourceLine" id="cb286-23" data-line-number="23">    <span class="co"># Now predict against the test data</span></a>
+<a class="sourceLine" id="cb286-24" data-line-number="24">    preds[[ii]] &lt;-<span class="st"> </span><span class="kw">predict</span>(mods[[ii]],</a>
+<a class="sourceLine" id="cb286-25" data-line-number="25">                           <span class="dt">newdata =</span> pm_test)</a>
+<a class="sourceLine" id="cb286-26" data-line-number="26">    </a>
+<a class="sourceLine" id="cb286-27" data-line-number="27">    <span class="co"># Get RMSE</span></a>
+<a class="sourceLine" id="cb286-28" data-line-number="28">    myrmse[ii] &lt;-<span class="st"> </span>Metrics<span class="op">::</span><span class="kw">rmse</span>(<span class="dt">actual =</span> pm_test<span class="op">$</span>mass, </a>
+<a class="sourceLine" id="cb286-29" data-line-number="29">                                <span class="dt">predicted =</span> preds[[ii]])</a>
+<a class="sourceLine" id="cb286-30" data-line-number="30">  }</a>
+<a class="sourceLine" id="cb286-31" data-line-number="31">  </a>
+<a class="sourceLine" id="cb286-32" data-line-number="32">  <span class="co"># Find the model that has the lowest rmse</span></a>
+<a class="sourceLine" id="cb286-33" data-line-number="33">  idx &lt;-<span class="st"> </span><span class="kw">which.min</span>(myrmse)</a>
+<a class="sourceLine" id="cb286-34" data-line-number="34">  </a>
+<a class="sourceLine" id="cb286-35" data-line-number="35">  <span class="co"># Get the control parameters for the best model</span></a>
+<a class="sourceLine" id="cb286-36" data-line-number="36">  optimal_model &lt;-<span class="st"> </span>mods[[idx]]</a>
+<a class="sourceLine" id="cb286-37" data-line-number="37">  rmseval &lt;-<span class="st"> </span>myrmse[idx]</a>
+<a class="sourceLine" id="cb286-38" data-line-number="38">  </a>
+<a class="sourceLine" id="cb286-39" data-line-number="39">  <span class="kw">return</span>(<span class="kw">list</span>(<span class="dt">optimal_model=</span>optimal_model,<span class="dt">optim_rmse=</span>rmseval))</a>
+<a class="sourceLine" id="cb286-40" data-line-number="40">}</a></code></pre></div>
 <p>Now run the function and get the parameters corresponding to the optimal model.</p>
-<div class="sourceCode" id="cb280"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb280-1" data-line-number="1">results &lt;-<span class="st"> </span><span class="kw">do_grid_search</span>(<span class="kw">seq</span>(<span class="dv">1</span>, <span class="dv">4</span>, <span class="dv">1</span>),<span class="kw">seq</span>(<span class="dv">1</span>, <span class="dv">6</span>, <span class="dv">1</span>))</a>
-<a class="sourceLine" id="cb280-2" data-line-number="2">results<span class="op">$</span>optim_rmse</a></code></pre></div>
+<div class="sourceCode" id="cb287"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb287-1" data-line-number="1">results &lt;-<span class="st"> </span><span class="kw">do_grid_search</span>(<span class="kw">seq</span>(<span class="dv">1</span>, <span class="dv">4</span>, <span class="dv">1</span>),<span class="kw">seq</span>(<span class="dv">1</span>, <span class="dv">6</span>, <span class="dv">1</span>))</a>
+<a class="sourceLine" id="cb287-2" data-line-number="2">results<span class="op">$</span>optim_rmse</a></code></pre></div>
 <pre><code>## [1] 6.851048</code></pre>
-<div class="sourceCode" id="cb282"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb282-1" data-line-number="1">results<span class="op">$</span>optimal_model<span class="op">$</span>control</a></code></pre></div>
+<div class="sourceCode" id="cb289"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb289-1" data-line-number="1">results<span class="op">$</span>optimal_model<span class="op">$</span>control</a></code></pre></div>
 <pre><code>## $minsplit
 ## [1] 2
 ## 
@@ -717,97 +717,87 @@ RMSE = \sqrt\frac{\sum_i^n(P_i-O_i)^2}{n}
 <p><img src="/Users/esteban/Dropbox/ML/biosml/pics/bagged.png" /></p>
 <p>So you get a lot of different trees whose performance can be averaged over boostrapped data sets which might include observations several times or not at all. This should result in less variance.</p>
 <p>A reason NOT to use bagged trees involves the idea that a collection of trees is not nearly as easy to look at as a single decision tree. We can actually write our own version of bagged trees using a for loop. Sort of like what we did above. First, let’s get our test / train pair for the Pima Indians data.</p>
-<div class="sourceCode" id="cb284"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb284-1" data-line-number="1"><span class="kw">set.seed</span>(<span class="dv">123</span>)</a>
-<a class="sourceLine" id="cb284-2" data-line-number="2">percent &lt;-<span class="st"> </span><span class="fl">.80</span></a>
-<a class="sourceLine" id="cb284-3" data-line-number="3">train_idx &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(pm),</a>
-<a class="sourceLine" id="cb284-4" data-line-number="4">                      <span class="kw">round</span>(percent<span class="op">*</span><span class="kw">nrow</span>(pm)))</a>
-<a class="sourceLine" id="cb284-5" data-line-number="5"></a>
-<a class="sourceLine" id="cb284-6" data-line-number="6">train_idx[<span class="dv">1</span><span class="op">:</span><span class="dv">10</span>]</a></code></pre></div>
+<div class="sourceCode" id="cb291"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb291-1" data-line-number="1"><span class="kw">set.seed</span>(<span class="dv">123</span>)</a>
+<a class="sourceLine" id="cb291-2" data-line-number="2">percent &lt;-<span class="st"> </span><span class="fl">.80</span></a>
+<a class="sourceLine" id="cb291-3" data-line-number="3">train_idx &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(pm),</a>
+<a class="sourceLine" id="cb291-4" data-line-number="4">                      <span class="kw">round</span>(percent<span class="op">*</span><span class="kw">nrow</span>(pm)))</a>
+<a class="sourceLine" id="cb291-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb291-6" data-line-number="6">train_idx[<span class="dv">1</span><span class="op">:</span><span class="dv">10</span>]</a></code></pre></div>
 <pre><code>##  [1] 415 463 179 526 195 118 299 229 244  14</code></pre>
-<div class="sourceCode" id="cb286"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb286-1" data-line-number="1"><span class="co"># Subset the pm data frame to training indices only</span></a>
-<a class="sourceLine" id="cb286-2" data-line-number="2">pm_train &lt;-<span class="st"> </span>pm[train_idx, ]  </a>
-<a class="sourceLine" id="cb286-3" data-line-number="3">  </a>
-<a class="sourceLine" id="cb286-4" data-line-number="4"><span class="co"># Exclude the training indices to create the test set</span></a>
-<a class="sourceLine" id="cb286-5" data-line-number="5">pm_test &lt;-<span class="st"> </span>pm[<span class="op">-</span>train_idx, ]  </a></code></pre></div>
+<div class="sourceCode" id="cb293"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb293-1" data-line-number="1"><span class="co"># Subset the pm data frame to training indices only</span></a>
+<a class="sourceLine" id="cb293-2" data-line-number="2">pm_train &lt;-<span class="st"> </span>pm[train_idx, ]  </a>
+<a class="sourceLine" id="cb293-3" data-line-number="3">  </a>
+<a class="sourceLine" id="cb293-4" data-line-number="4"><span class="co"># Exclude the training indices to create the test set</span></a>
+<a class="sourceLine" id="cb293-5" data-line-number="5">pm_test &lt;-<span class="st"> </span>pm[<span class="op">-</span>train_idx, ]  </a></code></pre></div>
 <p>Next, well create 50 different trees based on 50 boostrapped samples of the training data. We will sample WITH replacement. This means that some of the rows from the data will be repeated and some will be left out all together. We can figure out what rows were not included and use them to create a test set referred to as “out of bag” samples.</p>
-<div class="sourceCode" id="cb287"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb287-1" data-line-number="1">training_boot_idx &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(pm),<span class="dt">replace=</span><span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb287-2" data-line-number="2">test_boot_idx &lt;-<span class="st"> </span><span class="op">!</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">32</span> <span class="op">%in%</span><span class="st"> </span>training_boot_idx)</a></code></pre></div>
+<div class="sourceCode" id="cb294"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb294-1" data-line-number="1">training_boot_idx &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(pm),<span class="dt">replace=</span><span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb294-2" data-line-number="2">test_boot_idx &lt;-<span class="st"> </span><span class="op">!</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">32</span> <span class="op">%in%</span><span class="st"> </span>training_boot_idx)</a></code></pre></div>
 <p>Let’s start looping</p>
-<div class="sourceCode" id="cb288"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb288-1" data-line-number="1"><span class="kw">library</span>(Metrics)</a>
-<a class="sourceLine" id="cb288-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb288-3" data-line-number="3">modl   &lt;-<span class="st"> </span><span class="kw">list</span>()</a>
-<a class="sourceLine" id="cb288-4" data-line-number="4">predl  &lt;-<span class="st"> </span><span class="kw">list</span>()</a>
-<a class="sourceLine" id="cb288-5" data-line-number="5">aucval &lt;-<span class="st"> </span><span class="kw">vector</span>()</a>
-<a class="sourceLine" id="cb288-6" data-line-number="6">acc    &lt;-<span class="st"> </span><span class="kw">vector</span>()</a>
-<a class="sourceLine" id="cb288-7" data-line-number="7"></a>
-<a class="sourceLine" id="cb288-8" data-line-number="8">number_of_boostraps &lt;-<span class="st"> </span><span class="dv">50</span></a>
-<a class="sourceLine" id="cb288-9" data-line-number="9"></a>
-<a class="sourceLine" id="cb288-10" data-line-number="10"><span class="cf">for</span> (ii <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>number_of_boostraps) {</a>
-<a class="sourceLine" id="cb288-11" data-line-number="11">  </a>
-<a class="sourceLine" id="cb288-12" data-line-number="12">  training_boot_idx &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(pm),<span class="dt">replace=</span><span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb288-13" data-line-number="13">  test_boot_idx &lt;-<span class="st"> </span><span class="op">!</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">32</span> <span class="op">%in%</span><span class="st"> </span>training_boot_idx)</a>
-<a class="sourceLine" id="cb288-14" data-line-number="14">  </a>
-<a class="sourceLine" id="cb288-15" data-line-number="15">  modl[[ii]] &lt;-<span class="st"> </span><span class="kw">rpart</span>(diabetes <span class="op">~</span><span class="st"> </span>., </a>
-<a class="sourceLine" id="cb288-16" data-line-number="16">                   <span class="dt">data =</span> pm[training_boot_idx,],</a>
-<a class="sourceLine" id="cb288-17" data-line-number="17">                   <span class="dt">method =</span> <span class="st">&quot;class&quot;</span></a>
-<a class="sourceLine" id="cb288-18" data-line-number="18">                )</a>
-<a class="sourceLine" id="cb288-19" data-line-number="19">  </a>
-<a class="sourceLine" id="cb288-20" data-line-number="20">  <span class="co"># This list will contain / hold the models build on the bootstrap</span></a>
-<a class="sourceLine" id="cb288-21" data-line-number="21">  </a>
-<a class="sourceLine" id="cb288-22" data-line-number="22">  predl[[ii]]  &lt;-<span class="st"> </span><span class="kw">predict</span>(modl[[ii]],</a>
-<a class="sourceLine" id="cb288-23" data-line-number="23">                          <span class="dt">newdata=</span>pm[test_boot_idx,],</a>
-<a class="sourceLine" id="cb288-24" data-line-number="24">                          <span class="dt">type=</span><span class="st">&quot;prob&quot;</span>)</a>
-<a class="sourceLine" id="cb288-25" data-line-number="25">  </a>
-<a class="sourceLine" id="cb288-26" data-line-number="26">  converted &lt;-<span class="st"> </span><span class="kw">ifelse</span>(pm[test_boot_idx,]<span class="op">$</span>diabetes <span class="op">==</span><span class="st"> &quot;pos&quot;</span>,<span class="dv">1</span>,<span class="dv">0</span>)</a>
-<a class="sourceLine" id="cb288-27" data-line-number="27">  </a>
-<a class="sourceLine" id="cb288-28" data-line-number="28">  <span class="co"># Let&#39;s create an estimate of the AUC</span></a>
-<a class="sourceLine" id="cb288-29" data-line-number="29">  </a>
-<a class="sourceLine" id="cb288-30" data-line-number="30">  aucval[ii] &lt;-<span class="st"> </span>Metrics<span class="op">::</span><span class="kw">auc</span>(<span class="dt">actual =</span> converted,</a>
-<a class="sourceLine" id="cb288-31" data-line-number="31">                    <span class="dt">predicted =</span> predl[[ii]][,<span class="dv">2</span>])</a>
-<a class="sourceLine" id="cb288-32" data-line-number="32">}</a></code></pre></div>
+<div class="sourceCode" id="cb295"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb295-1" data-line-number="1"><span class="kw">library</span>(Metrics)</a>
+<a class="sourceLine" id="cb295-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb295-3" data-line-number="3">modl   &lt;-<span class="st"> </span><span class="kw">list</span>()</a>
+<a class="sourceLine" id="cb295-4" data-line-number="4">predl  &lt;-<span class="st"> </span><span class="kw">list</span>()</a>
+<a class="sourceLine" id="cb295-5" data-line-number="5">aucval &lt;-<span class="st"> </span><span class="kw">vector</span>()</a>
+<a class="sourceLine" id="cb295-6" data-line-number="6">acc    &lt;-<span class="st"> </span><span class="kw">vector</span>()</a>
+<a class="sourceLine" id="cb295-7" data-line-number="7"></a>
+<a class="sourceLine" id="cb295-8" data-line-number="8">number_of_boostraps &lt;-<span class="st"> </span><span class="dv">50</span></a>
+<a class="sourceLine" id="cb295-9" data-line-number="9"></a>
+<a class="sourceLine" id="cb295-10" data-line-number="10"><span class="cf">for</span> (ii <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>number_of_boostraps) {</a>
+<a class="sourceLine" id="cb295-11" data-line-number="11">  </a>
+<a class="sourceLine" id="cb295-12" data-line-number="12">  training_boot_idx &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(pm),<span class="dt">replace=</span><span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb295-13" data-line-number="13">  test_boot_idx &lt;-<span class="st"> </span><span class="op">!</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">32</span> <span class="op">%in%</span><span class="st"> </span>training_boot_idx)</a>
+<a class="sourceLine" id="cb295-14" data-line-number="14">  </a>
+<a class="sourceLine" id="cb295-15" data-line-number="15">  modl[[ii]] &lt;-<span class="st"> </span><span class="kw">rpart</span>(diabetes <span class="op">~</span><span class="st"> </span>., </a>
+<a class="sourceLine" id="cb295-16" data-line-number="16">                   <span class="dt">data =</span> pm[training_boot_idx,],</a>
+<a class="sourceLine" id="cb295-17" data-line-number="17">                   <span class="dt">method =</span> <span class="st">&quot;class&quot;</span></a>
+<a class="sourceLine" id="cb295-18" data-line-number="18">                )</a>
+<a class="sourceLine" id="cb295-19" data-line-number="19">  </a>
+<a class="sourceLine" id="cb295-20" data-line-number="20">  <span class="co"># This list will contain / hold the models build on the bootstrap</span></a>
+<a class="sourceLine" id="cb295-21" data-line-number="21">  </a>
+<a class="sourceLine" id="cb295-22" data-line-number="22">  predl[[ii]]  &lt;-<span class="st"> </span><span class="kw">predict</span>(modl[[ii]],</a>
+<a class="sourceLine" id="cb295-23" data-line-number="23">                          <span class="dt">newdata=</span>pm[test_boot_idx,],</a>
+<a class="sourceLine" id="cb295-24" data-line-number="24">                          <span class="dt">type=</span><span class="st">&quot;prob&quot;</span>)</a>
+<a class="sourceLine" id="cb295-25" data-line-number="25">  </a>
+<a class="sourceLine" id="cb295-26" data-line-number="26">  converted &lt;-<span class="st"> </span><span class="kw">ifelse</span>(pm[test_boot_idx,]<span class="op">$</span>diabetes <span class="op">==</span><span class="st"> &quot;pos&quot;</span>,<span class="dv">1</span>,<span class="dv">0</span>)</a>
+<a class="sourceLine" id="cb295-27" data-line-number="27">  </a>
+<a class="sourceLine" id="cb295-28" data-line-number="28">  <span class="co"># Let&#39;s create an estimate of the AUC</span></a>
+<a class="sourceLine" id="cb295-29" data-line-number="29">  </a>
+<a class="sourceLine" id="cb295-30" data-line-number="30">  aucval[ii] &lt;-<span class="st"> </span>Metrics<span class="op">::</span><span class="kw">auc</span>(<span class="dt">actual =</span> converted,</a>
+<a class="sourceLine" id="cb295-31" data-line-number="31">                    <span class="dt">predicted =</span> predl[[ii]][,<span class="dv">2</span>])</a>
+<a class="sourceLine" id="cb295-32" data-line-number="32">}</a></code></pre></div>
 <p>Now check all of the accuracy estimates and then average them. Remember this is supposed to help us to better estimate the out of sample error.</p>
-<div class="sourceCode" id="cb289"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb289-1" data-line-number="1"><span class="kw">boxplot</span>(aucval)</a></code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-67-1.png" width="672" /></p>
-<div class="sourceCode" id="cb290"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb290-1" data-line-number="1"><span class="kw">mean</span>(aucval)</a></code></pre></div>
+<div class="sourceCode" id="cb296"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb296-1" data-line-number="1"><span class="kw">boxplot</span>(aucval)</a></code></pre></div>
+<p><img src="biosml_files/figure-html/unnamed-chunk-65-1.png" width="672" /></p>
+<div class="sourceCode" id="cb297"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb297-1" data-line-number="1"><span class="kw">mean</span>(aucval)</a></code></pre></div>
 <pre><code>## [1] 0.8217163</code></pre>
 <p>Now we’ll compare this to the function called “bagging” from the <strong>ipred</strong> package which does bagged trees directly.</p>
 <p><img src="/Users/esteban/Dropbox/ML/biosml/pics/bagging2.png" /></p>
-<div class="sourceCode" id="cb292"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb292-1" data-line-number="1"><span class="kw">library</span>(ipred)</a>
-<a class="sourceLine" id="cb292-2" data-line-number="2">bagged_pm &lt;-<span class="st"> </span><span class="kw">bagging</span>(diabetes <span class="op">~</span><span class="st"> </span>.,</a>
-<a class="sourceLine" id="cb292-3" data-line-number="3">                     <span class="dt">data =</span> pm_train, <span class="dt">coob =</span> <span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb292-4" data-line-number="4"></a>
-<a class="sourceLine" id="cb292-5" data-line-number="5">bagged_pred &lt;-<span class="st"> </span><span class="kw">predict</span>(bagged_pm,</a>
-<a class="sourceLine" id="cb292-6" data-line-number="6">                       <span class="dt">newdata =</span> pm_test, <span class="dt">type=</span><span class="st">&quot;prob&quot;</span>)</a></code></pre></div>
-<div class="sourceCode" id="cb293"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb293-1" data-line-number="1">converted &lt;-<span class="st"> </span><span class="kw">ifelse</span>(pm_test<span class="op">$</span>diabetes <span class="op">==</span><span class="st"> &quot;pos&quot;</span>,<span class="dv">1</span>,<span class="dv">0</span>)</a>
-<a class="sourceLine" id="cb293-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb293-3" data-line-number="3">aucval    &lt;-<span class="st"> </span>Metrics<span class="op">::</span><span class="kw">auc</span>(<span class="dt">actual =</span> converted,</a>
-<a class="sourceLine" id="cb293-4" data-line-number="4">                    <span class="dt">predicted =</span> bagged_pred[,<span class="dv">2</span>])</a>
-<a class="sourceLine" id="cb293-5" data-line-number="5"></a>
-<a class="sourceLine" id="cb293-6" data-line-number="6">aucval</a></code></pre></div>
+<div class="sourceCode" id="cb299"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb299-1" data-line-number="1"><span class="kw">library</span>(ipred)</a>
+<a class="sourceLine" id="cb299-2" data-line-number="2">bagged_pm &lt;-<span class="st"> </span><span class="kw">bagging</span>(diabetes <span class="op">~</span><span class="st"> </span>.,</a>
+<a class="sourceLine" id="cb299-3" data-line-number="3">                     <span class="dt">data =</span> pm_train, <span class="dt">coob =</span> <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb299-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb299-5" data-line-number="5">bagged_pred &lt;-<span class="st"> </span><span class="kw">predict</span>(bagged_pm,</a>
+<a class="sourceLine" id="cb299-6" data-line-number="6">                       <span class="dt">newdata =</span> pm_test, <span class="dt">type=</span><span class="st">&quot;prob&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb300"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb300-1" data-line-number="1">converted &lt;-<span class="st"> </span><span class="kw">ifelse</span>(pm_test<span class="op">$</span>diabetes <span class="op">==</span><span class="st"> &quot;pos&quot;</span>,<span class="dv">1</span>,<span class="dv">0</span>)</a>
+<a class="sourceLine" id="cb300-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb300-3" data-line-number="3">aucval    &lt;-<span class="st"> </span>Metrics<span class="op">::</span><span class="kw">auc</span>(<span class="dt">actual =</span> converted,</a>
+<a class="sourceLine" id="cb300-4" data-line-number="4">                    <span class="dt">predicted =</span> bagged_pred[,<span class="dv">2</span>])</a>
+<a class="sourceLine" id="cb300-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb300-6" data-line-number="6">aucval</a></code></pre></div>
 <pre><code>## [1] 0.8312594</code></pre>
 <p>This is better than the 0.7804305 we got when using a single Decision tree.</p>
 </div>
 <div id="random-forests-1" class="section level2">
 <h2><span class="header-section-number">8.8</span> Random Forests</h2>
 <p>In Random Forest, only a subset of features are selected at random at each split in a decision tree. In bagging, all features are used.</p>
-<div class="sourceCode" id="cb295"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb295-1" data-line-number="1"><span class="kw">library</span>(randomForest)</a></code></pre></div>
-<pre><code>## randomForest 4.6-14</code></pre>
-<pre><code>## Type rfNews() to see new features/changes/bug fixes.</code></pre>
-<pre><code>## 
-## Attaching package: &#39;randomForest&#39;</code></pre>
-<pre><code>## The following object is masked from &#39;package:ggplot2&#39;:
-## 
-##     margin</code></pre>
-<pre><code>## The following object is masked from &#39;package:dplyr&#39;:
-## 
-##     combine</code></pre>
-<div class="sourceCode" id="cb301"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb301-1" data-line-number="1"><span class="co"># Train a Random Forest</span></a>
-<a class="sourceLine" id="cb301-2" data-line-number="2"><span class="kw">set.seed</span>(<span class="dv">1</span>)  <span class="co"># for reproducibility</span></a>
-<a class="sourceLine" id="cb301-3" data-line-number="3">pm_rf_model &lt;-<span class="st"> </span><span class="kw">randomForest</span>(<span class="dt">formula =</span> diabetes <span class="op">~</span><span class="st"> </span>., </a>
-<a class="sourceLine" id="cb301-4" data-line-number="4">                             <span class="dt">data =</span>pm_train)</a>
-<a class="sourceLine" id="cb301-5" data-line-number="5">                             </a>
-<a class="sourceLine" id="cb301-6" data-line-number="6"><span class="co"># Print the model output                             </span></a>
-<a class="sourceLine" id="cb301-7" data-line-number="7"><span class="kw">print</span>(pm_rf_model)</a></code></pre></div>
+<div class="sourceCode" id="cb302"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb302-1" data-line-number="1"><span class="kw">library</span>(randomForest)</a></code></pre></div>
+<div class="sourceCode" id="cb303"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb303-1" data-line-number="1"><span class="co"># Train a Random Forest</span></a>
+<a class="sourceLine" id="cb303-2" data-line-number="2"><span class="kw">set.seed</span>(<span class="dv">1</span>)  <span class="co"># for reproducibility</span></a>
+<a class="sourceLine" id="cb303-3" data-line-number="3">pm_rf_model &lt;-<span class="st"> </span><span class="kw">randomForest</span>(<span class="dt">formula =</span> diabetes <span class="op">~</span><span class="st"> </span>., </a>
+<a class="sourceLine" id="cb303-4" data-line-number="4">                             <span class="dt">data =</span>pm_train)</a>
+<a class="sourceLine" id="cb303-5" data-line-number="5">                             </a>
+<a class="sourceLine" id="cb303-6" data-line-number="6"><span class="co"># Print the model output                             </span></a>
+<a class="sourceLine" id="cb303-7" data-line-number="7"><span class="kw">print</span>(pm_rf_model)</a></code></pre></div>
 <pre><code>## 
 ## Call:
 ##  randomForest(formula = diabetes ~ ., data = pm_train) 
@@ -821,7 +811,7 @@ RMSE = \sqrt\frac{\sum_i^n(P_i-O_i)^2}{n}
 ## neg 336  62   0.1557789
 ## pos  95 121   0.4398148</code></pre>
 <p>Let’s look at the out of bag error matrix</p>
-<div class="sourceCode" id="cb303"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb303-1" data-line-number="1"><span class="kw">head</span>(pm_rf_model<span class="op">$</span>err.rate)</a></code></pre></div>
+<div class="sourceCode" id="cb305"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb305-1" data-line-number="1"><span class="kw">head</span>(pm_rf_model<span class="op">$</span>err.rate)</a></code></pre></div>
 <pre><code>##            OOB       neg       pos
 ## [1,] 0.3274336 0.2816901 0.4047619
 ## [2,] 0.3185596 0.2533333 0.4264706

@@ -1,6 +1,6 @@
 ---
 title: "Predictive Learning in R"
-author: "Steve Pittard"
+author: "Steve Pittard - wsp@emory.edu"
 site: bookdown::bookdown_site
 documentclass: book
 output:
@@ -398,13 +398,97 @@ A data frame with 32 observations on 11 (numeric) variables.
 [,11]	carb	Number of carburetors
 ```
 
-## Scatterplot
+## Visualizations
 
-Let's look at a **pairs()** plot to see if there are any obvious linear relationships between any of the variables. Some of these variables can be considered as factors or categories (such as cyl, vs, am, gear, and carb) so for now we will exclude them to focus only on the continuous / measured variables.
+This is a big topic on its own but winds up being the gaetway into forming hypotheses to help drive the aims of any machine learning project. On the other hand, some people just start building models with variables they beleive to be of interest and only later worry about how the data might look. With respect to the above data frame, the idea of Fuel Economy is usually a popular conceptwhich then leads one to look at the **mpg** feature in the data set. Or, when we look at the Pima Indians dataset, we'll see that the "diabetes" column is sure to be of interest to someone wanting to use other variables from that dataset to predict whether someone has that disease or not. 
+
+Not all datasets have a clear cut variable that you are trying to predict.  Sometimes you go on a "fishing expedition" to find interesting variabesl and it's only after working with the data, buildind models, and evaluating them that one comes to an understanding of what variables / features are actually relevant. In the mean time though, doing some plots can be helpful
+
+### Scatterplots
+
+For contiunuous quantities, things like histograms, scatterplots, strip charts, and dot plots can be useful.  Let's look at a **pairs()** plot which plots each variable in the data frame against all others to see if there are any obvious linear relationships between any of the variables. Some of these variables can be considered as factors or categories (such as cyl, vs, am, gear, and carb) so for now we will exclude them to focus only on the continuous / measured variables.
 
 ```{r pairsplot}
-pairs(mtcars[,c(1,3:7)])
+pairs(mtcars, main="Pairs Plot for All Variables")
 ```
+
+
+This plot is rather busy but instructive nonetheless as it confirms the idea that some variables, such as am, vs, cyl, gear are more ordinal or categorical than truly numeric in nature. We could narrow down our plot by looking at just the continuous quantitites. This is also interesting in that we see a number of apparent linear or polynomial style relationships that might benefit from some form on linear modeling. If we are already thinking about how to deal with the **mpg** variable we can see that it is correlated with a number of variables. 
+
+```{r pairsnumeric}
+pairs(mtcars[,c(1,3:7)],main="Pairs plot for numeric features")
+```
+
+We might also look at how MPG values are distributed across cylinder groups (4,6, or 8). The boxplot is an ideal choice for summarizing continuous data across groups. We check to see if there appear to be significant differences between the median MPG. 
+
+### Boxplots 
+
+```{r boxmpg}
+mtcars %>% mutate(cyl=factor(cyl)) %>% 
+  ggplot(aes(x=cyl,y=mpg)) + 
+  geom_boxplot() + theme_bw() + ggtitle("MPG Across Cylinder Groups")
+```
+
+The same could be done for tranmission types where we can definitely see a difference emerging between MPG for Automatic (0) vs Manual (1) Transmissions. 
+
+```{r amplot}
+mtcars %>% mutate(cyl=factor(cyl),am=factor(am,labels=c("Manual","Auto"))) %>% 
+  ggplot(aes(x=am,y=mpg)) + 
+  geom_boxplot() + theme_bw() + 
+  ggtitle("MPG Across Transmission Types") + xlab("Transmission Type")
+```
+
+If we wanted to look at above relationships simulatenously we could use something like ggplot to help us. 
+```{r}
+mtcars %>% mutate(cyl=factor(cyl),am=factor(am,labels=c("Manual","Auto"))) %>% 
+  ggplot(aes(x=am,y=mpg)) + 
+  geom_boxplot() + facet_wrap(.~cyl) + theme_bw() + 
+  ggtitle("MPG Across Transmission Types And Cylinder Group") + xlab("Transmission Type") 
+```
+
+### Histograms
+
+Another favorite plot type for numeric data is the histogram although we don't have much data here. Still, we can make a histogram of the MPG to get a sense of a possible distribution. This could look better but you get the overall message that most cars exhibit MPG in the range of 12-25 MPG. 
+
+```{r gghist}
+mtcars %>% ggplot(aes(x=mpg)) + 
+  geom_histogram(bins=15,fill="aquamarine",color="black") + 
+  theme_bw() + ggtitle("Distribution of MPG")
+```
+
+
+```{r mpgtrans}
+mtcars %>% ggplot(aes(x=mpg)) + 
+  geom_histogram(bins=8,fill="aquamarine",color="black") + 
+  theme_classic() + 
+  facet_wrap(~factor(am,labels=c("Auto","Manual")),ncol=1) +
+  ggtitle("Distrtibution of MPG By Transmission Type")
+```
+
+The larger point of this graph is that we clearly see differences between MPG across the transmission types. 
+
+### Tables
+
+Tables a are a good way to visualize relationships between categories. This might be helpful to identify what categories are more (or less) frequently occurring. One need not use graphics to see these relationships. Text Tables can easily be made although they can become hard to interpret. 
+
+```{r textab}
+mtcars %>% 
+  mutate(am=factor(am,labels=c("Automatic","Manual")),
+         cyl=factor(cyl)) %>% count(am,cyl) 
+```
+
+This is why we might choose a bar plot since now we can easily see that Manual Transmissions are under represented in the 8 cylinder class. 
+
+```{r tabplotbar}
+mtcars %>% mutate(am=factor(am,labels=c("Automatic","Mabual")),
+                  cyl=factor(cyl)) %>% 
+                  count(am,cyl) %>%  
+                    ggplot(aes(x=cyl,y=n)) + 
+                    geom_col(aes(fill=am)) + 
+                    theme_classic()
+```
+
+While knowing how to make plots and graphs are useful. 
 
 ## Correlations
 
@@ -660,8 +744,8 @@ compute_rmse(xgpreds,test_df$mpg)
 ```
 
 
-```{r}
-split_train_test <- function(prop=.70) {
+```{r xgboostfunc}
+split_train_test_xg <- function(prop=.70) {
   
     shuffled <- sample(1:nrow(mtcars))
     shuff_mtcars <- mtcars[shuffled,]
@@ -682,8 +766,13 @@ split_train_test <- function(prop=.70) {
 ```
 
 
-
-
+```{r}
+myseq <- seq(.6,.8,.05)
+comp_mat <- t(replicate(100,sapply(myseq,function(x) split_train_test_xg(x))))
+colnames(comp_mat) <- as.character(myseq)
+boxplot(comp_mat,ylab="RMSE",xlab="Train / Test Proportion",
+        main="XGBoost - Comparison of Different Train / Test Proprtions")
+```
 
 
 ## Summary
