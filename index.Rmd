@@ -347,6 +347,14 @@ Decision Tree for Levels of Measurement:
 
 # A Motivating Example 
 
+Here is a high level over view of an ML work flow. Note that:
+
+1) It is a cycle, quite likely to be repeated multiple times before arriving at some actionable result
+2) The driving questions / hypotheses are subject to change, redefinition, or abandonment 
+3) Multiple people might be involved 
+
+![](./pics/flowwork1.png)
+
 You will need to install and then load the following packages. There will be more as you work through the examples. 
 
 ```{r eval=FALSE}
@@ -516,7 +524,7 @@ We trained the model on the first 21 rows of the data frame which might contain 
 One thing we could do is to experiment with another split of the data, perhaps in a different proportion (e.g. 80/20) or maybe even a series of splits to see if we can get an idea of how widely the RMSE varies. Here we create a sample of 80% of mtcars to create a training set.  
 
 ```{r lmodmt2}
-# Shuffle the row numbers of the data frame
+set.seed(123)
 
 (train_index <- sample(1:nrow(mtcars),nrow(mtcars)*.80))
 
@@ -548,30 +556,139 @@ test_pred  <- predict(
 (test_rmse <- compute_rmse(test_pred,test_df$mpg))
 ```
 
-## Other Methods ? 
+## Some Additional Considerations
 
-Could we improve the situation by using another modeling method ? This would be something that we could try with out much effort. We just have to identify an appropriate method. Let's look at a Random Forest method called **ranger**. 
+So in smaller data sets it can be useful to choose a different split that allocates more data to the testing dataset such as a 60/40 or 70/30 split. It might also be useful to first shuffle the data frame in case there is some type of intrinsic ordering of which we were unaware. Both of these are easy to do.
 
+```{r shuffle}
+set.seed(123)
+shuffled <- sample(1:nrow(mtcars))
+shuff_mtcars <- mtcars[shuffled,]
 
-```{r ranger1}
-library(ranger)
+(train_index <- sample(1:nrow(shuff_mtcars),nrow(shuff_mtcars)*.70))
 
-# Call the ranger function 
-my_rpart <- ranger(mpg ~ ., data = train_df)
+# Get 80% of the records from the data frame
+train_df <- shuff_mtcars[train_index,]
 
-# Make some Predictions
-pred <- predict(my_rpart, test_df)
-my_rpart_preds <- pred$predictions
+# We have approx 80% of the data in train_df
+nrow(train_df)
 
-# What is the RMSE 
-compute_rmse(my_rpart_preds,test_df$mpg)
+# Get the other 20% that we wish to test on
+test_df  <- shuff_mtcars[-train_index,]
 ```
 
-Well the computed RMSE with the **ranger** method seems to be better in the sense that it is smaller than with the **lm** function. We might be on to something or maybe we just got lucky. We need a better way to proceed - something with more rigor. 
+```{r shuffmod}
+train_model_lm <- lm(myform, data=train_df)
+
+# Test the model on the test / holdout data frame
+
+test_pred  <- predict(
+  train_model_lm,
+  newdata=test_df,
+  type="response"
+)
+
+(test_rmse <- compute_rmse(test_pred,test_df$mpg))
+```
+
+```{r splittfunc}
+split_train_test <- function(prop=.70) {
+  
+    shuffled <- sample(1:nrow(mtcars))
+    shuff_mtcars <- mtcars[shuffled,]
+    
+    (train_index <- sample(1:nrow(shuff_mtcars),nrow(shuff_mtcars)*prop))
+    
+    # Get prop of the records from the data frame
+    train_df <- shuff_mtcars[train_index,]
+    
+    # Get the other 20% that we wish to test on
+    test_df  <- shuff_mtcars[-train_index,]
+    
+    train_model_lm <- lm(myform, data=train_df)
+
+    test_pred <- predict(train_model_lm, newdata=test_df,type="response")
+    return(compute_rmse(test_pred,test_df$mpg))
+}
+
+```
+
+The first thing to notice is that mutiple calls to the function can yield different RMSE values even without changing the proporiton of the train / test sets. Let's call this function 100 times with the 70/30 split and check the resulting boxplot to see how the RMSE values vary
+
+```{r rmsebox}
+replicate(100,split_train_test()) %>% boxplot()
+```
+
+Does this look much different than say a 60/40 split ? Or a 65/35
+
+```{r rmsebox2}
+replicate(100,split_train_test(prop=.6)) %>% boxplot()
+#
+replicate(100,split_train_test(prop=.65)) %>% boxplot()
+
+```
+
+Let's generalize this comparison
+
+```{r compmatrep}
+myseq <- seq(.6,.8,.05)
+comp_mat <- t(replicate(100,sapply(myseq,function(x) split_train_test(x))))
+colnames(comp_mat) <- as.character(myseq)
+boxplot(comp_mat,ylab="RMSE",xlab="Train / Test Proportion",
+        main="Comparison of Different Train / Test Proprtions")
+```
+
+It looks to me like the .6 or .7 split provides the least variation for the RMSE which would be quite useful when estimating out of sample error. While other splits seem to give a lower median RMSE, they have more variation. 
+
+## Other Methods ? 
+
+Could we improve the situation by using another modeling method ? This would be something that we could try with out much effort as long as we know the name of the method and how to call it. This can sometimes be a challenge as you have to find the documentation for it and figure out how to prepare the data before calling the command. In the above case we just used the formula interface which is favored in R but not all functions support that. Just to say that you will generally have to study each new function to see how it works. 
+
+Let's check out the [XGBoost](https://xgboost.readthedocs.io/en/latest/) function which is an algorithm that has enjoyed recent popularity and celebrity in the world of Data Science. XGBoost is an implementation of gradient boosted decision trees designed for speed and performance. XGBoost requires us to specify the input as matrices. We also have to give it the input in the form of X, Y arguments where the first is a matrix of all the predictor variables and the latter is the thing being predictd. In this case the MPG which is the first column
+
+
+```{r xgbooster, message=FALSE}
+library(xgboost)
+xgb <- xgboost(data = as.matrix(train_df[,-1]),label=train_df[,1],nrounds=25,verbose=0)
+```
+
+How does this perform in the prediction phase ? It turns out that it's pretty impressive when compared to the humble **lm** function. The question remains though which method is easier to defend if you were challenged ? The **lm** function implements a very well established and well known model whose parameters are well known. So even though XGBosst seems to be good at minimizing the RMSE it might be better to stick with an approach like **lm** even if it performs more poorly. 
+
+```{r xgpredict}
+xgboost_preds <- predict(xgb,as.matrix(test_df[,-1])) 
+compute_rmse(xgpreds,test_df$mpg)
+```
+
+
+```{r}
+split_train_test <- function(prop=.70) {
+  
+    shuffled <- sample(1:nrow(mtcars))
+    shuff_mtcars <- mtcars[shuffled,]
+    
+    (train_index <- sample(1:nrow(shuff_mtcars),nrow(shuff_mtcars)*prop))
+    
+    # Get prop of the records from the data frame
+    train_df <- shuff_mtcars[train_index,]
+    
+    # Get the other 20% that we wish to test on
+    test_df  <- shuff_mtcars[-train_index,]
+    
+    xgb <- xgboost(data = as.matrix(train_df[,-1]),label=train_df[,1],nrounds=25,verbose=0)
+
+    xgboost_preds <- predict(xgb,as.matrix(test_df[,-1])) 
+    return(compute_rmse(xgboost_preds,test_df$mpg))
+}
+```
+
+
+
+
+
 
 ## Summary
 
-Aside from trying an alternative method to **lm** what we have done here is to sample some portion of the original mtcars data frame to use as a training set while holding out the rest of the data to use as a test data  to see how well our model performed. We could repeat this (re)sampling activity multiple times to better train our data over different segments or "folds" of data so any model we ultimately generate will "learn" as much from the data as it can without modeling any "noise". 
+Aside from trying an alternative method to **lm** what we have done here is to sample some portion of the original **mtcars** data frame to use as a training set while holding out the rest of the data to use as a test data  to see how well our model performed. We could repeat this (re)sampling activity multiple times to better train our data over different segments or "folds" of data so any model we ultimately generate will "learn" as much from the data as it can without modeling any "noise". 
 
 There are various methods for doing this including K-Fold Cross Validation and Bootstrap Resampling. Let's dig in a little deeper into these methods because they help us build models that might offer more robust performance when applied to new data. 
 
