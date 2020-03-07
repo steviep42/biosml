@@ -304,15 +304,16 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>Next up we consider the issue of building a model to predict a binary (e.g. “yes” / “no” or “positive /”negative“) outcome although we might also predict more than one class. For the sake of explanation we’ll keep our attention to the”two class&quot; situation.</p>
 <div id="performance-measures" class="section level2">
 <h2><span class="header-section-number">6.1</span> Performance Measures</h2>
-<p>With Linear Regression we were predicting a continuous outcome with the goal of being able to minimize the RMSE (root mean square error). In classification problems we need a metric or “performance measure” that we can use to judge the effectiveness of any model we create.</p>
-<p>As an example, we’ll spend some time with the <em>PimaIndiansDiabetes</em> dataframe that is part of the <strong>mlbench</strong> package. You can install this package via the <strong>Tools -&gt; Install Package</strong> menu item within RStudio or type the following at the R console prompt. Or you can read it in
-straight from the internet.</p>
-<div class="sourceCode" id="cb167"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb167-1" data-line-number="1"><span class="kw">install.packages</span>(<span class="st">&quot;mlbench&quot;</span>)</a></code></pre></div>
+<p>With Linear Regression we were predicting a continuous outcome with the goal of being able to minimize the RMSE (root mean square error). In classification problems we need a metric or “performance measure” that we can use to judge the effectiveness of any model we create. Typically in classification we would be predicting some binary outcome such as whether someone has a disease or not. In this case it would not make sense to use something like RMSE. Other measures such as Accuracy, Precision, or Sensitivity are more appropriate.</p>
+<p>An example might help - we’ll be spending some time with the <em>PimaIndiansDiabetes</em> dataframe that is part of the <strong>mlbench</strong> package. This is part of the <strong>mlbench</strong> package or you can read it in straight from the internet.</p>
+<div class="sourceCode" id="cb167"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb167-1" data-line-number="1"><span class="co"># Option install</span></a>
+<a class="sourceLine" id="cb167-2" data-line-number="2"><span class="kw">install.packages</span>(<span class="st">&quot;mlbench&quot;</span>)</a></code></pre></div>
 <p>Once you have it installed then load it into the work space as follows:</p>
 <div class="sourceCode" id="cb168"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb168-1" data-line-number="1"><span class="kw">data</span>(<span class="st">&quot;PimaIndiansDiabetes&quot;</span>)</a>
 <a class="sourceLine" id="cb168-2" data-line-number="2"></a>
 <a class="sourceLine" id="cb168-3" data-line-number="3"><span class="co"># Get a shorter handle. I hate typing. </span></a>
 <a class="sourceLine" id="cb168-4" data-line-number="4">pm &lt;-<span class="st"> </span>PimaIndiansDiabetes</a></code></pre></div>
+<p>Or just read it in.</p>
 <div class="sourceCode" id="cb169"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb169-1" data-line-number="1">url &lt;-<span class="st"> &quot;https://raw.githubusercontent.com/steviep42/bios534_spring_2020/master/data/pima.csv&quot;</span></a>
 <a class="sourceLine" id="cb169-2" data-line-number="2">pm &lt;-<span class="st"> </span><span class="kw">read.csv</span>(url)</a></code></pre></div>
 <p>The description of the data set is as follows:</p>
@@ -379,7 +380,7 @@ definitely get more of the actual negative cases. What if we moved it to say 0.9
 <a class="sourceLine" id="cb173-4" data-line-number="4"><span class="co"># the diabetes column is a factor in the original data dset</span></a>
 <a class="sourceLine" id="cb173-5" data-line-number="5"></a>
 <a class="sourceLine" id="cb173-6" data-line-number="6">glm_label_preds &lt;-<span class="st"> </span><span class="kw">factor</span>(glm_label_preds, </a>
-<a class="sourceLine" id="cb173-7" data-line-number="7">                  <span class="dt">levels =</span> <span class="kw">levels</span>(glm_test[[<span class="st">&quot;diabetes&quot;</span>]]))</a>
+<a class="sourceLine" id="cb173-7" data-line-number="7">                         <span class="dt">levels =</span> <span class="kw">levels</span>(glm_test[[<span class="st">&quot;diabetes&quot;</span>]]))</a>
 <a class="sourceLine" id="cb173-8" data-line-number="8">glm_label_preds[<span class="dv">1</span><span class="op">:</span><span class="dv">10</span>]</a></code></pre></div>
 <pre><code>##   2   6   8  22  23  30  33  36  38  40 
 ## neg neg pos pos pos pos neg neg pos pos 
@@ -518,7 +519,7 @@ definitely get more of the actual negative cases. What if we moved it to say 0.9
 <a class="sourceLine" id="cb196-11" data-line-number="11"><span class="co"># the right value to maximize the AUC (Area Under Curve)</span></a>
 <a class="sourceLine" id="cb196-12" data-line-number="12"></a>
 <a class="sourceLine" id="cb196-13" data-line-number="13"><span class="kw">text</span>(metrics[,<span class="dv">2</span>],metrics[,<span class="dv">1</span>],<span class="dt">labels=</span>metrics[,<span class="dv">3</span>],<span class="dt">cex=</span><span class="fl">0.8</span>)</a></code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-40-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/metrtpr-1.png" width="672" /></p>
 <p>It turns out that area under an ROC curve is a measure of the usefulness of a test in general, where a greater area means a more useful test. Ideally we would want the area under the curve (also known as “AUC”) to be as close to 1 as possible. The dashed line above represents a classifier that basically “guesses” the outcome (pos vs neg) using a “coin flip” mentality.</p>
 <p>So, our classifier does better than that but certainly not perfectly. Now, we also care about the threshold that gives us a good balance between the TPR and FPR. I mean if we wanted a max AUC with no other concerns, we would also be accepting a very high FPR. So this is why looking at the curve is useful.</p>
 </div>

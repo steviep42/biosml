@@ -302,7 +302,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="classification-example" class="section level1">
 <h1><span class="header-section-number">Chapter 7</span> Classification Example</h1>
 <p>Now that we’ve got an idea about how we might judge the performance quality of classification problem let’s look at the mechanics of implementing a classification model using the caret package. We’ve already seen it in action on a regression problem where we were predicting the MPG for the mtcars data frame.</p>
-<p>We’ll be sticking with the Pima Indians dataset that we used previously This data is provided by the <strong>mlbench</strong> package. The source of the information is the National Institute of Diabetes and Digestive and Kidney Diseases which in turn was hosted on the UCI Repository of Machine Learning. The variables are:</p>
+<p>We’ll be sticking with the Pima Indians dataset. In case you have forgotten, here are the variables in the data frame</p>
 <pre><code>pregnant - Number of times pregnant
 glucose  - Plasma glucose concentration (glucose tolerance test)
 pressure - Diastolic blood pressure (mm Hg)
@@ -315,12 +315,12 @@ diabetes - Class variable (test for diabetes)</code></pre>
 <div class="sourceCode" id="cb210"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb210-1" data-line-number="1">url &lt;-<span class="st"> &quot;https://raw.githubusercontent.com/steviep42/bios534_spring_2020/master/data/pima.csv&quot;</span></a>
 <a class="sourceLine" id="cb210-2" data-line-number="2"></a>
 <a class="sourceLine" id="cb210-3" data-line-number="3">pm &lt;-<span class="st"> </span><span class="kw">read.csv</span>(url) </a></code></pre></div>
-<p>So let’s look at some exploratory plots to see if there is anything interesting happening. We’ll use the Data Explorer package to help us with this although both R and Python have various packages to help with this kind of thing. In fact, there are probably too many packages and more are being developed every 6 months or so.</p>
+<p>So let’s look at some exploratory plots to see if there is anything interesting happening. We’ll use the Data Explorer package to help us with this although both R and Python have various packages to help with this kind of thing.</p>
 <div id="exploratory-plots" class="section level2">
 <h2><span class="header-section-number">7.1</span> Exploratory Plots</h2>
 <p>We’ll look use some stock plots from the <a href="https://github.com/elastacloud/automatic-data-explorer"><strong>DataExplorer</strong></a> package to get a feel for the data. Look at correlations between the variables to see if any are strongly correlated with the variable we wish to predict or any other variables. Let’s start out with the <strong>plot_intro</strong> function which can provide an overview of our data. It turns out that our data is pretty clean. There are no rows with missing values and we have only one categorical feature.</p>
 <div class="sourceCode" id="cb211"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb211-1" data-line-number="1"><span class="kw">plot_intro</span>(pm)</a></code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-45-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/dataexint-1.png" width="672" /></p>
 <p>Let’s see if there are any string correlations we need to be aware of.</p>
 <div class="sourceCode" id="cb212"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb212-1" data-line-number="1"><span class="kw">plot_correlation</span>(pm, <span class="dt">type=</span><span class="st">&quot;continuous&quot;</span>)</a></code></pre></div>
 <p><img src="biosml_files/figure-html/decorr-1.png" width="672" /></p>
@@ -408,7 +408,7 @@ diabetes - Class variable (test for diabetes)</code></pre>
 <p>And if you haven’t yet enough of ROC curves just yet, we could put up one of those.</p>
 <div class="sourceCode" id="cb226"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb226-1" data-line-number="1"><span class="kw">library</span>(caTools)</a>
 <a class="sourceLine" id="cb226-2" data-line-number="2"><span class="kw">colAUC</span>(pm_model_fitpreds,test<span class="op">$</span>diabetes,<span class="dt">plotROC=</span><span class="ot">TRUE</span>)</a></code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-46-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-28-1.png" width="672" /></p>
 <pre><code>##                  [,1]
 ## neg vs. pos 0.8924528</code></pre>
 <p>But wait, we’ve already been through the whole ROC curve, AUC, confusion matrix route so why would we take a manual approach if we have the <strong>caret</strong> package readily available ?</p>
@@ -551,7 +551,8 @@ diabetes - Class variable (test for diabetes)</code></pre>
 <a class="sourceLine" id="cb241-9" data-line-number="9">                    <span class="dt">method =</span> <span class="st">&quot;ranger&quot;</span>,</a>
 <a class="sourceLine" id="cb241-10" data-line-number="10">                    <span class="dt">preProc =</span> <span class="kw">c</span>(<span class="st">&quot;center&quot;</span>, <span class="st">&quot;scale&quot;</span>)</a>
 <a class="sourceLine" id="cb241-11" data-line-number="11">                    )</a></code></pre></div>
-<p>By default the training process will move through three different values of mtry though we could either set this explicitly in the train function or as part of the hyper parameter tuning processed mentioned previously. If we choose the latter, then we can take advantage of the fact that <strong>caret</strong> knows what hyper parameters the method supports and can cycle through possible valid values of these hyper parameters. This is accomplished via the <strong>tuneLength</strong> argument to the <strong>train</strong> function. We could use the <strong>tuneGrid</strong> argument along with a manually specified tuning grid but it’s easier to use <strong>tuneLength</strong> for now.</p>
+<p>By default the training process will move through three different values of mtry though we could either set this explicitly in the train function or as part of the hyper parameter tuning processed mentioned previously. If we choose the latter, then we can take advantage of the fact that <strong>caret</strong> knows what hyper parameters the method supports and can cycle through possible valid values of these hyper parameters.</p>
+<p>This is accomplished via the <strong>tuneLength</strong> argument to the <strong>train</strong> function. We could use the <strong>tuneGrid</strong> argument along with a manually specified tuning grid but it’s easier to use <strong>tuneLength</strong> for now.</p>
 <div class="sourceCode" id="cb242"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb242-1" data-line-number="1">pm_ranger_mod</a></code></pre></div>
 <pre><code>## Random Forest 
 ## 
@@ -580,19 +581,18 @@ diabetes - Class variable (test for diabetes)</code></pre>
 <div class="sourceCode" id="cb244"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb244-1" data-line-number="1">ctrl &lt;-<span class="st"> </span><span class="kw">trainControl</span>(<span class="dt">method =</span> <span class="st">&quot;cv&quot;</span>, </a>
 <a class="sourceLine" id="cb244-2" data-line-number="2">                     <span class="dt">number =</span> <span class="dv">5</span>,</a>
 <a class="sourceLine" id="cb244-3" data-line-number="3">                     <span class="dt">classProbs =</span> <span class="ot">TRUE</span>,</a>
-<a class="sourceLine" id="cb244-4" data-line-number="4">                     <span class="dt">summaryFunction =</span> twoClassSummary</a>
-<a class="sourceLine" id="cb244-5" data-line-number="5">                     )</a>
-<a class="sourceLine" id="cb244-6" data-line-number="6"></a>
-<a class="sourceLine" id="cb244-7" data-line-number="7">pm_ranger_mod &lt;-<span class="st"> </span><span class="kw">train</span>(<span class="dt">form =</span> diabetes <span class="op">~</span><span class="st"> </span>.,</a>
-<a class="sourceLine" id="cb244-8" data-line-number="8">                    <span class="dt">data =</span> train,</a>
-<a class="sourceLine" id="cb244-9" data-line-number="9">                    <span class="dt">trControl =</span> ctrl,</a>
-<a class="sourceLine" id="cb244-10" data-line-number="10">                    <span class="dt">metric =</span> <span class="st">&quot;ROC&quot;</span>,</a>
-<a class="sourceLine" id="cb244-11" data-line-number="11">                    <span class="dt">method =</span> <span class="st">&quot;ranger&quot;</span>,</a>
-<a class="sourceLine" id="cb244-12" data-line-number="12">                    <span class="dt">tuneLength =</span> <span class="dv">7</span>,</a>
-<a class="sourceLine" id="cb244-13" data-line-number="13">                    <span class="dt">preProc =</span> <span class="kw">c</span>(<span class="st">&quot;center&quot;</span>, <span class="st">&quot;scale&quot;</span>))</a></code></pre></div>
+<a class="sourceLine" id="cb244-4" data-line-number="4">                     <span class="dt">summaryFunction =</span> twoClassSummary)</a>
+<a class="sourceLine" id="cb244-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb244-6" data-line-number="6">pm_ranger_mod &lt;-<span class="st"> </span><span class="kw">train</span>(<span class="dt">form =</span> diabetes <span class="op">~</span><span class="st"> </span>.,</a>
+<a class="sourceLine" id="cb244-7" data-line-number="7">                    <span class="dt">data =</span> train,</a>
+<a class="sourceLine" id="cb244-8" data-line-number="8">                    <span class="dt">trControl =</span> ctrl,</a>
+<a class="sourceLine" id="cb244-9" data-line-number="9">                    <span class="dt">metric =</span> <span class="st">&quot;ROC&quot;</span>,</a>
+<a class="sourceLine" id="cb244-10" data-line-number="10">                    <span class="dt">method =</span> <span class="st">&quot;ranger&quot;</span>,</a>
+<a class="sourceLine" id="cb244-11" data-line-number="11">                    <span class="dt">tuneLength =</span> <span class="dv">7</span>,</a>
+<a class="sourceLine" id="cb244-12" data-line-number="12">                    <span class="dt">preProc =</span> <span class="kw">c</span>(<span class="st">&quot;center&quot;</span>, <span class="st">&quot;scale&quot;</span>))</a></code></pre></div>
 <p>The object can be plotted. Here we see that the max AUC of .825 occurs when mtry is 3 and the Gini criterion is used to evaluate a tree.</p>
 <div class="sourceCode" id="cb245"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb245-1" data-line-number="1"><span class="kw">plot</span>(pm_ranger_mod)</a></code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-53-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-34-1.png" width="672" /></p>
 <div class="sourceCode" id="cb246"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb246-1" data-line-number="1"><span class="kw">max</span>(pm_ranger_mod[[<span class="st">&quot;results&quot;</span>]]<span class="op">$</span>ROC)</a></code></pre></div>
 <pre><code>## [1] 0.8128779</code></pre>
 <div class="sourceCode" id="cb248"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb248-1" data-line-number="1">preds &lt;-<span class="st"> </span><span class="kw">predict</span>(pm_ranger_mod,test)</a>
