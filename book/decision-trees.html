@@ -307,7 +307,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="sourceCode" id="cb261"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb261-1" data-line-number="1"><span class="kw">data</span>(mtcars)</a>
 <a class="sourceLine" id="cb261-2" data-line-number="2">rpart_class_mtcars &lt;-<span class="st"> </span><span class="kw">rpart</span>(am<span class="op">~</span>.,<span class="dt">data=</span>mtcars,<span class="dt">method=</span><span class="st">&quot;class&quot;</span>)</a>
 <a class="sourceLine" id="cb261-3" data-line-number="3"><span class="kw">rpart.plot</span>(rpart_class_mtcars,<span class="dt">yesno =</span> <span class="dv">2</span>, <span class="dt">type =</span> <span class="dv">0</span>, <span class="dt">extra =</span> <span class="dv">0</span>)</a></code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-50-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-40-1.png" width="672" /></p>
 <p>If the weight of the car is greater than 3.2 tons then the tree would classify it as having a manual (1) transmission. How well did we do here ? Not too bad actually. We’ll talk more about measuring performance of a classifier in a bit.</p>
 <div class="sourceCode" id="cb262"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb262-1" data-line-number="1">preds &lt;-<span class="st"> </span><span class="kw">ifelse</span>(mtcars<span class="op">$</span>wt <span class="op">&gt;=</span><span class="st"> </span><span class="dv">3</span>,<span class="dv">0</span>,<span class="dv">1</span>)</a>
 <a class="sourceLine" id="cb262-2" data-line-number="2"><span class="kw">table</span>(<span class="dt">predicted=</span>preds,<span class="dt">actual=</span>mtcars<span class="op">$</span>am)</a></code></pre></div>
@@ -319,7 +319,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="sourceCode" id="cb264"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb264-1" data-line-number="1"><span class="kw">data</span>(mtcars)</a>
 <a class="sourceLine" id="cb264-2" data-line-number="2">rpart_regress_mtcars &lt;-<span class="st"> </span><span class="kw">rpart</span>(mpg<span class="op">~</span>.,<span class="dt">data=</span>mtcars,<span class="dt">method=</span><span class="st">&quot;anova&quot;</span>)</a>
 <a class="sourceLine" id="cb264-3" data-line-number="3"><span class="kw">rpart.plot</span>(rpart_regress_mtcars,<span class="dt">yesno =</span> <span class="dv">2</span>, <span class="dt">type =</span> <span class="dv">0</span>, <span class="dt">extra =</span> <span class="dv">0</span>)</a></code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-52-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-42-1.png" width="672" /></p>
 <div id="advantages" class="section level2">
 <h2><span class="header-section-number">8.1</span> Advantages</h2>
 <p>The advantages of tree-based methods include that 1
@@ -353,7 +353,7 @@ diabetes - Class variable (test for diabetes)</code></pre>
 <a class="sourceLine" id="cb266-4" data-line-number="4"></a>
 <a class="sourceLine" id="cb266-5" data-line-number="5">diabetes_mod &lt;-<span class="st"> </span><span class="kw">rpart</span>(diabetes <span class="op">~</span><span class="st"> </span>.,pm,<span class="dt">method=</span><span class="st">&quot;class&quot;</span>)</a>
 <a class="sourceLine" id="cb266-6" data-line-number="6"><span class="kw">rpart.plot</span>(<span class="dt">x =</span> diabetes_mod, <span class="dt">yesno =</span> <span class="dv">2</span>, <span class="dt">type =</span> <span class="dv">0</span>, <span class="dt">extra =</span> <span class="dv">0</span>)</a></code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-53-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-43-1.png" width="672" /></p>
 <p>That’s pretty understandable but it starts to border on being a bit hard to follow by hand. Nonetheless, you could show this to someone who does not know (or care) about the underlying mathematics of decision trees and they would be able to understand the path to a classification of someone having diabetes or not.</p>
 <p>It’s common in these scenarios to create what is known as a test / training split so that we can train our model on a test set that we can then use on a test or hold out data set to see how well the model performs. There is much more to say about this but we’ll keep it simple here. We can create a training set that comprises %80 of the data with a holdout set of 20%. This easy to do.</p>
 <p>Let’s create a Train / Test Split</p>
@@ -456,9 +456,9 @@ diabetes - Class variable (test for diabetes)</code></pre>
 <h3><span class="header-section-number">8.2.2</span> Tree Splitting</h3>
 <p>The resulting tree can be thought of as an upside down tree with the root at the top. The “trunk” proceeds downward and splits into subsets based on some decision (hence the word “decision” in the title). When classifying data the idea is to segment or partition data into groups/regions where each group contains or represents a single class (“yes/no”, “positive/negative”).</p>
 <p>These groups or regions would represent a “pure” region. This is not always possible so a best effort is made. These regions are separated by decision boundaries which are used to make decisions. We’ll plot some example data to illustrate the case.</p>
-<p><img src="biosml_files/figure-html/unnamed-chunk-58-1.png" width="672" /></p>
-<p><img src="biosml_files/figure-html/unnamed-chunk-59-1.png" width="672" /></p>
-<p><img src="biosml_files/figure-html/unnamed-chunk-60-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-48-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-49-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-50-1.png" width="672" /></p>
 </div>
 </div>
 <div id="gini-index" class="section level2">
@@ -552,7 +552,7 @@ RMSE = \sqrt\frac{\sum_i^n(P_i-O_i)^2}{n}
 <div class="sourceCode" id="cb283"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb283-1" data-line-number="1"><span class="co"># Plot the tree model</span></a>
 <a class="sourceLine" id="cb283-2" data-line-number="2"><span class="kw">rpart.plot</span>(<span class="dt">x =</span> mass_pima_mod, </a>
 <a class="sourceLine" id="cb283-3" data-line-number="3">           <span class="dt">yesno =</span> <span class="dv">2</span>, <span class="dt">type =</span> <span class="dv">0</span>, <span class="dt">extra =</span> <span class="dv">0</span>)</a></code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-64-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-54-1.png" width="672" /></p>
 <p>Let’s compute the RMSE for this model.</p>
 <div class="sourceCode" id="cb284"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb284-1" data-line-number="1"><span class="co"># Generate predictions on a test set</span></a>
 <a class="sourceLine" id="cb284-2" data-line-number="2">pred &lt;-<span class="st"> </span><span class="kw">predict</span>(<span class="dt">object =</span> mass_pima_mod,   <span class="co"># model object </span></a>
@@ -581,7 +581,7 @@ RMSE = \sqrt\frac{\sum_i^n(P_i-O_i)^2}{n}
 <p>In effect, it is doing some work for you so you don’t have to. At the end of the run it will produce a table for inspection. The results of this table can then be used to “prune” the tree model to get a “better” tree - one that performs better than an “un pruned” tree. Let’s look at the pima mass model:</p>
 <div class="sourceCode" id="cb286"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb286-1" data-line-number="1"><span class="co"># You can plot the modelling object</span></a>
 <a class="sourceLine" id="cb286-2" data-line-number="2"><span class="kw">plot</span>(mass_pima_mod)</a></code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-66-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-56-1.png" width="672" /></p>
 <div class="sourceCode" id="cb287"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb287-1" data-line-number="1"><span class="co"># You can inspect the table manually</span></a>
 <a class="sourceLine" id="cb287-2" data-line-number="2">mass_pima_mod<span class="op">$</span>cptable</a></code></pre></div>
 <pre><code>##            CP nsplit rel error    xerror       xstd
@@ -605,7 +605,7 @@ RMSE = \sqrt\frac{\sum_i^n(P_i-O_i)^2}{n}
 <a class="sourceLine" id="cb290-3" data-line-number="3">                          </a>
 <a class="sourceLine" id="cb290-4" data-line-number="4"><span class="co"># Plot the optimized model</span></a>
 <a class="sourceLine" id="cb290-5" data-line-number="5"><span class="kw">rpart.plot</span>(mass_pima_mod_opt, <span class="dt">yesno =</span> <span class="dv">2</span>, <span class="dt">type =</span> <span class="dv">0</span>, <span class="dt">extra =</span> <span class="dv">0</span>)</a></code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-68-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-58-1.png" width="672" /></p>
 <p>Does this optimized model perform any better ? Not really, because the optimal CP value turned out to be 0.01 which is actually the same as the default.</p>
 <div class="sourceCode" id="cb291"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb291-1" data-line-number="1"><span class="co"># Generate predictions on a test set</span></a>
 <a class="sourceLine" id="cb291-2" data-line-number="2">pred &lt;-<span class="st"> </span><span class="kw">predict</span>(<span class="dt">object =</span> mass_pima_mod_opt,   <span class="co"># model object </span></a>
@@ -771,7 +771,7 @@ RMSE = \sqrt\frac{\sum_i^n(P_i-O_i)^2}{n}
 <a class="sourceLine" id="cb304-32" data-line-number="32">}</a></code></pre></div>
 <p>Now check all of the accuracy estimates and then average them. Remember this is supposed to help us to better estimate the out of sample error.</p>
 <div class="sourceCode" id="cb305"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb305-1" data-line-number="1"><span class="kw">boxplot</span>(aucval)</a></code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-76-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-66-1.png" width="672" /></p>
 <div class="sourceCode" id="cb306"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb306-1" data-line-number="1"><span class="kw">mean</span>(aucval)</a></code></pre></div>
 <pre><code>## [1] 0.8217163</code></pre>
 <p>Now we’ll compare this to the function called “bagging” from the <strong>ipred</strong> package which does bagged trees directly.</p>

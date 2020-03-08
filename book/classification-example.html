@@ -409,7 +409,7 @@ diabetes - Class variable (test for diabetes)</code></pre>
 <p>And if you haven’t yet enough of ROC curves just yet, we could put up one of those.</p>
 <div class="sourceCode" id="cb226"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb226-1" data-line-number="1"><span class="kw">library</span>(caTools)</a>
 <a class="sourceLine" id="cb226-2" data-line-number="2"><span class="kw">colAUC</span>(pm_model_fitpreds,test<span class="op">$</span>diabetes,<span class="dt">plotROC=</span><span class="ot">TRUE</span>)</a></code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-39-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-29-1.png" width="672" /></p>
 <pre><code>##                  [,1]
 ## neg vs. pos 0.8924528</code></pre>
 <p>But wait, we’ve already been through the whole ROC curve, AUC, confusion matrix route so why would we take a manual approach if we have the <strong>caret</strong> package readily available ?</p>
@@ -522,24 +522,22 @@ diabetes - Class variable (test for diabetes)</code></pre>
 <a class="sourceLine" id="cb237-13" data-line-number="13">                    <span class="dt">preProc =</span> <span class="kw">c</span>(<span class="st">&quot;center&quot;</span>, <span class="st">&quot;scale&quot;</span>))</a>
 <a class="sourceLine" id="cb237-14" data-line-number="14"></a>
 <a class="sourceLine" id="cb237-15" data-line-number="15">pm_glm_mod<span class="op">$</span>results</a></code></pre></div>
-<pre><code>##   parameter       ROC  Sens      Spec      ROCSD     SensSD
-## 1      none 0.8198256 0.885 0.5488372 0.02909113 0.03235545
-##       SpecSD
-## 1 0.07463631</code></pre>
+<pre><code>##   parameter       ROC  Sens      Spec      ROCSD     SensSD     SpecSD
+## 1      none 0.8198256 0.885 0.5488372 0.02909113 0.03235545 0.07463631</code></pre>
 </div>
 <div id="random-forests" class="section level2">
 <h2><span class="header-section-number">7.3</span> Random Forests</h2>
 <p>Let’s use random forests to see what results we get. Random forests are robust to over fitting and are fairly easy to implement. They can improve accuracy by fitting many trees. Each tree is fit to a resampled version of the input data (usually a bootstrap). This is known as bootstrap aggregation or “bagged” trees. At each split, the function takes a random sample of columns (the mtry argument).</p>
 <p>The function we will use here, <strong>ranger</strong>, has three hyper parameters which could be set to a range of values which, in turn, could influence the resulting model. With glm, we didn’t really have a hyper parameter. Here is how to tell if a caret-supported model has one or more hyper parameters available for tuning:</p>
 <div class="sourceCode" id="cb239"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb239-1" data-line-number="1"><span class="kw">modelLookup</span>(<span class="st">&quot;ranger&quot;</span>)</a></code></pre></div>
-<pre><code>##    model     parameter                         label forReg
-## 1 ranger          mtry #Randomly Selected Predictors   TRUE
-## 2 ranger     splitrule                Splitting Rule   TRUE
-## 3 ranger min.node.size             Minimal Node Size   TRUE
-##   forClass probModel
-## 1     TRUE      TRUE
-## 2     TRUE      TRUE
-## 3     TRUE      TRUE</code></pre>
+<pre><code>##    model     parameter                         label forReg forClass
+## 1 ranger          mtry #Randomly Selected Predictors   TRUE     TRUE
+## 2 ranger     splitrule                Splitting Rule   TRUE     TRUE
+## 3 ranger min.node.size             Minimal Node Size   TRUE     TRUE
+##   probModel
+## 1      TRUE
+## 2      TRUE
+## 3      TRUE</code></pre>
 <p>We’ll switch out metric back to Accuracy</p>
 <div class="sourceCode" id="cb241"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb241-1" data-line-number="1">ctrl &lt;-<span class="st"> </span><span class="kw">trainControl</span>(<span class="dt">method =</span> <span class="st">&quot;cv&quot;</span>, </a>
 <a class="sourceLine" id="cb241-2" data-line-number="2">                     <span class="dt">number =</span> <span class="dv">5</span></a>
@@ -574,8 +572,7 @@ diabetes - Class variable (test for diabetes)</code></pre>
 ##   8     extratrees  0.7626016  0.4483647
 ## 
 ## Tuning parameter &#39;min.node.size&#39; was held constant at a value of 1
-## Accuracy was used to select the optimal model using the
-##  largest value.
+## Accuracy was used to select the optimal model using the largest value.
 ## The final values used for the model were mtry = 2, splitrule
 ##  = extratrees and min.node.size = 1.</code></pre>
 <div class="sourceCode" id="cb244"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb244-1" data-line-number="1">ctrl &lt;-<span class="st"> </span><span class="kw">trainControl</span>(<span class="dt">method =</span> <span class="st">&quot;cv&quot;</span>, </a>
@@ -592,7 +589,7 @@ diabetes - Class variable (test for diabetes)</code></pre>
 <a class="sourceLine" id="cb244-12" data-line-number="12">                    <span class="dt">preProc =</span> <span class="kw">c</span>(<span class="st">&quot;center&quot;</span>, <span class="st">&quot;scale&quot;</span>))</a></code></pre></div>
 <p>The object can be plotted. Here we see that the max AUC of .825 occurs when mtry is 3 and the Gini criterion is used to evaluate a tree.</p>
 <div class="sourceCode" id="cb245"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb245-1" data-line-number="1"><span class="kw">plot</span>(pm_ranger_mod)</a></code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-45-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-35-1.png" width="672" /></p>
 <div class="sourceCode" id="cb246"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb246-1" data-line-number="1"><span class="kw">max</span>(pm_ranger_mod[[<span class="st">&quot;results&quot;</span>]]<span class="op">$</span>ROC)</a></code></pre></div>
 <pre><code>## [1] 0.8128779</code></pre>
 <div class="sourceCode" id="cb248"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb248-1" data-line-number="1">preds &lt;-<span class="st"> </span><span class="kw">predict</span>(pm_ranger_mod,test)</a>

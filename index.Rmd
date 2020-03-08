@@ -3060,16 +3060,17 @@ mtcars[,-1][,highcorr]
 
 # Data Pre Processing
 
+ata rarely arrives in a form that is directly suitable for use with a modeling method. There are a number of considerations to make such as how to handle missing data, highly correlated variables, and class imbalances - some categories are over or under represented. Additionally, some variables, also known as "features", will require transformation or will need to be used to create new variables.
 
 ## Types of Pre Processing 
 
-Data rarely arrives in a form that is directly suitable for use with a modeling method. There are a number of considerations to make such as how to handle missing data, highly correlated variables, and class imbalances - some categories are over or under represented. Additionally, some variables, also known as "features", will require transformation or will need to be used to create new variables. Consider the case where the measured data (the numeric data) might be on different scales (e.g. height vs weight). This might result in the need to scale and center the data. Some methods take this into consideration whereas others do not. Suffice it to say that data prep can be an ongoing process that requires a number of experiments before arriving at the best form of data. 
+Consider the case where the measured data (the numeric data) might be on different scales (e.g. height vs weight). This might result in the need to scale and center the data. Some methods take this into consideration whereas others do not. Suffice it to say that data prep can be an ongoing process that requires a number of experiments before arriving at the best form of data. 
 
 ## Missing Values
 
 This is a frequent situation in real life. Think of patients checking in for clinic visits over time. Sometimes they come for their appointments, sometimes they don't. Sometimes when they do come, their information has changed or some diagnostic test is repeated with a new result which is entered or not. Or, whomever maintains the patient database, decides to add in some new variables to measure for all patients moving forward. This means that all existing patients will have missing values for those new variables. To see how this manifests practically in predictive learning consider the following version of the mtcars data frame which has some missing values:
 
-```{r}
+```{r redrmtcarna}
 library(readr)
 url <- "https://raw.githubusercontent.com/steviep42/utilities/master/data/mtcars_na.csv"
 mtcars_na <- read.csv(url, stringsAsFactors = FALSE)
@@ -3079,13 +3080,13 @@ mtcars_na <- read.csv(url, stringsAsFactors = FALSE)
 
 Ar first glance it looks like all features have valid variable values but we can look for missing values which, in R, are indicated by **NA** Base R provides a number of commands to do this. First let's see how many rows there are in the data frame.
 
-```{r}
+```{r nrowmt1}
 nrow(mtcars_na)
 ```
 
 Now let's see how many rows have at least one column with a missing value. So we have eight rows in the data frame that contain one or more missing values.
 
-```{r}
+```{r sumcompleteca}
 sum(complete.cases(mtcars_na))
 ```
 
@@ -3093,19 +3094,26 @@ sum(complete.cases(mtcars_na))
 
 What columns have missing values ? Here we leverage the use of the apply family of functions along with the ability to create **anonymous** functions on the fly. Both R and Python provide this capability. We see that the **wt** column has three missing values and the **carb** feature has six missing values.
 
-```{r}
+```{r mtsapplyna}
 sapply(mtcars_na,function(x) sum(is.na(x)))
 ```
 
 If we actually wanted to see all rows with missing values:
 
-```{r}
+```{r mtcomplete}
 mtcars_na[!complete.cases(mtcars_na),]
 ```
 
-What do we do with these ? It depends on a number of things. How hard is it to get this type of data ? If it's rare information then we probably want to keep all of it because there isn't that much of it and not all columns are missing for any row. In fact most of the data in a given row is present so maybe one strategy is to tell whatever modeling method we use to ignore the missing values - they might do this by default without you even asking. 
+We might also consider using the **DataExplorer** package to help us identify the "missingness" of the data:
 
-We could just filter out any row from the data frame that contains any missing values but in doing so we would lose eight rows of data. This is low stakes data but if this were rare or hard to obtain information then we wouldn't want to do this. 
+```{r dataexp2}
+DataExplorer::plot_missing(mtcars_na)
+```
+
+
+What do we do with these ? It depends on a number of things. How hard is it to get this type of data ? If it's rare information then we probably want to keep as much of the data as possible. In fact, if most of the data in a given row is present maybe one strategy is to tell whatever modeling method we use to ignore the missing values (na.rm = TRUE). Some methods might do this by default without you even asking. 
+
+However, if we have plenty of data we could just filter out any row from the data frame that contains any missing values. In this case we would lose eight rows of data. This is low stakes data but if this were rare or hard to obtain information then we wouldn't want to do this. 
 
 ```{r}
 mtcars_no_na <- mtcars_na[complete.cases(mtcars_na),]
@@ -3114,12 +3122,14 @@ nrow(mtcars_no_na)
 
 ### Use the Median Approach
 
-What could we do ? Well we could keep all rows even if they contains NAs and then use **imputation** methods to supply values for the missing information. There are R packages that do this but one quick way to do this without going that route is to replace the missing value in the **wt** column with the **median** value for the entire column. Using median is appropriate when the missing values are of the "missing at random" variety. There might some bias in the data that introduces a "not at random" situation. We'll look at that case momentarily.
+What could we do ? Well we could keep all rows even if they contains NAs and then use **imputation** methods to supply values for the missing information. There are R packages that do this but one quick way to do this without going that route is to replace the missing value in the **wt** column with the **median** value for the entire column. 
 
-Let's look at a boxplot of the **wt** feature.
+Using median is appropriate when the missing values are of the "missing at random" variety. There might some bias in the data that introduces a "not at random" situation. We'll look at that case momentarily. Let's look at a boxplot of the **wt** feature.
 
 ```{r}
-boxplot(mtcars_na$wt,na.rm=TRUE,main="Distribution of the wt feature")
+boxplot(mtcars_na$wt,
+        na.rm=TRUE,
+        main="Distribution of the wt feature")
 grid()
 ```
 
@@ -3152,9 +3162,9 @@ mtcars_na[missing_wt_indices,]
 This seems like a lot of work and maybe it is if you aren't up to date with your R skills although, conceptually, this is straightforward and simple. The **Hmisc** package provides an easy way to do this:
 
 
-```{r}
-suppressMessages(library(Hmisc))
-# Reload the versio of mtcars with missing values
+```{r hmisc,message=FALSE}
+library(Hmisc)
+# Reload the version of mtcars with missing values
 url <- "https://raw.githubusercontent.com/steviep42/utilities/master/data/mtcars_na.csv"
 mtcars_na <- read.csv(url, strip.white = FALSE)
 ```
@@ -3193,14 +3203,16 @@ mtcars_na <- read.csv(url,stringsAsFactors = FALSE)
 set.seed(123)
 
 # Get the indices for a 70/30 split
-train_idx <- createDataPartition(mtcars_na$mpg, p=.70, list = FALSE)
+train_idx <- createDataPartition(mtcars_na$mpg, 
+                                 p=.70, 
+                                 list = FALSE)
 
 # Split into a test / train pair
 train <- mtcars[ train_idx,]
 test  <- mtcars[-train_idx,]
 
-# Note how we specify knnImpute. Another other option includes
-# medianImpute 
+# Note how we specify knnImpute. Another other option 
+# includes medianImpute 
 
 X <- train[,-1]  # Use Every column EXCEPT mpg
 Y <- train$mpg   # This is what we want to predict
@@ -3224,8 +3236,8 @@ Metrics::rmse(test$mpg,preds)
 In terms of what methods benefit (or require) you to scale data prior to use, consider that any method that uses the idea of "distance" will require this. This helps address the situation wherein one the size and range of one feature might overshadow another. For example, look at the range of features in the **mtcars** dataframe. Not only are the variables on different scales (e.g. MPG vs Weight vs Horse Power), a feature such as displacement might over influence a distance calculation when compared to qsec. 
 
 
-```{r}
-sapply(mtcars,range)
+```{r mtcarsumm2}
+summary(mtcars)
 ```
 
 ### Methods That Benefit From Scaling
@@ -3286,13 +3298,16 @@ attr(smtcars,"scaled:scale")
 attr(smtcars,"scaled:center")
 ```
 
-If we wanted to de-scaled the scaled data frame:
+If we wanted to de-scaled the data frame that we just scaled we could something like this:
 
-```{r}
-unscaledmt <- sweep(smtcars,2,attr(smtcars,"scaled:scale"),"*")
-uncentermt <- sweep(unscaledmt,2,attr(smtcars,"scaled:center"),"+")
+```{r scaleuns}
+unscaledmt <- sweep(smtcars,2,
+                    attr(smtcars,"scaled:scale"),"*")
 
-# Comapre them
+uncentermt <- sweep(unscaledmt,2,
+                    attr(smtcars,"scaled:center"),"+")
+
+# Compare them
 
 uncentermt[1:3,]
 
@@ -3386,13 +3401,13 @@ as.vector(scale(mtcars$wt,center=T,scale=F))
 
 After centering, the scaling is done by dividing the (centered) columns of the data frame by their respective standard deviations. In terms of dealing with missing data and scaling, one should first do imputation followed by centering and scaling. In a call to the **train** function, this would look like the following. We'll use our version of mtcars that has missing data.
 
-```{r}
+```{r rdagmtna}
 url <- "https://raw.githubusercontent.com/steviep42/utilities/master/data/mtcars_na.csv"
 
 mtcars_na <- read.csv(url,stringsAsFactors = FALSE)
 ```
 
-```{r}
+```{r knncescal}
 training_idx <- createDataPartition(mtcars_na$mpg, p =.80, list=FALSE)
 training <- mtcars_na[training_idx,]
 test <- mtcars_na[-training_idx,]
@@ -3432,10 +3447,7 @@ y <- mtcars_nzv[,1]
 lowVarLm <- train(
   x,y,
   method="lm",
-  preProcess=c("center","scale")
-  )
-
-
+  preProcess=c("center","scale"))
 ```
 
 The **caret** package has an option to the **preProcess** argument that allows us to remove such variables so it won't impact the resulting model. Notice that we remove the near zero variance variables before we center which happens before scaling. This is the recommended order. 
@@ -3447,11 +3459,12 @@ y <- mtcars_nzv[,1]
 lowVarLm <- train(
   x,y,
   method="lm",
-  preProcess=c("nzv","center","scale")
-  )
+  preProcess=c("nzv","center","scale"))
 ```
 
-The above now works. There is a subtle consideration at work here. We could pre process the data with **nzv** or **zv** where the former removes "near" zero variance features and the latter removes constant-valued features. With near zero variance features there is a way to specify tolerance for deciding whether a feature has near zero variance. Think of **nzv** as being slightly more permissive and flexible whereas **zv** eliminates zero variance variables. Sometimes you might want to keep near zero variance features around simply because there could be some interesting information therein. 
+The above now works. There is a subtle consideration at work here. We could pre process the data with **nzv** or **zv** where the former removes "near" zero variance features and the latter removes constant-valued features. With near zero variance features there is a way to specify tolerance for deciding whether a feature has near zero variance. 
+
+Think of **nzv** as being slightly more permissive and flexible whereas **zv** eliminates zero variance variables. Sometimes you might want to keep near zero variance features around simply because there could be some interesting information therein. 
 
 In general we could remove the constant or near zero variance features **before** passing the data to the **train** function. Caret has a standalone function called **nearZeroVariance** to do this. We'll it doesn't actually remove the feature but it will tell us which column(s) exhibit very low variance or have a constant value. In this case it is column number 5 which corresponds to **drat**. We already knew that. 
 
@@ -3479,11 +3492,9 @@ names(bbbDescr[,nearZeroVar(bbbDescr)])
 ```
 
 
-
 ## PCA - Principal Components Analysis
 
-So one of the problems with data can be what is called multicollinearity
-where high correlations exist between variables in a data set. Consider the mtcars data frame for example. Let's assume that we want to predict whether a given car has an automatic transmission (0) or manual (1). We'll remove other columns from the data frame that represent categorical data so we can focus on the continuous numeric variables. 
+So one of the problems with data can be what is called multicollinearity where high correlations exist between variables in a data set. Consider the mtcars data frame for example. Let's assume that we want to predict whether a given car has an automatic transmission (0) or manual (1). We'll remove other columns from the data frame that represent categorical data so we can focus on the continuous numeric variables. 
 
 
 ### Identify The Factors
@@ -3499,7 +3510,7 @@ mtcars_data <- mtcars[,c(1,3:7,9)]
 rownames(mtcars_data) <- NULL
 ```
 
-Now, let's look at the correlation matrix to see if we have highly correlated variables. We do have several correlations that exceed .7 which is sufficiently high to consider that they might cause problems when building models. The caret package has a findCorrelation function that can remove predictors that exhibit a correlation above a certain threshold but we'll see how PCA can help - so we'll leave them in for now. 
+Now, let's look at the correlation matrix to see if we have highly correlated variables. We do have several correlations that exceed .7 which is sufficiently high to consider that they might cause problems when building models. The caret package has a **findCorrelation** function that can remove predictors that exhibit a correlation above a certain threshold but we'll see how PCA can help - so we'll leave them in for now. 
 
 
 ### Check For High Correlations
@@ -3620,7 +3631,6 @@ caret_nb <- train(factor(am)~.,
 table(predicted=predict(caret_nb,mtcars),mtcars$am)
 ```
 
-
 ## Order of Pre-Processing
 
 In reality, if we wanted to line up the order in which to pre process data it would read something like the following:
@@ -3634,8 +3644,7 @@ In reality, if we wanted to line up the order in which to pre process data it wo
 lowVarLm <- train(
   mtcars[,-1],mtcars$mpg,
   method="lm",
-  preProcess=c("nzv","medianImpute","center","scale")
-  )
+  preProcess=c("nzv","medianImpute","center","scale"))
 ```
 
 ## Identifying Redundant Features
@@ -3690,9 +3699,7 @@ test  <- decorrel_mtcars[-idx,]
 decorrel_lm <- train(mpg~.,
                      data = train,
                      method = "lm",
-                     metric = "RMSE"
-                     )
-
+                     metric = "RMSE")
 ```
 
 ### Ranking Features 
@@ -3709,8 +3716,7 @@ test  <- mtcars[-idx,]
 myLm <- train(mpg~.,
                      data = train,
                      method = "lm",
-                     metric = "RMSE"
-                     )
+                     metric = "RMSE")
 
 summary(myLm)
 ```
@@ -3729,8 +3735,7 @@ How do things look in the model if we limit the formula to some of the "importan
 myLm <- train(mpg~wt+disp+hp,
                      data = train,
                      method = "lm",
-                     metric = "RMSE"
-                     )
+                     metric = "RMSE")
 
 summary(myLm)
 ```
@@ -3739,11 +3744,9 @@ summary(myLm)
 
 Being able to automatically include only the most important features is desirable (again an example might be Step Wise Regression). Caret provides its own function to do a simple backwards selection to recursively eliminate features based on how they contribute (or not) to the model. You could do all of this by hand yourself of course.
 
-
 Automatic feature selection methods can be used to build many models with different subsets of a dataset and identify those attributes that are and are not required to build an accurate model. The **caret** package has a function called *rfe** to implement this. However, it involves some additional setup:
 
-```{r}
-
+```{r rfectrl11}
 rfeControl <- rfeControl(functions=lmFuncs, method="cv", number=10)
 
 results <- rfe(mtcars[,2:11], 
@@ -3756,12 +3759,11 @@ plot(results,type=c("g","o"))
 
 ```
 
-```{r}
+```{r mylmwtam}
 myLm <- train(mpg~wt+am+qsec,
                      data = train,
                      method = "lm",
-                     metric = "RMSE"
-                     )
+                     metric = "RMSE")
 
 summary(myLm)
 ```
@@ -3789,7 +3791,6 @@ You can always use the **summary** function to get a quick overview of the data.
 ```{r factsumm}
 summary(admissions)
 ```
-
 
 
 So with this data, an interesting problem might be to predict whether an applicant is admitted to the program based on the other variables in the data set. We could pick Logistic Regression for this activity. 

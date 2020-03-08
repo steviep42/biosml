@@ -588,10 +588,9 @@ future predictions</li>
 ##   10    extratrees  2.523521  0.8992038  2.170427
 ## 
 ## Tuning parameter &#39;min.node.size&#39; was held constant at a value of 5
-## RMSE was used to select the optimal model using the
-##  smallest value.
-## The final values used for the model were mtry = 6, splitrule
-##  = variance and min.node.size = 5.</code></pre>
+## RMSE was used to select the optimal model using the smallest value.
+## The final values used for the model were mtry = 6, splitrule =
+##  variance and min.node.size = 5.</code></pre>
 <div class="sourceCode" id="cb137"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb137-1" data-line-number="1"><span class="kw">compute_rmse</span>(<span class="kw">predict</span>(my_ranger,Test),Test<span class="op">$</span>mpg)</a></code></pre></div>
 <pre><code>## [1] 2.288412</code></pre>
 </div>
@@ -600,7 +599,7 @@ future predictions</li>
 <p>This model returns more information than say the <strong>lm</strong> function because this method uses something called “hyperparameters” which are arguments to a given method that gets set before you call the method. In this case there are two hyperparameters called <strong>mtry</strong> and <strong>splitrule</strong> that assume default variables if we don’t supply values.</p>
 <p>We can get a plot of how the RMSE and R squared value varied with different values of <strong>mtry</strong> as well the <strong>splitrule</strong>. Here we see that an mtry value of 6 randomly selected columns / variables provides the lowest RMSE.</p>
 <div class="sourceCode" id="cb139"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb139-1" data-line-number="1"><span class="kw">ggplot</span>(my_ranger) <span class="op">+</span><span class="st"> </span><span class="kw">theme</span>(<span class="dt">legend.position =</span> <span class="st">&quot;top&quot;</span>)</a></code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
 <p>We can use the <strong>tuneLength</strong> argument to tell the <strong>train</strong> function to use N different values of <strong>mtry</strong> which is a <strong>hyperparameter</strong> to the randomForest package. The value relates to the number of columns in the data frame. We have 11 total and we are trying to predict one of them (mpg). So we can tell the <strong>train</strong> function to randomly select N variables (up to 10) when a tree is split.</p>
 <div class="sourceCode" id="cb140"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb140-1" data-line-number="1">my_ctrl &lt;-<span class="st"> </span><span class="kw">trainControl</span>(</a>
 <a class="sourceLine" id="cb140-2" data-line-number="2">    <span class="dt">method =</span> <span class="st">&quot;cv&quot;</span>, </a>
@@ -732,11 +731,10 @@ future predictions</li>
 ##    9    2.539938  0.9136301  2.198482
 ##   10    2.592113  0.9070706  2.214741
 ## 
-## RMSE was used to select the optimal model using the
-##  smallest value.
+## RMSE was used to select the optimal model using the smallest value.
 ## The final value used for the model was mtry = 6.</code></pre>
 <div class="sourceCode" id="cb144"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb144-1" data-line-number="1"><span class="kw">plot</span>(my_rf)</a></code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-23-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
 <div class="sourceCode" id="cb145"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb145-1" data-line-number="1"><span class="kw">compute_rmse</span>(<span class="kw">predict</span>(my_rf,Test),Test<span class="op">$</span>mpg)</a></code></pre></div>
 <pre><code>## [1] 2.23303</code></pre>
 <p>If you have a questions about what hyper parameters can be tuned for a given method then you can refer to the online <a href="https://topepo.github.io/caret/available-models.html">caret documentation</a> Here is a screenshot of the table of supported models and associated tuning parameters.</p>
@@ -749,14 +747,14 @@ future predictions</li>
 ## 1      TRUE</code></pre>
 <p>Here we get the hyper parameters for the <strong>ranger</strong> function. We see that it has three hyper parameters that could be varied in some way to influence a final model.</p>
 <div class="sourceCode" id="cb149"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb149-1" data-line-number="1"><span class="kw">modelLookup</span>(<span class="st">&quot;ranger&quot;</span>)</a></code></pre></div>
-<pre><code>##    model     parameter                         label forReg
-## 1 ranger          mtry #Randomly Selected Predictors   TRUE
-## 2 ranger     splitrule                Splitting Rule   TRUE
-## 3 ranger min.node.size             Minimal Node Size   TRUE
-##   forClass probModel
-## 1     TRUE      TRUE
-## 2     TRUE      TRUE
-## 3     TRUE      TRUE</code></pre>
+<pre><code>##    model     parameter                         label forReg forClass
+## 1 ranger          mtry #Randomly Selected Predictors   TRUE     TRUE
+## 2 ranger     splitrule                Splitting Rule   TRUE     TRUE
+## 3 ranger min.node.size             Minimal Node Size   TRUE     TRUE
+##   probModel
+## 1      TRUE
+## 2      TRUE
+## 3      TRUE</code></pre>
 <p>If you just want a list of all the models supported by caret then do something like this:</p>
 <div class="sourceCode" id="cb151"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb151-1" data-line-number="1">models &lt;-<span class="st"> </span><span class="kw">modelLookup</span>()[,<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>]</a>
 <a class="sourceLine" id="cb151-2" data-line-number="2"><span class="kw">nrow</span>(models)</a></code></pre></div>
@@ -811,14 +809,13 @@ future predictions</li>
 ##   10    extratrees  2.822600  0.8541223  2.444921
 ## 
 ## Tuning parameter &#39;min.node.size&#39; was held constant at a value of 5
-## RMSE was used to select the optimal model using the
-##  smallest value.
+## RMSE was used to select the optimal model using the smallest value.
 ## The final values used for the model were mtry = 2, splitrule
 ##  = extratrees and min.node.size = 5.</code></pre>
 <div class="sourceCode" id="cb159"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb159-1" data-line-number="1"><span class="kw">compute_rmse</span>(<span class="kw">predict</span>(my_ranger,Test),Test<span class="op">$</span>mpg)</a></code></pre></div>
 <pre><code>## [1] 3.042224</code></pre>
 <div class="sourceCode" id="cb161"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb161-1" data-line-number="1"><span class="kw">plot</span>(my_ranger)</a></code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-27-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
 </div>
 <div id="alternative-calling-sequence" class="section level2">
 <h2><span class="header-section-number">5.7</span> Alternative Calling Sequence</h2>
@@ -863,10 +860,9 @@ future predictions</li>
 ##   10    extratrees  2.686848  0.8150901  2.278343
 ## 
 ## Tuning parameter &#39;min.node.size&#39; was held constant at a value of 5
-## RMSE was used to select the optimal model using the
-##  smallest value.
-## The final values used for the model were mtry = 6, splitrule
-##  = variance and min.node.size = 5.</code></pre>
+## RMSE was used to select the optimal model using the smallest value.
+## The final values used for the model were mtry = 6, splitrule =
+##  variance and min.node.size = 5.</code></pre>
 <div class="sourceCode" id="cb164"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb164-1" data-line-number="1"><span class="kw">compute_rmse</span>(<span class="kw">predict</span>(my_ranger,Test),Test<span class="op">$</span>mpg)</a></code></pre></div>
 <pre><code>## [1] 2.233185</code></pre>
 <div class="sourceCode" id="cb166"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb166-1" data-line-number="1"><span class="kw">plot</span>(my_ranger)</a></code></pre></div>
