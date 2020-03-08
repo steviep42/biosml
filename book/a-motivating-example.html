@@ -202,6 +202,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="7.1" data-path="classification-example.html"><a href="classification-example.html#exploratory-plots"><i class="fa fa-check"></i><b>7.1</b> Exploratory Plots</a></li>
 <li class="chapter" data-level="7.2" data-path="classification-example.html"><a href="classification-example.html#generalized-linear-models"><i class="fa fa-check"></i><b>7.2</b> Generalized Linear Models</a></li>
 <li class="chapter" data-level="7.3" data-path="classification-example.html"><a href="classification-example.html#random-forests"><i class="fa fa-check"></i><b>7.3</b> Random Forests</a></li>
+<li class="chapter" data-level="7.4" data-path="classification-example.html"><a href="classification-example.html#format-of-variable-to-be-predicted"><i class="fa fa-check"></i><b>7.4</b> Format Of Variable To Be Predicted</a></li>
 </ul></li>
 <li class="chapter" data-level="8" data-path="decision-trees.html"><a href="decision-trees.html"><i class="fa fa-check"></i><b>8</b> Decision Trees</a><ul>
 <li class="chapter" data-level="8.1" data-path="decision-trees.html"><a href="decision-trees.html#advantages"><i class="fa fa-check"></i><b>8.1</b> Advantages</a></li>
@@ -371,7 +372,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <a class="sourceLine" id="cb21-2" data-line-number="2"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x=</span>am,<span class="dt">y=</span>mpg)) <span class="op">+</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb21-3" data-line-number="3"><span class="st">  </span><span class="kw">geom_boxplot</span>() <span class="op">+</span><span class="st"> </span><span class="kw">facet_wrap</span>(.<span class="op">~</span>cyl) <span class="op">+</span><span class="st"> </span><span class="kw">theme_bw</span>() <span class="op">+</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb21-4" data-line-number="4"><span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">&quot;MPG Across Transmission Types And Cylinder Group&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">xlab</span>(<span class="st">&quot;Transmission Type&quot;</span>) </a></code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
 </div>
 <div id="histograms" class="section level3">
 <h3><span class="header-section-number">3.2.3</span> Histograms</h3>
@@ -643,7 +644,7 @@ RMSE = \sqrt\frac{\sum_i^n(P_i-O_i)^2}{n}
 <a class="sourceLine" id="cb64-3" data-line-number="3"><span class="kw">colnames</span>(comp_mat) &lt;-<span class="st"> </span><span class="kw">as.character</span>(myseq)</a>
 <a class="sourceLine" id="cb64-4" data-line-number="4"><span class="kw">boxplot</span>(comp_mat,<span class="dt">ylab=</span><span class="st">&quot;RMSE&quot;</span>,<span class="dt">xlab=</span><span class="st">&quot;Train / Test Proportion&quot;</span>,</a>
 <a class="sourceLine" id="cb64-5" data-line-number="5">        <span class="dt">main=</span><span class="st">&quot;XGBoost - Comparison of Different Train / Test Proprtions&quot;</span>)</a></code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
 </div>
 <div id="summary" class="section level2">
 <h2><span class="header-section-number">3.8</span> Summary</h2>

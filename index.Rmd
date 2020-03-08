@@ -1959,8 +1959,7 @@ pm_ranger_mod <- train(form = diabetes ~ .,
                     trControl = ctrl,
                     metric = "Accuracy",
                     method = "ranger",
-                    preProc = c("center", "scale")
-                    )
+                    preProc = c("center", "scale"))
 ```
 
 By default the training process will move through three different values of mtry though we could either set this explicitly in the train function or as part of the hyper parameter tuning processed mentioned previously. If we choose the latter, then we can take advantage of the fact that **caret** knows what hyper parameters the method supports and can cycle through possible valid values of these hyper parameters. 
@@ -2000,7 +1999,58 @@ preds <- predict(pm_ranger_mod,test)
 confusionMatrix(preds,test$diabetes)
 ```
 
+## Format Of Variable To Be Predicted
 
+If you notice, the format of the Pima data frame has indicated that the **diabetes** variable is a factor which is a special format in R to indicate categories. This is useful since the various R functions will generally know how to work with these variables without being told what to do. 
+
+
+```{r}
+str(pm$diabetes)
+```
+
+Sometimes you will read in data where the values are a 0 or a 1 although in that case you would still need to inform R that this variable is a factor else there would be a problem. Consider the following which reads in a slightly different version of the Pima data set where the diabetes variable has values of 0 and 1 to indicate "negative" or "positive", respectively. 
+
+```{r altpm1}
+aurl <- "https://raw.githubusercontent.com/steviep42/bios534_spring_2020/master/data/pima_10.csv"
+
+pm_10 <- read.csv(aurl)
+str(pm_10)
+```
+
+Okay, so as far as R is concerned, the diabetes variable is an integer. We could try to use this in a call to the **train** function and it will fail. This is just like what happened when we were attempting to use regression.
+
+```{r failedgln,eval=FALSE}
+train(diabetes ~ .,
+      data = pm_10,
+      method = "glm")
+
+You are trying to do regression and your outcome only has two possible values Are you trying to do classification? If so, use a 2 level factor as your outcome column.Generalized Linear Model 
+```
+
+So just as we did with the mtcars data frame, we'll need to turn this into a factor:
+
+```{r fixedfac}
+pm_10 <- pm_10 %>% mutate(diabetes=factor(diabetes))
+train(diabetes ~ .,
+      data = pm_10,
+      method = "glm")
+```
+
+Now, what would have happened had we been stuck with the version of the data frame that has "pos" and "neg" ? We still have the **pm** data frame.
+
+```{r}
+str(pm)
+```
+
+While this is goog to go, we could have processed it as follows which is something that you might have to do in other languages. This is a form of one hot encoding although the values in this case occupy one column since that is the column to be predicted. 
+
+```{r}
+pm_alt <- pm %>% 
+  mutate(diabetes=ifelse(diabetes=="pos",1,0)) %>%
+  mutate(diabetes = factor(diabetes))
+
+str(pm_alt)
+```
 
 
 # Decision Trees
