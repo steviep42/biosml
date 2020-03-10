@@ -1491,9 +1491,14 @@ definitely get more of the actual negative cases. What if we moved it to say 0.9
 We might first wish to look at the distribution of the returned probabilities before making a decision about where to set the threshold. You should now be able to clearly that simply selecting 0.5 in a general case might not be the best approach.
 
 ```{r bxplotalpha}
+par(mfrow=c(1,2))
 boxplot(glm_preds, 
-        main="Probabilities from our GLM Model")
+        main="GLM Model Probabilities")
 grid()
+plot(glm_preds[order(glm_preds)],type="l",
+               main="Prediction Probabilities",ylab="probability",xlab="Patients")
+grid()
+par(mfrow=c(1,1))
 ```
 
 The median is somewhere around .25 so we could use that for now although we are just guessing.  
