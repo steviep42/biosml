@@ -2004,7 +2004,7 @@ preds <- predict(pm_ranger_mod,test)
 confusionMatrix(preds,test$diabetes)
 ```
 
-## Format Of Variable To Be Predicted
+## Target Variable Format
 
 If you notice, the format of the Pima data frame has indicated that the **diabetes** variable is a factor which is a special format in R to indicate categories. This is useful since the various R functions will generally know how to work with these variables without being told what to do. 
 
@@ -2055,6 +2055,57 @@ pm_alt <- pm %>%
   mutate(diabetes = factor(diabetes))
 
 str(pm_alt)
+```
+
+## Addressing Class Imbalance
+
+We have something of a problme in the Pima data. If we look at the number of positive cases vs the negative cases there is an imbalance which might be impacting the construction of our model. We have almost twice as many negative cases as we do positive. It's not clear that this is a problem and if this proportion accurately reflects the prevalence diabetes in a larger population then perhaps we should accept this. However, we might not know the true prevalence either in the Pima population or a more general one. 
+
+```{r pimatab}
+pm %>% count(diabetes)
+```
+
+What techniques exist to deal with this ? There is the concept of "Sub Sampling" which uses sampling (e.g. bootstrap) to produce a training set that balances out the distribution of cases. This includes **down sampling**, **up sampling**, and **hybrid sampling**. Of course there are packages that do this although the **caret** package itself has some functions to help. We'll present a **down sampling** example. 
+
+Down sampling "randomly subset all the classes in the training set so that their class frequencies match the least prevalent class". In thise case we'll use sampling to create a new training set where the two classes counts are equal. Whether this is advisable is another question altogether but let's see the impact it has on the predictive model. 
+
+
+```{r downsample1}
+down_train <- downSample(x = train[, -ncol(train)],
+                         y = train$diabetes, yname="diabetes")
+table(down_train$diabetes)   
+```
+
+Next we'll build our model as before except now we'll use the down sampled training data. This provides better performance in the ROC and Specificity measures but we experience a reduction in Sensitivity. 
+
+```{r logitdownsample}
+ctrl <- trainControl(method = "cv", 
+                     number = 5,
+                     classProbs = TRUE,
+                     summaryFunction = twoClassSummary)
+
+pm_glm_down <- train(form = diabetes ~ .,
+                    data = down_train,
+                    trControl = ctrl,
+                    metric = "ROC",
+                    method = "glm",
+                    preProc = c("center", "scale"))
+pm_glm_down
+```
+
+Check the predictions:
+
+```{r downpred}
+down_preds <- predict(pm_glm_down,test,type="prob")
+colAUC(down_preds[,2],test$diabetes,plotROC = TRUE)
+```
+
+So how does this compare to the **pm_glm_model** we created earlier using the training set that reflected the less balanced data ? 
+
+```{r comparemods}
+pm_glm_mod
+unbalanced_preds <- predict(pm_glm_mod,test,type="prob")
+colAUC(unbalanced_preds[,2],test$diabetes,plotROC = TRUE)
 ```
 
 
