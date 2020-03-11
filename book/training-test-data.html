@@ -197,12 +197,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="6.7" data-path="classification-problems.html"><a href="classification-problems.html#picking-the-right-metric"><i class="fa fa-check"></i><b>6.7</b> Picking the Right Metric</a></li>
 <li class="chapter" data-level="6.8" data-path="classification-problems.html"><a href="classification-problems.html#wait.-where-are-we"><i class="fa fa-check"></i><b>6.8</b> Wait. Where Are We ?</a></li>
 <li class="chapter" data-level="6.9" data-path="classification-problems.html"><a href="classification-problems.html#better-ways-to-compute-the-roc-curve"><i class="fa fa-check"></i><b>6.9</b> Better Ways To Compute The ROC Curve</a></li>
+<li class="chapter" data-level="6.10" data-path="classification-problems.html"><a href="classification-problems.html#roc-curve-summary"><i class="fa fa-check"></i><b>6.10</b> ROC Curve Summary</a></li>
 </ul></li>
 <li class="chapter" data-level="7" data-path="classification-example.html"><a href="classification-example.html"><i class="fa fa-check"></i><b>7</b> Classification Example</a><ul>
 <li class="chapter" data-level="7.1" data-path="classification-example.html"><a href="classification-example.html#exploratory-plots"><i class="fa fa-check"></i><b>7.1</b> Exploratory Plots</a></li>
 <li class="chapter" data-level="7.2" data-path="classification-example.html"><a href="classification-example.html#generalized-linear-models"><i class="fa fa-check"></i><b>7.2</b> Generalized Linear Models</a></li>
 <li class="chapter" data-level="7.3" data-path="classification-example.html"><a href="classification-example.html#random-forests"><i class="fa fa-check"></i><b>7.3</b> Random Forests</a></li>
-<li class="chapter" data-level="7.4" data-path="classification-example.html"><a href="classification-example.html#format-of-variable-to-be-predicted"><i class="fa fa-check"></i><b>7.4</b> Format Of Variable To Be Predicted</a></li>
+<li class="chapter" data-level="7.4" data-path="classification-example.html"><a href="classification-example.html#target-variable-format"><i class="fa fa-check"></i><b>7.4</b> Target Variable Format</a></li>
+<li class="chapter" data-level="7.5" data-path="classification-example.html"><a href="classification-example.html#addressing-class-imbalance"><i class="fa fa-check"></i><b>7.5</b> Addressing Class Imbalance</a></li>
 </ul></li>
 <li class="chapter" data-level="8" data-path="decision-trees.html"><a href="decision-trees.html"><i class="fa fa-check"></i><b>8</b> Decision Trees</a><ul>
 <li class="chapter" data-level="8.1" data-path="decision-trees.html"><a href="decision-trees.html#advantages"><i class="fa fa-check"></i><b>8.1</b> Advantages</a></li>
@@ -464,8 +466,7 @@ Summarize evaluation score (e.g. mean of RMSE)</code></pre>
 <a class="sourceLine" id="cb83-4" data-line-number="4"><span class="co"># once. We get back 4 RMSE values - one for each fold</span></a>
 <a class="sourceLine" id="cb83-5" data-line-number="5"></a>
 <a class="sourceLine" id="cb83-6" data-line-number="6">(rmse &lt;-<span class="st"> </span><span class="kw">make_mtcars_model</span>(num_of_folds))</a></code></pre></div>
-<pre><code>## [1] 2.161353 4.344058 1.622810 2.673400 4.784000 4.413693 1.681074
-## [8] 2.081101</code></pre>
+<pre><code>## [1] 2.161353 4.344058 1.622810 2.673400 4.784000 4.413693 1.681074 2.081101</code></pre>
 <div class="sourceCode" id="cb85"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb85-1" data-line-number="1"><span class="co"># Now we repeat this some number of times - like 10. So we get back</span></a>
 <a class="sourceLine" id="cb85-2" data-line-number="2"><span class="co"># 80 RMSE values </span></a>
 <a class="sourceLine" id="cb85-3" data-line-number="3"></a>

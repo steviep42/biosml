@@ -197,12 +197,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="6.7" data-path="classification-problems.html"><a href="classification-problems.html#picking-the-right-metric"><i class="fa fa-check"></i><b>6.7</b> Picking the Right Metric</a></li>
 <li class="chapter" data-level="6.8" data-path="classification-problems.html"><a href="classification-problems.html#wait.-where-are-we"><i class="fa fa-check"></i><b>6.8</b> Wait. Where Are We ?</a></li>
 <li class="chapter" data-level="6.9" data-path="classification-problems.html"><a href="classification-problems.html#better-ways-to-compute-the-roc-curve"><i class="fa fa-check"></i><b>6.9</b> Better Ways To Compute The ROC Curve</a></li>
+<li class="chapter" data-level="6.10" data-path="classification-problems.html"><a href="classification-problems.html#roc-curve-summary"><i class="fa fa-check"></i><b>6.10</b> ROC Curve Summary</a></li>
 </ul></li>
 <li class="chapter" data-level="7" data-path="classification-example.html"><a href="classification-example.html"><i class="fa fa-check"></i><b>7</b> Classification Example</a><ul>
 <li class="chapter" data-level="7.1" data-path="classification-example.html"><a href="classification-example.html#exploratory-plots"><i class="fa fa-check"></i><b>7.1</b> Exploratory Plots</a></li>
 <li class="chapter" data-level="7.2" data-path="classification-example.html"><a href="classification-example.html#generalized-linear-models"><i class="fa fa-check"></i><b>7.2</b> Generalized Linear Models</a></li>
 <li class="chapter" data-level="7.3" data-path="classification-example.html"><a href="classification-example.html#random-forests"><i class="fa fa-check"></i><b>7.3</b> Random Forests</a></li>
-<li class="chapter" data-level="7.4" data-path="classification-example.html"><a href="classification-example.html#format-of-variable-to-be-predicted"><i class="fa fa-check"></i><b>7.4</b> Format Of Variable To Be Predicted</a></li>
+<li class="chapter" data-level="7.4" data-path="classification-example.html"><a href="classification-example.html#target-variable-format"><i class="fa fa-check"></i><b>7.4</b> Target Variable Format</a></li>
+<li class="chapter" data-level="7.5" data-path="classification-example.html"><a href="classification-example.html#addressing-class-imbalance"><i class="fa fa-check"></i><b>7.5</b> Addressing Class Imbalance</a></li>
 </ul></li>
 <li class="chapter" data-level="8" data-path="decision-trees.html"><a href="decision-trees.html"><i class="fa fa-check"></i><b>8</b> Decision Trees</a><ul>
 <li class="chapter" data-level="8.1" data-path="decision-trees.html"><a href="decision-trees.html#advantages"><i class="fa fa-check"></i><b>8.1</b> Advantages</a></li>
@@ -372,7 +374,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <a class="sourceLine" id="cb21-2" data-line-number="2"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x=</span>am,<span class="dt">y=</span>mpg)) <span class="op">+</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb21-3" data-line-number="3"><span class="st">  </span><span class="kw">geom_boxplot</span>() <span class="op">+</span><span class="st"> </span><span class="kw">facet_wrap</span>(.<span class="op">~</span>cyl) <span class="op">+</span><span class="st"> </span><span class="kw">theme_bw</span>() <span class="op">+</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb21-4" data-line-number="4"><span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">&quot;MPG Across Transmission Types And Cylinder Group&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">xlab</span>(<span class="st">&quot;Transmission Type&quot;</span>) </a></code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
 </div>
 <div id="histograms" class="section level3">
 <h3><span class="header-section-number">3.2.3</span> Histograms</h3>
@@ -519,8 +521,7 @@ RMSE = \sqrt\frac{\sum_i^n(P_i-O_i)^2}{n}
 <div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb40-1" data-line-number="1"><span class="kw">set.seed</span>(<span class="dv">123</span>)</a>
 <a class="sourceLine" id="cb40-2" data-line-number="2"></a>
 <a class="sourceLine" id="cb40-3" data-line-number="3">(train_index &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(mtcars),<span class="kw">nrow</span>(mtcars)<span class="op">*</span>.<span class="dv">80</span>))</a></code></pre></div>
-<pre><code>##  [1] 31 15 19 14  3 10 18 22 11  5 20 29 23 30  9 28  8 27  7 32 26 17  4
-## [24]  1 24</code></pre>
+<pre><code>##  [1] 31 15 19 14  3 10 18 22 11  5 20 29 23 30  9 28  8 27  7 32 26 17  4  1 24</code></pre>
 <div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb42-1" data-line-number="1"><span class="co"># Get 80% of the records from the data frame</span></a>
 <a class="sourceLine" id="cb42-2" data-line-number="2">train_df &lt;-<span class="st"> </span>mtcars[train_index,]</a>
 <a class="sourceLine" id="cb42-3" data-line-number="3"></a>
@@ -643,7 +644,7 @@ RMSE = \sqrt\frac{\sum_i^n(P_i-O_i)^2}{n}
 <a class="sourceLine" id="cb64-3" data-line-number="3"><span class="kw">colnames</span>(comp_mat) &lt;-<span class="st"> </span><span class="kw">as.character</span>(myseq)</a>
 <a class="sourceLine" id="cb64-4" data-line-number="4"><span class="kw">boxplot</span>(comp_mat,<span class="dt">ylab=</span><span class="st">&quot;RMSE&quot;</span>,<span class="dt">xlab=</span><span class="st">&quot;Train / Test Proportion&quot;</span>,</a>
 <a class="sourceLine" id="cb64-5" data-line-number="5">        <span class="dt">main=</span><span class="st">&quot;XGBoost - Comparison of Different Train / Test Proprtions&quot;</span>)</a></code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
 </div>
 <div id="summary" class="section level2">
 <h2><span class="header-section-number">3.8</span> Summary</h2>

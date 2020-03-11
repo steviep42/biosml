@@ -1736,7 +1736,7 @@ pROC::coords(myRoc, "best", ret = "threshold",transpose = TRUE)
 ```
 
 ```{r}
-get_tprfpr(.2246862)
+get_tprfpr(.3850002)
 ```
 
 
@@ -1759,6 +1759,19 @@ We could also work directly with our labelled predictions and known labels.
 ```{r}
 caret::confusionMatrix(glm_label_preds,glm_test$diabetes,positive="pos")
 ```
+
+## ROC Curve Summary
+
+The above can be confusing although what you will soon discover is that being able to compute the AUC (Area Under Curve) will be sufficient to judge the quality of a model - well in general it's a good start. The **caret** package can do that for you so you don't need to use the various functions about to find that. You migt want to put up a ROC curve based on some predictions in which case you would still need to use one of the above functions. If you just want to see a basic ROC Curve then take this approach which will give you both the AUC and a ROC Curve alebit it much less "pretty" than the one above. 
+
+```{r procagain}
+# Use the colAUC function from the caTools package
+
+pm_model_glm_probs <- predict(glm_model,glm_test,type="response")
+caTools::colAUC(pm_model_glm_probs,glm_test$diabetes,plotROC=TRUE)
+
+```
+
 
 # Classification Example
 
