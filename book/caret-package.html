@@ -273,8 +273,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="11.7.3" data-path="data-pre-processing.html"><a href="data-pre-processing.html#feature-selection-1"><i class="fa fa-check"></i><b>11.7.3</b> Feature Selection</a></li>
 </ul></li>
 <li class="chapter" data-level="11.8" data-path="data-pre-processing.html"><a href="data-pre-processing.html#handling-categories"><i class="fa fa-check"></i><b>11.8</b> Handling Categories</a><ul>
-<li class="chapter" data-level="11.8.1" data-path="data-pre-processing.html"><a href="data-pre-processing.html#is-rank-a-category"><i class="fa fa-check"></i><b>11.8.1</b> Is Rank A Category ?</a></li>
-<li class="chapter" data-level="11.8.2" data-path="data-pre-processing.html"><a href="data-pre-processing.html#relationship-to-one-hot-encoding"><i class="fa fa-check"></i><b>11.8.2</b> Relationship To One Hot Encoding</a></li>
+<li class="chapter" data-level="11.8.1" data-path="data-pre-processing.html"><a href="data-pre-processing.html#examples"><i class="fa fa-check"></i><b>11.8.1</b> Examples</a></li>
+<li class="chapter" data-level="11.8.2" data-path="data-pre-processing.html"><a href="data-pre-processing.html#admissions-data"><i class="fa fa-check"></i><b>11.8.2</b> Admissions Data</a></li>
+<li class="chapter" data-level="11.8.3" data-path="data-pre-processing.html"><a href="data-pre-processing.html#is-rank-a-category"><i class="fa fa-check"></i><b>11.8.3</b> Is Rank A Category ?</a></li>
+<li class="chapter" data-level="11.8.4" data-path="data-pre-processing.html"><a href="data-pre-processing.html#relationship-to-one-hot-encoding"><i class="fa fa-check"></i><b>11.8.4</b> Relationship To One Hot Encoding</a></li>
 </ul></li>
 <li class="chapter" data-level="11.9" data-path="data-pre-processing.html"><a href="data-pre-processing.html#binning"><i class="fa fa-check"></i><b>11.9</b> Binning</a></li>
 </ul></li>
@@ -600,7 +602,7 @@ future predictions</li>
 <p>This model returns more information than say the <strong>lm</strong> function because this method uses something called “hyperparameters” which are arguments to a given method that gets set before you call the method. In this case there are two hyperparameters called <strong>mtry</strong> and <strong>splitrule</strong> that assume default variables if we don’t supply values.</p>
 <p>We can get a plot of how the RMSE and R squared value varied with different values of <strong>mtry</strong> as well the <strong>splitrule</strong>. Here we see that an mtry value of 6 randomly selected columns / variables provides the lowest RMSE.</p>
 <div class="sourceCode" id="cb139"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb139-1" data-line-number="1"><span class="kw">ggplot</span>(my_ranger) <span class="op">+</span><span class="st"> </span><span class="kw">theme</span>(<span class="dt">legend.position =</span> <span class="st">&quot;top&quot;</span>)</a></code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-110-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
 <p>We can use the <strong>tuneLength</strong> argument to tell the <strong>train</strong> function to use N different values of <strong>mtry</strong> which is a <strong>hyperparameter</strong> to the randomForest package. The value relates to the number of columns in the data frame. We have 11 total and we are trying to predict one of them (mpg). So we can tell the <strong>train</strong> function to randomly select N variables (up to 10) when a tree is split.</p>
 <div class="sourceCode" id="cb140"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb140-1" data-line-number="1">my_ctrl &lt;-<span class="st"> </span><span class="kw">trainControl</span>(</a>
 <a class="sourceLine" id="cb140-2" data-line-number="2">    <span class="dt">method =</span> <span class="st">&quot;cv&quot;</span>, </a>
@@ -735,7 +737,7 @@ future predictions</li>
 ## RMSE was used to select the optimal model using the smallest value.
 ## The final value used for the model was mtry = 6.</code></pre>
 <div class="sourceCode" id="cb144"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb144-1" data-line-number="1"><span class="kw">plot</span>(my_rf)</a></code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-111-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
 <div class="sourceCode" id="cb145"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb145-1" data-line-number="1"><span class="kw">compute_rmse</span>(<span class="kw">predict</span>(my_rf,Test),Test<span class="op">$</span>mpg)</a></code></pre></div>
 <pre><code>## [1] 2.23303</code></pre>
 <p>If you have a questions about what hyper parameters can be tuned for a given method then you can refer to the online <a href="https://topepo.github.io/caret/available-models.html">caret documentation</a> Here is a screenshot of the table of supported models and associated tuning parameters.</p>
@@ -810,7 +812,7 @@ future predictions</li>
 <div class="sourceCode" id="cb159"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb159-1" data-line-number="1"><span class="kw">compute_rmse</span>(<span class="kw">predict</span>(my_ranger,Test),Test<span class="op">$</span>mpg)</a></code></pre></div>
 <pre><code>## [1] 3.042224</code></pre>
 <div class="sourceCode" id="cb161"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb161-1" data-line-number="1"><span class="kw">plot</span>(my_ranger)</a></code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-115-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
 </div>
 <div id="alternative-calling-sequence" class="section level2">
 <h2><span class="header-section-number">5.7</span> Alternative Calling Sequence</h2>

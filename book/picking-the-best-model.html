@@ -273,8 +273,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="11.7.3" data-path="data-pre-processing.html"><a href="data-pre-processing.html#feature-selection-1"><i class="fa fa-check"></i><b>11.7.3</b> Feature Selection</a></li>
 </ul></li>
 <li class="chapter" data-level="11.8" data-path="data-pre-processing.html"><a href="data-pre-processing.html#handling-categories"><i class="fa fa-check"></i><b>11.8</b> Handling Categories</a><ul>
-<li class="chapter" data-level="11.8.1" data-path="data-pre-processing.html"><a href="data-pre-processing.html#is-rank-a-category"><i class="fa fa-check"></i><b>11.8.1</b> Is Rank A Category ?</a></li>
-<li class="chapter" data-level="11.8.2" data-path="data-pre-processing.html"><a href="data-pre-processing.html#relationship-to-one-hot-encoding"><i class="fa fa-check"></i><b>11.8.2</b> Relationship To One Hot Encoding</a></li>
+<li class="chapter" data-level="11.8.1" data-path="data-pre-processing.html"><a href="data-pre-processing.html#examples"><i class="fa fa-check"></i><b>11.8.1</b> Examples</a></li>
+<li class="chapter" data-level="11.8.2" data-path="data-pre-processing.html"><a href="data-pre-processing.html#admissions-data"><i class="fa fa-check"></i><b>11.8.2</b> Admissions Data</a></li>
+<li class="chapter" data-level="11.8.3" data-path="data-pre-processing.html"><a href="data-pre-processing.html#is-rank-a-category"><i class="fa fa-check"></i><b>11.8.3</b> Is Rank A Category ?</a></li>
+<li class="chapter" data-level="11.8.4" data-path="data-pre-processing.html"><a href="data-pre-processing.html#relationship-to-one-hot-encoding"><i class="fa fa-check"></i><b>11.8.4</b> Relationship To One Hot Encoding</a></li>
 </ul></li>
 <li class="chapter" data-level="11.9" data-path="data-pre-processing.html"><a href="data-pre-processing.html#binning"><i class="fa fa-check"></i><b>11.9</b> Binning</a></li>
 </ul></li>
@@ -464,7 +466,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## Performance metrics: MAE, RMSE, Rsquared 
 ## Time estimates for: everything, final model fit</code></pre>
 <div class="sourceCode" id="cb390"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb390-1" data-line-number="1"><span class="kw">dotplot</span>(results)</a></code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-175-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-79-1.png" width="672" /></p>
 </div>
 <div id="model-performance" class="section level2">
 <h2><span class="header-section-number">10.4</span> Model Performance</h2>
@@ -519,7 +521,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## GLMNET 0.6034 0.6498            -0.02493
 ## RANGER 0.4937 0.3675   0.5323</code></pre>
 <div class="sourceCode" id="cb403"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb403-1" data-line-number="1"><span class="kw">dotplot</span>(difs)</a></code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-176-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-80-1.png" width="672" /></p>
 </div>
 <div id="feature-selection" class="section level2">
 <h2><span class="header-section-number">10.5</span> Feature Selection</h2>
@@ -559,7 +561,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## The top 3 variables (out of 3):
 ##    wt, am, drat</code></pre>
 <div class="sourceCode" id="cb406"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb406-1" data-line-number="1"><span class="kw">plot</span>(results,<span class="dt">type=</span><span class="kw">c</span>(<span class="st">&quot;o&quot;</span>,<span class="st">&quot;g&quot;</span>))</a></code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-177-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-81-1.png" width="672" /></p>
 <p>What we get back is some idea about the important features. We could then build a model with caret that uses only these features to see if the suggested RMSE value mentioned in the rfe process matches.</p>
 </div>
 </div>

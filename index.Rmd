@@ -3841,7 +3841,66 @@ summary(myLm)
 
 If you haven't already, you should first read the section on "Levels Of Measurement" to reacquaint yourself with the differences between Nominal, Ordinal, Interval, and Ratio data. 
 
-In this section we'll deal with categories and factors which represent categories (e.g. "male","female","smoker","non-smoker"). These variables, while useful, need to be recoded in a way to make them useful for machine learning methods. For example, read in the following data which relates to admissions data for students applying to an academic program. This comes from [UCLA Statisitical Consulting](https://stats.idre.ucla.edu/r/dae/logit-regression/) site.
+In this section we'll deal with categories and factors which represent categories (e.g. "male","female","smoker","non-smoker"). These variables, while useful, need to be recoded in a way to make them useful for machine learning methods. In terms of categories, we have **nominal** and **ordinal** features with the former being names or labels and the latter being the same except with some notion of order (e.g. "low","medium","high"). 
+
+### Examples 
+
+In R, you can usually create a factor out of a feature and R will handle it correctly when applying a machine learning method. Under the hood, it turns the factors into **dummy variables**. Notice how the model creates variables of the type `cyl6` and `cyl8`. Where is `cyl4` ? Well, absence of `cyl4` is simply when `cyl6` and `cyl8` do not exist for that record. 
+
+```{r mtcarsexamdum}
+mtcars_exampl <- mtcars %>% mutate(cyl=factor(cyl))
+lm(mpg ~ .,mtcars_exampl)
+```
+
+We could have created the dummy variables ourselves but we didn't need to do that here. In Python, we generally would. But when we do it's best to have 1 less category than is encoded by the unique feature values under consideration. If there are n=3 unique values then we would want 2 dummy variables. 
+
+```{r amtcars}
+mtcars_exampl <- mtcars %>% mutate(cyl=factor(cyl))
+dummy <- dummyVars(~.,mtcars_exampl)
+
+dummied_up_mtcars <- data.frame(predict(dummy,newdata=mtcars_exampl))
+
+head(dummied_up_mtcars)
+```
+
+But here we would want to use the `fullrank = TRUE` in the call to **dummyVars** to accomplish the n-1 encoding. The reason we would do this is to avoid the collinearity although in this case that isn't a problem here. We could first check the correlations 
+
+
+```{r mtcorr}
+plot_correlation(dummied_up_mtcars[,1:6])
+```
+
+```{r dummynm1}
+mtcars_exampl <- mtcars %>% mutate(cyl=factor(cyl))
+dummy <- dummyVars(~.,mtcars_exampl,fullRank = T)
+
+dummied_up_mtcars <- data.frame(predict(dummy,
+                                        newdata=mtcars_exampl))
+
+head(dummied_up_mtcars)
+```
+
+But again, R will do this for us just by indicating that it is a factor.  But let me show you what will happen in another case with respect to the **am** variable if we do not use the n-1 encoding
+
+```{r amfacdum}
+mtcars_exampl <- mtcars %>% mutate(am=factor(am))
+dummy <- dummyVars(~.,mtcars_exampl)
+
+dummied_up_mtcars <- data.frame(predict(dummy,
+                                        newdata=mtcars_exampl))
+
+head(dummied_up_mtcars[,7:11])
+```
+
+Check the correlations between `am.0` and `am.1`. They are perfectly correlated which could cause problems in the modeling methods. We could express `am.0` as a linear function of `am.1`. This is why using the n-1 approach helps deal with the collinearity problem. 
+
+```{r}
+plot_correlation(dummied_up_mtcars[,7:11])
+```
+
+### Admissions Data 
+
+For example, read in the following data which relates to admissions data for students applying to an academic program. This comes from [UCLA Statisitical Consulting](https://stats.idre.ucla.edu/r/dae/logit-regression/) site.
 
 ```{r factonehot1}
 admissions <- read.csv("https://stats.idre.ucla.edu/stat/data/binary.csv")

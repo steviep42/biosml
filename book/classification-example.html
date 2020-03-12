@@ -273,8 +273,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="11.7.3" data-path="data-pre-processing.html"><a href="data-pre-processing.html#feature-selection-1"><i class="fa fa-check"></i><b>11.7.3</b> Feature Selection</a></li>
 </ul></li>
 <li class="chapter" data-level="11.8" data-path="data-pre-processing.html"><a href="data-pre-processing.html#handling-categories"><i class="fa fa-check"></i><b>11.8</b> Handling Categories</a><ul>
-<li class="chapter" data-level="11.8.1" data-path="data-pre-processing.html"><a href="data-pre-processing.html#is-rank-a-category"><i class="fa fa-check"></i><b>11.8.1</b> Is Rank A Category ?</a></li>
-<li class="chapter" data-level="11.8.2" data-path="data-pre-processing.html"><a href="data-pre-processing.html#relationship-to-one-hot-encoding"><i class="fa fa-check"></i><b>11.8.2</b> Relationship To One Hot Encoding</a></li>
+<li class="chapter" data-level="11.8.1" data-path="data-pre-processing.html"><a href="data-pre-processing.html#examples"><i class="fa fa-check"></i><b>11.8.1</b> Examples</a></li>
+<li class="chapter" data-level="11.8.2" data-path="data-pre-processing.html"><a href="data-pre-processing.html#admissions-data"><i class="fa fa-check"></i><b>11.8.2</b> Admissions Data</a></li>
+<li class="chapter" data-level="11.8.3" data-path="data-pre-processing.html"><a href="data-pre-processing.html#is-rank-a-category"><i class="fa fa-check"></i><b>11.8.3</b> Is Rank A Category ?</a></li>
+<li class="chapter" data-level="11.8.4" data-path="data-pre-processing.html"><a href="data-pre-processing.html#relationship-to-one-hot-encoding"><i class="fa fa-check"></i><b>11.8.4</b> Relationship To One Hot Encoding</a></li>
 </ul></li>
 <li class="chapter" data-level="11.9" data-path="data-pre-processing.html"><a href="data-pre-processing.html#binning"><i class="fa fa-check"></i><b>11.9</b> Binning</a></li>
 </ul></li>
@@ -411,7 +413,7 @@ diabetes - Class variable (test for diabetes)</code></pre>
 <p>And if you haven’t yet enough of ROC curves just yet, we could put up one of those.</p>
 <div class="sourceCode" id="cb229"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb229-1" data-line-number="1"><span class="kw">library</span>(caTools)</a>
 <a class="sourceLine" id="cb229-2" data-line-number="2"><span class="kw">colAUC</span>(pm_model_fitpreds,test<span class="op">$</span>diabetes,<span class="dt">plotROC=</span><span class="ot">TRUE</span>)</a></code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-127-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-31-1.png" width="672" /></p>
 <pre><code>##                  [,1]
 ## neg vs. pos 0.8924528</code></pre>
 <p>But wait, we’ve already been through the whole ROC curve, AUC, confusion matrix route so why would we take a manual approach if we have the <strong>caret</strong> package readily available ?</p>
@@ -587,7 +589,7 @@ diabetes - Class variable (test for diabetes)</code></pre>
 <a class="sourceLine" id="cb247-12" data-line-number="12">                    <span class="dt">preProc =</span> <span class="kw">c</span>(<span class="st">&quot;center&quot;</span>, <span class="st">&quot;scale&quot;</span>))</a></code></pre></div>
 <p>The object can be plotted. Here we see that the max AUC of .825 occurs when mtry is 3 and the Gini criterion is used to evaluate a tree.</p>
 <div class="sourceCode" id="cb248"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb248-1" data-line-number="1"><span class="kw">plot</span>(pm_ranger_mod)</a></code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-133-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-37-1.png" width="672" /></p>
 <div class="sourceCode" id="cb249"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb249-1" data-line-number="1"><span class="kw">max</span>(pm_ranger_mod[[<span class="st">&quot;results&quot;</span>]]<span class="op">$</span>ROC)</a></code></pre></div>
 <pre><code>## [1] 0.8128779</code></pre>
 <div class="sourceCode" id="cb251"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb251-1" data-line-number="1">preds &lt;-<span class="st"> </span><span class="kw">predict</span>(pm_ranger_mod,test)</a>

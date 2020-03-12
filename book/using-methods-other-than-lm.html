@@ -273,8 +273,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="11.7.3" data-path="data-pre-processing.html"><a href="data-pre-processing.html#feature-selection-1"><i class="fa fa-check"></i><b>11.7.3</b> Feature Selection</a></li>
 </ul></li>
 <li class="chapter" data-level="11.8" data-path="data-pre-processing.html"><a href="data-pre-processing.html#handling-categories"><i class="fa fa-check"></i><b>11.8</b> Handling Categories</a><ul>
-<li class="chapter" data-level="11.8.1" data-path="data-pre-processing.html"><a href="data-pre-processing.html#is-rank-a-category"><i class="fa fa-check"></i><b>11.8.1</b> Is Rank A Category ?</a></li>
-<li class="chapter" data-level="11.8.2" data-path="data-pre-processing.html"><a href="data-pre-processing.html#relationship-to-one-hot-encoding"><i class="fa fa-check"></i><b>11.8.2</b> Relationship To One Hot Encoding</a></li>
+<li class="chapter" data-level="11.8.1" data-path="data-pre-processing.html"><a href="data-pre-processing.html#examples"><i class="fa fa-check"></i><b>11.8.1</b> Examples</a></li>
+<li class="chapter" data-level="11.8.2" data-path="data-pre-processing.html"><a href="data-pre-processing.html#admissions-data"><i class="fa fa-check"></i><b>11.8.2</b> Admissions Data</a></li>
+<li class="chapter" data-level="11.8.3" data-path="data-pre-processing.html"><a href="data-pre-processing.html#is-rank-a-category"><i class="fa fa-check"></i><b>11.8.3</b> Is Rank A Category ?</a></li>
+<li class="chapter" data-level="11.8.4" data-path="data-pre-processing.html"><a href="data-pre-processing.html#relationship-to-one-hot-encoding"><i class="fa fa-check"></i><b>11.8.4</b> Relationship To One Hot Encoding</a></li>
 </ul></li>
 <li class="chapter" data-level="11.9" data-path="data-pre-processing.html"><a href="data-pre-processing.html#binning"><i class="fa fa-check"></i><b>11.9</b> Binning</a></li>
 </ul></li>
@@ -415,7 +417,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## The final value used for the model was mtry = 6.</code></pre>
 <p>As a matter of fact we can plot this model and it will show us something interesting. In particular, we now see that using values less than 6 predictors / columns / features results in lower RMSE. If we use more, than the RMSE goes up. This is the power of methods that use hyperparamters. If we move through a number of values for the <strong>mtry</strong> then perhaps we can find the best value to get the best result.</p>
 <div class="sourceCode" id="cb350"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb350-1" data-line-number="1"><span class="kw">plot</span>(caret_rf)</a></code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-172-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-76-1.png" width="672" /></p>
 <p>Telling <strong>caret</strong> to use more valies of <strong>mtry</strong> is possible. This will explicitly try all values from 1 - 10 inclusive. Note that the model gets built for each value of <strong>mtry</strong>. This causes the model building process to take longer than it normally would.</p>
 <div class="sourceCode" id="cb351"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb351-1" data-line-number="1">caret_rf &lt;-<span class="st"> </span><span class="kw">train</span>(mpg <span class="op">~</span><span class="st"> </span>.,</a>
 <a class="sourceLine" id="cb351-2" data-line-number="2">                  <span class="dt">data =</span> new_train,</a>
