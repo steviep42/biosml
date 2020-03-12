@@ -358,7 +358,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <a class="sourceLine" id="cb423-2" data-line-number="2">        <span class="dt">na.rm=</span><span class="ot">TRUE</span>,</a>
 <a class="sourceLine" id="cb423-3" data-line-number="3">        <span class="dt">main=</span><span class="st">&quot;Distribution of the wt feature&quot;</span>)</a>
 <a class="sourceLine" id="cb423-4" data-line-number="4"><span class="kw">grid</span>()</a></code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-83-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-181-1.png" width="672" /></p>
 <p>To make the substitution would involve the following. First we need to find out which row numbers have missing values for the <strong>wt</strong> feature.</p>
 <div class="sourceCode" id="cb424"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb424-1" data-line-number="1">(missing_wt_indices &lt;-<span class="st"> </span><span class="kw">which</span>(<span class="kw">is.na</span>(mtcars_na<span class="op">$</span>wt)))</a></code></pre></div>
 <pre><code>## [1]  2  9 23</code></pre>
@@ -427,17 +427,17 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <a class="sourceLine" id="cb436-23" data-line-number="23">              <span class="dt">method =</span> <span class="st">&quot;lm&quot;</span>,</a>
 <a class="sourceLine" id="cb436-24" data-line-number="24">              <span class="dt">metric =</span> <span class="st">&quot;RMSE&quot;</span>,</a>
 <a class="sourceLine" id="cb436-25" data-line-number="25">              <span class="dt">preProcess =</span> <span class="st">&quot;knnImpute&quot;</span>)</a></code></pre></div>
-<pre><code>## Warning in predict.lm(modelFit, newdata): prediction from a rank-deficient fit
-## may be misleading
+<pre><code>## Warning in predict.lm(modelFit, newdata): prediction from a rank-deficient fit may
+## be misleading
 
-## Warning in predict.lm(modelFit, newdata): prediction from a rank-deficient fit
-## may be misleading
+## Warning in predict.lm(modelFit, newdata): prediction from a rank-deficient fit may
+## be misleading
 
-## Warning in predict.lm(modelFit, newdata): prediction from a rank-deficient fit
-## may be misleading
+## Warning in predict.lm(modelFit, newdata): prediction from a rank-deficient fit may
+## be misleading
 
-## Warning in predict.lm(modelFit, newdata): prediction from a rank-deficient fit
-## may be misleading</code></pre>
+## Warning in predict.lm(modelFit, newdata): prediction from a rank-deficient fit may
+## be misleading</code></pre>
 <div class="sourceCode" id="cb438"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb438-1" data-line-number="1">lmFit</a></code></pre></div>
 <pre><code>## Linear Regression 
 ## 
@@ -463,27 +463,27 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h2><span class="header-section-number">11.3</span> Scaling</h2>
 <p>In terms of what methods benefit (or require) you to scale data prior to use, consider that any method that uses the idea of “distance” will require this. This helps address the situation wherein one the size and range of one feature might overshadow another. For example, look at the range of features in the <strong>mtcars</strong> dataframe. Not only are the variables on different scales (e.g. MPG vs Weight vs Horse Power), a feature such as displacement might over influence a distance calculation when compared to qsec.</p>
 <div class="sourceCode" id="cb442"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb442-1" data-line-number="1"><span class="kw">summary</span>(mtcars)</a></code></pre></div>
-<pre><code>##       mpg             cyl             disp             hp       
-##  Min.   :10.40   Min.   :4.000   Min.   : 71.1   Min.   : 52.0  
-##  1st Qu.:15.43   1st Qu.:4.000   1st Qu.:120.8   1st Qu.: 96.5  
-##  Median :19.20   Median :6.000   Median :196.3   Median :123.0  
-##  Mean   :20.09   Mean   :6.188   Mean   :230.7   Mean   :146.7  
-##  3rd Qu.:22.80   3rd Qu.:8.000   3rd Qu.:326.0   3rd Qu.:180.0  
-##  Max.   :33.90   Max.   :8.000   Max.   :472.0   Max.   :335.0  
-##       drat             wt             qsec             vs        
-##  Min.   :2.760   Min.   :1.513   Min.   :14.50   Min.   :0.0000  
-##  1st Qu.:3.080   1st Qu.:2.581   1st Qu.:16.89   1st Qu.:0.0000  
-##  Median :3.695   Median :3.325   Median :17.71   Median :0.0000  
-##  Mean   :3.597   Mean   :3.217   Mean   :17.85   Mean   :0.4375  
-##  3rd Qu.:3.920   3rd Qu.:3.610   3rd Qu.:18.90   3rd Qu.:1.0000  
-##  Max.   :4.930   Max.   :5.424   Max.   :22.90   Max.   :1.0000  
-##        am              gear            carb      
-##  Min.   :0.0000   Min.   :3.000   Min.   :1.000  
-##  1st Qu.:0.0000   1st Qu.:3.000   1st Qu.:2.000  
-##  Median :0.0000   Median :4.000   Median :2.000  
-##  Mean   :0.4062   Mean   :3.688   Mean   :2.812  
-##  3rd Qu.:1.0000   3rd Qu.:4.000   3rd Qu.:4.000  
-##  Max.   :1.0000   Max.   :5.000   Max.   :8.000</code></pre>
+<pre><code>##       mpg             cyl             disp             hp             drat      
+##  Min.   :10.40   Min.   :4.000   Min.   : 71.1   Min.   : 52.0   Min.   :2.760  
+##  1st Qu.:15.43   1st Qu.:4.000   1st Qu.:120.8   1st Qu.: 96.5   1st Qu.:3.080  
+##  Median :19.20   Median :6.000   Median :196.3   Median :123.0   Median :3.695  
+##  Mean   :20.09   Mean   :6.188   Mean   :230.7   Mean   :146.7   Mean   :3.597  
+##  3rd Qu.:22.80   3rd Qu.:8.000   3rd Qu.:326.0   3rd Qu.:180.0   3rd Qu.:3.920  
+##  Max.   :33.90   Max.   :8.000   Max.   :472.0   Max.   :335.0   Max.   :4.930  
+##        wt             qsec             vs               am        
+##  Min.   :1.513   Min.   :14.50   Min.   :0.0000   Min.   :0.0000  
+##  1st Qu.:2.581   1st Qu.:16.89   1st Qu.:0.0000   1st Qu.:0.0000  
+##  Median :3.325   Median :17.71   Median :0.0000   Median :0.0000  
+##  Mean   :3.217   Mean   :17.85   Mean   :0.4375   Mean   :0.4062  
+##  3rd Qu.:3.610   3rd Qu.:18.90   3rd Qu.:1.0000   3rd Qu.:1.0000  
+##  Max.   :5.424   Max.   :22.90   Max.   :1.0000   Max.   :1.0000  
+##       gear            carb      
+##  Min.   :3.000   Min.   :1.000  
+##  1st Qu.:3.000   1st Qu.:2.000  
+##  Median :4.000   Median :2.000  
+##  Mean   :3.688   Mean   :2.812  
+##  3rd Qu.:4.000   3rd Qu.:4.000  
+##  Max.   :5.000   Max.   :8.000</code></pre>
 <div id="methods-that-benefit-from-scaling" class="section level3">
 <h3><span class="header-section-number">11.3.1</span> Methods That Benefit From Scaling</h3>
 <p>The following approaches benefit from scaling:</p>
@@ -511,12 +511,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h4><span class="header-section-number">11.3.3.2</span> Scaling</h4>
 <p>This step involves taking the standard deviation of the vector / column. Then divide each value in the vector / column by this computed standard deviation. We’ll process the <strong>centered</strong> data from the previous computation.</p>
 <div class="sourceCode" id="cb447"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb447-1" data-line-number="1">(scaled &lt;-<span class="st"> </span>centered<span class="op">/</span><span class="kw">sd</span>(centered))</a></code></pre></div>
-<pre><code>##  [1] -0.610399567 -0.349785269 -0.917004624 -0.002299538  0.227654255
-##  [6]  0.248094592  0.360516446 -0.027849959 -0.068730634  0.227654255
-## [11]  0.227654255  0.871524874  0.524039143  0.575139986  2.077504765
-## [16]  2.255335698  2.174596366 -1.039646647 -1.637526508 -1.412682800
-## [21] -0.768812180  0.309415603  0.222544170  0.636460997  0.641571082
-## [26] -1.310481114 -1.100967659 -1.741772228 -0.048290296 -0.457097039
+<pre><code>##  [1] -0.610399567 -0.349785269 -0.917004624 -0.002299538  0.227654255  0.248094592
+##  [7]  0.360516446 -0.027849959 -0.068730634  0.227654255  0.227654255  0.871524874
+## [13]  0.524039143  0.575139986  2.077504765  2.255335698  2.174596366 -1.039646647
+## [19] -1.637526508 -1.412682800 -0.768812180  0.309415603  0.222544170  0.636460997
+## [25]  0.641571082 -1.310481114 -1.100967659 -1.741772228 -0.048290296 -0.457097039
 ## [31]  0.360516446 -0.446876870</code></pre>
 </div>
 <div id="scaling-a-data-frame" class="section level4">
@@ -684,56 +683,44 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>So how would we re express this information in terms of the unscaled data ? It’s tedious but doable. We leverage the fact that the scaled version of the data has attributes we can use to convert the predictions back to their unscaled form.</p>
 <div class="sourceCode" id="cb462"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb462-1" data-line-number="1">(unscaled_preds &lt;-<span class="st"> </span></a>
 <a class="sourceLine" id="cb462-2" data-line-number="2"><span class="st">   </span>preds <span class="op">*</span><span class="st"> </span><span class="kw">attr</span>(smtcars,<span class="st">&quot;scaled:scale&quot;</span>)[<span class="st">&#39;mpg&#39;</span>] <span class="op">+</span><span class="st"> </span><span class="kw">attr</span>(smtcars,<span class="st">&quot;scaled:center&quot;</span>)[<span class="st">&#39;mpg&#39;</span>])</a></code></pre></div>
-<pre><code>##           Mazda RX4       Mazda RX4 Wag          Datsun 710 
-##            22.59951            22.11189            26.25064 
-##      Hornet 4 Drive   Hornet Sportabout             Valiant 
-##            21.23740            17.69343            20.38304 
-##          Duster 360           Merc 240D            Merc 230 
-##            14.38626            22.49601            24.41909 
-##            Merc 280           Merc 280C          Merc 450SE 
-##            18.69903            19.19165            14.17216 
-##          Merc 450SL         Merc 450SLC  Cadillac Fleetwood 
-##            15.59957            15.74222            12.03401 
-## Lincoln Continental   Chrysler Imperial            Fiat 128 
-##            10.93644            10.49363            27.77291 
-##         Honda Civic      Toyota Corolla       Toyota Corona 
-##            29.89674            29.51237            23.64310 
-##    Dodge Challenger         AMC Javelin          Camaro Z28 
-##            16.94305            17.73218            13.30602 
-##    Pontiac Firebird           Fiat X1-9       Porsche 914-2 
-##            16.69168            28.29347            26.15295 
-##        Lotus Europa      Ford Pantera L        Ferrari Dino 
-##            27.63627            18.87004            19.69383 
-##       Maserati Bora          Volvo 142E 
-##            13.94112            24.36827</code></pre>
+<pre><code>##           Mazda RX4       Mazda RX4 Wag          Datsun 710      Hornet 4 Drive 
+##            22.59951            22.11189            26.25064            21.23740 
+##   Hornet Sportabout             Valiant          Duster 360           Merc 240D 
+##            17.69343            20.38304            14.38626            22.49601 
+##            Merc 230            Merc 280           Merc 280C          Merc 450SE 
+##            24.41909            18.69903            19.19165            14.17216 
+##          Merc 450SL         Merc 450SLC  Cadillac Fleetwood Lincoln Continental 
+##            15.59957            15.74222            12.03401            10.93644 
+##   Chrysler Imperial            Fiat 128         Honda Civic      Toyota Corolla 
+##            10.49363            27.77291            29.89674            29.51237 
+##       Toyota Corona    Dodge Challenger         AMC Javelin          Camaro Z28 
+##            23.64310            16.94305            17.73218            13.30602 
+##    Pontiac Firebird           Fiat X1-9       Porsche 914-2        Lotus Europa 
+##            16.69168            28.29347            26.15295            27.63627 
+##      Ford Pantera L        Ferrari Dino       Maserati Bora          Volvo 142E 
+##            18.87004            19.69383            13.94112            24.36827</code></pre>
 <p>Does this match what we would get had we not scaled the data in the first place ?</p>
 <div class="sourceCode" id="cb464"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb464-1" data-line-number="1">myLm &lt;-<span class="st"> </span><span class="kw">lm</span>(mpg<span class="op">~</span>.,</a>
 <a class="sourceLine" id="cb464-2" data-line-number="2">           <span class="dt">data =</span> mtcars)</a>
 <a class="sourceLine" id="cb464-3" data-line-number="3"></a>
 <a class="sourceLine" id="cb464-4" data-line-number="4"><span class="co"># Do some predicting. </span></a>
 <a class="sourceLine" id="cb464-5" data-line-number="5">(preds &lt;-<span class="st"> </span><span class="kw">predict</span>(myLm,mtcars))</a></code></pre></div>
-<pre><code>##           Mazda RX4       Mazda RX4 Wag          Datsun 710 
-##            22.59951            22.11189            26.25064 
-##      Hornet 4 Drive   Hornet Sportabout             Valiant 
-##            21.23740            17.69343            20.38304 
-##          Duster 360           Merc 240D            Merc 230 
-##            14.38626            22.49601            24.41909 
-##            Merc 280           Merc 280C          Merc 450SE 
-##            18.69903            19.19165            14.17216 
-##          Merc 450SL         Merc 450SLC  Cadillac Fleetwood 
-##            15.59957            15.74222            12.03401 
-## Lincoln Continental   Chrysler Imperial            Fiat 128 
-##            10.93644            10.49363            27.77291 
-##         Honda Civic      Toyota Corolla       Toyota Corona 
-##            29.89674            29.51237            23.64310 
-##    Dodge Challenger         AMC Javelin          Camaro Z28 
-##            16.94305            17.73218            13.30602 
-##    Pontiac Firebird           Fiat X1-9       Porsche 914-2 
-##            16.69168            28.29347            26.15295 
-##        Lotus Europa      Ford Pantera L        Ferrari Dino 
-##            27.63627            18.87004            19.69383 
-##       Maserati Bora          Volvo 142E 
-##            13.94112            24.36827</code></pre>
+<pre><code>##           Mazda RX4       Mazda RX4 Wag          Datsun 710      Hornet 4 Drive 
+##            22.59951            22.11189            26.25064            21.23740 
+##   Hornet Sportabout             Valiant          Duster 360           Merc 240D 
+##            17.69343            20.38304            14.38626            22.49601 
+##            Merc 230            Merc 280           Merc 280C          Merc 450SE 
+##            24.41909            18.69903            19.19165            14.17216 
+##          Merc 450SL         Merc 450SLC  Cadillac Fleetwood Lincoln Continental 
+##            15.59957            15.74222            12.03401            10.93644 
+##   Chrysler Imperial            Fiat 128         Honda Civic      Toyota Corolla 
+##            10.49363            27.77291            29.89674            29.51237 
+##       Toyota Corona    Dodge Challenger         AMC Javelin          Camaro Z28 
+##            23.64310            16.94305            17.73218            13.30602 
+##    Pontiac Firebird           Fiat X1-9       Porsche 914-2        Lotus Europa 
+##            16.69168            28.29347            26.15295            27.63627 
+##      Ford Pantera L        Ferrari Dino       Maserati Bora          Volvo 142E 
+##            18.87004            19.69383            13.94112            24.36827</code></pre>
 <div class="sourceCode" id="cb466"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb466-1" data-line-number="1"><span class="kw">all.equal</span>(preds,unscaled_preds)</a></code></pre></div>
 <pre><code>## [1] TRUE</code></pre>
 </div>
@@ -750,8 +737,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <a class="sourceLine" id="cb468-8" data-line-number="8">               <span class="dt">method =</span> <span class="st">&quot;lm&quot;</span>,</a>
 <a class="sourceLine" id="cb468-9" data-line-number="9">               <span class="dt">preProcess =</span> <span class="kw">c</span>(<span class="st">&quot;center&quot;</span>,<span class="st">&quot;scale&quot;</span>)</a>
 <a class="sourceLine" id="cb468-10" data-line-number="10">          )</a></code></pre></div>
-<pre><code>## Warning in predict.lm(modelFit, newdata): prediction from a rank-deficient fit
-## may be misleading</code></pre>
+<pre><code>## Warning in predict.lm(modelFit, newdata): prediction from a rank-deficient fit may
+## be misleading</code></pre>
 <p>To verify that the data is being centered and scaled within the call the <strong>train</strong> function, checkout the <strong>myLm</strong> object:</p>
 <div class="sourceCode" id="cb470"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb470-1" data-line-number="1"><span class="co"># This </span></a>
 <a class="sourceLine" id="cb470-2" data-line-number="2">myLm<span class="op">$</span>finalModel<span class="op">$</span>model[<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>,]</a></code></pre></div>
@@ -829,11 +816,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <a class="sourceLine" id="cb481-9" data-line-number="9">                <span class="dt">method =</span> <span class="st">&quot;lm&quot;</span>,</a>
 <a class="sourceLine" id="cb481-10" data-line-number="10">                <span class="dt">preProcess =</span> <span class="kw">c</span>(<span class="st">&quot;knnImpute&quot;</span>,<span class="st">&quot;center&quot;</span>,<span class="st">&quot;scale&quot;</span>)</a>
 <a class="sourceLine" id="cb481-11" data-line-number="11">          )</a></code></pre></div>
-<pre><code>## Warning in predict.lm(modelFit, newdata): prediction from a rank-deficient fit
-## may be misleading
+<pre><code>## Warning in predict.lm(modelFit, newdata): prediction from a rank-deficient fit may
+## be misleading
 
-## Warning in predict.lm(modelFit, newdata): prediction from a rank-deficient fit
-## may be misleading</code></pre>
+## Warning in predict.lm(modelFit, newdata): prediction from a rank-deficient fit may
+## be misleading</code></pre>
 </div>
 </div>
 <div id="low-variance-variables" class="section level2">
@@ -1086,7 +1073,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>It turns out that there are lots of strong correlations going on here. The darker the circle the stronger the correlation.</p>
 <div class="sourceCode" id="cb527"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb527-1" data-line-number="1"><span class="kw">suppressMessages</span>(<span class="kw">library</span>(corrplot))</a>
 <a class="sourceLine" id="cb527-2" data-line-number="2"><span class="kw">corrplot</span>(correlations, <span class="dt">order=</span><span class="st">&quot;hclust&quot;</span>)</a></code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-103-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-201-1.png" width="672" /></p>
 <p>The <strong>caret</strong> package has some functions that can help us identify highly correlated variables that might be a candidates for removal prior to use in building a model. One of the variables that is highly correlated with others is <strong>mpg</strong> Since that is the one we are trying to predict, we’ll keep it around. The following columns from mtcars have a correlation of .75 (or higher) with some other variable(s)</p>
 <div class="sourceCode" id="cb528"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb528-1" data-line-number="1">(highcorr &lt;-<span class="st"> </span><span class="kw">findCorrelation</span>(correlations, <span class="dt">cutoff=</span>.<span class="dv">75</span>))</a></code></pre></div>
 <pre><code>## [1]  2  3  1 10</code></pre>
@@ -1120,8 +1107,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <a class="sourceLine" id="cb534-8" data-line-number="8">                     <span class="dt">data =</span> train,</a>
 <a class="sourceLine" id="cb534-9" data-line-number="9">                     <span class="dt">method =</span> <span class="st">&quot;lm&quot;</span>,</a>
 <a class="sourceLine" id="cb534-10" data-line-number="10">                     <span class="dt">metric =</span> <span class="st">&quot;RMSE&quot;</span>)</a></code></pre></div>
-<pre><code>## Warning in predict.lm(modelFit, newdata): prediction from a rank-deficient fit
-## may be misleading</code></pre>
+<pre><code>## Warning in predict.lm(modelFit, newdata): prediction from a rank-deficient fit may
+## be misleading</code></pre>
 <div class="sourceCode" id="cb536"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb536-1" data-line-number="1"><span class="kw">summary</span>(myLm)</a></code></pre></div>
 <pre><code>## 
 ## Call:
@@ -1153,7 +1140,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>If you look at the summary of the model it looks pretty bleak because mot of the coefficients aren’t significant. You wouldn’t want to take your career on this model.</p>
 <p>Now let’s see what variables are considered to be important by using <strong>varImp</strong>. Remember that this might lead us to use a subset of the more prominent variables in the formation of a new model in case, for example, the coefficients in the existing model weren’t significant.</p>
 <div class="sourceCode" id="cb538"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb538-1" data-line-number="1"><span class="kw">plot</span>(<span class="kw">varImp</span>(myLm))</a></code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-108-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-206-1.png" width="672" /></p>
 <p>How do things look in the model if we limit the formula to some of the “important” (allegedly) features ? Well, it explains more of the variance with fewer predictors (the R^2 value). Both <strong>wt</strong> and <strong>hp</strong> are significant. That’s a start.</p>
 <div class="sourceCode" id="cb539"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb539-1" data-line-number="1">myLm &lt;-<span class="st"> </span><span class="kw">train</span>(mpg<span class="op">~</span>wt<span class="op">+</span>disp<span class="op">+</span>hp,</a>
 <a class="sourceLine" id="cb539-2" data-line-number="2">                     <span class="dt">data =</span> train,</a>
@@ -1263,7 +1250,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ##  $ gre  : int  380 660 800 640 520 760 560 400 540 700 ...
 ##  $ gpa  : num  3.61 3.67 4 3.19 2.93 3 2.98 3.08 3.39 3.92 ...
 ##  $ rank : int  3 3 1 4 4 2 1 2 3 2 ...</code></pre>
-<p>Let’s examine this data by determining the number of unique values assumed by each feature. This helps us understand if a variable is a category / factor variable or a continuous quantity. It appears that admit takes on only two distinct values and rank assumes only four which suggests that both might be more of a category than a quantity upon which we could perform lots of calculations.</p>
+<p>Let’s examine this data by determining the number of unique values assumed by each feature. This helps us understand if a variable is a category / factor variable or a continuous quantity. It appears that <code>admit</code> takes on only two distinct values and rank assumes only four which suggests that both might be more of a category than a quantity upon which we could perform lots of calculations.</p>
+<p>As it relates to <code>admit</code>, this is a <code>yes / no</code> assessement and there is no inherent order even though it has been encoded as a 0 or a 1. This might be something that we might predict with a model.</p>
+<p>We will treat the variables gre and gpa as continuous. The variable rank takes on the values 1 through 4. Institutions with a rank of 1 have the highest prestige, while those with a rank of 4 have the lowest.</p>
 <div class="sourceCode" id="cb550"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb550-1" data-line-number="1">admissions <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">summarise_all</span>(n_distinct)</a></code></pre></div>
 <pre><code>##   admit gre gpa rank
 ## 1     2  26 132    4</code></pre>
@@ -1283,9 +1272,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <a class="sourceLine" id="cb554-4" data-line-number="4">                               <span class="dt">data =</span> admissions,</a>
 <a class="sourceLine" id="cb554-5" data-line-number="5">                               <span class="dt">method =</span> <span class="st">&quot;glm&quot;</span>,</a>
 <a class="sourceLine" id="cb554-6" data-line-number="6">                               <span class="dt">trControl =</span> control)</a></code></pre></div>
-<pre><code>## Warning in train.default(x, y, weights = w, ...): You are trying to do
-## regression and your outcome only has two possible values Are you trying to do
-## classification? If so, use a 2 level factor as your outcome column.</code></pre>
+<pre><code>## Warning in train.default(x, y, weights = w, ...): You are trying to do regression
+## and your outcome only has two possible values Are you trying to do classification?
+## If so, use a 2 level factor as your outcome column.</code></pre>
 <p>Why does this bomb out ? Well, the GLM method expects us to be predicting a binary outcome which, to the human eye, the admit variable actually is. However, R doesn’t know this as it currently thinks of the <strong>admit</strong> variable as being simply a number so it thinks we are trying to predict a numeric outcome hence the error. To fix this we need to make admit a <strong>factor</strong> which is a term used in statistics to refer to categories. So let’s see the effect of doing this. While we are at it, let’s also resummarize the data to see if R treats the <strong>admit</strong> variable any differently after the conversion to factor has been made.</p>
 <div class="sourceCode" id="cb556"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb556-1" data-line-number="1">admissions_factor_<span class="dv">1</span> &lt;-<span class="st"> </span>admissions <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mutate</span>(<span class="dt">admit=</span><span class="kw">factor</span>(admit))</a>
 <a class="sourceLine" id="cb556-2" data-line-number="2"><span class="kw">str</span>(admissions_factor_<span class="dv">1</span>)</a></code></pre></div>
@@ -1390,7 +1379,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <a class="sourceLine" id="cb572-6" data-line-number="6"><span class="dv">5</span> <span class="dv">520</span> <span class="fl">2.93</span>      <span class="dv">0</span>      <span class="dv">0</span>      <span class="dv">0</span>      <span class="dv">1</span></a>
 <a class="sourceLine" id="cb572-7" data-line-number="7"><span class="dv">6</span> <span class="dv">760</span> <span class="fl">3.00</span>      <span class="dv">0</span>      <span class="dv">1</span>      <span class="dv">0</span>      <span class="dv">0</span></a></code></pre></div>
 <p>There are two things to notice here. The first is that the admit variable isn’t present since that is the value we will be predicting. The second thing to notice is that for each “level” of the rank variable there is a corresponding column. Now, there is the concept of a “rank deficient” fit wherein you will generally want one less variable than the number of categories present to avoid perfect collinearity. In this case the above encoding would look like:</p>
-<div class="sourceCode" id="cb573"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb573-1" data-line-number="1">gre  gpa rank<span class="fl">.2</span> rank<span class="fl">.3</span> rank<span class="fl">.4</span></a>
+<div class="sourceCode" id="cb573"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb573-1" data-line-number="1">  gre  gpa   rank<span class="fl">.2</span> rank<span class="fl">.3</span> rank<span class="fl">.4</span></a>
 <a class="sourceLine" id="cb573-2" data-line-number="2"><span class="dv">1</span> <span class="dv">380</span> <span class="fl">3.61</span>      <span class="dv">0</span>      <span class="dv">1</span>      <span class="dv">0</span></a>
 <a class="sourceLine" id="cb573-3" data-line-number="3"><span class="dv">2</span> <span class="dv">660</span> <span class="fl">3.67</span>      <span class="dv">0</span>      <span class="dv">1</span>      <span class="dv">0</span></a>
 <a class="sourceLine" id="cb573-4" data-line-number="4"><span class="dv">3</span> <span class="dv">800</span> <span class="fl">4.00</span>      <span class="dv">0</span>      <span class="dv">0</span>      <span class="dv">0</span></a>
@@ -1427,7 +1416,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <pre><code>## Dummy Variable Object
 ## 
 ## Formula: admit ~ .
-## &lt;environment: 0x7fee478aeb60&gt;
+## &lt;environment: 0x7fee320672d8&gt;
 ## 4 variables, 2 factors
 ## Variables and levels will be separated by &#39;.&#39;
 ## A full rank encoding is used</code></pre>
@@ -1525,27 +1514,27 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>We could build our models using the number of pregnancies without attempting to transform the feature in any way. But let’s bin this feature. In R, we can use the <strong>cut</strong> function to chop up a numerical range of data into a specified number of bins and according to some function such as the <strong>quantile</strong> function which would give us for bins labelled from 1 to 4. This will produce sample quantiles according to the 0, 25th, 50th, 75%, and 100% percentiles.</p>
 <div class="sourceCode" id="cb597"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb597-1" data-line-number="1"><span class="kw">cut</span>(pm_new<span class="op">$</span>pregnant, <span class="dt">breaks=</span><span class="kw">quantile</span>(pm<span class="op">$</span>pregnant),</a>
 <a class="sourceLine" id="cb597-2" data-line-number="2">                     <span class="dt">include.lowest =</span> <span class="ot">TRUE</span>,<span class="dt">labels=</span><span class="dv">1</span><span class="op">:</span><span class="dv">4</span>)</a></code></pre></div>
-<pre><code>##   [1] 3 1 4 1 1 3 2 4 2 4 3 4 4 1 3 4 1 4 1 1 2 4 4 4 4 4 4 1 4 3 3 2 2 3 4 3 4
-##  [38] 4 2 3 2 4 4 4 4 1 1 2 4 4 1 1 3 4 4 1 4 1 1 1 2 4 3 2 4 3 1 2 1 3 2 3 4 3
-##  [75] 1 1 4 3 1 2 2 2 4 1 3 2 4 2 4 1 1 3 4 3 2 3 2 1 3 1 1 1 1 1 2 1 1 3 2 1 2
-## [112] 4 1 3 4 3 3 3 3 3 1 3 2 3 1 1 2 1 1 1 3 4 2 4 2 2 1 1 1 3 2 3 2 4 3 1 4 2
-## [149] 3 2 1 3 4 1 4 4 2 1 2 4 3 4 1 2 1 3 2 3 3 2 3 3 2 1 2 4 3 1 3 3 3 1 1 3 3
-## [186] 4 4 1 4 3 2 4 4 4 4 3 1 2 3 3 1 1 1 2 3 3 4 3 1 4 2 1 4 1 4 4 3 3 3 3 1 2
-## [223] 4 4 1 1 1 2 3 1 3 3 1 3 2 3 4 1 4 1 1 3 2 3 2 4 4 1 4 1 4 2 2 1 4 1 2 2 1
-## [260] 4 2 2 3 2 3 3 1 2 1 2 4 2 2 1 4 2 4 1 3 2 1 4 4 4 2 4 3 1 3 3 1 1 2 1 1 3
-## [297] 2 1 4 4 1 2 3 3 2 2 4 1 1 2 3 1 2 2 4 2 2 2 2 3 3 2 1 4 2 1 1 4 2 3 4 2 1
-## [334] 4 1 1 1 3 4 4 1 1 1 3 4 4 1 2 2 3 3 3 2 1 2 4 1 4 4 1 3 3 3 3 3 3 3 1 2 1
-## [371] 2 1 1 2 2 4 1 1 3 1 1 1 1 1 1 1 3 4 3 2 1 3 1 3 3 2 2 1 2 2 3 3 3 4 3 2 3
-## [408] 1 4 1 3 1 1 1 1 2 1 3 1 2 1 2 1 2 4 3 1 1 1 1 2 2 1 2 1 1 4 3 1 3 1 2 3 4
-## [445] 3 1 1 1 1 1 1 2 1 2 2 4 1 3 4 4 4 1 4 3 4 1 1 1 4 3 1 1 1 4 3 1 2 4 4 3 2
-## [482] 1 3 1 1 1 1 1 3 4 2 2 3 3 2 3 3 2 4 3 2 2 3 4 2 4 1 1 2 4 4 1 4 2 2 2 4 4
-## [519] 4 3 2 2 3 4 2 2 1 2 1 1 2 1 1 3 1 3 1 1 1 2 4 2 4 3 1 4 3 3 1 3 1 2 3 1 1
-## [556] 4 1 4 4 4 3 1 1 3 1 2 1 3 3 1 2 2 2 2 1 1 3 2 4 2 1 3 4 4 4 1 4 3 2 1 4 2
-## [593] 2 2 3 1 1 1 1 1 1 3 1 4 3 1 1 1 1 1 2 2 4 3 4 2 3 2 4 1 2 2 3 1 2 3 1 1 3
-## [630] 3 4 1 2 1 4 4 3 2 4 1 1 3 3 3 2 2 1 1 4 1 1 1 3 2 1 2 2 1 4 2 4 1 4 4 3 1
-## [667] 3 4 3 4 3 1 4 2 4 3 4 1 2 2 2 1 1 3 3 2 2 1 1 1 4 4 2 4 2 4 2 1 3 3 2 3 1
-## [704] 2 3 3 4 2 4 2 2 3 4 1 2 4 2 4 1 3 3 1 1 3 1 3 1 1 2 2 2 4 2 2 2 3 1 4 2 1
-## [741] 4 2 1 4 4 4 1 1 2 3 3 1 2 1 4 1 4 1 1 3 2 4 4 4 2 3 1 1
+<pre><code>##   [1] 3 1 4 1 1 3 2 4 2 4 3 4 4 1 3 4 1 4 1 1 2 4 4 4 4 4 4 1 4 3 3 2 2 3 4 3 4 4
+##  [39] 2 3 2 4 4 4 4 1 1 2 4 4 1 1 3 4 4 1 4 1 1 1 2 4 3 2 4 3 1 2 1 3 2 3 4 3 1 1
+##  [77] 4 3 1 2 2 2 4 1 3 2 4 2 4 1 1 3 4 3 2 3 2 1 3 1 1 1 1 1 2 1 1 3 2 1 2 4 1 3
+## [115] 4 3 3 3 3 3 1 3 2 3 1 1 2 1 1 1 3 4 2 4 2 2 1 1 1 3 2 3 2 4 3 1 4 2 3 2 1 3
+## [153] 4 1 4 4 2 1 2 4 3 4 1 2 1 3 2 3 3 2 3 3 2 1 2 4 3 1 3 3 3 1 1 3 3 4 4 1 4 3
+## [191] 2 4 4 4 4 3 1 2 3 3 1 1 1 2 3 3 4 3 1 4 2 1 4 1 4 4 3 3 3 3 1 2 4 4 1 1 1 2
+## [229] 3 1 3 3 1 3 2 3 4 1 4 1 1 3 2 3 2 4 4 1 4 1 4 2 2 1 4 1 2 2 1 4 2 2 3 2 3 3
+## [267] 1 2 1 2 4 2 2 1 4 2 4 1 3 2 1 4 4 4 2 4 3 1 3 3 1 1 2 1 1 3 2 1 4 4 1 2 3 3
+## [305] 2 2 4 1 1 2 3 1 2 2 4 2 2 2 2 3 3 2 1 4 2 1 1 4 2 3 4 2 1 4 1 1 1 3 4 4 1 1
+## [343] 1 3 4 4 1 2 2 3 3 3 2 1 2 4 1 4 4 1 3 3 3 3 3 3 3 1 2 1 2 1 1 2 2 4 1 1 3 1
+## [381] 1 1 1 1 1 1 3 4 3 2 1 3 1 3 3 2 2 1 2 2 3 3 3 4 3 2 3 1 4 1 3 1 1 1 1 2 1 3
+## [419] 1 2 1 2 1 2 4 3 1 1 1 1 2 2 1 2 1 1 4 3 1 3 1 2 3 4 3 1 1 1 1 1 1 2 1 2 2 4
+## [457] 1 3 4 4 4 1 4 3 4 1 1 1 4 3 1 1 1 4 3 1 2 4 4 3 2 1 3 1 1 1 1 1 3 4 2 2 3 3
+## [495] 2 3 3 2 4 3 2 2 3 4 2 4 1 1 2 4 4 1 4 2 2 2 4 4 4 3 2 2 3 4 2 2 1 2 1 1 2 1
+## [533] 1 3 1 3 1 1 1 2 4 2 4 3 1 4 3 3 1 3 1 2 3 1 1 4 1 4 4 4 3 1 1 3 1 2 1 3 3 1
+## [571] 2 2 2 2 1 1 3 2 4 2 1 3 4 4 4 1 4 3 2 1 4 2 2 2 3 1 1 1 1 1 1 3 1 4 3 1 1 1
+## [609] 1 1 2 2 4 3 4 2 3 2 4 1 2 2 3 1 2 3 1 1 3 3 4 1 2 1 4 4 3 2 4 1 1 3 3 3 2 2
+## [647] 1 1 4 1 1 1 3 2 1 2 2 1 4 2 4 1 4 4 3 1 3 4 3 4 3 1 4 2 4 3 4 1 2 2 2 1 1 3
+## [685] 3 2 2 1 1 1 4 4 2 4 2 4 2 1 3 3 2 3 1 2 3 3 4 2 4 2 2 3 4 1 2 4 2 4 1 3 3 1
+## [723] 1 3 1 3 1 1 2 2 2 4 2 2 2 3 1 4 2 1 4 2 1 4 4 4 1 1 2 3 3 1 2 1 4 1 4 1 1 3
+## [761] 2 4 4 4 2 3 1 1
 ## Levels: 1 2 3 4</code></pre>
 <div class="sourceCode" id="cb599"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb599-1" data-line-number="1">pm_new &lt;-<span class="st"> </span>pm_new <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb599-2" data-line-number="2"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">pregnant=</span><span class="kw">cut</span>(pregnant,<span class="dt">breaks=</span><span class="kw">quantile</span>(pregnant),</a>

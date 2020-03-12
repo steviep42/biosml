@@ -415,7 +415,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## The final value used for the model was mtry = 6.</code></pre>
 <p>As a matter of fact we can plot this model and it will show us something interesting. In particular, we now see that using values less than 6 predictors / columns / features results in lower RMSE. If we use more, than the RMSE goes up. This is the power of methods that use hyperparamters. If we move through a number of values for the <strong>mtry</strong> then perhaps we can find the best value to get the best result.</p>
 <div class="sourceCode" id="cb350"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb350-1" data-line-number="1"><span class="kw">plot</span>(caret_rf)</a></code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-74-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-172-1.png" width="672" /></p>
 <p>Telling <strong>caret</strong> to use more valies of <strong>mtry</strong> is possible. This will explicitly try all values from 1 - 10 inclusive. Note that the model gets built for each value of <strong>mtry</strong>. This causes the model building process to take longer than it normally would.</p>
 <div class="sourceCode" id="cb351"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb351-1" data-line-number="1">caret_rf &lt;-<span class="st"> </span><span class="kw">train</span>(mpg <span class="op">~</span><span class="st"> </span>.,</a>
 <a class="sourceLine" id="cb351-2" data-line-number="2">                  <span class="dt">data =</span> new_train,</a>
@@ -452,20 +452,20 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <a class="sourceLine" id="cb358-3" data-line-number="3">                      <span class="dt">method =</span> <span class="st">&quot;ranger&quot;</span>)</a>
 <a class="sourceLine" id="cb358-4" data-line-number="4"></a>
 <a class="sourceLine" id="cb358-5" data-line-number="5">caret_ranger<span class="op">$</span>results</a></code></pre></div>
-<pre><code>##   mtry min.node.size  splitrule     RMSE  Rsquared      MAE    RMSESD
-## 1    2             5   variance 2.593815 0.8466324 2.066727 0.6209003
-## 2    2             5 extratrees 2.766129 0.8264357 2.242318 0.6277065
-## 3    6             5   variance 2.483004 0.8656660 1.919371 0.6014174
-## 4    6             5 extratrees 2.654512 0.8372522 2.111165 0.6095019
-## 5   10             5   variance 2.578429 0.8524675 1.990380 0.6556106
-## 6   10             5 extratrees 2.645518 0.8399955 2.080374 0.6240255
-##   RsquaredSD     MAESD
-## 1 0.04837170 0.4988512
-## 2 0.05777494 0.5171023
-## 3 0.04497003 0.4986984
-## 4 0.05395181 0.5167884
-## 5 0.05489347 0.5321517
-## 6 0.05368885 0.5299911</code></pre>
+<pre><code>##   mtry min.node.size  splitrule     RMSE  Rsquared      MAE    RMSESD RsquaredSD
+## 1    2             5   variance 2.593815 0.8466324 2.066727 0.6209003 0.04837170
+## 2    2             5 extratrees 2.766129 0.8264357 2.242318 0.6277065 0.05777494
+## 3    6             5   variance 2.483004 0.8656660 1.919371 0.6014174 0.04497003
+## 4    6             5 extratrees 2.654512 0.8372522 2.111165 0.6095019 0.05395181
+## 5   10             5   variance 2.578429 0.8524675 1.990380 0.6556106 0.05489347
+## 6   10             5 extratrees 2.645518 0.8399955 2.080374 0.6240255 0.05368885
+##       MAESD
+## 1 0.4988512
+## 2 0.5171023
+## 3 0.4986984
+## 4 0.5167884
+## 5 0.5321517
+## 6 0.5299911</code></pre>
 <div class="sourceCode" id="cb360"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb360-1" data-line-number="1">Metrics<span class="op">::</span><span class="kw">rmse</span>(new_test<span class="op">$</span>mpg, <span class="kw">predict</span>(caret_ranger,new_test))</a></code></pre></div>
 <pre><code>## [1] 2.22648</code></pre>
 <p>And then we can plot these results to get a more intutive view of the output.</p>
@@ -477,44 +477,44 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <a class="sourceLine" id="cb363-4" data-line-number="4">                      <span class="dt">tuneLength =</span> <span class="dv">10</span>)</a></code></pre></div>
 <pre><code>## note: only 9 unique complexity parameters in default grid. Truncating the grid to 9 .</code></pre>
 <div class="sourceCode" id="cb365"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb365-1" data-line-number="1">caret_ranger<span class="op">$</span>results</a></code></pre></div>
-<pre><code>##    mtry min.node.size  splitrule     RMSE  Rsquared      MAE    RMSESD
-## 1     2             5   variance 2.535142 0.8705777 2.050717 0.7213109
-## 2     2             5 extratrees 2.733620 0.8449910 2.229738 0.7697078
-## 3     3             5   variance 2.459643 0.8792912 1.974891 0.7102015
-## 4     3             5 extratrees 2.697460 0.8492856 2.205555 0.7174634
-## 5     4             5   variance 2.413853 0.8811367 1.928837 0.6799630
-## 6     4             5 extratrees 2.664466 0.8534908 2.171931 0.7522685
-## 7     5             5   variance 2.396935 0.8826333 1.902248 0.6642884
-## 8     5             5 extratrees 2.646204 0.8562650 2.158095 0.6929833
-## 9     6             5   variance 2.403365 0.8830201 1.898374 0.6594777
-## 10    6             5 extratrees 2.614236 0.8584534 2.132242 0.7040789
-## 11    7             5   variance 2.414677 0.8798765 1.904939 0.6577313
-## 12    7             5 extratrees 2.632442 0.8594405 2.140217 0.7004326
-## 13    8             5   variance 2.430565 0.8782065 1.923389 0.6579862
-## 14    8             5 extratrees 2.618759 0.8590369 2.135648 0.6871433
-## 15    9             5   variance 2.449120 0.8742522 1.934580 0.6459582
-## 16    9             5 extratrees 2.604208 0.8594866 2.117187 0.6775269
-## 17   10             5   variance 2.487449 0.8686236 1.969850 0.6753278
-## 18   10             5 extratrees 2.604154 0.8607695 2.122085 0.6736732
-##    RsquaredSD     MAESD
-## 1  0.08406100 0.5480455
-## 2  0.09607066 0.6150415
-## 3  0.08193415 0.5414353
-## 4  0.09468130 0.5737425
-## 5  0.08712652 0.5282255
-## 6  0.09407159 0.6117592
-## 7  0.08740512 0.5140223
-## 8  0.09171305 0.5710811
-## 9  0.08517967 0.5101976
-## 10 0.09267746 0.5748181
-## 11 0.08974818 0.5246354
-## 12 0.09158392 0.5756883
-## 13 0.09169315 0.5161000
-## 14 0.09196265 0.5715926
-## 15 0.08864581 0.5073912
-## 16 0.09265309 0.5709619
-## 17 0.09618672 0.5192270
-## 18 0.08758355 0.5584563</code></pre>
+<pre><code>##    mtry min.node.size  splitrule     RMSE  Rsquared      MAE    RMSESD RsquaredSD
+## 1     2             5   variance 2.535142 0.8705777 2.050717 0.7213109 0.08406100
+## 2     2             5 extratrees 2.733620 0.8449910 2.229738 0.7697078 0.09607066
+## 3     3             5   variance 2.459643 0.8792912 1.974891 0.7102015 0.08193415
+## 4     3             5 extratrees 2.697460 0.8492856 2.205555 0.7174634 0.09468130
+## 5     4             5   variance 2.413853 0.8811367 1.928837 0.6799630 0.08712652
+## 6     4             5 extratrees 2.664466 0.8534908 2.171931 0.7522685 0.09407159
+## 7     5             5   variance 2.396935 0.8826333 1.902248 0.6642884 0.08740512
+## 8     5             5 extratrees 2.646204 0.8562650 2.158095 0.6929833 0.09171305
+## 9     6             5   variance 2.403365 0.8830201 1.898374 0.6594777 0.08517967
+## 10    6             5 extratrees 2.614236 0.8584534 2.132242 0.7040789 0.09267746
+## 11    7             5   variance 2.414677 0.8798765 1.904939 0.6577313 0.08974818
+## 12    7             5 extratrees 2.632442 0.8594405 2.140217 0.7004326 0.09158392
+## 13    8             5   variance 2.430565 0.8782065 1.923389 0.6579862 0.09169315
+## 14    8             5 extratrees 2.618759 0.8590369 2.135648 0.6871433 0.09196265
+## 15    9             5   variance 2.449120 0.8742522 1.934580 0.6459582 0.08864581
+## 16    9             5 extratrees 2.604208 0.8594866 2.117187 0.6775269 0.09265309
+## 17   10             5   variance 2.487449 0.8686236 1.969850 0.6753278 0.09618672
+## 18   10             5 extratrees 2.604154 0.8607695 2.122085 0.6736732 0.08758355
+##        MAESD
+## 1  0.5480455
+## 2  0.6150415
+## 3  0.5414353
+## 4  0.5737425
+## 5  0.5282255
+## 6  0.6117592
+## 7  0.5140223
+## 8  0.5710811
+## 9  0.5101976
+## 10 0.5748181
+## 11 0.5246354
+## 12 0.5756883
+## 13 0.5161000
+## 14 0.5715926
+## 15 0.5073912
+## 16 0.5709619
+## 17 0.5192270
+## 18 0.5584563</code></pre>
 <div class="sourceCode" id="cb367"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb367-1" data-line-number="1">Metrics<span class="op">::</span><span class="kw">rmse</span>(new_test<span class="op">$</span>mpg, <span class="kw">predict</span>(caret_ranger,new_test))</a></code></pre></div>
 <pre><code>## [1] 2.085479</code></pre>
 <div class="sourceCode" id="cb369"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb369-1" data-line-number="1"><span class="kw">plot</span>(caret_ranger)</a></code></pre></div>
@@ -537,14 +537,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <a class="sourceLine" id="cb370-12" data-line-number="12">                  <span class="dt">tuneGrid =</span> MyGrid)</a>
 <a class="sourceLine" id="cb370-13" data-line-number="13"></a>
 <a class="sourceLine" id="cb370-14" data-line-number="14">caret_ranger<span class="op">$</span>results</a></code></pre></div>
-<pre><code>##   mtry splitrule min.node.size     RMSE  Rsquared      MAE    RMSESD
-## 1    2  variance             4 2.644805 0.8612962 2.187830 0.5518203
-## 2    4  variance             4 2.551675 0.8629956 2.056296 0.5058089
-## 3    6  variance             4 2.554660 0.8598010 2.049961 0.5235632
-##   RsquaredSD     MAESD
-## 1 0.06821914 0.4520530
-## 2 0.07012752 0.4366614
-## 3 0.07389630 0.4463890</code></pre>
+<pre><code>##   mtry splitrule min.node.size     RMSE  Rsquared      MAE    RMSESD RsquaredSD
+## 1    2  variance             4 2.644805 0.8612962 2.187830 0.5518203 0.06821914
+## 2    4  variance             4 2.551675 0.8629956 2.056296 0.5058089 0.07012752
+## 3    6  variance             4 2.554660 0.8598010 2.049961 0.5235632 0.07389630
+##       MAESD
+## 1 0.4520530
+## 2 0.4366614
+## 3 0.4463890</code></pre>
 <div class="sourceCode" id="cb372"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb372-1" data-line-number="1">Metrics<span class="op">::</span><span class="kw">rmse</span>(new_test<span class="op">$</span>mpg, <span class="kw">predict</span>(caret_ranger,new_test))</a></code></pre></div>
 <pre><code>## [1] 1.964188</code></pre>
 </div>

@@ -3849,7 +3849,11 @@ head(admissions)
 str(admissions)
 ```
 
-Let's examine this data by determining the number of unique values assumed by each feature. This helps us understand if a variable is a category / factor variable or a continuous quantity. It appears that admit takes on only two distinct values and rank assumes only four which suggests that both might be more of a category than a quantity upon which we could perform lots of calculations. 
+Let's examine this data by determining the number of unique values assumed by each feature. This helps us understand if a variable is a category / factor variable or a continuous quantity. It appears that `admit` takes on only two distinct values and rank assumes only four which suggests that both might be more of a category than a quantity upon which we could perform lots of calculations. 
+
+As it relates to `admit`, this is a `yes / no` assessement and there is no inherent order even though it has been encoded as a 0 or a 1.  This might be something that we might predict with a model.
+
+We will treat the variables gre and gpa as continuous. The variable rank takes on the values 1 through 4. Institutions with a rank of 1 have the highest prestige, while those with a rank of 4 have the lowest. 
 
 ```{r onefactsummdist}
 admissions %>% summarise_all(n_distinct)
@@ -3934,7 +3938,7 @@ Usually when you indicate to R that a variable is a factor then most procedures 
 There are two things to notice here. The first is that the admit variable isn't present since that is the value we will be predicting. The second thing to notice is that for each "level" of the rank variable there is a corresponding column. Now, there is the concept of a "rank deficient" fit wherein you will generally want  one less variable than the number of categories present to avoid perfect collinearity. In this case the above encoding would look like:
 
 ```{r dummy2,eval=FALSE}
-gre  gpa rank.2 rank.3 rank.4
+  gre  gpa   rank.2 rank.3 rank.4
 1 380 3.61      0      1      0
 2 660 3.67      0      1      0
 3 800 4.00      0      0      0
