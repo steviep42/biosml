@@ -376,7 +376,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <a class="sourceLine" id="cb21-2" data-line-number="2"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x=</span>am,<span class="dt">y=</span>mpg)) <span class="op">+</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb21-3" data-line-number="3"><span class="st">  </span><span class="kw">geom_boxplot</span>() <span class="op">+</span><span class="st"> </span><span class="kw">facet_wrap</span>(.<span class="op">~</span>cyl) <span class="op">+</span><span class="st"> </span><span class="kw">theme_bw</span>() <span class="op">+</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb21-4" data-line-number="4"><span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">&quot;MPG Across Transmission Types And Cylinder Group&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">xlab</span>(<span class="st">&quot;Transmission Type&quot;</span>) </a></code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
 </div>
 <div id="histograms" class="section level3">
 <h3><span class="header-section-number">3.2.3</span> Histograms</h3>
@@ -488,15 +488,8 @@ RMSE = \sqrt\frac{\sum_i^n(P_i-O_i)^2}{n}
 <a class="sourceLine" id="cb34-2" data-line-number="2">training_rmse   &lt;-<span class="st"> </span><span class="kw">sqrt</span>(<span class="kw">mean</span>(errors<span class="op">^</span><span class="dv">2</span>))</a>
 <a class="sourceLine" id="cb34-3" data-line-number="3"><span class="kw">print</span>(training_rmse)</a></code></pre></div>
 <pre><code>## [1] 2.949163</code></pre>
-<p>We might even want to create a function to do this for future use:</p>
-<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb36-1" data-line-number="1"><span class="co"># Lets define a rmse function for future use</span></a>
-<a class="sourceLine" id="cb36-2" data-line-number="2">compute_rmse &lt;-<span class="st"> </span><span class="cf">function</span>(preds,known) {</a>
-<a class="sourceLine" id="cb36-3" data-line-number="3">  errors &lt;-<span class="st"> </span>preds<span class="op">-</span>known</a>
-<a class="sourceLine" id="cb36-4" data-line-number="4">  rmse   &lt;-<span class="st"> </span><span class="kw">sqrt</span>(<span class="kw">mean</span>(errors<span class="op">^</span><span class="dv">2</span>))</a>
-<a class="sourceLine" id="cb36-5" data-line-number="5">  <span class="kw">return</span>(rmse)</a>
-<a class="sourceLine" id="cb36-6" data-line-number="6">}</a>
-<a class="sourceLine" id="cb36-7" data-line-number="7"></a>
-<a class="sourceLine" id="cb36-8" data-line-number="8"><span class="kw">compute_rmse</span>(training_preds,mtcars<span class="op">$</span>mpg)</a></code></pre></div>
+<p>There are built in R functions to compute this:</p>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb36-1" data-line-number="1">Metrics<span class="op">::</span><span class="kw">rmse</span>(mtcars<span class="op">$</span>mpg,training_preds)</a></code></pre></div>
 <pre><code>## [1] 2.949163</code></pre>
 <p>Is this good ? Bad ? Just average ? Well we don’t really know. One good thing is that the metric is in terms of the predicted variable, <strong>mpg</strong>, so it can easily be interpreted.</p>
 <p>However, unless someone has specified a tolerance level for the RMSE we don’t know if we have something that can be extended to other car types. We also could experiment with other regression formula to see if the RMSE goes down (or up).</p>
@@ -516,7 +509,7 @@ RMSE = \sqrt\frac{\sum_i^n(P_i-O_i)^2}{n}
 <a class="sourceLine" id="cb38-7" data-line-number="7">    <span class="dt">type=</span><span class="st">&quot;response&quot;</span></a>
 <a class="sourceLine" id="cb38-8" data-line-number="8">  )</a>
 <a class="sourceLine" id="cb38-9" data-line-number="9"></a>
-<a class="sourceLine" id="cb38-10" data-line-number="10">(test_rmse &lt;-<span class="st"> </span><span class="kw">compute_rmse</span>(test_preds,mtcars[<span class="dv">22</span><span class="op">:</span><span class="dv">32</span>,]<span class="op">$</span>mpg))</a></code></pre></div>
+<a class="sourceLine" id="cb38-10" data-line-number="10">(test_rmse &lt;-<span class="st"> </span>Metrics<span class="op">::</span><span class="kw">rmse</span>(mtcars[<span class="dv">22</span><span class="op">:</span><span class="dv">32</span>,]<span class="op">$</span>mpg,test_preds))</a></code></pre></div>
 <pre><code>## [1] 3.286759</code></pre>
 <p>We trained the model on the first 21 rows of the data frame which might contain some outliers (or not). The RMSE got larger ! Does this mean the model is “bad” ? Maybe, maybe not.</p>
 <p>One thing we could do is to experiment with another split of the data, perhaps in a different proportion (e.g. 80/20) or maybe even a series of splits to see if we can get an idea of how widely the RMSE varies. Here we create a sample of 80% of mtcars to create a training set.</p>
@@ -545,7 +538,7 @@ RMSE = \sqrt\frac{\sum_i^n(P_i-O_i)^2}{n}
 <a class="sourceLine" id="cb46-8" data-line-number="8">  <span class="dt">type=</span><span class="st">&quot;response&quot;</span></a>
 <a class="sourceLine" id="cb46-9" data-line-number="9">)</a>
 <a class="sourceLine" id="cb46-10" data-line-number="10"></a>
-<a class="sourceLine" id="cb46-11" data-line-number="11">(test_rmse &lt;-<span class="st"> </span><span class="kw">compute_rmse</span>(test_pred,test_df<span class="op">$</span>mpg))</a></code></pre></div>
+<a class="sourceLine" id="cb46-11" data-line-number="11">(test_rmse &lt;-<span class="st"> </span>Metrics<span class="op">::</span><span class="kw">rmse</span>(test_df<span class="op">$</span>mpg,test_pred))</a></code></pre></div>
 <pre><code>## [1] 2.021501</code></pre>
 </div>
 <div id="some-additional-considerations" class="section level2">
@@ -575,7 +568,7 @@ RMSE = \sqrt\frac{\sum_i^n(P_i-O_i)^2}{n}
 <a class="sourceLine" id="cb53-8" data-line-number="8">  <span class="dt">type=</span><span class="st">&quot;response&quot;</span></a>
 <a class="sourceLine" id="cb53-9" data-line-number="9">)</a>
 <a class="sourceLine" id="cb53-10" data-line-number="10"></a>
-<a class="sourceLine" id="cb53-11" data-line-number="11">(test_rmse &lt;-<span class="st"> </span><span class="kw">compute_rmse</span>(test_pred,test_df<span class="op">$</span>mpg))</a></code></pre></div>
+<a class="sourceLine" id="cb53-11" data-line-number="11">(test_rmse &lt;-<span class="st"> </span>Metrics<span class="op">::</span><span class="kw">rmse</span>(test_df<span class="op">$</span>mpg,test_pred))</a></code></pre></div>
 <pre><code>## [1] 2.668003</code></pre>
 <div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb55-1" data-line-number="1">split_train_test &lt;-<span class="st"> </span><span class="cf">function</span>(<span class="dt">prop=</span>.<span class="dv">70</span>) {</a>
 <a class="sourceLine" id="cb55-2" data-line-number="2">  </a>
@@ -593,7 +586,7 @@ RMSE = \sqrt\frac{\sum_i^n(P_i-O_i)^2}{n}
 <a class="sourceLine" id="cb55-14" data-line-number="14">    train_model_lm &lt;-<span class="st"> </span><span class="kw">lm</span>(myform, <span class="dt">data=</span>train_df)</a>
 <a class="sourceLine" id="cb55-15" data-line-number="15"></a>
 <a class="sourceLine" id="cb55-16" data-line-number="16">    test_pred &lt;-<span class="st"> </span><span class="kw">predict</span>(train_model_lm, <span class="dt">newdata=</span>test_df,<span class="dt">type=</span><span class="st">&quot;response&quot;</span>)</a>
-<a class="sourceLine" id="cb55-17" data-line-number="17">    <span class="kw">return</span>(<span class="kw">compute_rmse</span>(test_pred,test_df<span class="op">$</span>mpg))</a>
+<a class="sourceLine" id="cb55-17" data-line-number="17">    <span class="kw">return</span>(Metrics<span class="op">::</span><span class="kw">rmse</span>(test_df<span class="op">$</span>mpg,test_pred))</a>
 <a class="sourceLine" id="cb55-18" data-line-number="18">}</a></code></pre></div>
 <p>The first thing to notice is that mutiple calls to the function can yield different RMSE values even without changing the proporiton of the train / test sets. Let’s call this function 100 times with the 70/30 split and check the resulting boxplot to see how the RMSE values vary</p>
 <div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb56-1" data-line-number="1"><span class="kw">replicate</span>(<span class="dv">100</span>,<span class="kw">split_train_test</span>()) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">boxplot</span>()</a></code></pre></div>
@@ -621,7 +614,7 @@ RMSE = \sqrt\frac{\sum_i^n(P_i-O_i)^2}{n}
 <a class="sourceLine" id="cb60-2" data-line-number="2">xgb &lt;-<span class="st"> </span><span class="kw">xgboost</span>(<span class="dt">data =</span> <span class="kw">as.matrix</span>(train_df[,<span class="op">-</span><span class="dv">1</span>]),<span class="dt">label=</span>train_df[,<span class="dv">1</span>],<span class="dt">nrounds=</span><span class="dv">25</span>,<span class="dt">verbose=</span><span class="dv">0</span>)</a></code></pre></div>
 <p>How does this perform in the prediction phase ? It turns out that it’s pretty impressive when compared to the humble <strong>lm</strong> function. The question remains though which method is easier to defend if you were challenged ? The <strong>lm</strong> function implements a very well established and well known model whose parameters are well known. So even though XGBosst seems to be good at minimizing the RMSE it might be better to stick with an approach like <strong>lm</strong> even if it performs more poorly.</p>
 <div class="sourceCode" id="cb61"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb61-1" data-line-number="1">xgboost_preds &lt;-<span class="st"> </span><span class="kw">predict</span>(xgb,<span class="kw">as.matrix</span>(test_df[,<span class="op">-</span><span class="dv">1</span>])) </a>
-<a class="sourceLine" id="cb61-2" data-line-number="2"><span class="kw">compute_rmse</span>(xgpreds,test_df<span class="op">$</span>mpg)</a></code></pre></div>
+<a class="sourceLine" id="cb61-2" data-line-number="2">Metrics<span class="op">::</span><span class="kw">rmse</span>(test_df<span class="op">$</span>mpg,xgpreds)</a></code></pre></div>
 <pre><code>## [1] 2.008207</code></pre>
 <div class="sourceCode" id="cb63"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb63-1" data-line-number="1">split_train_test_xg &lt;-<span class="st"> </span><span class="cf">function</span>(<span class="dt">prop=</span>.<span class="dv">70</span>) {</a>
 <a class="sourceLine" id="cb63-2" data-line-number="2">  </a>
@@ -639,14 +632,14 @@ RMSE = \sqrt\frac{\sum_i^n(P_i-O_i)^2}{n}
 <a class="sourceLine" id="cb63-14" data-line-number="14">    xgb &lt;-<span class="st"> </span><span class="kw">xgboost</span>(<span class="dt">data =</span> <span class="kw">as.matrix</span>(train_df[,<span class="op">-</span><span class="dv">1</span>]),<span class="dt">label=</span>train_df[,<span class="dv">1</span>],<span class="dt">nrounds=</span><span class="dv">25</span>,<span class="dt">verbose=</span><span class="dv">0</span>)</a>
 <a class="sourceLine" id="cb63-15" data-line-number="15"></a>
 <a class="sourceLine" id="cb63-16" data-line-number="16">    xgboost_preds &lt;-<span class="st"> </span><span class="kw">predict</span>(xgb,<span class="kw">as.matrix</span>(test_df[,<span class="op">-</span><span class="dv">1</span>])) </a>
-<a class="sourceLine" id="cb63-17" data-line-number="17">    <span class="kw">return</span>(<span class="kw">compute_rmse</span>(xgboost_preds,test_df<span class="op">$</span>mpg))</a>
+<a class="sourceLine" id="cb63-17" data-line-number="17">    <span class="kw">return</span>(Metrics<span class="op">::</span><span class="kw">rmse</span>(test_df<span class="op">$</span>mpg,xgboost_preds))</a>
 <a class="sourceLine" id="cb63-18" data-line-number="18">}</a></code></pre></div>
 <div class="sourceCode" id="cb64"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb64-1" data-line-number="1">myseq &lt;-<span class="st"> </span><span class="kw">seq</span>(.<span class="dv">6</span>,.<span class="dv">8</span>,.<span class="dv">05</span>)</a>
 <a class="sourceLine" id="cb64-2" data-line-number="2">comp_mat &lt;-<span class="st"> </span><span class="kw">t</span>(<span class="kw">replicate</span>(<span class="dv">100</span>,<span class="kw">sapply</span>(myseq,<span class="cf">function</span>(x) <span class="kw">split_train_test_xg</span>(x))))</a>
 <a class="sourceLine" id="cb64-3" data-line-number="3"><span class="kw">colnames</span>(comp_mat) &lt;-<span class="st"> </span><span class="kw">as.character</span>(myseq)</a>
 <a class="sourceLine" id="cb64-4" data-line-number="4"><span class="kw">boxplot</span>(comp_mat,<span class="dt">ylab=</span><span class="st">&quot;RMSE&quot;</span>,<span class="dt">xlab=</span><span class="st">&quot;Train / Test Proportion&quot;</span>,</a>
 <a class="sourceLine" id="cb64-5" data-line-number="5">        <span class="dt">main=</span><span class="st">&quot;XGBoost - Comparison of Different Train / Test Proprtions&quot;</span>)</a></code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
 </div>
 <div id="summary" class="section level2">
 <h2><span class="header-section-number">3.8</span> Summary</h2>

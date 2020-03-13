@@ -561,17 +561,10 @@ training_rmse   <- sqrt(mean(errors^2))
 print(training_rmse)
 ```
 
-We might even want to create a function to do this for future use:
+There are built in R functions to compute this:
 
 ```{r rmsedef}
-# Lets define a rmse function for future use
-compute_rmse <- function(preds,known) {
-  errors <- preds-known
-  rmse   <- sqrt(mean(errors^2))
-  return(rmse)
-}
-
-compute_rmse(training_preds,mtcars$mpg)
+Metrics::rmse(mtcars$mpg,training_preds)
 ```
 
 Is this good ? Bad ? Just average ? Well we don't really know. One good thing is that the metric is in terms of the predicted variable, **mpg**, so it can easily be interpreted. 
@@ -600,7 +593,7 @@ test_preds <- predict(
     type="response"
   )
 
-(test_rmse <- compute_rmse(test_preds,mtcars[22:32,]$mpg))
+(test_rmse <- Metrics::rmse(mtcars[22:32,]$mpg,test_preds))
 ```
 
 We trained the model on the first 21 rows of the data frame which might contain some outliers (or not). The RMSE got larger ! Does this mean the model is "bad" ? Maybe, maybe not. 
@@ -637,7 +630,7 @@ test_pred  <- predict(
   type="response"
 )
 
-(test_rmse <- compute_rmse(test_pred,test_df$mpg))
+(test_rmse <- Metrics::rmse(test_df$mpg,test_pred))
 ```
 
 ## Some Additional Considerations
@@ -672,7 +665,7 @@ test_pred  <- predict(
   type="response"
 )
 
-(test_rmse <- compute_rmse(test_pred,test_df$mpg))
+(test_rmse <- Metrics::rmse(test_df$mpg,test_pred))
 ```
 
 ```{r splittfunc}
@@ -692,7 +685,7 @@ split_train_test <- function(prop=.70) {
     train_model_lm <- lm(myform, data=train_df)
 
     test_pred <- predict(train_model_lm, newdata=test_df,type="response")
-    return(compute_rmse(test_pred,test_df$mpg))
+    return(Metrics::rmse(test_df$mpg,test_pred))
 }
 
 ```
@@ -740,7 +733,7 @@ How does this perform in the prediction phase ? It turns out that it's pretty im
 
 ```{r xgpredict}
 xgboost_preds <- predict(xgb,as.matrix(test_df[,-1])) 
-compute_rmse(xgpreds,test_df$mpg)
+Metrics::rmse(test_df$mpg,xgpreds)
 ```
 
 
@@ -761,7 +754,7 @@ split_train_test_xg <- function(prop=.70) {
     xgb <- xgboost(data = as.matrix(train_df[,-1]),label=train_df[,1],nrounds=25,verbose=0)
 
     xgboost_preds <- predict(xgb,as.matrix(test_df[,-1])) 
-    return(compute_rmse(xgboost_preds,test_df$mpg))
+    return(Metrics::rmse(test_df$mpg,xgboost_preds))
 }
 ```
 
@@ -1159,7 +1152,7 @@ summary(lm_fit)
 Note that the summary of the model "summary(lm_fit)" returns the same information that would be returned had we used the **lm** function directly as we did in the previous section. The point is that the **train** function doesn't not seek to replace or obscure the resulting model in any way. We can always get whatever information we need from it.  So let's apply this model to the test data frame
 
 ```{r rmsef}
-compute_rmse(predict(lm_fit,Test),Test$mpg)
+Metrics::rmse(Test$mpg,predict(lm_fit,Test))
 ```
 
 There is more here than meets the eye. 
@@ -1211,7 +1204,7 @@ So the object returned from caret gives us an estimate of how well the model wil
 
 ```{r}
 my_lm
-compute_rmse(predict(my_lm,Test),Test$mpg)
+Metrics::rmse(Test$mpg,predict(my_lm,Test))
 ```
 
 We could also repeat the 5 times CV validation an arbitrary number of times to generate greater confidence in the RMSE estimates returned by the model. Remember, a major reason for using K Fold validation is to better estimate the out of sample error by holding out a portion of the data frame being trained upon. 
@@ -1232,7 +1225,7 @@ my_lm <- train(
   trControl = control
 )
 
-compute_rmse(predict(my_lm,Test),Test$mpg)
+Metrics::rmse(Test$mpg,predict(my_lm,Test))
 ```
 
 ## One Size Fits All
@@ -1255,7 +1248,7 @@ my_ranger <- train(
 
 my_ranger
 
-compute_rmse(predict(my_ranger,Test),Test$mpg)
+Metrics::rmse(Test$mpg,predict(my_ranger,Test))
 ```
 
 ## Hyperparameters 
@@ -1292,7 +1285,7 @@ my_rf <- train(
 my_rf
 plot(my_rf)
 
-compute_rmse(predict(my_rf,Test),Test$mpg)
+Metrics::rmse(Test$mpg,predict(my_rf,Test))
 ```
 
 If you have a questions about what hyper parameters can be tuned for a given method then you can refer to the online [caret documentation](https://topepo.github.io/caret/available-models.html) Here is a screenshot of the table of supported models and associated tuning parameters. 
@@ -1344,7 +1337,7 @@ my_ranger <- train(
 
 my_ranger
 
-compute_rmse(predict(my_ranger,Test),Test$mpg)
+Metrics::rmse(Test$mpg,predict(my_ranger,Test))
 
 plot(my_ranger)
 ```
@@ -1371,8 +1364,7 @@ my_ranger <- train(
 
 my_ranger
 
-compute_rmse(predict(my_ranger,Test),Test$mpg)
-
+Metrics::rmse(Test$mpg,predict(my_ranger,Test))
 plot(my_ranger)
 ```
 
@@ -2355,26 +2347,7 @@ Since we are predicting a numeric outcome we would like to come up with a metric
 RMSE = \sqrt\frac{\sum_i^n(P_i-O_i)^2}{n}
 \]
 
-We could even write our own function for this although the **Metrics** package has a function called **rmse** to do this:
-
-```{r}
-# Lets define a rmse function for future use
-compute_rmse <- function(preds,known) {
-  errors <- preds-known
-  rmse   <- sqrt(mean(errors^2))
-  return(rmse)
-}
-```
-
-
-
-```{r echo=FALSE,eval=FALSE}
-grade <- read.csv("/Users/esteban/Dropbox/ML/grade.csv",
-                  stringsAsFactors = FALSE)
-```
-
-
-Let's build a classification tree model on the Pima Indians data to predict the body mass of a participant.
+We could even write our own function for this although the **Metrics** package has a function called **rmse** to do this. Let's build a classification tree model on the Pima Indians data to predict the body mass of a participant.
 
 ```{r}
 # Train the model
@@ -2973,8 +2946,8 @@ In terms of the RMSE for the Test set predictions, which method is better (i.e. 
 lm_preds <- predict(my_lm,example_Train)
 svm_preds <- predict(my_svm,example_Train)
 #
-cat("RMSE for lm is: ",compute_rmse(lm_preds,example_Test$mpg),"\n")
-cat("RMSE for smv is: ",compute_rmse(svm_preds,example_Test$mpg),"\n")
+cat("RMSE for lm is: ",Metrics::rmse(example_Test$mpg,lm_preds),"\n")
+cat("RMSE for smv is: ",Metrics::rmse(example_Test$mpg,svm_preds),"\n")
 ```
 
 ## More Comparisons
@@ -3053,11 +3026,10 @@ Of course, we can now use the Test data frame to see how the RMSE looks on the h
 
 
 ```{r computermse}
-compute_rmse(predict(comp_mod_lm,example_Test),example_Test$mpg)
-compute_rmse(predict(comp_mod_svm,example_Test),example_Test$mpg)
-compute_rmse(predict(comp_mod_glmnet,example_Test),example_Test$mpg)
-compute_rmse(predict(comp_mod_ranger,example_Test),example_Test$mpg)
-
+Metrics::rmse(example_Test$mpg,predict(comp_mod_lm,example_Test))
+Metrics::rmse(example_Test$mpg,predict(comp_mod_svm,example_Test))
+Metrics::rmse(example_Test$mpg,predict(comp_mod_svm,example_Test))
+Metrics::rmse(example_Test$mpg,predict(comp_mod_ranger,example_Test))
 ```
 
 Another way to look at these models is to use the **diff** function. 
