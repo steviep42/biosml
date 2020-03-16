@@ -2137,7 +2137,7 @@ Disadvantages include:
 
 So you just learned that with a decision tree, you do not need to scale data which means you can get started quickly. We won't generate a train / test pair here since we are just trying to understand the structure. 
 
-We can easily plot the tree emanating from the **rpart** comman but it can also easily be **read** from the basic output. This tree is really straightforward in that if the weight of a car is >= 3.2 then **am** is predicted to be 0 (automatic) and, otherwise, 1 (manual). 
+We can easily plot the tree emanating from the **rpart** comman but it can also easily be **read** from the basic output. 
 
 
 ```{r mtcrpart}
@@ -2148,10 +2148,7 @@ tree_simple
 rpart.plot(tree_simple)
 ```
 
-The associated plot represents this graphically while also showing us the distribution of, in this case, 0 outcomes vs 1 outcomes. In the parlance of decision trees we have the **root node** at the top followed by some leaf nodes which also happen to be terminal nodes. The nodes are connected by branches which indicate the flow of the decision which in this case is quite simple. It's also easy to show some one a tree like this and they don't need to know any of the underlying workings of the method which is why this is quite useful.
-
-Let's look at some of the titanic data:
-
+The associated plot represents this graphically while also showing us the distribution of, in this case, 0 outcomes vs 1 outcomes. In the parlance of decision trees we have the **root node** at the top followed by some leaf nodes which also happen to be terminal nodes. The nodes are connected by branches which indicate the flow of the decision which in this case is quite simple. It's also easy to show some one a tree and they don't need to know any of the underlying workings of the method which is why this is quite useful. 
 
 ## A Classification Example 
 
@@ -2169,22 +2166,39 @@ Let's use the Pima Indians data set as it relates to predicting whether someone 
 
 
 
-```{r}
+```{r diabtree}
 library(mlbench)
 data(PimaIndiansDiabetes)
 pm <- PimaIndiansDiabetes
 
-diabetes_mod <- rpart(diabetes ~ .,pm,method="class")
-rpart.plot(x = diabetes_mod, yesno = 2, type = 0, extra = 0)
+diabetes_mod_1 <- rpart(diabetes ~ .,pm,
+                      method="class",cp=0.017)
+rpart.plot(x = diabetes_mod_1)
 ```
  
-That's pretty understandable but it starts to border on being a bit hard to follow by hand. Nonetheless, you could show this to someone who does not know (or care) about the underlying mathematics of decision trees and they would be able to understand the path to a classification of someone having diabetes or not. 
+That's pretty understandable and you could show this to someone and they would probably get it without too much explanation as long as they had an awareness of the features in the data set. The root node at the top is called the "root node" and the lines are "branches" that go either to a "terminal node" or to "leaf nodes" which involve some comparison. It's a flow chart for decisions about whether someone has diabetes or not.
 
-It's common in these scenarios to create what is known as a test / training split so that we can train our model on a test set that we can then use on a test or hold out data set to see how well the model performs. There is much more to say about this but we'll keep it simple here. We can create a training set that comprises %80 of the data with a holdout set of 20%. This easy to do. 
+```{r diabtreepred}
+diabetes_preds <- predict(diabetes_mod_1,type="class")
+table(diabetes_preds,pm$diabetes)
 
-Let's create a Train / Test Split
+# Calculate the confusion matrix for the test set
+caret::confusionMatrix(diabetes_preds,       
+                       pm$diabetes,
+                       positive="pos")  
+```
 
-```{r}
+Perhaps you noticed that in the example I included an argument called **cp** which corresponds to a "complexity parameter" which influences how the tree splits at various nodes. 
+
+> The main role of this parameter is to save computing time by pruning off splits that are obviously not worthwhile. Essentially,the user informs the program that any split which does not improve the fit by cp will likely be pruned off by cross-validation, and that hence the program need not pursue it.
+
+We'll explore this in more detail momentarily.
+
+## Digging Deeper
+
+It's common in these scenarios to create what is known as a test / training split so that we can train our model on a test set that we can then use on a test or hold out data set to see how well the model performs. There is much more to say about this but we'll keep it simple here. We can create a training set that comprises %80 of the data with a holdout set of 20%. This easy to do. Let's create a Train / Test Split
+
+```{r rptree2}
 set.seed(123)
 percent <- .80
 train_idx <- sample(1:nrow(pm),
@@ -2200,7 +2214,7 @@ pm_test <- pm[-train_idx, ]
 ```
 
 
-```{r}
+```{r rpartbuild}
 # Train the model (to predict 'default')
 pm_class_tree <- rpart(formula = diabetes ~ ., 
                       data = pm_train, 
@@ -2372,7 +2386,7 @@ Is this Good ? Bad ? Okay ? We don't know. We'll need to do some things like Cro
 
 Of course, most modeling functions one would call in R have default values for various arguments but this does not mean that the defaults are appropriate for all cases. To see the hyper parameters of the **rpart** function, check the help page for **rpart.control**. 
 
-![](/Users/esteban/Dropbox/ML/biosml/pics/rpartctrol2.png)
+![](/Users/esteban/GIT_REPOS_DIR/biosml/pics/rpartctrol2.png)
 
 Tuning the hyperparameters for **rpart** would involve adjusting the following hyper parameters or using some post processing function to refine the model relative to these parameters:
 
@@ -2497,7 +2511,7 @@ results$optimal_model$control
 
 Now we look at bagged trees which involves looking at many trees in aggregate - this is an ensemble method. It helps to reduce the variance associated with a single decision tree which can be highly sensitive to changes in data. The term bagging refers to "bootstrap aggregation". To review, the Decision Tree process can be represented like this:
 
-![](/Users/esteban/Dropbox/ML/biosml/pics/tree2.png)
+![](/Users/esteban/GIT_REPOS_DIR/biosml/pics/tree2.png)
 
 The bootstrap method of sampling will resample the training data some number of times (with replacement) and retrain a number of models on the resampled data to average out the error. This looks something like:
 
@@ -2506,7 +2520,7 @@ The bootstrap method of sampling will resample the training data some number of 
  - Get the RMSE from the prediction
  - Average out the RMSE 
  
- ![](/Users/esteban/Dropbox/ML/biosml/pics/bagged.png)
+ ![](/Users/esteban/GIT_REPOS_DIR/biosml/pics/bagged.png)
  
  
 So you get a lot of different trees whose performance can be averaged over boostrapped data sets which might include observations several times or not at all. This should result in less variance. 
@@ -2586,7 +2600,7 @@ mean(aucval)
 
 Now we'll compare this to the function called "bagging" from the **ipred** package which does bagged trees directly.
 
-![](/Users/esteban/Dropbox/ML/biosml/pics/bagging2.png)
+![](/Users/esteban/GIT_REPOS_DIR/biosml/pics/bagging2.png)
 
 ```{r}
 library(ipred)
@@ -2612,17 +2626,19 @@ This is better than the 0.7804305 we got when using a single Decision tree.
 
 ## Random Forests
 
-In Random Forest, only a subset of features are selected at random at each split in a decision tree. In bagging, all features are used.
+In Random Forest, only a subset of features are selected at random at each split in a decision tree. In bagging, all features are used. You could think of random forests as being an extension of Bagged Trees. Typically they are also an improvement. Even though the method represents a collection of trees we still get the added advantage of not having to pre process the data. 
 
-```{r}
+This doesn't mean that we shouldn't, for example, try to see if the data cannot be reduced in terms of dimenisionality. Nor does it mean that if we do scale the data that we can't use it with Tree methods. Basically, one of the main advantages of the method is that it tolerates a combination of data types on different scales which makes it good as a "go to" method.
+
+```{r loadrandomf}
 library(randomForest)
 ```
 
-```{r}
+```{r trainrandomf}
 # Train a Random Forest
 set.seed(1)  # for reproducibility
 pm_rf_model <- randomForest(formula = diabetes ~ ., 
-                             data =pm_train)
+                             data = pm_train)
                              
 # Print the model output                             
 print(pm_rf_model)
@@ -2632,10 +2648,24 @@ Let's look at the out of bag error matrix
 
 ```{r}
 head(pm_rf_model$err.rate)
+plot(pm_rf_model)
 ```
 
+Do some predictions with this model.
 
+```{r predrf2}
+rf_pred <- predict(pm_rf_model,
+                   newdata = pm_test, type="prob")
 
+converted <- ifelse(pm_test$diabetes == "pos",1,0)
+
+aucval    <- Metrics::auc(actual = converted,
+                    predicted = rf_pred[,2])
+
+aucval
+```
+
+A slight improvement over the bagged trees.
 
 
 # Using Methods Other Than lm 
@@ -2757,7 +2787,7 @@ As a matter of fact we can plot this model and it will show us something interes
 plot(caret_rf)
 ```
 
-Telling **caret** to use more valies of **mtry** is possible. This will explicitly try all values from 1 - 10 inclusive. Note that the model gets built for each value of **mtry**. This causes the model building process to take longer than it normally would. 
+Telling **caret** to use more values of **mtry** is possible. This will explicitly try all values from 1 - 10 inclusive. Note that the model gets built for each value of **mtry**. This causes the model building process to take longer than it normally would. 
 
 ```{r caretrftune}
 caret_rf <- train(mpg ~ .,
