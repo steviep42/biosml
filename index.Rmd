@@ -2386,7 +2386,7 @@ Is this Good ? Bad ? Okay ? We don't know. We'll need to do some things like Cro
 
 Of course, most modeling functions one would call in R have default values for various arguments but this does not mean that the defaults are appropriate for all cases. To see the hyper parameters of the **rpart** function, check the help page for **rpart.control**. 
 
-![](/Users/esteban/GIT_REPOS_DIR/biosml/pics/rpartctrol2.png)
+![](./pics/rpartctrol2.png)
 
 Tuning the hyperparameters for **rpart** would involve adjusting the following hyper parameters or using some post processing function to refine the model relative to these parameters:
 
@@ -2511,7 +2511,7 @@ results$optimal_model$control
 
 Now we look at bagged trees which involves looking at many trees in aggregate - this is an ensemble method. It helps to reduce the variance associated with a single decision tree which can be highly sensitive to changes in data. The term bagging refers to "bootstrap aggregation". To review, the Decision Tree process can be represented like this:
 
-![](/Users/esteban/GIT_REPOS_DIR/biosml/pics/tree2.png)
+![](./pics/tree2.png)
 
 The bootstrap method of sampling will resample the training data some number of times (with replacement) and retrain a number of models on the resampled data to average out the error. This looks something like:
 
@@ -2520,7 +2520,7 @@ The bootstrap method of sampling will resample the training data some number of 
  - Get the RMSE from the prediction
  - Average out the RMSE 
  
- ![](/Users/esteban/GIT_REPOS_DIR/biosml/pics/bagged.png)
+ ![](./pics/bagged.png)
  
  
 So you get a lot of different trees whose performance can be averaged over boostrapped data sets which might include observations several times or not at all. This should result in less variance. 
@@ -2600,7 +2600,7 @@ mean(aucval)
 
 Now we'll compare this to the function called "bagging" from the **ipred** package which does bagged trees directly.
 
-![](/Users/esteban/GIT_REPOS_DIR/biosml/pics/bagging2.png)
+![](./pics/bagging2.png)
 
 ```{r}
 library(ipred)

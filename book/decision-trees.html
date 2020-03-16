@@ -617,7 +617,7 @@ RMSE = \sqrt\frac{\sum_i^n(P_i-O_i)^2}{n}
 <p><strong>Model parameters</strong> are things that are generated as part of the modeling process. These might be things like slope and intercept from a linear model or, in the case of an rpart model, the number of splits in the final tree or the total number of leaves.</p>
 <p><strong>Hyper parameters</strong> (sometimes called <strong>metaparameters</strong>) represent information that is supplied in the form of an argument prior the call to the method to generate results. These parameters might not be something one can intelligently set without some experimentation.</p>
 <p>Of course, most modeling functions one would call in R have default values for various arguments but this does not mean that the defaults are appropriate for all cases. To see the hyper parameters of the <strong>rpart</strong> function, check the help page for <strong>rpart.control</strong>.</p>
-<p><img src="/Users/esteban/GIT_REPOS_DIR/biosml/pics/rpartctrol2.png" /></p>
+<p><img src="pics/rpartctrol2.png" /></p>
 <p>Tuning the hyperparameters for <strong>rpart</strong> would involve adjusting the following hyper parameters or using some post processing function to refine the model relative to these parameters:</p>
 <ul>
 <li><strong>cp</strong> which is the complexity parameter (default is .01) - smaller values means more complexity</li>
@@ -757,7 +757,7 @@ RMSE = \sqrt\frac{\sum_i^n(P_i-O_i)^2}{n}
 <div id="bagged-trees" class="section level2">
 <h2><span class="header-section-number">8.9</span> Bagged Trees</h2>
 <p>Now we look at bagged trees which involves looking at many trees in aggregate - this is an ensemble method. It helps to reduce the variance associated with a single decision tree which can be highly sensitive to changes in data. The term bagging refers to “bootstrap aggregation”. To review, the Decision Tree process can be represented like this:</p>
-<p><img src="/Users/esteban/GIT_REPOS_DIR/biosml/pics/tree2.png" /></p>
+<p><img src="pics/tree2.png" /></p>
 <p>The bootstrap method of sampling will resample the training data some number of times (with replacement) and retrain a number of models on the resampled data to average out the error. This looks something like:</p>
 <ul>
 <li>The input data set is resampled with replacement some number of times (e.g. 10,50, 100)</li>
@@ -765,7 +765,7 @@ RMSE = \sqrt\frac{\sum_i^n(P_i-O_i)^2}{n}
 <li>Get the RMSE from the prediction</li>
 <li>Average out the RMSE</li>
 </ul>
-<p><img src="/Users/esteban/GIT_REPOS_DIR/biosml/pics/bagged.png" /></p>
+<p><img src="pics/bagged.png" /></p>
 <p>So you get a lot of different trees whose performance can be averaged over boostrapped data sets which might include observations several times or not at all. This should result in less variance.</p>
 <p>A reason NOT to use bagged trees involves the idea that a collection of trees is not nearly as easy to look at as a single decision tree. We can actually write our own version of bagged trees using a for loop. Sort of like what we did above. First, let’s get our test / train pair for the Pima Indians data.</p>
 <div class="sourceCode" id="cb317"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb317-1" data-line-number="1"><span class="kw">set.seed</span>(<span class="dv">123</span>)</a>
@@ -822,7 +822,7 @@ RMSE = \sqrt\frac{\sum_i^n(P_i-O_i)^2}{n}
 <div class="sourceCode" id="cb323"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb323-1" data-line-number="1"><span class="kw">mean</span>(aucval)</a></code></pre></div>
 <pre><code>## [1] 0.8217163</code></pre>
 <p>Now we’ll compare this to the function called “bagging” from the <strong>ipred</strong> package which does bagged trees directly.</p>
-<p><img src="/Users/esteban/GIT_REPOS_DIR/biosml/pics/bagging2.png" /></p>
+<p><img src="pics/bagging2.png" /></p>
 <div class="sourceCode" id="cb325"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb325-1" data-line-number="1"><span class="kw">library</span>(ipred)</a>
 <a class="sourceLine" id="cb325-2" data-line-number="2">bagged_pm &lt;-<span class="st"> </span><span class="kw">bagging</span>(diabetes <span class="op">~</span><span class="st"> </span>.,</a>
 <a class="sourceLine" id="cb325-3" data-line-number="3">                     <span class="dt">data =</span> pm_train, <span class="dt">coob =</span> <span class="ot">TRUE</span>)</a>
