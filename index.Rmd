@@ -2116,40 +2116,7 @@ colAUC(unbalanced_preds[,2],test$diabetes,plotROC = TRUE)
 
 # Decision Trees
 
-
-```{r dtinit,echo=FALSE}
-library(readr)
-library(rpart)
-library(rpart.plot)
-```
-
-You might also know about the topic of Classification Trees under the name of **CART** which stands for **C**lassification **A**nd **R**egression Trees. Decision trees can be used to predict numeric outcomes or to classify binary outcomes such as a disease result "yes" or "now", "positive or negative". 
-
-The theme common to both types of trees is that you are trying to predict some outcome variable as a function of some number and combination of predictor variables from the same data set. The outcome will be a "tree" that can usually be easily understood and interpreted. As an example, a very simple decision tree can be generated  that predicts / classifies the transmission type of cars in the mtcars data frame. 
-
-```{r}
-data(mtcars)
-rpart_class_mtcars <- rpart(am~.,data=mtcars,method="class")
-rpart.plot(rpart_class_mtcars,yesno = 2, type = 0, extra = 0)
-```
-
-If the weight of the car is greater than 3.2 tons then the tree would classify it as having a manual (1) transmission. How well did we do here ? Not too bad actually. We'll talk more about measuring performance of a classifier in a bit. 
-
-```{r}
-preds <- ifelse(mtcars$wt >= 3,0,1)
-table(predicted=preds,actual=mtcars$am)
-
-```
-
-
-If, however, we wanted to predict the MPG of a car from the mtcars data frame we could still use the **rpart** function but we would adjust some arguments - notably the "method" argument. In any case, we get a prediction for MPG based on some criteria.
-
-```{r}
-data(mtcars)
-rpart_regress_mtcars <- rpart(mpg~.,data=mtcars,method="anova")
-rpart.plot(rpart_regress_mtcars,yesno = 2, type = 0, extra = 0)
-```
-
+Tree-based methods employ a segmentation strategy that partitions the feature / predictor space into a series of decsisions which has the added benefit of being easy to understand. Think of it as a flow chart for making decsions. The viewer of the chart is presented with a diagram that offers outcomes in response to decsions about important predictors found in the data set. 
 
 ## Advantages
 
@@ -2165,6 +2132,26 @@ Disadvantages include:
  - Large trees are hard to follow - variance can be high
  - Trees can be overly complex 
  - Overfitting can be a problem 
+ 
+## Basic Example
+
+So you just learned that with a decision tree, you do not need to scale data which means you can get started quickly. We won't generate a train / test pair here since we are just trying to understand the structure. 
+
+We can easily plot the tree emanating from the **rpart** comman but it can also easily be **read** from the basic output. This tree is really straightforward in that if the weight of a car is >= 3.2 then **am** is predicted to be 0 (automatic) and, otherwise, 1 (manual). 
+
+
+```{r mtcrpart}
+tree_simple <- rpart(factor(am) ~ .,
+                     data=mtcars,
+                     method="class")
+tree_simple
+rpart.plot(tree_simple)
+```
+
+The associated plot represents this graphically while also showing us the distribution of, in this case, 0 outcomes vs 1 outcomes. In the parlance of decision trees we have the **root node** at the top followed by some leaf nodes which also happen to be terminal nodes. The nodes are connected by branches which indicate the flow of the decision which in this case is quite simple. It's also easy to show some one a tree like this and they don't need to know any of the underlying workings of the method which is why this is quite useful.
+
+Let's look at some of the titanic data:
+
 
 ## A Classification Example 
 

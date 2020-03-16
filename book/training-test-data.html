@@ -208,18 +208,19 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="8" data-path="decision-trees.html"><a href="decision-trees.html"><i class="fa fa-check"></i><b>8</b> Decision Trees</a><ul>
 <li class="chapter" data-level="8.1" data-path="decision-trees.html"><a href="decision-trees.html#advantages"><i class="fa fa-check"></i><b>8.1</b> Advantages</a></li>
-<li class="chapter" data-level="8.2" data-path="decision-trees.html"><a href="decision-trees.html#a-classification-example"><i class="fa fa-check"></i><b>8.2</b> A Classification Example</a><ul>
-<li class="chapter" data-level="8.2.1" data-path="decision-trees.html"><a href="decision-trees.html#evaluating-performance"><i class="fa fa-check"></i><b>8.2.1</b> Evaluating performance</a></li>
-<li class="chapter" data-level="8.2.2" data-path="decision-trees.html"><a href="decision-trees.html#tree-splitting"><i class="fa fa-check"></i><b>8.2.2</b> Tree Splitting</a></li>
+<li class="chapter" data-level="8.2" data-path="decision-trees.html"><a href="decision-trees.html#basic-example"><i class="fa fa-check"></i><b>8.2</b> Basic Example</a></li>
+<li class="chapter" data-level="8.3" data-path="decision-trees.html"><a href="decision-trees.html#a-classification-example"><i class="fa fa-check"></i><b>8.3</b> A Classification Example</a><ul>
+<li class="chapter" data-level="8.3.1" data-path="decision-trees.html"><a href="decision-trees.html#evaluating-performance"><i class="fa fa-check"></i><b>8.3.1</b> Evaluating performance</a></li>
+<li class="chapter" data-level="8.3.2" data-path="decision-trees.html"><a href="decision-trees.html#tree-splitting"><i class="fa fa-check"></i><b>8.3.2</b> Tree Splitting</a></li>
 </ul></li>
-<li class="chapter" data-level="8.3" data-path="decision-trees.html"><a href="decision-trees.html#gini-index"><i class="fa fa-check"></i><b>8.3</b> Gini Index</a></li>
-<li class="chapter" data-level="8.4" data-path="decision-trees.html"><a href="decision-trees.html#regression-trees"><i class="fa fa-check"></i><b>8.4</b> Regression Trees</a><ul>
-<li class="chapter" data-level="8.4.1" data-path="decision-trees.html"><a href="decision-trees.html#performance-measure"><i class="fa fa-check"></i><b>8.4.1</b> Performance Measure</a></li>
+<li class="chapter" data-level="8.4" data-path="decision-trees.html"><a href="decision-trees.html#gini-index"><i class="fa fa-check"></i><b>8.4</b> Gini Index</a></li>
+<li class="chapter" data-level="8.5" data-path="decision-trees.html"><a href="decision-trees.html#regression-trees"><i class="fa fa-check"></i><b>8.5</b> Regression Trees</a><ul>
+<li class="chapter" data-level="8.5.1" data-path="decision-trees.html"><a href="decision-trees.html#performance-measure"><i class="fa fa-check"></i><b>8.5.1</b> Performance Measure</a></li>
 </ul></li>
-<li class="chapter" data-level="8.5" data-path="decision-trees.html"><a href="decision-trees.html#parameters-vs-hyperparameters"><i class="fa fa-check"></i><b>8.5</b> Parameters vs Hyperparameters</a></li>
-<li class="chapter" data-level="8.6" data-path="decision-trees.html"><a href="decision-trees.html#grid-searching"><i class="fa fa-check"></i><b>8.6</b> Grid Searching</a></li>
-<li class="chapter" data-level="8.7" data-path="decision-trees.html"><a href="decision-trees.html#bagged-trees"><i class="fa fa-check"></i><b>8.7</b> Bagged Trees</a></li>
-<li class="chapter" data-level="8.8" data-path="decision-trees.html"><a href="decision-trees.html#random-forests-1"><i class="fa fa-check"></i><b>8.8</b> Random Forests</a></li>
+<li class="chapter" data-level="8.6" data-path="decision-trees.html"><a href="decision-trees.html#parameters-vs-hyperparameters"><i class="fa fa-check"></i><b>8.6</b> Parameters vs Hyperparameters</a></li>
+<li class="chapter" data-level="8.7" data-path="decision-trees.html"><a href="decision-trees.html#grid-searching"><i class="fa fa-check"></i><b>8.7</b> Grid Searching</a></li>
+<li class="chapter" data-level="8.8" data-path="decision-trees.html"><a href="decision-trees.html#bagged-trees"><i class="fa fa-check"></i><b>8.8</b> Bagged Trees</a></li>
+<li class="chapter" data-level="8.9" data-path="decision-trees.html"><a href="decision-trees.html#random-forests-1"><i class="fa fa-check"></i><b>8.9</b> Random Forests</a></li>
 </ul></li>
 <li class="chapter" data-level="9" data-path="using-methods-other-than-lm.html"><a href="using-methods-other-than-lm.html"><i class="fa fa-check"></i><b>9</b> Using Methods Other Than lm</a><ul>
 <li class="chapter" data-level="9.1" data-path="using-methods-other-than-lm.html"><a href="using-methods-other-than-lm.html#parameters-vs-hyperparameters-1"><i class="fa fa-check"></i><b>9.1</b> Parameters vs Hyperparameters</a></li>
@@ -485,34 +486,41 @@ Summarize evaluation score (e.g. mean of RMSE)</code></pre>
 <div class="sourceCode" id="cb88"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb88-1" data-line-number="1"><span class="kw">boxplot</span>(repeated_cv_rmse)</a></code></pre></div>
 <p><img src="biosml_files/figure-html/rc1-2.png" width="672" /></p>
 <div class="sourceCode" id="cb89"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb89-1" data-line-number="1"><span class="kw">summary</span>(repeated_cv_rmse)</a></code></pre></div>
-<pre><code>##        V1              V2              V3              V4              V5       
-##  Min.   :1.399   Min.   :1.105   Min.   :1.264   Min.   :1.784   Min.   :1.866  
-##  1st Qu.:2.278   1st Qu.:2.493   1st Qu.:2.834   1st Qu.:2.321   1st Qu.:2.145  
-##  Median :2.870   Median :2.900   Median :3.359   Median :3.126   Median :2.646  
-##  Mean   :3.010   Mean   :2.979   Mean   :3.092   Mean   :3.040   Mean   :3.006  
-##  3rd Qu.:3.624   3rd Qu.:3.845   3rd Qu.:3.846   3rd Qu.:3.931   3rd Qu.:3.962  
-##  Max.   :4.790   Max.   :4.464   Max.   :4.040   Max.   :4.049   Max.   :4.722  
-##        V6              V7              V8               V9             V10       
-##  Min.   :1.397   Min.   :1.969   Min.   :0.4994   Min.   :2.033   Min.   :1.468  
-##  1st Qu.:2.356   1st Qu.:2.283   1st Qu.:2.6208   1st Qu.:2.314   1st Qu.:2.465  
-##  Median :2.816   Median :2.997   Median :3.0280   Median :2.699   Median :3.319  
-##  Mean   :3.011   Mean   :3.065   Mean   :3.1547   Mean   :3.327   Mean   :3.431  
-##  3rd Qu.:4.086   3rd Qu.:3.839   3rd Qu.:3.4665   3rd Qu.:3.715   3rd Qu.:4.181  
-##  Max.   :4.475   Max.   :4.348   Max.   :6.4399   Max.   :6.347   Max.   :6.351  
-##       V11             V12             V13              V14             V15       
-##  Min.   :1.453   Min.   :1.264   Min.   :0.8138   Min.   :2.036   Min.   :2.055  
-##  1st Qu.:2.095   1st Qu.:2.237   1st Qu.:1.5406   1st Qu.:2.068   1st Qu.:2.222  
-##  Median :2.761   Median :3.009   Median :3.2492   Median :3.103   Median :2.776  
-##  Mean   :2.987   Mean   :2.975   Mean   :2.8539   Mean   :3.109   Mean   :3.192  
-##  3rd Qu.:4.089   3rd Qu.:3.881   3rd Qu.:3.9198   3rd Qu.:3.920   3rd Qu.:3.649  
-##  Max.   :4.705   Max.   :4.644   Max.   :4.4157   Max.   :4.389   Max.   :5.735  
-##       V16             V17             V18             V19             V20       
-##  Min.   :2.312   Min.   :1.382   Min.   :1.452   Min.   :1.591   Min.   :2.320  
-##  1st Qu.:2.659   1st Qu.:1.779   1st Qu.:1.996   1st Qu.:2.251   1st Qu.:2.539  
-##  Median :2.762   Median :2.456   Median :2.193   Median :2.532   Median :3.194  
-##  Mean   :3.137   Mean   :2.788   Mean   :2.907   Mean   :2.888   Mean   :3.240  
-##  3rd Qu.:3.888   3rd Qu.:3.590   3rd Qu.:4.202   3rd Qu.:3.142   3rd Qu.:3.916  
-##  Max.   :4.138   Max.   :5.028   Max.   :4.883   Max.   :5.247   Max.   :4.359</code></pre>
+<pre><code>##        V1              V2              V3              V4       
+##  Min.   :1.399   Min.   :1.105   Min.   :1.264   Min.   :1.784  
+##  1st Qu.:2.278   1st Qu.:2.493   1st Qu.:2.834   1st Qu.:2.321  
+##  Median :2.870   Median :2.900   Median :3.359   Median :3.126  
+##  Mean   :3.010   Mean   :2.979   Mean   :3.092   Mean   :3.040  
+##  3rd Qu.:3.624   3rd Qu.:3.845   3rd Qu.:3.846   3rd Qu.:3.931  
+##  Max.   :4.790   Max.   :4.464   Max.   :4.040   Max.   :4.049  
+##        V5              V6              V7              V8        
+##  Min.   :1.866   Min.   :1.397   Min.   :1.969   Min.   :0.4994  
+##  1st Qu.:2.145   1st Qu.:2.356   1st Qu.:2.283   1st Qu.:2.6208  
+##  Median :2.646   Median :2.816   Median :2.997   Median :3.0280  
+##  Mean   :3.006   Mean   :3.011   Mean   :3.065   Mean   :3.1547  
+##  3rd Qu.:3.962   3rd Qu.:4.086   3rd Qu.:3.839   3rd Qu.:3.4665  
+##  Max.   :4.722   Max.   :4.475   Max.   :4.348   Max.   :6.4399  
+##        V9             V10             V11             V12       
+##  Min.   :2.033   Min.   :1.468   Min.   :1.453   Min.   :1.264  
+##  1st Qu.:2.314   1st Qu.:2.465   1st Qu.:2.095   1st Qu.:2.237  
+##  Median :2.699   Median :3.319   Median :2.761   Median :3.009  
+##  Mean   :3.327   Mean   :3.431   Mean   :2.987   Mean   :2.975  
+##  3rd Qu.:3.715   3rd Qu.:4.181   3rd Qu.:4.089   3rd Qu.:3.881  
+##  Max.   :6.347   Max.   :6.351   Max.   :4.705   Max.   :4.644  
+##       V13              V14             V15             V16       
+##  Min.   :0.8138   Min.   :2.036   Min.   :2.055   Min.   :2.312  
+##  1st Qu.:1.5406   1st Qu.:2.068   1st Qu.:2.222   1st Qu.:2.659  
+##  Median :3.2492   Median :3.103   Median :2.776   Median :2.762  
+##  Mean   :2.8539   Mean   :3.109   Mean   :3.192   Mean   :3.137  
+##  3rd Qu.:3.9198   3rd Qu.:3.920   3rd Qu.:3.649   3rd Qu.:3.888  
+##  Max.   :4.4157   Max.   :4.389   Max.   :5.735   Max.   :4.138  
+##       V17             V18             V19             V20       
+##  Min.   :1.382   Min.   :1.452   Min.   :1.591   Min.   :2.320  
+##  1st Qu.:1.779   1st Qu.:1.996   1st Qu.:2.251   1st Qu.:2.539  
+##  Median :2.456   Median :2.193   Median :2.532   Median :3.194  
+##  Mean   :2.788   Mean   :2.907   Mean   :2.888   Mean   :3.240  
+##  3rd Qu.:3.590   3rd Qu.:4.202   3rd Qu.:3.142   3rd Qu.:3.916  
+##  Max.   :5.028   Max.   :4.883   Max.   :5.247   Max.   :4.359</code></pre>
 </div>
 <div id="bootstrap" class="section level2">
 <h2><span class="header-section-number">4.4</span> Bootstrap</h2>
@@ -581,34 +589,41 @@ Summarize evaluation score (e.g. mean of RMSE)</code></pre>
 <div class="sourceCode" id="cb100"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb100-1" data-line-number="1"><span class="kw">print</span>(<span class="st">&quot;Summary of CV&quot;</span>)</a></code></pre></div>
 <pre><code>## [1] &quot;Summary of CV&quot;</code></pre>
 <div class="sourceCode" id="cb102"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb102-1" data-line-number="1"><span class="kw">summary</span>(repeated_cv_rmse)</a></code></pre></div>
-<pre><code>##        V1              V2              V3              V4              V5       
-##  Min.   :1.399   Min.   :1.105   Min.   :1.264   Min.   :1.784   Min.   :1.866  
-##  1st Qu.:2.278   1st Qu.:2.493   1st Qu.:2.834   1st Qu.:2.321   1st Qu.:2.145  
-##  Median :2.870   Median :2.900   Median :3.359   Median :3.126   Median :2.646  
-##  Mean   :3.010   Mean   :2.979   Mean   :3.092   Mean   :3.040   Mean   :3.006  
-##  3rd Qu.:3.624   3rd Qu.:3.845   3rd Qu.:3.846   3rd Qu.:3.931   3rd Qu.:3.962  
-##  Max.   :4.790   Max.   :4.464   Max.   :4.040   Max.   :4.049   Max.   :4.722  
-##        V6              V7              V8               V9             V10       
-##  Min.   :1.397   Min.   :1.969   Min.   :0.4994   Min.   :2.033   Min.   :1.468  
-##  1st Qu.:2.356   1st Qu.:2.283   1st Qu.:2.6208   1st Qu.:2.314   1st Qu.:2.465  
-##  Median :2.816   Median :2.997   Median :3.0280   Median :2.699   Median :3.319  
-##  Mean   :3.011   Mean   :3.065   Mean   :3.1547   Mean   :3.327   Mean   :3.431  
-##  3rd Qu.:4.086   3rd Qu.:3.839   3rd Qu.:3.4665   3rd Qu.:3.715   3rd Qu.:4.181  
-##  Max.   :4.475   Max.   :4.348   Max.   :6.4399   Max.   :6.347   Max.   :6.351  
-##       V11             V12             V13              V14             V15       
-##  Min.   :1.453   Min.   :1.264   Min.   :0.8138   Min.   :2.036   Min.   :2.055  
-##  1st Qu.:2.095   1st Qu.:2.237   1st Qu.:1.5406   1st Qu.:2.068   1st Qu.:2.222  
-##  Median :2.761   Median :3.009   Median :3.2492   Median :3.103   Median :2.776  
-##  Mean   :2.987   Mean   :2.975   Mean   :2.8539   Mean   :3.109   Mean   :3.192  
-##  3rd Qu.:4.089   3rd Qu.:3.881   3rd Qu.:3.9198   3rd Qu.:3.920   3rd Qu.:3.649  
-##  Max.   :4.705   Max.   :4.644   Max.   :4.4157   Max.   :4.389   Max.   :5.735  
-##       V16             V17             V18             V19             V20       
-##  Min.   :2.312   Min.   :1.382   Min.   :1.452   Min.   :1.591   Min.   :2.320  
-##  1st Qu.:2.659   1st Qu.:1.779   1st Qu.:1.996   1st Qu.:2.251   1st Qu.:2.539  
-##  Median :2.762   Median :2.456   Median :2.193   Median :2.532   Median :3.194  
-##  Mean   :3.137   Mean   :2.788   Mean   :2.907   Mean   :2.888   Mean   :3.240  
-##  3rd Qu.:3.888   3rd Qu.:3.590   3rd Qu.:4.202   3rd Qu.:3.142   3rd Qu.:3.916  
-##  Max.   :4.138   Max.   :5.028   Max.   :4.883   Max.   :5.247   Max.   :4.359</code></pre>
+<pre><code>##        V1              V2              V3              V4       
+##  Min.   :1.399   Min.   :1.105   Min.   :1.264   Min.   :1.784  
+##  1st Qu.:2.278   1st Qu.:2.493   1st Qu.:2.834   1st Qu.:2.321  
+##  Median :2.870   Median :2.900   Median :3.359   Median :3.126  
+##  Mean   :3.010   Mean   :2.979   Mean   :3.092   Mean   :3.040  
+##  3rd Qu.:3.624   3rd Qu.:3.845   3rd Qu.:3.846   3rd Qu.:3.931  
+##  Max.   :4.790   Max.   :4.464   Max.   :4.040   Max.   :4.049  
+##        V5              V6              V7              V8        
+##  Min.   :1.866   Min.   :1.397   Min.   :1.969   Min.   :0.4994  
+##  1st Qu.:2.145   1st Qu.:2.356   1st Qu.:2.283   1st Qu.:2.6208  
+##  Median :2.646   Median :2.816   Median :2.997   Median :3.0280  
+##  Mean   :3.006   Mean   :3.011   Mean   :3.065   Mean   :3.1547  
+##  3rd Qu.:3.962   3rd Qu.:4.086   3rd Qu.:3.839   3rd Qu.:3.4665  
+##  Max.   :4.722   Max.   :4.475   Max.   :4.348   Max.   :6.4399  
+##        V9             V10             V11             V12       
+##  Min.   :2.033   Min.   :1.468   Min.   :1.453   Min.   :1.264  
+##  1st Qu.:2.314   1st Qu.:2.465   1st Qu.:2.095   1st Qu.:2.237  
+##  Median :2.699   Median :3.319   Median :2.761   Median :3.009  
+##  Mean   :3.327   Mean   :3.431   Mean   :2.987   Mean   :2.975  
+##  3rd Qu.:3.715   3rd Qu.:4.181   3rd Qu.:4.089   3rd Qu.:3.881  
+##  Max.   :6.347   Max.   :6.351   Max.   :4.705   Max.   :4.644  
+##       V13              V14             V15             V16       
+##  Min.   :0.8138   Min.   :2.036   Min.   :2.055   Min.   :2.312  
+##  1st Qu.:1.5406   1st Qu.:2.068   1st Qu.:2.222   1st Qu.:2.659  
+##  Median :3.2492   Median :3.103   Median :2.776   Median :2.762  
+##  Mean   :2.8539   Mean   :3.109   Mean   :3.192   Mean   :3.137  
+##  3rd Qu.:3.9198   3rd Qu.:3.920   3rd Qu.:3.649   3rd Qu.:3.888  
+##  Max.   :4.4157   Max.   :4.389   Max.   :5.735   Max.   :4.138  
+##       V17             V18             V19             V20       
+##  Min.   :1.382   Min.   :1.452   Min.   :1.591   Min.   :2.320  
+##  1st Qu.:1.779   1st Qu.:1.996   1st Qu.:2.251   1st Qu.:2.539  
+##  Median :2.456   Median :2.193   Median :2.532   Median :3.194  
+##  Mean   :2.788   Mean   :2.907   Mean   :2.888   Mean   :3.240  
+##  3rd Qu.:3.590   3rd Qu.:4.202   3rd Qu.:3.142   3rd Qu.:3.916  
+##  Max.   :5.028   Max.   :4.883   Max.   :5.247   Max.   :4.359</code></pre>
 </div>
 </div>
             </section>
