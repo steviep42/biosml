@@ -721,12 +721,13 @@ It looks to me like the .6 or .7 split provides the least variation for the RMSE
 
 Could we improve the situation by using another modeling method ? This would be something that we could try with out much effort as long as we know the name of the method and how to call it. This can sometimes be a challenge as you have to find the documentation for it and figure out how to prepare the data before calling the command. In the above case we just used the formula interface which is favored in R but not all functions support that. Just to say that you will generally have to study each new function to see how it works. 
 
-Let's check out the [XGBoost](https://xgboost.readthedocs.io/en/latest/) function which is an algorithm that has enjoyed recent popularity and celebrity in the world of Data Science. XGBoost is an implementation of gradient boosted decision trees designed for speed and performance. XGBoost requires us to specify the input as matrices. We also have to give it the input in the form of X, Y arguments where the first is a matrix of all the predictor variables and the latter is the thing being predictd. In this case the MPG which is the first column
+Let's check out the [XGBoost](https://xgboost.readthedocs.io/en/latest/) function which is an algorithm that has enjoyed recent popularity and celebrity in the world of Data Science. XGBoost is an implementation of gradient boosted decision trees designed for speed and performance. XGBoost requires us to specify the input as matrices. We also have to give it the input in the form of X, Y arguments where the first is a matrix of all the predictor variables and the latter is the thing being predicted. In this case the MPG which is the first column
 
 
 ```{r xgbooster, message=FALSE}
 library(xgboost)
-xgb <- xgboost(data = as.matrix(train_df[,-1]),label=train_df[,1],nrounds=25,verbose=0)
+xgb <- xgboost(data = as.matrix(train_df[,-1]),
+               label=train_df[,1],nrounds=25,verbose=0)
 ```
 
 How does this perform in the prediction phase ? It turns out that it's pretty impressive when compared to the humble **lm** function. The question remains though which method is easier to defend if you were challenged ? The **lm** function implements a very well established and well known model whose parameters are well known. So even though XGBosst seems to be good at minimizing the RMSE it might be better to stick with an approach like **lm** even if it performs more poorly. 
@@ -751,7 +752,10 @@ split_train_test_xg <- function(prop=.70) {
     # Get the other 20% that we wish to test on
     test_df  <- shuff_mtcars[-train_index,]
     
-    xgb <- xgboost(data = as.matrix(train_df[,-1]),label=train_df[,1],nrounds=25,verbose=0)
+    xgb <- xgboost(data = as.matrix(train_df[,-1]),
+                   label=train_df[,1],
+                   nrounds=25,
+                   verbose=0)
 
     xgboost_preds <- predict(xgb,as.matrix(test_df[,-1])) 
     return(Metrics::rmse(test_df$mpg,xgboost_preds))
@@ -2116,7 +2120,7 @@ colAUC(unbalanced_preds[,2],test$diabetes,plotROC = TRUE)
 
 # Decision Trees
 
-Tree-based methods employ a segmentation strategy that partitions the feature / predictor space into a series of decsisions which has the added benefit of being easy to understand. Think of it as a flow chart for making decsions. The viewer of the chart is presented with a diagram that offers outcomes in response to decsions about important predictors found in the data set. 
+Tree-based methods employ a segmentation strategy that partitions the feature / predictor space into a series of decisions which has the added benefit of being easy to understand. Think of it as a flow chart for making decsions. The viewer of the chart is presented with a diagram that offers outcomes in response to (yes / no) questions (decisions) about important predictors found in the data set. 
 
 ## Advantages
 
@@ -2133,23 +2137,6 @@ Disadvantages include:
  - Trees can be overly complex 
  - Overfitting can be a problem 
  
-## Basic Example
-
-So you just learned that with a decision tree, you do not need to scale data which means you can get started quickly. We won't generate a train / test pair here since we are just trying to understand the structure. 
-
-We can easily plot the tree emanating from the **rpart** comman but it can also easily be **read** from the basic output. 
-
-
-```{r mtcrpart}
-tree_simple <- rpart(factor(am) ~ .,
-                     data=mtcars,
-                     method="class")
-tree_simple
-rpart.plot(tree_simple)
-```
-
-The associated plot represents this graphically while also showing us the distribution of, in this case, 0 outcomes vs 1 outcomes. In the parlance of decision trees we have the **root node** at the top followed by some leaf nodes which also happen to be terminal nodes. The nodes are connected by branches which indicate the flow of the decision which in this case is quite simple. It's also easy to show some one a tree and they don't need to know any of the underlying workings of the method which is why this is quite useful. 
-
 ## A Classification Example 
 
 Let's use the Pima Indians data set as it relates to predicting whether someone has diabetes. This data is provided by the **mlbench** package. The relevant variables are:
@@ -2172,11 +2159,11 @@ data(PimaIndiansDiabetes)
 pm <- PimaIndiansDiabetes
 
 diabetes_mod_1 <- rpart(diabetes ~ .,pm,
-                      method="class",cp=0.017)
+                        method="class",cp=0.017)
 rpart.plot(x = diabetes_mod_1)
 ```
  
-That's pretty understandable and you could show this to someone and they would probably get it without too much explanation as long as they had an awareness of the features in the data set. The root node at the top is called the "root node" and the lines are "branches" that go either to a "terminal node" or to "leaf nodes" which involve some comparison. It's a flow chart for decisions about whether someone has diabetes or not.
+That's pretty understandable and you could show this to someone and they would probably get it without too much explanation as long as they had an awareness of the features in the data set. The "node" at the top is called the "root node" and the lines are "branches" that go either to a "terminal node" or to "leaf nodes" which involve some comparison. It's a flow chart for decisions about whether someone has diabetes or not. Note that there is also information about what percentages of "pos" or "neg" there are in each branch. 
 
 ```{r diabtreepred}
 diabetes_preds <- predict(diabetes_mod_1,type="class")
@@ -2188,15 +2175,15 @@ caret::confusionMatrix(diabetes_preds,
                        positive="pos")  
 ```
 
-Perhaps you noticed that in the example I included an argument called **cp** which corresponds to a "complexity parameter" which influences how the tree splits at various nodes. 
-
+Perhaps you noticed that in the example I included an argument called **cp** which 
+corresponds to a "complexity parameter" which influences how the tree splits at various nodes. 
 > The main role of this parameter is to save computing time by pruning off splits that are obviously not worthwhile. Essentially,the user informs the program that any split which does not improve the fit by cp will likely be pruned off by cross-validation, and that hence the program need not pursue it.
 
-We'll explore this in more detail momentarily.
+We'll explore this in more detail momentarily. This is what is known as a "hyperparameter". 
 
 ## Digging Deeper
 
-It's common in these scenarios to create what is known as a test / training split so that we can train our model on a test set that we can then use on a test or hold out data set to see how well the model performs. There is much more to say about this but we'll keep it simple here. We can create a training set that comprises %80 of the data with a holdout set of 20%. This easy to do. Let's create a Train / Test Split
+Let's create a training set that comprises 80% of the data with a holdout set of 20%. 
 
 ```{r rptree2}
 set.seed(123)
@@ -2217,12 +2204,14 @@ pm_test <- pm[-train_idx, ]
 ```{r rpartbuild}
 # Train the model (to predict 'default')
 pm_class_tree <- rpart(formula = diabetes ~ ., 
-                      data = pm_train, 
-                      method = "class")
+                       data = pm_train, 
+                       method = "class")
 
 # Look at the model output                      
 pm_class_tree
+rpart.plot(pm_class_tree)
 ```
+
 
 ### Evaluating performance
 
@@ -2378,6 +2367,7 @@ Metrics::rmse(actual = pm_test$mass,
 
 Is this Good ? Bad ? Okay ? We don't know. We'll need to do some things like Cross Validation. And then there are additional arguments to the **rpart** function that we could use to influence how the model does its job. These are referred to as "hyperparamters".
 
+
 ## Parameters vs Hyperparameters
 
 **Model parameters** are things that are generated as part of the modeling process. These might be things like slope and intercept from a linear model or, in the case of an rpart model, the number of splits in the final tree or the total number of leaves. 
@@ -2423,7 +2413,6 @@ mass_pima_mod_opt <- prune(mass_pima_mod,
 # Plot the optimized model
 rpart.plot(mass_pima_mod_opt, yesno = 2, type = 0, extra = 0)
 ```
-
 
 Does this optimized model perform any better ? Not really, because the optimal CP value turned out to be 0.01 which is actually the same as the default. 
 
@@ -2523,11 +2512,9 @@ The bootstrap method of sampling will resample the training data some number of 
  ![](./pics/bagged.png)
  
  
-So you get a lot of different trees whose performance can be averaged over boostrapped data sets which might include observations several times or not at all. This should result in less variance. 
+So you get a lot of different trees whose performance can be averaged over boostrapped data sets which might include observations several times or not at all. This should result in less variance. A reason NOT to use bagged trees involves the idea that a collection of trees is not nearly as easy to look at as a single decision tree. We can actually write our own version of bagged trees using a for loop. Sort of like what we did above. First, let's get our test / train pair for the Pima Indians data. 
 
-A reason NOT to use bagged trees involves the idea that a collection of trees is not nearly as easy to look at as a single decision tree. We can actually write our own version of bagged trees using a for loop. Sort of like what we did above. First, let's get our test / train pair for the Pima Indians data. 
-
-```{r}
+```{r homegrownbagg}
 set.seed(123)
 percent <- .80
 train_idx <- sample(1:nrow(pm),
@@ -2542,10 +2529,10 @@ pm_train <- pm[train_idx, ]
 pm_test <- pm[-train_idx, ]  
 ```
 
-Next, well create 50 different trees based on 50 boostrapped samples of the training data. We will sample WITH replacement. This means that some of the rows from the data will be repeated and some will be left out all together. We can figure out what rows were not included and use them to create a test set referred to as "out of bag" samples. 
+Next, well create 50 different trees based on 50 bootstrapped samples of the training data. We will sample WITH replacement. This means that some of the rows from the data will be repeated and some will be left out all together. We can figure out what rows were not included and use them to create a test set referred to as "out of bag" samples. 
 
 
-```{r}
+```{r homegron2}
 training_boot_idx <- sample(1:nrow(pm),replace=TRUE)
 test_boot_idx <- !(1:32 %in% training_boot_idx)
     
@@ -2553,7 +2540,7 @@ test_boot_idx <- !(1:32 %in% training_boot_idx)
 
 Let's start looping
 
-```{r}
+```{r homegrow3}
 library(Metrics)
 
 modl   <- list()
@@ -2621,14 +2608,14 @@ aucval
 
 ```
 
-This is better than the 0.7804305 we got when using a single Decision tree.
+This is better than the 0.7804305 we got when using a single Decision tree. Single decision trees are sometimes called "weak learners" because
 
 
 ## Random Forests
 
-In Random Forest, only a subset of features are selected at random at each split in a decision tree. In bagging, all features are used. You could think of random forests as being an extension of Bagged Trees. Typically they are also an improvement. Even though the method represents a collection of trees we still get the added advantage of not having to pre process the data. 
+In bagging, all features are used when considering if and when to split. However, with the Random Forest approach, a subset of features are selected at random at each split in a decision tree. You could think of random forests as being an extension of Bagged Trees. Typically they are also an improvement. As with other tree methods, we don't have to worry a lot about preprocessing the data although we could if we wanted to. Basically, one of the main advantages of tree methods is that it tolerates a combination of data types on different scales which makes it good as a "go to" method for beginners. 
 
-This doesn't mean that we shouldn't, for example, try to see if the data cannot be reduced in terms of dimenisionality. Nor does it mean that if we do scale the data that we can't use it with Tree methods. Basically, one of the main advantages of the method is that it tolerates a combination of data types on different scales which makes it good as a "go to" method.
+Random forests will sample some number of features when considering a split. This can be influenced by a hyperparameter called **mtry** which is limited to the number of features in the data set. 
 
 ```{r loadrandomf}
 library(randomForest)
@@ -2666,6 +2653,126 @@ aucval
 ```
 
 A slight improvement over the bagged trees.
+
+## Boosted Trees
+
+We'll finish off this section with a discussion on boosted trees which represents an extention to random forests. Here is how we have been progressing thus far:
+
+  1) Single Decision Tree
+  2) Bagged Decision Trees (Aggregated Trees using all features)
+  3) Random Forests (Many Trees using a number of of sampled features)
+
+Methods 2 and 3 will use bootstrap sampling on the input data which means there will be sampling with replacement to generate a training set. After a tree is built then it will be applied to the OOB (Out Of Band) data left over from the bootstrap sample. This will then be used in the computation of an average. 
+
+With boosting, we don't try to keep up with the idea of reducing the variance emerging from a number of individual trees (aka "learners"). Nor do we consider each tree as being independent and later try to integrate it into an average tree. With boosting we create a sequence of trees such that any subsequent tree represents an improvement on the previous tree(s) thus there is some dependency in the interest of improvement. 
+
+The process attempts to learn from previous "mistakes" in the creation of down stream trees.  Boosting looks at the residuals from a tree and pays attention to any problematic observations when creating a subsequent tree. Here is an example. We'll need to do a bit more prep on the data though prior to use:
+
+```{r preppm}
+prep_pm_train <- pm_train
+prep_pm_train$diabetes <- ifelse(pm_train$diabetes=="pos",1,0)
+```
+
+We had to turn the "pos" / "neg" values into, respectively, 1 and 0. The **gbm** function requires this for classification problems. 
+
+```{r gbmload}
+library(gbm)
+pm_boost <- gbm(diabetes ~ . ,
+                distribution="bernoulli",
+                data = prep_pm_train,n.trees=1000)
+summary(pm_boost)
+```
+
+
+```{r predboost}
+boost_pred <- predict(pm_boost,
+                      newdata = pm_test, 
+                      type="response",
+                      n.trees=50)
+
+converted <- ifelse(pm_test$diabetes == "pos",1,0)
+
+aucval    <- Metrics::auc(actual = converted,
+                    predicted = boost_pred)
+
+aucval
+```
+
+Of course, we can use the **caret** package to knit these altogether into one framework that dispenses wit the need to understand the details of each method although it is important for you to see examples of standalone functions since 1) it can help your understanding of the method and 2) in languages such as Python there is no equivalent to **caret**. 
+
+## Using caret
+
+We looked at individual methods including **rpart, bagging, random forests**, and **boosted trees**. Each of these had its own approach and hyperparameters. With caret we can do basically plugin methods.
+
+
+```{r caretrees}
+control <- trainControl(method="cv",
+                        number=10,
+                        summaryFunction = twoClassSummary,
+                        classProbs = TRUE,
+                        savePredictions = TRUE,
+                        verboseIter = FALSE)
+
+rpart_caret <- train(diabetes ~ .,
+                     data = pm_test,
+                     method = "rpart",
+                     metric = "ROC",
+                     trControl = control)
+rpart_caret
+```
+
+Next, we try out the bagging approach
+
+```{r caretbag}
+bagging_caret <-    train(diabetes ~ .,
+                     data = pm_test,
+                     method = "treebag",
+                     metric = "ROC",
+                     trControl = control)
+bagging_caret
+```
+
+
+
+Next we try out the random forest function
+
+```{r}
+rf_caret <-    train(diabetes ~ .,
+                     data = pm_test,
+                     method = "rf",
+                     metric = "ROC",
+                     trControl = control)
+rf_caret
+```
+
+And finally, the boosted approach:
+
+```{r}
+boosted_caret <-    train(diabetes ~ .,
+                         data = pm_test,
+                         method = "gbm",
+                         metric = "ROC",
+                         verbose = FALSE,
+                         tuneLength = 10,
+                         trControl = control)
+```
+
+Let's look at how they all performed:
+
+```{r}
+cat("Results for Rpart \n")
+rpart_caret$results[1,]
+
+cat("Results for Bagging \n")
+bagging_caret$results[1,]
+
+cat("Results for Random Forest \n")
+rf_caret$results[1,]
+
+cat("Results for Boosted Trees \n")
+boosted_caret$results[1,]
+
+```
 
 
 # Using Methods Other Than lm 
