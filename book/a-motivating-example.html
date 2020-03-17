@@ -358,7 +358,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" data-line-number="1"><span class="kw">pairs</span>(mtcars, <span class="dt">main=</span><span class="st">&quot;Pairs Plot for All Variables&quot;</span>)</a></code></pre></div>
 <p><img src="biosml_files/figure-html/pairsplot-1.png" width="672" /></p>
 <p>This plot is rather busy but instructive nonetheless as it confirms the idea that some variables, such as am, vs, cyl, gear are more ordinal or categorical than truly numeric in nature. We could narrow down our plot by looking at just the continuous quantitites. This is also interesting in that we see a number of apparent linear or polynomial style relationships that might benefit from some form on linear modeling. If we are already thinking about how to deal with the <strong>mpg</strong> variable we can see that it is correlated with a number of variables.</p>
-<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" data-line-number="1"><span class="kw">pairs</span>(mtcars[,<span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">3</span><span class="op">:</span><span class="dv">7</span>)],<span class="dt">main=</span><span class="st">&quot;Pairs plot for numeric features&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" data-line-number="1"><span class="kw">pairs</span>(mtcars[,<span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">3</span><span class="op">:</span><span class="dv">7</span>)],</a>
+<a class="sourceLine" id="cb18-2" data-line-number="2">      <span class="dt">main=</span><span class="st">&quot;Pairs plot for numeric features&quot;</span>)</a></code></pre></div>
 <p><img src="biosml_files/figure-html/pairsnumeric-1.png" width="672" /></p>
 <p>We might also look at how MPG values are distributed across cylinder groups (4,6, or 8). The boxplot is an ideal choice for summarizing continuous data across groups. We check to see if there appear to be significant differences between the median MPG.</p>
 </div>
@@ -369,17 +370,17 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <a class="sourceLine" id="cb19-3" data-line-number="3"><span class="st">  </span><span class="kw">geom_boxplot</span>() <span class="op">+</span><span class="st"> </span><span class="kw">theme_bw</span>() <span class="op">+</span><span class="st"> </span><span class="kw">ggtitle</span>(<span class="st">&quot;MPG Across Cylinder Groups&quot;</span>)</a></code></pre></div>
 <p><img src="biosml_files/figure-html/boxmpg-1.png" width="672" /></p>
 <p>The same could be done for tranmission types where we can definitely see a difference emerging between MPG for Automatic (0) vs Manual (1) Transmissions.</p>
-<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb20-1" data-line-number="1">mtcars <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mutate</span>(<span class="dt">cyl=</span><span class="kw">factor</span>(cyl),<span class="dt">am=</span><span class="kw">factor</span>(am,<span class="dt">labels=</span><span class="kw">c</span>(<span class="st">&quot;Manual&quot;</span>,<span class="st">&quot;Auto&quot;</span>))) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb20-1" data-line-number="1">mtcars <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mutate</span>(<span class="dt">cyl=</span><span class="kw">factor</span>(cyl),<span class="dt">am=</span><span class="kw">factor</span>(am,<span class="dt">labels=</span><span class="kw">c</span>(<span class="st">&quot;Auto&quot;</span>,<span class="st">&quot;Manual&quot;</span>))) <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb20-2" data-line-number="2"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x=</span>am,<span class="dt">y=</span>mpg)) <span class="op">+</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb20-3" data-line-number="3"><span class="st">  </span><span class="kw">geom_boxplot</span>() <span class="op">+</span><span class="st"> </span><span class="kw">theme_bw</span>() <span class="op">+</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb20-4" data-line-number="4"><span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">&quot;MPG Across Transmission Types&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">xlab</span>(<span class="st">&quot;Transmission Type&quot;</span>)</a></code></pre></div>
 <p><img src="biosml_files/figure-html/amplot-1.png" width="672" /></p>
 <p>If we wanted to look at above relationships simulatenously we could use something like ggplot to help us.</p>
-<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb21-1" data-line-number="1">mtcars <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mutate</span>(<span class="dt">cyl=</span><span class="kw">factor</span>(cyl),<span class="dt">am=</span><span class="kw">factor</span>(am,<span class="dt">labels=</span><span class="kw">c</span>(<span class="st">&quot;Manual&quot;</span>,<span class="st">&quot;Auto&quot;</span>))) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb21-1" data-line-number="1">mtcars <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mutate</span>(<span class="dt">cyl=</span><span class="kw">factor</span>(cyl),<span class="dt">am=</span><span class="kw">factor</span>(am,<span class="dt">labels=</span><span class="kw">c</span>(<span class="st">&quot;Auto&quot;</span>,<span class="st">&quot;Manual&quot;</span>))) <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb21-2" data-line-number="2"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x=</span>am,<span class="dt">y=</span>mpg)) <span class="op">+</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb21-3" data-line-number="3"><span class="st">  </span><span class="kw">geom_boxplot</span>() <span class="op">+</span><span class="st"> </span><span class="kw">facet_wrap</span>(.<span class="op">~</span>cyl) <span class="op">+</span><span class="st"> </span><span class="kw">theme_bw</span>() <span class="op">+</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb21-4" data-line-number="4"><span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">&quot;MPG Across Transmission Types And Cylinder Group&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">xlab</span>(<span class="st">&quot;Transmission Type&quot;</span>) </a></code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-30-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
 </div>
 <div id="histograms" class="section level3">
 <h3><span class="header-section-number">3.2.3</span> Histograms</h3>
@@ -412,7 +413,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## 5 Manual    6         3
 ## 6 Manual    8         2</code></pre>
 <p>This is why we might choose a bar plot since now we can easily see that Manual Transmissions are under represented in the 8 cylinder class.</p>
-<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb26-1" data-line-number="1">mtcars <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mutate</span>(<span class="dt">am=</span><span class="kw">factor</span>(am,<span class="dt">labels=</span><span class="kw">c</span>(<span class="st">&quot;Automatic&quot;</span>,<span class="st">&quot;Mabual&quot;</span>)),</a>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb26-1" data-line-number="1">mtcars <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mutate</span>(<span class="dt">am=</span><span class="kw">factor</span>(am,<span class="dt">labels=</span><span class="kw">c</span>(<span class="st">&quot;Automatic&quot;</span>,<span class="st">&quot;Manual&quot;</span>)),</a>
 <a class="sourceLine" id="cb26-2" data-line-number="2">                  <span class="dt">cyl=</span><span class="kw">factor</span>(cyl)) <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb26-3" data-line-number="3"><span class="st">                  </span><span class="kw">count</span>(am,cyl) <span class="op">%&gt;%</span><span class="st">  </span></a>
 <a class="sourceLine" id="cb26-4" data-line-number="4"><span class="st">                    </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x=</span>cyl,<span class="dt">y=</span>n)) <span class="op">+</span><span class="st"> </span></a>
@@ -519,8 +520,8 @@ RMSE = \sqrt\frac{\sum_i^n(P_i-O_i)^2}{n}
 <div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb40-1" data-line-number="1"><span class="kw">set.seed</span>(<span class="dv">123</span>)</a>
 <a class="sourceLine" id="cb40-2" data-line-number="2"></a>
 <a class="sourceLine" id="cb40-3" data-line-number="3">(train_index &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(mtcars),<span class="kw">nrow</span>(mtcars)<span class="op">*</span>.<span class="dv">80</span>))</a></code></pre></div>
-<pre><code>##  [1] 31 15 19 14  3 10 18 22 11  5 20 29 23 30  9 28  8 27  7
-## [20] 32 26 17  4  1 24</code></pre>
+<pre><code>##  [1] 31 15 19 14  3 10 18 22 11  5 20 29 23 30  9 28  8 27  7 32
+## [21] 26 17  4  1 24</code></pre>
 <div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb42-1" data-line-number="1"><span class="co"># Get 80% of the records from the data frame</span></a>
 <a class="sourceLine" id="cb42-2" data-line-number="2">train_df &lt;-<span class="st"> </span>mtcars[train_index,]</a>
 <a class="sourceLine" id="cb42-3" data-line-number="3"></a>
@@ -553,8 +554,8 @@ RMSE = \sqrt\frac{\sum_i^n(P_i-O_i)^2}{n}
 <a class="sourceLine" id="cb48-3" data-line-number="3">shuff_mtcars &lt;-<span class="st"> </span>mtcars[shuffled,]</a>
 <a class="sourceLine" id="cb48-4" data-line-number="4"></a>
 <a class="sourceLine" id="cb48-5" data-line-number="5">(train_index &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(shuff_mtcars),<span class="kw">nrow</span>(shuff_mtcars)<span class="op">*</span>.<span class="dv">70</span>))</a></code></pre></div>
-<pre><code>##  [1]  9 32 10 23 27 21  7 28  6  2  5  8 12 13 18  1 31 11 16
-## [20] 24 22 14</code></pre>
+<pre><code>##  [1]  9 32 10 23 27 21  7 28  6  2  5  8 12 13 18  1 31 11 16 24
+## [21] 22 14</code></pre>
 <div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb50-1" data-line-number="1"><span class="co"># Get 80% of the records from the data frame</span></a>
 <a class="sourceLine" id="cb50-2" data-line-number="2">train_df &lt;-<span class="st"> </span>shuff_mtcars[train_index,]</a>
 <a class="sourceLine" id="cb50-3" data-line-number="3"></a>
@@ -575,24 +576,25 @@ RMSE = \sqrt\frac{\sum_i^n(P_i-O_i)^2}{n}
 <a class="sourceLine" id="cb53-10" data-line-number="10"></a>
 <a class="sourceLine" id="cb53-11" data-line-number="11">(test_rmse &lt;-<span class="st"> </span>Metrics<span class="op">::</span><span class="kw">rmse</span>(test_df<span class="op">$</span>mpg,test_pred))</a></code></pre></div>
 <pre><code>## [1] 2.668003</code></pre>
-<div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb55-1" data-line-number="1">split_train_test &lt;-<span class="st"> </span><span class="cf">function</span>(<span class="dt">prop=</span>.<span class="dv">70</span>) {</a>
-<a class="sourceLine" id="cb55-2" data-line-number="2">  </a>
-<a class="sourceLine" id="cb55-3" data-line-number="3">    shuffled &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(mtcars))</a>
-<a class="sourceLine" id="cb55-4" data-line-number="4">    shuff_mtcars &lt;-<span class="st"> </span>mtcars[shuffled,]</a>
-<a class="sourceLine" id="cb55-5" data-line-number="5">    </a>
-<a class="sourceLine" id="cb55-6" data-line-number="6">    (train_index &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(shuff_mtcars),<span class="kw">nrow</span>(shuff_mtcars)<span class="op">*</span>prop))</a>
-<a class="sourceLine" id="cb55-7" data-line-number="7">    </a>
-<a class="sourceLine" id="cb55-8" data-line-number="8">    <span class="co"># Get prop of the records from the data frame</span></a>
-<a class="sourceLine" id="cb55-9" data-line-number="9">    train_df &lt;-<span class="st"> </span>shuff_mtcars[train_index,]</a>
-<a class="sourceLine" id="cb55-10" data-line-number="10">    </a>
-<a class="sourceLine" id="cb55-11" data-line-number="11">    <span class="co"># Get the other 20% that we wish to test on</span></a>
-<a class="sourceLine" id="cb55-12" data-line-number="12">    test_df  &lt;-<span class="st"> </span>shuff_mtcars[<span class="op">-</span>train_index,]</a>
-<a class="sourceLine" id="cb55-13" data-line-number="13">    </a>
-<a class="sourceLine" id="cb55-14" data-line-number="14">    train_model_lm &lt;-<span class="st"> </span><span class="kw">lm</span>(myform, <span class="dt">data=</span>train_df)</a>
-<a class="sourceLine" id="cb55-15" data-line-number="15"></a>
-<a class="sourceLine" id="cb55-16" data-line-number="16">    test_pred &lt;-<span class="st"> </span><span class="kw">predict</span>(train_model_lm, <span class="dt">newdata=</span>test_df,<span class="dt">type=</span><span class="st">&quot;response&quot;</span>)</a>
-<a class="sourceLine" id="cb55-17" data-line-number="17">    <span class="kw">return</span>(Metrics<span class="op">::</span><span class="kw">rmse</span>(test_df<span class="op">$</span>mpg,test_pred))</a>
-<a class="sourceLine" id="cb55-18" data-line-number="18">}</a></code></pre></div>
+<div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb55-1" data-line-number="1"><span class="kw">set.seed</span>(<span class="dv">123</span>)</a>
+<a class="sourceLine" id="cb55-2" data-line-number="2">split_train_test &lt;-<span class="st"> </span><span class="cf">function</span>(<span class="dt">prop=</span>.<span class="dv">70</span>) {</a>
+<a class="sourceLine" id="cb55-3" data-line-number="3">  </a>
+<a class="sourceLine" id="cb55-4" data-line-number="4">    shuffled &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(mtcars))</a>
+<a class="sourceLine" id="cb55-5" data-line-number="5">    shuff_mtcars &lt;-<span class="st"> </span>mtcars[shuffled,]</a>
+<a class="sourceLine" id="cb55-6" data-line-number="6">    </a>
+<a class="sourceLine" id="cb55-7" data-line-number="7">    (train_index &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(shuff_mtcars),<span class="kw">nrow</span>(shuff_mtcars)<span class="op">*</span>prop))</a>
+<a class="sourceLine" id="cb55-8" data-line-number="8">    </a>
+<a class="sourceLine" id="cb55-9" data-line-number="9">    <span class="co"># Get prop of the records from the data frame</span></a>
+<a class="sourceLine" id="cb55-10" data-line-number="10">    train_df &lt;-<span class="st"> </span>shuff_mtcars[train_index,]</a>
+<a class="sourceLine" id="cb55-11" data-line-number="11">    </a>
+<a class="sourceLine" id="cb55-12" data-line-number="12">    <span class="co"># Get the other 20% that we wish to test on</span></a>
+<a class="sourceLine" id="cb55-13" data-line-number="13">    test_df  &lt;-<span class="st"> </span>shuff_mtcars[<span class="op">-</span>train_index,]</a>
+<a class="sourceLine" id="cb55-14" data-line-number="14">    </a>
+<a class="sourceLine" id="cb55-15" data-line-number="15">    train_model_lm &lt;-<span class="st"> </span><span class="kw">lm</span>(myform, <span class="dt">data=</span>train_df)</a>
+<a class="sourceLine" id="cb55-16" data-line-number="16"></a>
+<a class="sourceLine" id="cb55-17" data-line-number="17">    test_pred &lt;-<span class="st"> </span><span class="kw">predict</span>(train_model_lm, <span class="dt">newdata=</span>test_df,<span class="dt">type=</span><span class="st">&quot;response&quot;</span>)</a>
+<a class="sourceLine" id="cb55-18" data-line-number="18">    <span class="kw">return</span>(Metrics<span class="op">::</span><span class="kw">rmse</span>(test_df<span class="op">$</span>mpg,test_pred))</a>
+<a class="sourceLine" id="cb55-19" data-line-number="19">}</a></code></pre></div>
 <p>The first thing to notice is that mutiple calls to the function can yield different RMSE values even without changing the proporiton of the train / test sets. Let’s call this function 100 times with the 70/30 split and check the resulting boxplot to see how the RMSE values vary</p>
 <div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb56-1" data-line-number="1"><span class="kw">replicate</span>(<span class="dv">100</span>,<span class="kw">split_train_test</span>()) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">boxplot</span>()</a></code></pre></div>
 <p><img src="biosml_files/figure-html/rmsebox-1.png" width="672" /></p>
@@ -614,7 +616,8 @@ RMSE = \sqrt\frac{\sum_i^n(P_i-O_i)^2}{n}
 <div id="other-methods" class="section level2">
 <h2><span class="header-section-number">3.7</span> Other Methods ?</h2>
 <p>Could we improve the situation by using another modeling method ? This would be something that we could try with out much effort as long as we know the name of the method and how to call it. This can sometimes be a challenge as you have to find the documentation for it and figure out how to prepare the data before calling the command. In the above case we just used the formula interface which is favored in R but not all functions support that. Just to say that you will generally have to study each new function to see how it works.</p>
-<p>Let’s check out the <a href="https://xgboost.readthedocs.io/en/latest/">XGBoost</a> function which is an algorithm that has enjoyed recent popularity and celebrity in the world of Data Science. XGBoost is an implementation of gradient boosted decision trees designed for speed and performance. XGBoost requires us to specify the input as matrices. We also have to give it the input in the form of X, Y arguments where the first is a matrix of all the predictor variables and the latter is the thing being predicted. In this case the MPG which is the first column</p>
+<p>Let’s check out the <a href="https://xgboost.readthedocs.io/en/latest/">XGBoost</a> function which is an algorithm that has enjoyed recent popularity and celebrity in the world of Data Science. XGBoost is an implementation of gradient boosted decision trees designed for speed and performance.</p>
+<p>XGBoost requires us to specify the input as matrices. We also have to give it the input in the form of X, Y arguments where the first is a matrix of all the predictor variables and the latter is the thing being predicted. In this case the MPG which is the first column</p>
 <div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb60-1" data-line-number="1"><span class="kw">library</span>(xgboost)</a>
 <a class="sourceLine" id="cb60-2" data-line-number="2">xgb &lt;-<span class="st"> </span><span class="kw">xgboost</span>(<span class="dt">data =</span> <span class="kw">as.matrix</span>(train_df[,<span class="op">-</span><span class="dv">1</span>]),</a>
 <a class="sourceLine" id="cb60-3" data-line-number="3">               <span class="dt">label=</span>train_df[,<span class="dv">1</span>],<span class="dt">nrounds=</span><span class="dv">25</span>,<span class="dt">verbose=</span><span class="dv">0</span>)</a></code></pre></div>
@@ -643,12 +646,13 @@ RMSE = \sqrt\frac{\sum_i^n(P_i-O_i)^2}{n}
 <a class="sourceLine" id="cb63-19" data-line-number="19">    xgboost_preds &lt;-<span class="st"> </span><span class="kw">predict</span>(xgb,<span class="kw">as.matrix</span>(test_df[,<span class="op">-</span><span class="dv">1</span>])) </a>
 <a class="sourceLine" id="cb63-20" data-line-number="20">    <span class="kw">return</span>(Metrics<span class="op">::</span><span class="kw">rmse</span>(test_df<span class="op">$</span>mpg,xgboost_preds))</a>
 <a class="sourceLine" id="cb63-21" data-line-number="21">}</a></code></pre></div>
-<div class="sourceCode" id="cb64"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb64-1" data-line-number="1">myseq &lt;-<span class="st"> </span><span class="kw">seq</span>(.<span class="dv">6</span>,.<span class="dv">8</span>,.<span class="dv">05</span>)</a>
-<a class="sourceLine" id="cb64-2" data-line-number="2">comp_mat &lt;-<span class="st"> </span><span class="kw">t</span>(<span class="kw">replicate</span>(<span class="dv">100</span>,<span class="kw">sapply</span>(myseq,<span class="cf">function</span>(x) <span class="kw">split_train_test_xg</span>(x))))</a>
-<a class="sourceLine" id="cb64-3" data-line-number="3"><span class="kw">colnames</span>(comp_mat) &lt;-<span class="st"> </span><span class="kw">as.character</span>(myseq)</a>
-<a class="sourceLine" id="cb64-4" data-line-number="4"><span class="kw">boxplot</span>(comp_mat,<span class="dt">ylab=</span><span class="st">&quot;RMSE&quot;</span>,<span class="dt">xlab=</span><span class="st">&quot;Train / Test Proportion&quot;</span>,</a>
-<a class="sourceLine" id="cb64-5" data-line-number="5">        <span class="dt">main=</span><span class="st">&quot;XGBoost - Comparison of Different Train / Test Proprtions&quot;</span>)</a></code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-31-1.png" width="672" /></p>
+<div class="sourceCode" id="cb64"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb64-1" data-line-number="1"><span class="kw">set.seed</span>(<span class="dv">123</span>)</a>
+<a class="sourceLine" id="cb64-2" data-line-number="2">myseq &lt;-<span class="st"> </span><span class="kw">seq</span>(.<span class="dv">6</span>,.<span class="dv">8</span>,.<span class="dv">05</span>)</a>
+<a class="sourceLine" id="cb64-3" data-line-number="3">comp_mat &lt;-<span class="st"> </span><span class="kw">t</span>(<span class="kw">replicate</span>(<span class="dv">100</span>,<span class="kw">sapply</span>(myseq,<span class="cf">function</span>(x) <span class="kw">split_train_test_xg</span>(x))))</a>
+<a class="sourceLine" id="cb64-4" data-line-number="4"><span class="kw">colnames</span>(comp_mat) &lt;-<span class="st"> </span><span class="kw">as.character</span>(myseq)</a>
+<a class="sourceLine" id="cb64-5" data-line-number="5"><span class="kw">boxplot</span>(comp_mat,<span class="dt">ylab=</span><span class="st">&quot;RMSE&quot;</span>,<span class="dt">xlab=</span><span class="st">&quot;Train / Test Proportion&quot;</span>,</a>
+<a class="sourceLine" id="cb64-6" data-line-number="6">        <span class="dt">main=</span><span class="st">&quot;XGBoost - Comparison of Different Train / Test Proprtions&quot;</span>)</a></code></pre></div>
+<p><img src="biosml_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
 </div>
 <div id="summary" class="section level2">
 <h2><span class="header-section-number">3.8</span> Summary</h2>

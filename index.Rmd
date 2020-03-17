@@ -416,7 +416,8 @@ pairs(mtcars, main="Pairs Plot for All Variables")
 This plot is rather busy but instructive nonetheless as it confirms the idea that some variables, such as am, vs, cyl, gear are more ordinal or categorical than truly numeric in nature. We could narrow down our plot by looking at just the continuous quantitites. This is also interesting in that we see a number of apparent linear or polynomial style relationships that might benefit from some form on linear modeling. If we are already thinking about how to deal with the **mpg** variable we can see that it is correlated with a number of variables. 
 
 ```{r pairsnumeric}
-pairs(mtcars[,c(1,3:7)],main="Pairs plot for numeric features")
+pairs(mtcars[,c(1,3:7)],
+      main="Pairs plot for numeric features")
 ```
 
 We might also look at how MPG values are distributed across cylinder groups (4,6, or 8). The boxplot is an ideal choice for summarizing continuous data across groups. We check to see if there appear to be significant differences between the median MPG. 
@@ -432,7 +433,7 @@ mtcars %>% mutate(cyl=factor(cyl)) %>%
 The same could be done for tranmission types where we can definitely see a difference emerging between MPG for Automatic (0) vs Manual (1) Transmissions. 
 
 ```{r amplot}
-mtcars %>% mutate(cyl=factor(cyl),am=factor(am,labels=c("Manual","Auto"))) %>% 
+mtcars %>% mutate(cyl=factor(cyl),am=factor(am,labels=c("Auto","Manual"))) %>% 
   ggplot(aes(x=am,y=mpg)) + 
   geom_boxplot() + theme_bw() + 
   ggtitle("MPG Across Transmission Types") + xlab("Transmission Type")
@@ -440,7 +441,7 @@ mtcars %>% mutate(cyl=factor(cyl),am=factor(am,labels=c("Manual","Auto"))) %>%
 
 If we wanted to look at above relationships simulatenously we could use something like ggplot to help us. 
 ```{r}
-mtcars %>% mutate(cyl=factor(cyl),am=factor(am,labels=c("Manual","Auto"))) %>% 
+mtcars %>% mutate(cyl=factor(cyl),am=factor(am,labels=c("Auto","Manual"))) %>% 
   ggplot(aes(x=am,y=mpg)) + 
   geom_boxplot() + facet_wrap(.~cyl) + theme_bw() + 
   ggtitle("MPG Across Transmission Types And Cylinder Group") + xlab("Transmission Type") 
@@ -480,7 +481,7 @@ mtcars %>%
 This is why we might choose a bar plot since now we can easily see that Manual Transmissions are under represented in the 8 cylinder class. 
 
 ```{r tabplotbar}
-mtcars %>% mutate(am=factor(am,labels=c("Automatic","Mabual")),
+mtcars %>% mutate(am=factor(am,labels=c("Automatic","Manual")),
                   cyl=factor(cyl)) %>% 
                   count(am,cyl) %>%  
                     ggplot(aes(x=cyl,y=n)) + 
@@ -669,6 +670,7 @@ test_pred  <- predict(
 ```
 
 ```{r splittfunc}
+set.seed(123)
 split_train_test <- function(prop=.70) {
   
     shuffled <- sample(1:nrow(mtcars))
@@ -721,7 +723,9 @@ It looks to me like the .6 or .7 split provides the least variation for the RMSE
 
 Could we improve the situation by using another modeling method ? This would be something that we could try with out much effort as long as we know the name of the method and how to call it. This can sometimes be a challenge as you have to find the documentation for it and figure out how to prepare the data before calling the command. In the above case we just used the formula interface which is favored in R but not all functions support that. Just to say that you will generally have to study each new function to see how it works. 
 
-Let's check out the [XGBoost](https://xgboost.readthedocs.io/en/latest/) function which is an algorithm that has enjoyed recent popularity and celebrity in the world of Data Science. XGBoost is an implementation of gradient boosted decision trees designed for speed and performance. XGBoost requires us to specify the input as matrices. We also have to give it the input in the form of X, Y arguments where the first is a matrix of all the predictor variables and the latter is the thing being predicted. In this case the MPG which is the first column
+Let's check out the [XGBoost](https://xgboost.readthedocs.io/en/latest/) function which is an algorithm that has enjoyed recent popularity and celebrity in the world of Data Science. XGBoost is an implementation of gradient boosted decision trees designed for speed and performance. 
+
+XGBoost requires us to specify the input as matrices. We also have to give it the input in the form of X, Y arguments where the first is a matrix of all the predictor variables and the latter is the thing being predicted. In this case the MPG which is the first column
 
 
 ```{r xgbooster, message=FALSE}
@@ -764,6 +768,7 @@ split_train_test_xg <- function(prop=.70) {
 
 
 ```{r}
+set.seed(123)
 myseq <- seq(.6,.8,.05)
 comp_mat <- t(replicate(100,sapply(myseq,function(x) split_train_test_xg(x))))
 colnames(comp_mat) <- as.character(myseq)
@@ -785,7 +790,7 @@ https://www.stat.berkeley.edu/~aldous/157/Papers/shmueli.pdf
 
 > Predictive power is assessed using metrics computedfrom  a  holdout  set  or  using  cross-validation  (Stone,1974; Geisser,1975)
 
-> Testing the procedure on the data that gaveit birth is almost certain to overestimate performance”(Mosteller  and  Tukey,1977).
+> Testing the procedure on the data that gave it birth is almost certain to overestimate performance” (Mosteller  and  Tukey,1977).
 
 Let's extend this idea of training and test splits. Remember, our goal is to generate a robust model that better estimates out-of-sample error. We can do this by resampling our data set in a way that allows us to learn from the data but not so much so that it follows the data set too closely.
 
@@ -815,7 +820,7 @@ So the second iteration would then take the second fold as the holdout / test da
 ![](./pics/cv2.png)
 
 
-```{r}
+```{r prefoldfunc}
 # Generates Some Folds
 
 num_of_folds <- 4
@@ -824,6 +829,7 @@ num_of_folds <- 4
 # group has unique observations. No observation is used
 # more than once - although we could use bootstrapping
 
+set.seed(321)
 folds <- split(sample(1:nrow(mtcars)),1:num_of_folds) 
 
 # We should have 32 indicies across the 8 groups 
@@ -839,6 +845,11 @@ folds
 ```
 
 Again, each list element has the indices of eight unique observations from the data frame. We have four folds with eight elements each for a total of 32 numbers corresponding to row numbers from the mtcars data frame. 
+
+```{r}
+mtcars[folds[[1]],]
+```
+
 
 ## Cross Fold Validation 
 
@@ -941,6 +952,7 @@ Let's look at the average RMSE across 8 folds.
 ```{r fourfold}
 num_of_folds <- 8
 
+set.seed(321)
 rmse <- make_mtcars_model(num_of_folds)
 
 title <- paste("RMSE Across",num_of_folds,
@@ -964,6 +976,7 @@ num_of_folds <- 4
 # Just to be clear - here is what happens when we call the function
 # once. We get back 4 RMSE values - one for each fold
 
+set.seed(321)
 (rmse <- make_mtcars_model(num_of_folds))
 
 # Now we repeat this some number of times - like 10. So we get back
@@ -1032,6 +1045,8 @@ num_of_folds <- 8
 
 # Just to be clear - here is what happens when we call the function
 # once. We get back 8 RMSE values - one for each fold
+
+set.seed(321)
 (rmse <- make_mtcars_boot(num_of_folds))
 
 # Now we repeat this some number of times - like 10. So we get back
@@ -1064,9 +1079,7 @@ Each function has its own set of requirements which may not extend to other func
 
 The [**caret**](https://topepo.github.io/caret/index.html) (**C**lassification **A**nd **R**egression **T**raining) package provides a uniform interface for calling different algorithms while simplifying the data splitting and RMSE calculation. It supports many different model types and also provides the ability to tune hyper parameters. Here are some of the features:
 
-  - Streamlined and consistent syntax for more than 
-    200 different models
-  - Can implement any of the 238 different methods using a single function
+  - Streamlined and consistent syntax to implement any of the 238 different methods using a single function
   - Easy data splitting to simplify the creation of train / test pairs
   - Realistic model estimates through built-in resampling
   - Convenient feature importance determination
