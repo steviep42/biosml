@@ -130,8 +130,7 @@ sibsp     Number of Siblings/Spouses Aboard
 parch     Number of Parents/Children Aboard
 ```
 
-So then we look at different plots to become aquainted with the data:
-
+So then we look at different plots to become aquainted with the data. Here let's see the survival counts by Gender:
 
 ```{r ggplotitan}
 titan %>% 
@@ -146,7 +145,7 @@ titan %>%
   ggtitle("Titanic Survival By Gender")
 ```
 
-
+Next, we'll see the survival rates by Passenger Class. If you saw the movie Titanic then you know what this will look like:
 
 ```{r ggplotitan2}
 titan %>% 
@@ -161,20 +160,29 @@ titan %>%
   ggtitle("Titanic Survival By Passenger Class")
 ```
 
-
+Next, let's see the above plot broken out by gender:
 
 ```{r ggplotitan3}
 titan %>% 
   mutate(survived=factor(survived,labels=c("Died","Survived"))) %>%
-  group_by(survived,pclass)  %>% 
+  group_by(survived,pclass,sex)  %>% 
   count() %>% 
   ungroup() %>% 
   mutate(pclass = fct_reorder(pclass,n)) %>% 
   ggplot(aes(x=pclass,y=n,fill=survived)) + 
-  geom_col() + theme_light() + 
+  geom_col() + theme_light() + facet_wrap(~sex) +
   xlab("Passenger Class") + ylab("Number of Persons") +
   ggtitle("Titanic Survival By Passenger Class")
 ```
+
+We could even look at age distributions here. What patterns do you see here ? Did young children fare better than say someone who was 25-35 ? 
+
+```{r}
+ptitanic %>% drop_na() %>%
+ggplot(aes(x=age)) + 
+  geom_histogram(aes(fill=survived),bins=20) + theme_light() 
+```
+
 
 ### Does This Data  Matter ? 
 
@@ -221,6 +229,8 @@ The general conclusion is that there is a trade off between Bias and Variance. T
 ## Overfitting and Underfitting
 
 If we **overfit** some data we then undermine our ability to apply it to new data in a way that results in good performance. This is the case where we have high model bias and resulting high variability when it is applied to new data. If you do "too good of a job" of learning some data then you might actually be unknowingly modeling inherent sources of error. 
+
+![](./pics/overfitt.png)
 
 ![](./pics/nobias.png)
 
@@ -272,7 +282,9 @@ In the first case we are attempting to predict a numeric quantity whereas in the
 mtcars %>% summarize_all(n_distinct)
 ```
 
-Be on the lookout for columns that don't have very many unique values such as vs, am, and cyl. These are more likely categories by which we might summarize the continuous quantities. As an example - what is the average mpg for each transmission type ? What is the average mpg for all cylinder types ? Even though all the variables appear to be numeric doesn't mean that they can be "computed" on. Does it make sense to take the average of the transmission type ? It's either 0 or 1 (auto or manual). There is no such thing as a car with a 0.40625  transmission. 
+Be on the lookout for columns that don't have very many unique values such as vs, am, and cyl. These are more likely categories by which we might summarize the continuous quantities. As an example - what is the average mpg for each transmission type ? 
+
+What is the average mpg for all cylinder types ? Even though all the variables appear to be numeric doesn't mean that they can be "computed" on. Does it make sense to take the average of the transmission type ? It's either 0 or 1 (auto or manual). There is no such thing as a car with a 0.40625  transmission. 
 
 ```{r meanmpg}
 mean(mtcars$am)
@@ -282,6 +294,15 @@ Perhaps it's better to count the number of times each transmission type occurs.
 
 ```{r}
 table(mtcars$am)
+```
+
+Or summarize MPG in terms of the **am**
+
+```{r}
+mtcars %>% 
+  mutate(am=factor(am,labels=c("Auto","Manual"))) %>% 
+  group_by(am) %>%
+  dplyr::summarize(Average_mpg=mean(mpg))
 ```
 
 
