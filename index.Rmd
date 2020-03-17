@@ -72,12 +72,17 @@ The goal of predictive model is to generate models that can generalize to new da
 
 ## Performance Metrics
 
-For either case (regression vs classification) we need some type of metric or measure to let us know how well a given model will work on new or unseen data - also known as "out of sample" data. for Classification problems we look at things like "sensitivity", "specificity", "accuracy", and "Area Under Curve". For Quantitative outcomes, we look at things like Root Mean Square Error (RMSE) or Mean Absolute Error (MAE). The selection of metric will frequently depend on your domain of interest. We'll use a couple of different methods. 
+For either case (regression vs classification) we need some type of metric or measure to let us know how well a given model will work on new or unseen data - also known as "out of sample" data. for Classification problems we look at things like "sensitivity", "specificity", "accuracy", and "Area Under Curve". 
+
+For Quantitative outcomes, we look at things like Root Mean Square Error (RMSE) or Mean Absolute Error (MAE). Here is the formula for Root Mean Square Error (RMSE). P represents a vector of predictions and O represents a vector of the observed (true) values.
+
+\[
+RMSE = \sqrt\frac{\sum_i^n(P_i-O_i)^2}{n}
+\]
 
 ## Black Box
 
-The good news is that you can treat building predictive models as a "Black Box".
-The bad news is that you can treat building predictive models as a "Black Box".
+The **good news** is that you can treat building predictive models as a "Black Box". The **bad news** is that you can treat building predictive models as a "Black Box".
 
 ![](./PICS/black_box.png)
 
@@ -180,30 +185,9 @@ We could even look at age distributions here. What patterns do you see here ? Di
 ```{r}
 ptitanic %>% drop_na() %>%
 ggplot(aes(x=age)) + 
-  geom_histogram(aes(fill=survived),bins=20) + theme_light() 
+  geom_histogram(aes(fill=survived),bins=20) + 
+  theme_light() + facet_wrap(~pclass)
 ```
-
-
-### Does This Data  Matter ? 
-
-While this is all very interesting, it’s doubtful that anything we learn  will save anyone’s life. It's unlikley that any conclusions we reach would apply to modern ship travel. However, we can experiment with different algorithms without consequence as we build models. Nonetheless, it remains very useful for educational purposes
-
-
-## Two Types of Predictive Models:
-
-In Supervised Learning we have known outcomes that can be leveraged in the creation of a model(s) that can then be used to predict labels for new data sets. This also includes numeric predictions.
-
-   - For Quantitative Data, we'll consider Regression
-   - For Qualitative Data, we'll consider Classification 
-
-As previously mentioned, we will need metrics to evaluate performance of any models we build. For Regression, we'll use Root Mean Square Error (RMSE). The formula looks like the following where P represents a vector of predictions and O represents a vector of the observed (true) values.
-
-\[
-RMSE = \sqrt\frac{\sum_i^n(P_i-O_i)^2}{n}
-\]
-
-
-For Classification, we'll use measures derived from a  **Confusion Matrix** in conjunction with a **ROC Curve**. We'll discuss performance measures this in greater detail in a later section although it's intuitive that to compare a model to another model will involve the selection of some objective metric that can be used to "score" or rate them. 
 
 ## Bias vs Variance
 
@@ -218,13 +202,11 @@ Any performance metric that is computed on the data "as is" will typically be so
 ### Variance
 
 The concept of **variance** generally refers to a given algorithm's sensitivity to unfamiliar or new data. An algorithm that has been well-trained, or even over trained, on a data set might exhibit low bias in that it "knows" or "hugs" the data very well. However, when given new data that might not be from the same distribution as the "training" data then large and/or unpredictable variance might result. 
-
 If you flip this around a bit, an algorithm whose bias is high generally means that it deviates from the "truth" perhaps to a significant degree. Correspondingly, when the resulting model is applied to new or unseen data it will behave in a more predictable manner, generally resulting in lower variance. This isn't always a bad thing. Maybe a more biased model is quick and easy to compute and it's estimated performance (as determined by some metric such as RMSE) might be acceptable when applied to new data. 
 
 The general conclusion is that there is a trade off between Bias and Variance. The higher the bias, the lower the variance and the higher the variance, the lower the bias. 
 
 ![](./pics/targets.png)
-
 
 ## Overfitting and Underfitting
 
@@ -232,19 +214,60 @@ If we **overfit** some data we then undermine our ability to apply it to new dat
 
 ![](./pics/overfitt.png)
 
-![](./pics/nobias.png)
+![](./pics/overfit.png)
 
 If we **underfit** some data then consider that we haven't "learned enough" from it to ensure low bias (deviations from reality). On the other hand if the model does a "good enough job" of describing the data then maybe it's not a big deal especially since, when applied to new data, it doesn't exhibit a high degree of variance. 
 
 Simpler models, such as linear regression, can be like this - easy to understand but somewhat biased in their assessment of data. Depending on the size of the data it might be computationally less expensive to build more biased models.
 
-![](./pics/more_bias.png)
+![](./pics/underfit.png)
+
+Which one of the models is more biased ? 
+
+```{r plotsbias}
+plot(mpg~wt,data=example_Train,main="Two Models For The Same Data")
+abline(lm_fit$finalModel)
+grid()
+svm_preds <- predict(my_svm,example_Train)
+
+pdf <- data.frame(cbind(Train$wt,svm_preds)) 
+points(svm_preds~V1,data=pdf[order(pdf$V1),],col="red",pch=4,type="l")
+legend("topright",c("lm","svm"),col=c("black","red"),lty=1,cex=1)
+
+```
+
+
+
 
 Models that are biased generally have less variability when applied to new data whereas less biased models generally have higher variability when applied to new data. Obviously, striking a balance between the two is desirable. There are techniques to help with this. 
 
 ## Some Important Terminology
 
-While we could start building a lot of models at this point it would be wise to review some jargon in the world of predictive modeling so we can understand how to fully exploit the variables (also known as "features") in our data. This is very important. Let's start out with a basic example involving the most (over)used data set in R Education - the "mtcars" data frame. 
+While we could start building a lot of models at this point it would be wise to review some jargon in the world of predictive modeling so we can understand how to fully exploit the variables (also known as "features") in our data. This is very important. Let's start out with a basic example involving the most (over)used data set in R Education - the "mtcars" data frame. If you are using R you can simply type **data(mtcars)** or read it in as follows:
+
+```{r readmtcsrsnorm}
+url <- "https://raw.githubusercontent.com/steviep42/bios534_spring_2020/master/data/mtcars.csv"
+mtcars <- read.csv(url, stringsAsFactors = FALSE)
+
+```
+
+If you are using Python then reading it in looks something like:
+
+```{r eval=FALSE}
+import pandas as pd
+url = "https://raw.githubusercontent.com/steviep42/bios534_spring_2020/master/data/mtcars.csv"
+dfmtcars = pd.read_csv(url) 
+
+dfmtcars.head()
+    mpg  cyl   disp   hp  drat     wt   qsec  vs  am  gear  carb
+0  21.0    6  160.0  110  3.90  2.620  16.46   0   1     4     4
+1  21.0    6  160.0  110  3.90  2.875  17.02   0   1     4     4
+2  22.8    4  108.0   93  3.85  2.320  18.61   1   1     4     1
+3  21.4    6  258.0  110  3.08  3.215  19.44   1   0     3     1
+4  18.7    8  360.0  175  3.15  3.440  17.02   0   0     3     2
+```
+
+The documentation for the data frame is as follows:
 
 ```{r mtcarshelp,eval=FALSE}
 Motor Trend Car Road Tests
@@ -298,7 +321,7 @@ table(mtcars$am)
 
 Or summarize MPG in terms of the **am**
 
-```{r}
+```{r summarizeavg}
 mtcars %>% 
   mutate(am=factor(am,labels=c("Auto","Manual"))) %>% 
   group_by(am) %>%
@@ -374,21 +397,10 @@ Here is a high level over view of an ML work flow. Note that:
 2) The driving questions / hypotheses are subject to change, redefinition, or abandonment 
 3) Multiple people might be involved 
 
-![](./pics/flowwork1.png)
-
-You will need to install and then load the following packages. There will be more as you work through the examples. 
-
-```{r eval=FALSE}
-library(tidyverse)
-library(rpart)
-library(caret)
-library(pls)
-library(mlbench)
-library(DataExplorer)
-```
+![](./pics/workflow2.png)
 
 
-## Suggested Workflow
+## A More Dwtailed Workflow
 
 Thus far we haven't gotten our hands dirty but we'll need to do that if we want an experiential approach to any of this. It's useful to have a schematic that outlines the general process. Consider the following workflow. In general this is a solid representation of what one might do as part of building a predictive model. 
 
@@ -461,6 +473,7 @@ mtcars %>% mutate(cyl=factor(cyl),am=factor(am,labels=c("Auto","Manual"))) %>%
 ```
 
 If we wanted to look at above relationships simulatenously we could use something like ggplot to help us. 
+
 ```{r}
 mtcars %>% mutate(cyl=factor(cyl),am=factor(am,labels=c("Auto","Manual"))) %>% 
   ggplot(aes(x=am,y=mpg)) + 
@@ -3086,7 +3099,6 @@ So let's plot the training data as well as the resulting regression line (in the
 
 
 ```{r pickthe3}
-
 plot(mpg~wt,data=example_Train,main="Train Data")
 abline(lm_fit$finalModel)
 grid()
@@ -3362,7 +3374,7 @@ This seems like a lot of work and maybe it is if you aren't up to date with your
 
 
 ```{r hmisc,message=FALSE}
-library(Hmisc)
+#library(Hmisc)
 # Reload the version of mtcars with missing values
 url <- "https://raw.githubusercontent.com/steviep42/utilities/master/data/mtcars_na.csv"
 mtcars_na <- read.csv(url, strip.white = FALSE)
@@ -3370,7 +3382,7 @@ mtcars_na <- read.csv(url, strip.white = FALSE)
 
 The **Hmisc** package provides and **impute** function to do the work for us. Check it out. Notice how it finds the rows for which the **wt** feature is missing. 
 
-```{r}
+```{r hmiscimp}
 Hmisc::impute(mtcars_na$wt, median)
 ```
 
