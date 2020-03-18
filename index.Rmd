@@ -1738,9 +1738,24 @@ abline(a=0, b=1,lty=2)
 text(metrics[,2],metrics[,1],labels=metrics[,3],cex=0.8)
 ```
 
-It turns out that area under an ROC curve is a measure of the usefulness of a test in general, where a greater area means a more useful test. Ideally we would want the area under the curve (also known as "AUC") to be as close to 1 as possible. The dashed line above represents a classifier that basically "guesses" the outcome (pos vs neg) using a "coin flip" mentality. Here are some more examples of curves including one that is "perfect".
+It turns out that area under an ROC curve is a measure of the usefulness of a test in general, where a greater area means a more useful test. Ideally we would want the area under the curve (also known as "AUC") to be as close to 1 as possible. The dashed line above represents a classifier that basically "guesses" the outcome (pos vs neg) using a "coin flip" mentality. Here are some more examples of curves including one that is "perfect". B and C are okay where as D represents mere guessing.
 
-![](./pics/perfectroc.png)
+![](./pics/multirocs.png)
+
+Here is another view of determining how good a ROC curve is:
+
+
+```{r classroc}
+plot(x=seq(0,1,.2),y=seq(0,1,.2),
+     xlab="False Positive Rate",
+     ylab="True Positive Rate",
+     main="ROC Curves",type="l",col="orange")
+grid()
+text(0.5,0.5,"Random",cex=1.5,col="orange")
+text(0.3,0.75,"Good",cex=1.5,col="blue")
+text(0.75,0.25,"Bad",cex=1.5,col="red")
+```
+
 
 So, our classifier does better than that but certainly not perfectly. Now, we also care about the threshold that gives us a good balance between the TPR and FPR. I mean if we wanted a max AUC with no other concerns, we would also be accepting a very high FPR. So this is why looking at the curve is useful. 
 
@@ -2017,49 +2032,31 @@ pm_glm_mod$results
 
 Let's use random forests to see what results we get. Random forests are robust to over fitting and are fairly easy to implement. They can improve accuracy by fitting many trees. Each tree is fit to a resampled version of the input data (usually a bootstrap). This is known as bootstrap aggregation or "bagged" trees. At each split, the function takes a random sample of columns (the mtry argument).
 
-The function we will use here, **ranger**, has three hyper parameters which could be set to a range of values which, in turn, could influence the resulting model. With glm, we didn't really have a hyper parameter. Here is how to tell if a caret-supported model has one or more hyper parameters available for tuning:
+The function we will use here, **ranger**, has three hyper parameters which could be set to a range of values which, in turn, could influence the resulting model. With glm, we didn't really have a hyper parameter. We'll worry about hyper parameters later. 
 
-```{r}
+```{r echo=FALSE,eval=FALSE}
 modelLookup("ranger")
 ```
 
-We'll switch out metric back to Accuracy
-
-```{r}
-ctrl <- trainControl(method = "cv", 
-                     number = 5
-                     )
-
-pm_ranger_mod <- train(form = diabetes ~ .,
-                    data = train,
-                    trControl = ctrl,
-                    metric = "Accuracy",
-                    method = "ranger",
-                    preProc = c("center", "scale"))
-```
-
-By default the training process will move through three different values of mtry though we could either set this explicitly in the train function or as part of the hyper parameter tuning processed mentioned previously. If we choose the latter, then we can take advantage of the fact that **caret** knows what hyper parameters the method supports and can cycle through possible valid values of these hyper parameters. 
-
-This is accomplished via the **tuneLength** argument to the **train** function. We could use the **tuneGrid** argument along with a manually specified tuning grid but it's easier to use **tuneLength** for now.
-
-```{r}
-pm_ranger_mod
-```
-
+Let's try this to see how it performs va the glm method
 
 ```{r}
 ctrl <- trainControl(method = "cv", 
                      number = 5,
-                     classProbs = TRUE,
+                     classProbs = T,
                      summaryFunction = twoClassSummary)
 
 pm_ranger_mod <- train(form = diabetes ~ .,
                     data = train,
                     trControl = ctrl,
                     metric = "ROC",
-                    method = "ranger",
-                    tuneLength = 7,
-                    preProc = c("center", "scale"))
+                    method = "ranger")
+```
+
+By default the training process will move through different values of the algorithms hyper parameters - this is called "tuning". **caret** knows what hyper parameters the method supports and can cycle through possible valid values of these hyper parameters. 
+
+```{r}
+pm_ranger_mod
 ```
 
 The object can be plotted. Here we see that the max AUC of .825 occurs when mtry is 3 and the Gini criterion is used to evaluate a tree. 
