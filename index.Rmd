@@ -237,8 +237,6 @@ legend("topright",c("lm","svm"),col=c("black","red"),lty=1,cex=1)
 ```
 
 
-
-
 Models that are biased generally have less variability when applied to new data whereas less biased models generally have higher variability when applied to new data. Obviously, striking a balance between the two is desirable. There are techniques to help with this. 
 
 ## Some Important Terminology
@@ -1585,7 +1583,7 @@ my_confusion
 
 Let's break this down since it is really important to know how to use this construct. First, we notice that there are N = 153 people in this study. 
 
-![](./pics/2cm.png)
+![](./pics/cm3.png)
 
 *True Positives* - With respect to the second row - we predicted that 47 people have the disease that actually do have it. You could then say that the number of TRUE POSITIVES (abbreviated as "TP") is 47. 
 
