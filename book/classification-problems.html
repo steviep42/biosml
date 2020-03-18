@@ -184,7 +184,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="6.1" data-path="classification-problems.html"><a href="classification-problems.html#performance-measures"><i class="fa fa-check"></i><b>6.1</b> Performance Measures</a></li>
 <li class="chapter" data-level="6.2" data-path="classification-problems.html"><a href="classification-problems.html#important-terminology"><i class="fa fa-check"></i><b>6.2</b> Important Terminology</a></li>
 <li class="chapter" data-level="6.3" data-path="classification-problems.html"><a href="classification-problems.html#a-basic-model"><i class="fa fa-check"></i><b>6.3</b> A Basic Model</a></li>
-<li class="chapter" data-level="6.4" data-path="classification-problems.html"><a href="classification-problems.html#selecting-the-correct-alpha"><i class="fa fa-check"></i><b>6.4</b> Selecting The Correct Alpha</a><ul>
+<li class="chapter" data-level="6.4" data-path="classification-problems.html"><a href="classification-problems.html#selecting-the-correct-threshold-alpha"><i class="fa fa-check"></i><b>6.4</b> Selecting The Correct Threshold / Alpha</a><ul>
 <li class="chapter" data-level="6.4.1" data-path="classification-problems.html"><a href="classification-problems.html#moving-the-threshold"><i class="fa fa-check"></i><b>6.4.1</b> Moving The Threshold</a></li>
 <li class="chapter" data-level="6.4.2" data-path="classification-problems.html"><a href="classification-problems.html#distribution-of-predicted-probabilities"><i class="fa fa-check"></i><b>6.4.2</b> Distribution of Predicted Probabilities</a></li>
 </ul></li>
@@ -352,17 +352,18 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <a class="sourceLine" id="cb177-14" data-line-number="14">                     glm_test,</a>
 <a class="sourceLine" id="cb177-15" data-line-number="15">                     <span class="dt">type=</span><span class="st">&quot;response&quot;</span>)</a>
 <a class="sourceLine" id="cb177-16" data-line-number="16">glm_preds[<span class="dv">1</span><span class="op">:</span><span class="dv">10</span>]</a></code></pre></div>
-<pre><code>##          2          6          8         22         23         30 
-## 0.05836318 0.15559574 0.67209318 0.31189099 0.93064630 0.27846273 
-##         33         36         38         40 
-## 0.05726965 0.14730284 0.39319711 0.53563224</code></pre>
-<p>What do we get back from our prediction ? These are probabilities that, for each row in the test data frame, represent the likelihood of that person being positive for diabetes. The trick then is to figure out the threshold value (aka “alpha value”) over which we would classify the person as being positive for diabetes.</p>
+<pre><code>##          2          6          8         22         23 
+## 0.05836318 0.15559574 0.67209318 0.31189099 0.93064630 
+##         30         33         36         38         40 
+## 0.27846273 0.05726965 0.14730284 0.39319711 0.53563224</code></pre>
+<p>What do we get back from our prediction ? These are probabilities that, for each row in the test data frame, represent the likelihood of that person being positive for diabetes.</p>
+<p>The trick then is to figure out the threshold value (aka “alpha value”) over which we would classify the person as being positive for diabetes.</p>
 <p>To answer this question, we need to back up a bit and recall that we are dealing with a curve like the one below which is a sigmoid function. The idea is to take our probabilities, which range between 0 and 1, and then pick a threshold over which we would classify that person as being positive for diabetes.</p>
 <p><img src="biosml_files/figure-html/logitplot-1.png" width="672" /></p>
 </div>
-<div id="selecting-the-correct-alpha" class="section level2">
-<h2><span class="header-section-number">6.4</span> Selecting The Correct Alpha</h2>
-<p>The temptation is to select 0.5 as the threshold such that if a returned probability exceeds 0.5 then we classify the associated subject as being “positive” for the disease. But then this assumes that the probabilities are distributed accordingly. This is frequently not the case though it doesn’t stop people from using 0.5. Here is another view of the situation.</p>
+<div id="selecting-the-correct-threshold-alpha" class="section level2">
+<h2><span class="header-section-number">6.4</span> Selecting The Correct Threshold / Alpha</h2>
+<p>The temptation is to select 0.5 as the threshold such that if a returned probability exceeds 0.5 then we classify the associated subject as being “positive” for the disease. But then this assumes that the probabilities are distributed perfectly. This is frequently <em>NOT</em> the case though it doesn’t stop people from using 0.5. Here is another view of the situation.</p>
 <p><img src="pics/pc.png" /></p>
 <p>The above represents a perfect classififier wherein we can cleanly distinguish between True Positives and Negatives. Note that, the cutoff point is at 0.5 which represents an ideal case. However, in most situations, what we have is something like this:</p>
 <p><img src="pics/tnfp.png" /></p>
@@ -426,7 +427,8 @@ definitely get more of the actual negative cases. What if we moved it to say 0.9
 <p><em>True Negatives</em> - We also predicted that 59 people do not have the condition and they do not. So then the number of TRUE NEGATIVES (abbreviated as TN) is also 59.</p>
 <div id="computing-performance-metrics" class="section level3">
 <h3><span class="header-section-number">6.6.1</span> Computing Performance Metrics</h3>
-<p>Now comes the fun part in that you might be concerned with specific metrics to assess the quality of your model in specific terms. Since our model, such as it is, seems to relate to the quality of a medical diagnostic we might be concerned with its accuracy, precision, and sensitivity. The first two terms in particular are frequently used synonymously when they are not the same thing. Remember that we have N = 20 patients. Below is a graphic from Wikipedia which presents many (if not all) of the metrics that can be computed against a confusion matrix.</p>
+<p>Now comes the fun part in that you might be concerned with specific metrics to assess the quality of your model in specific terms. Since our model, such as it is, seems to relate to the quality of a medical diagnostic we might be concerned with its accuracy, precision, and sensitivity.</p>
+<p>The first two terms in particular are frequently used synonymously when they are not the same thing.Below is a graphic from Wikipedia which presents many (if not all) of the metrics that can be computed against a confusion matrix.</p>
 <p><img src="pics/cmwiki.png" width="1200" /></p>
 <p>We’ll focus on some specific metrics as they will assist our understanding of how to assess a model.</p>
 <div class="sourceCode" id="cb187"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb187-1" data-line-number="1">my_confusion</a></code></pre></div>
@@ -483,6 +485,7 @@ definitely get more of the actual negative cases. What if we moved it to say 0.9
 <div id="picking-the-right-metric" class="section level2">
 <h2><span class="header-section-number">6.7</span> Picking the Right Metric</h2>
 <p>There are more ratios we could compute some of which might be more relevant to our classification issue. In reality, picking the “right” metric is a function of your domain of study. Frequently, the sensitivity and specificity are used in medical testing scenarios as is the false positive rate. But you should search the literature in your area of interest to determine what is commonly used. We could say much more about these metrics but we’ll keep it simple for now.</p>
+<p>For now, we’ll use both the <em>True Postive Rate</em> and the <em>False Positive Rate</em>.</p>
 </div>
 <div id="wait.-where-are-we" class="section level2">
 <h2><span class="header-section-number">6.8</span> Wait. Where Are We ?</h2>
@@ -496,7 +499,7 @@ definitely get more of the actual negative cases. What if we moved it to say 0.9
 <li>Created a table of outcomes (confusion matrix) to compare predictions vs reality</li>
 <li>Computed some important ratios</li>
 </ol>
-<p>While this process was useful the resulting confusion matrix corresponded to just one specific value of alpha. What if we had picked another value of alpha ? We would then get a different confusion matrix as well as different performance measures. In effect we would have to repeat steps 1-6 all over again !!!</p>
+<p>While this process was useful the resulting confusion matrix corresponded to just <em>ONE</em> particular threshold ? What if we had picked another value ? We would then get a different confusion matrix as well as different performance measures. In effect we would have to repeat steps 1-6 all over again !!!</p>
 <p>Let’s find a way to generalize these steps. First, let’s create a function that allows us to compute the True Positive Rate (aka “Sensitivity”) and the False Positive Rate ( 1 - Specificity). If we apply it to our predictions from our example in progress, the output would be as follows.</p>
 <div class="sourceCode" id="cb201"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb201-1" data-line-number="1">get_tprfpr &lt;-<span class="st"> </span><span class="cf">function</span>(pred,true) {</a>
 <a class="sourceLine" id="cb201-2" data-line-number="2">  myt &lt;-<span class="st"> </span><span class="kw">table</span>(pred,true)</a>
@@ -531,7 +534,8 @@ definitely get more of the actual negative cases. What if we moved it to say 0.9
 <a class="sourceLine" id="cb204-12" data-line-number="12"></a>
 <a class="sourceLine" id="cb204-13" data-line-number="13"><span class="kw">text</span>(metrics[,<span class="dv">2</span>],metrics[,<span class="dv">1</span>],<span class="dt">labels=</span>metrics[,<span class="dv">3</span>],<span class="dt">cex=</span><span class="fl">0.8</span>)</a></code></pre></div>
 <p><img src="biosml_files/figure-html/metrtpr-1.png" width="672" /></p>
-<p>It turns out that area under an ROC curve is a measure of the usefulness of a test in general, where a greater area means a more useful test. Ideally we would want the area under the curve (also known as “AUC”) to be as close to 1 as possible. The dashed line above represents a classifier that basically “guesses” the outcome (pos vs neg) using a “coin flip” mentality.</p>
+<p>It turns out that area under an ROC curve is a measure of the usefulness of a test in general, where a greater area means a more useful test. Ideally we would want the area under the curve (also known as “AUC”) to be as close to 1 as possible. The dashed line above represents a classifier that basically “guesses” the outcome (pos vs neg) using a “coin flip” mentality. Here are some more examples of curves including one that is “perfect”.</p>
+<p><img src="pics/perfectroc.png" /></p>
 <p>So, our classifier does better than that but certainly not perfectly. Now, we also care about the threshold that gives us a good balance between the TPR and FPR. I mean if we wanted a max AUC with no other concerns, we would also be accepting a very high FPR. So this is why looking at the curve is useful.</p>
 </div>
 <div id="better-ways-to-compute-the-roc-curve" class="section level2">
@@ -547,7 +551,7 @@ definitely get more of the actual negative cases. What if we moved it to say 0.9
 <a class="sourceLine" id="cb205-7" data-line-number="7">                    <span class="st">&quot;fpr&quot;</span>)</a>
 <a class="sourceLine" id="cb205-8" data-line-number="8">ROCR<span class="op">::</span><span class="kw">plot</span>(perf,<span class="dt">colorize=</span>T,</a>
 <a class="sourceLine" id="cb205-9" data-line-number="9">     <span class="dt">print.cutoffs.at=</span><span class="kw">seq</span>(<span class="dv">0</span>,<span class="dv">1</span>,<span class="dt">by=</span><span class="fl">0.1</span>),</a>
-<a class="sourceLine" id="cb205-10" data-line-number="10">     <span class="dt">lwd=</span><span class="dv">3</span>,<span class="dt">las=</span><span class="dv">1</span>,<span class="dt">main=</span><span class="st">&quot;Another ROC Curve&quot;</span>)</a>
+<a class="sourceLine" id="cb205-10" data-line-number="10">     <span class="dt">lwd=</span><span class="dv">3</span>,<span class="dt">las=</span><span class="dv">1</span>,<span class="dt">main=</span><span class="st">&quot;A Pretty ROC Curve&quot;</span>)</a>
 <a class="sourceLine" id="cb205-11" data-line-number="11"><span class="kw">abline</span>(<span class="dt">a =</span> <span class="dv">0</span>, <span class="dt">b =</span> <span class="dv">1</span>)</a>
 <a class="sourceLine" id="cb205-12" data-line-number="12"></a>
 <a class="sourceLine" id="cb205-13" data-line-number="13"><span class="kw">grid</span>()</a></code></pre></div>
@@ -569,65 +573,73 @@ definitely get more of the actual negative cases. What if we moved it to say 0.9
 <div class="sourceCode" id="cb210"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb210-1" data-line-number="1"><span class="kw">get_tprfpr</span>(.<span class="dv">3850002</span>)</a></code></pre></div>
 <pre><code>##       tpr       fpr     alpha 
 ## 0.7735849 0.1600000 0.3850002</code></pre>
-<p>And while I’m at it, I might as well show you how easy it is to compute a confusion matrix which we did by hand earlier. Remember that we create a table called <strong>my_confusion</strong></p>
-<div class="sourceCode" id="cb212"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb212-1" data-line-number="1"><span class="co"># How does this compare to the truth ?</span></a>
-<a class="sourceLine" id="cb212-2" data-line-number="2">my_confusion &lt;-<span class="st"> </span><span class="kw">table</span>(<span class="dt">predicted =</span> glm_label_preds,</a>
-<a class="sourceLine" id="cb212-3" data-line-number="3">                      <span class="dt">actual =</span> glm_test<span class="op">$</span>diabetes)</a></code></pre></div>
+<p>And while I’m at it, I might as well show you how easy it is to compute a confusion matrix corresponding to the ideal threshold.</p>
+<div class="sourceCode" id="cb212"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb212-1" data-line-number="1">glm_label_preds &lt;-<span class="st"> </span><span class="kw">ifelse</span>(glm_preds <span class="op">&gt;</span><span class="st"> </span><span class="fl">0.385</span>,<span class="st">&quot;pos&quot;</span>,<span class="st">&quot;neg&quot;</span>)</a>
+<a class="sourceLine" id="cb212-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb212-3" data-line-number="3"><span class="co"># We have to make the labels into a factor since</span></a>
+<a class="sourceLine" id="cb212-4" data-line-number="4"><span class="co"># the diabetes column is a factor in the original data dset</span></a>
+<a class="sourceLine" id="cb212-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb212-6" data-line-number="6">glm_label_preds &lt;-<span class="st"> </span><span class="kw">factor</span>(glm_label_preds, </a>
+<a class="sourceLine" id="cb212-7" data-line-number="7">                         <span class="dt">levels =</span> <span class="kw">levels</span>(glm_test[[<span class="st">&quot;diabetes&quot;</span>]]))</a></code></pre></div>
+<div class="sourceCode" id="cb213"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb213-1" data-line-number="1"><span class="co"># How does this compare to the truth ?</span></a>
+<a class="sourceLine" id="cb213-2" data-line-number="2">my_confusion &lt;-<span class="st"> </span><span class="kw">table</span>(<span class="dt">predicted =</span> glm_label_preds,</a>
+<a class="sourceLine" id="cb213-3" data-line-number="3">                      <span class="dt">actual =</span> glm_test<span class="op">$</span>diabetes)</a></code></pre></div>
 <p>We could use a function from the <strong>caret</strong> package called <strong>confusionMatrix</strong> to show us the relevant metrics. Much better than doing it by hand.</p>
-<div class="sourceCode" id="cb213"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb213-1" data-line-number="1">caret<span class="op">::</span><span class="kw">confusionMatrix</span>(my_confusion,<span class="dt">positive=</span><span class="st">&quot;pos&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb214"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb214-1" data-line-number="1">caret<span class="op">::</span><span class="kw">confusionMatrix</span>(my_confusion,<span class="dt">positive=</span><span class="st">&quot;pos&quot;</span>)</a></code></pre></div>
 <pre><code>## Confusion Matrix and Statistics
 ## 
 ##          actual
 ## predicted neg pos
-##       neg  59   6
-##       pos  41  47
+##       neg  84  12
+##       pos  16  41
 ##                                           
-##                Accuracy : 0.6928          
-##                  95% CI : (0.6132, 0.7648)
+##                Accuracy : 0.817           
+##                  95% CI : (0.7465, 0.8748)
 ##     No Information Rate : 0.6536          
-##     P-Value [Acc &gt; NIR] : 0.1753          
+##     P-Value [Acc &gt; NIR] : 6.204e-06       
 ##                                           
-##                   Kappa : 0.4127          
+##                   Kappa : 0.6029          
 ##                                           
-##  Mcnemar&#39;s Test P-Value : 7.071e-07       
+##  Mcnemar&#39;s Test P-Value : 0.5708          
 ##                                           
-##             Sensitivity : 0.8868          
-##             Specificity : 0.5900          
-##          Pos Pred Value : 0.5341          
-##          Neg Pred Value : 0.9077          
+##             Sensitivity : 0.7736          
+##             Specificity : 0.8400          
+##          Pos Pred Value : 0.7193          
+##          Neg Pred Value : 0.8750          
 ##              Prevalence : 0.3464          
-##          Detection Rate : 0.3072          
-##    Detection Prevalence : 0.5752          
-##       Balanced Accuracy : 0.7384          
+##          Detection Rate : 0.2680          
+##    Detection Prevalence : 0.3725          
+##       Balanced Accuracy : 0.8068          
 ##                                           
 ##        &#39;Positive&#39; Class : pos             
 ## </code></pre>
 <p>We could also work directly with our labelled predictions and known labels.</p>
-<div class="sourceCode" id="cb215"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb215-1" data-line-number="1">caret<span class="op">::</span><span class="kw">confusionMatrix</span>(glm_label_preds,glm_test<span class="op">$</span>diabetes,<span class="dt">positive=</span><span class="st">&quot;pos&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb216"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb216-1" data-line-number="1">caret<span class="op">::</span><span class="kw">confusionMatrix</span>(glm_label_preds,</a>
+<a class="sourceLine" id="cb216-2" data-line-number="2">                       glm_test<span class="op">$</span>diabetes,<span class="dt">positive=</span><span class="st">&quot;pos&quot;</span>)</a></code></pre></div>
 <pre><code>## Confusion Matrix and Statistics
 ## 
 ##           Reference
 ## Prediction neg pos
-##        neg  59   6
-##        pos  41  47
+##        neg  84  12
+##        pos  16  41
 ##                                           
-##                Accuracy : 0.6928          
-##                  95% CI : (0.6132, 0.7648)
+##                Accuracy : 0.817           
+##                  95% CI : (0.7465, 0.8748)
 ##     No Information Rate : 0.6536          
-##     P-Value [Acc &gt; NIR] : 0.1753          
+##     P-Value [Acc &gt; NIR] : 6.204e-06       
 ##                                           
-##                   Kappa : 0.4127          
+##                   Kappa : 0.6029          
 ##                                           
-##  Mcnemar&#39;s Test P-Value : 7.071e-07       
+##  Mcnemar&#39;s Test P-Value : 0.5708          
 ##                                           
-##             Sensitivity : 0.8868          
-##             Specificity : 0.5900          
-##          Pos Pred Value : 0.5341          
-##          Neg Pred Value : 0.9077          
+##             Sensitivity : 0.7736          
+##             Specificity : 0.8400          
+##          Pos Pred Value : 0.7193          
+##          Neg Pred Value : 0.8750          
 ##              Prevalence : 0.3464          
-##          Detection Rate : 0.3072          
-##    Detection Prevalence : 0.5752          
-##       Balanced Accuracy : 0.7384          
+##          Detection Rate : 0.2680          
+##    Detection Prevalence : 0.3725          
+##       Balanced Accuracy : 0.8068          
 ##                                           
 ##        &#39;Positive&#39; Class : pos             
 ## </code></pre>
@@ -635,10 +647,10 @@ definitely get more of the actual negative cases. What if we moved it to say 0.9
 <div id="roc-curve-summary" class="section level2">
 <h2><span class="header-section-number">6.10</span> ROC Curve Summary</h2>
 <p>The above can be confusing although what you will soon discover is that being able to compute the AUC (Area Under Curve) will be sufficient to judge the quality of a model - well in general it’s a good start. The <strong>caret</strong> package can do that for you so you don’t need to use the various functions about to find that. You migt want to put up a ROC curve based on some predictions in which case you would still need to use one of the above functions. If you just want to see a basic ROC Curve then take this approach which will give you both the AUC and a ROC Curve alebit it much less “pretty” than the one above.</p>
-<div class="sourceCode" id="cb217"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb217-1" data-line-number="1"><span class="co"># Use the colAUC function from the caTools package</span></a>
-<a class="sourceLine" id="cb217-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb217-3" data-line-number="3">pm_model_glm_probs &lt;-<span class="st"> </span><span class="kw">predict</span>(glm_model,glm_test,<span class="dt">type=</span><span class="st">&quot;response&quot;</span>)</a>
-<a class="sourceLine" id="cb217-4" data-line-number="4">caTools<span class="op">::</span><span class="kw">colAUC</span>(pm_model_glm_probs,glm_test<span class="op">$</span>diabetes,<span class="dt">plotROC=</span><span class="ot">TRUE</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb218"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb218-1" data-line-number="1"><span class="co"># Use the colAUC function from the caTools package</span></a>
+<a class="sourceLine" id="cb218-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb218-3" data-line-number="3">pm_model_glm_probs &lt;-<span class="st"> </span><span class="kw">predict</span>(glm_model,glm_test,<span class="dt">type=</span><span class="st">&quot;response&quot;</span>)</a>
+<a class="sourceLine" id="cb218-4" data-line-number="4">caTools<span class="op">::</span><span class="kw">colAUC</span>(pm_model_glm_probs,glm_test<span class="op">$</span>diabetes,<span class="dt">plotROC=</span><span class="ot">TRUE</span>)</a></code></pre></div>
 <p><img src="biosml_files/figure-html/procagain-1.png" width="672" /></p>
 <pre><code>##                  [,1]
 ## neg vs. pos 0.8677358</code></pre>
