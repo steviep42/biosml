@@ -151,7 +151,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="3" data-path="a-motivating-example.html"><a href="a-motivating-example.html"><i class="fa fa-check"></i><b>3</b> A Motivating Example</a><ul>
-<li class="chapter" data-level="3.1" data-path="a-motivating-example.html"><a href="a-motivating-example.html#a-more-dwtailed-workflow"><i class="fa fa-check"></i><b>3.1</b> A More Dwtailed Workflow</a></li>
+<li class="chapter" data-level="3.1" data-path="a-motivating-example.html"><a href="a-motivating-example.html#a-more-detailed-workflow"><i class="fa fa-check"></i><b>3.1</b> A More Detailed Workflow</a></li>
 <li class="chapter" data-level="3.2" data-path="a-motivating-example.html"><a href="a-motivating-example.html#visualizations"><i class="fa fa-check"></i><b>3.2</b> Visualizations</a><ul>
 <li class="chapter" data-level="3.2.1" data-path="a-motivating-example.html"><a href="a-motivating-example.html#scatterplots"><i class="fa fa-check"></i><b>3.2.1</b> Scatterplots</a></li>
 <li class="chapter" data-level="3.2.2" data-path="a-motivating-example.html"><a href="a-motivating-example.html#boxplots"><i class="fa fa-check"></i><b>3.2.2</b> Boxplots</a></li>
@@ -346,7 +346,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <a class="sourceLine" id="cb4-6" data-line-number="6">age       Age</a>
 <a class="sourceLine" id="cb4-7" data-line-number="7">sibsp     Number of Siblings<span class="op">/</span>Spouses Aboard</a>
 <a class="sourceLine" id="cb4-8" data-line-number="8">parch     Number of Parents<span class="op">/</span>Children Aboard</a></code></pre></div>
-<p>So then we look at different plots to become aquainted with the data. Here let’s see the survival counts by Gender:</p>
+<p>So then we look at different plots to become acquainted with the data. Here let’s see the survival counts by Gender:</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">titan <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb5-2" data-line-number="2"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">survived=</span><span class="kw">factor</span>(survived,<span class="dt">labels=</span><span class="kw">c</span>(<span class="st">&quot;Died&quot;</span>,<span class="st">&quot;Survived&quot;</span>))) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb5-3" data-line-number="3"><span class="st">  </span><span class="kw">group_by</span>(survived,sex)  <span class="op">%&gt;%</span><span class="st"> </span></a>

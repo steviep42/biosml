@@ -135,7 +135,7 @@ sibsp     Number of Siblings/Spouses Aboard
 parch     Number of Parents/Children Aboard
 ```
 
-So then we look at different plots to become aquainted with the data. Here let's see the survival counts by Gender:
+So then we look at different plots to become acquainted with the data. Here let's see the survival counts by Gender:
 
 ```{r ggplotitan}
 titan %>% 
@@ -398,7 +398,7 @@ Here is a high level over view of an ML work flow. Note that:
 ![](./pics/workflow2.png)
 
 
-## A More Dwtailed Workflow
+## A More Detailed Workflow
 
 Thus far we haven't gotten our hands dirty but we'll need to do that if we want an experiential approach to any of this. It's useful to have a schematic that outlines the general process. Consider the following workflow. In general this is a solid representation of what one might do as part of building a predictive model. 
 
@@ -431,20 +431,20 @@ A data frame with 32 observations on 11 (numeric) variables.
 
 ## Visualizations
 
-This is a big topic on its own but winds up being the gaetway into forming hypotheses to help drive the aims of any machine learning project. On the other hand, some people just start building models with variables they beleive to be of interest and only later worry about how the data might look. With respect to the above data frame, the idea of Fuel Economy is usually a popular conceptwhich then leads one to look at the **mpg** feature in the data set. Or, when we look at the Pima Indians dataset, we'll see that the "diabetes" column is sure to be of interest to someone wanting to use other variables from that dataset to predict whether someone has that disease or not. 
+This is a big topic on its own but winds up being the gateway into forming hypotheses to help drive the aims of any machine learning project. On the other hand, some people just start building models with variables they believe to be of interest and only later worry about how the data might look. With respect to the above data frame, the idea of Fuel Economy is usually a popular concept which then leads one to look at the **mpg** feature in the data set. Or, when we look at the Pima Indians dataset, we'll see that the "diabetes" column is sure to be of interest to someone wanting to use other variables from that dataset to predict whether someone has that disease or not. 
 
-Not all datasets have a clear cut variable that you are trying to predict.  Sometimes you go on a "fishing expedition" to find interesting variabesl and it's only after working with the data, buildind models, and evaluating them that one comes to an understanding of what variables / features are actually relevant. In the mean time though, doing some plots can be helpful
+Not all data sets have a clear cut variable that you are trying to predict.  Sometimes you go on a "fishing expedition" to find interesting variables and it's only after working with the data, building models, and evaluating them that one comes to an understanding of what variables / features are actually relevant. In the mean time though, doing some plots can be helpful
 
 ### Scatterplots
 
-For contiunuous quantities, things like histograms, scatterplots, strip charts, and dot plots can be useful.  Let's look at a **pairs()** plot which plots each variable in the data frame against all others to see if there are any obvious linear relationships between any of the variables. Some of these variables can be considered as factors or categories (such as cyl, vs, am, gear, and carb) so for now we will exclude them to focus only on the continuous / measured variables.
+For continuous quantities, things like histograms, scatterplots, strip charts, and dot plots can be useful.  Let's look at a **pairs()** plot which plots each variable in the data frame against all others to see if there are any obvious linear relationships between any of the variables. Some of these variables can be considered as factors or categories (such as cyl, vs, am, gear, and carb) so for now we will exclude them to focus only on the continuous / measured variables.
 
 ```{r pairsplot}
 pairs(mtcars, main="Pairs Plot for All Variables")
 ```
 
 
-This plot is rather busy but instructive nonetheless as it confirms the idea that some variables, such as am, vs, cyl, gear are more ordinal or categorical than truly numeric in nature. We could narrow down our plot by looking at just the continuous quantitites. This is also interesting in that we see a number of apparent linear or polynomial style relationships that might benefit from some form on linear modeling. If we are already thinking about how to deal with the **mpg** variable we can see that it is correlated with a number of variables. 
+This plot is rather busy but instructive nonetheless as it confirms the idea that some variables, such as am, vs, cyl, gear are more ordinal or categorical than truly numeric in nature. We could narrow down our plot by looking at just the continuous quantities. This is also interesting in that we see a number of apparent linear or polynomial style relationships that might benefit from some form on linear modeling. If we are already thinking about how to deal with the **mpg** variable we can see that it is correlated with a number of variables. 
 
 ```{r pairsnumeric}
 pairs(mtcars[,c(1,3:7)],
@@ -461,7 +461,7 @@ mtcars %>% mutate(cyl=factor(cyl)) %>%
   geom_boxplot() + theme_bw() + ggtitle("MPG Across Cylinder Groups")
 ```
 
-The same could be done for tranmission types where we can definitely see a difference emerging between MPG for Automatic (0) vs Manual (1) Transmissions. 
+The same could be done for transmission types where we can definitely see a difference emerging between MPG for Automatic (0) vs Manual (1) Transmissions. 
 
 ```{r amplot}
 mtcars %>% mutate(cyl=factor(cyl),am=factor(am,labels=c("Auto","Manual"))) %>% 
@@ -470,7 +470,7 @@ mtcars %>% mutate(cyl=factor(cyl),am=factor(am,labels=c("Auto","Manual"))) %>%
   ggtitle("MPG Across Transmission Types") + xlab("Transmission Type")
 ```
 
-If we wanted to look at above relationships simulatenously we could use something like ggplot to help us. 
+If we wanted to look at above relationships simultaneously we could use something like ggplot to help us. 
 
 ```{r}
 mtcars %>% mutate(cyl=factor(cyl),am=factor(am,labels=c("Auto","Manual"))) %>% 
@@ -495,7 +495,7 @@ mtcars %>% ggplot(aes(x=mpg)) +
   geom_histogram(bins=8,fill="aquamarine",color="black") + 
   theme_classic() + 
   facet_wrap(~factor(am,labels=c("Auto","Manual")),ncol=1) +
-  ggtitle("Distrtibution of MPG By Transmission Type")
+  ggtitle("Distribution of MPG By Transmission Type")
 ```
 
 The larger point of this graph is that we clearly see differences between MPG across the transmission types. 
@@ -724,7 +724,7 @@ split_train_test <- function(prop=.70) {
 
 ```
 
-The first thing to notice is that mutiple calls to the function can yield different RMSE values even without changing the proporiton of the train / test sets. Let's call this function 100 times with the 70/30 split and check the resulting boxplot to see how the RMSE values vary
+The first thing to notice is that multiple calls to the function can yield different RMSE values even without changing the proportion of the train / test sets. Let's call this function 100 times with the 70/30 split and check the resulting boxplot to see how the RMSE values vary
 
 ```{r rmsebox}
 replicate(100,split_train_test()) %>% boxplot()
@@ -746,7 +746,7 @@ myseq <- seq(.6,.8,.05)
 comp_mat <- t(replicate(100,sapply(myseq,function(x) split_train_test(x))))
 colnames(comp_mat) <- as.character(myseq)
 boxplot(comp_mat,ylab="RMSE",xlab="Train / Test Proportion",
-        main="Comparison of Different Train / Test Proprtions")
+        main="Comparison of Different Train / Test Proportions")
 ```
 
 It looks to me like the .6 or .7 split provides the least variation for the RMSE which would be quite useful when estimating out of sample error. While other splits seem to give a lower median RMSE, they have more variation. 
@@ -766,7 +766,7 @@ xgb <- xgboost(data = as.matrix(train_df[,-1]),
                label=train_df[,1],nrounds=25,verbose=0)
 ```
 
-How does this perform in the prediction phase ? It turns out that it's pretty impressive when compared to the humble **lm** function. The question remains though which method is easier to defend if you were challenged ? The **lm** function implements a very well established and well known model whose parameters are well known. So even though XGBosst seems to be good at minimizing the RMSE it might be better to stick with an approach like **lm** even if it performs more poorly. 
+How does this perform in the prediction phase ? It turns out that it's pretty impressive when compared to the humble **lm** function. The question remains though which method is easier to defend if you were challenged ? The **lm** function implements a very well established and well known model whose parameters are well known. So even though XGBoost seems to be good at minimizing the RMSE it might be better to stick with an approach like **lm** even if it performs more poorly. 
 
 ```{r xgpredict}
 xgboost_preds <- predict(xgb,as.matrix(test_df[,-1])) 
@@ -805,7 +805,7 @@ myseq <- seq(.6,.8,.05)
 comp_mat <- t(replicate(100,sapply(myseq,function(x) split_train_test_xg(x))))
 colnames(comp_mat) <- as.character(myseq)
 boxplot(comp_mat,ylab="RMSE",xlab="Train / Test Proportion",
-        main="XGBoost - Comparison of Different Train / Test Proprtions")
+        main="XGBoost - Comparison of Different Train / Test Proportions")
 ```
 
 
@@ -1518,7 +1518,7 @@ The temptation is to select 0.5 as the threshold such that if a returned probabi
 
 ![](./pics/pc.png)
 
-The above represents a perfect classififier wherein we can cleanly distinguish between True Positives and Negatives. Note that, the cutoff point is at 0.5 which represents an ideal case. However, in most situations, what we have is something like this: 
+The above represents a perfect classifier wherein we can cleanly distinguish between True Positives and Negatives. Note that, the cutoff point is at 0.5 which represents an ideal case. However, in most situations, what we have is something like this: 
 
 ![](./pics/tnfp.png)
 
@@ -1675,7 +1675,7 @@ fpr <- my_confusion[2,1] / (my_confusion[2,1] + my_confusion[1,1])
 
 There are more ratios we could compute some of which might be more relevant to our classification issue. In reality, picking the "right" metric is a function of your domain of study. Frequently, the sensitivity and specificity are used in medical testing scenarios as is the false positive rate. But you should search the literature in your area of interest to determine what is commonly used. We could say much more about these metrics but we'll keep it simple for now. 
 
-For now, we'll use both the *True Postive Rate* and the *False Positive Rate*. 
+For now, we'll use both the *True Postie Rate* and the *False Positive Rate*. 
 
 ## Wait. Where Are We ? 
 
@@ -1745,7 +1745,7 @@ It turns out that area under an ROC curve is a measure of the usefulness of a te
 Here is another view of determining how good a ROC curve is:
 
 
-```{r classroc}
+```{r classroc,echo=FALSE}
 plot(x=seq(0,1,.2),y=seq(0,1,.2),
      xlab="False Positive Rate",
      ylab="True Positive Rate",
@@ -1754,6 +1754,8 @@ grid()
 text(0.5,0.5,"Random",cex=1.5,col="orange")
 text(0.3,0.75,"Good",cex=1.5,col="blue")
 text(0.75,0.25,"Bad",cex=1.5,col="red")
+text(0.08,0.90,"Great",cex=1.5,col="green")
+
 ```
 
 
@@ -1839,7 +1841,7 @@ caret::confusionMatrix(glm_label_preds,
 
 ## ROC Curve Summary
 
-The above can be confusing although what you will soon discover is that being able to compute the AUC (Area Under Curve) will be sufficient to judge the quality of a model - well in general it's a good start. The **caret** package can do that for you so you don't need to use the various functions about to find that. You migt want to put up a ROC curve based on some predictions in which case you would still need to use one of the above functions. If you just want to see a basic ROC Curve then take this approach which will give you both the AUC and a ROC Curve alebit it much less "pretty" than the one above. 
+The above can be confusing although what you will soon discover is that being able to compute the AUC (Area Under Curve) will be sufficient to judge the quality of a model - well in general it's a good start. The **caret** package can do that for you so you don't need to use the various functions about to find that. You might want to put up a ROC curve based on some predictions in which case you would still need to use one of the above functions. If you just want to see a basic ROC Curve then take this approach which will give you both the AUC and a ROC Curve albeit it much less "pretty" than the one above. 
 
 ```{r procagain}
 # Use the colAUC function from the caTools package
@@ -2038,7 +2040,7 @@ The function we will use here, **ranger**, has three hyper parameters which coul
 modelLookup("ranger")
 ```
 
-Let's try this to see how it performs va the glm method
+Let's try this to see how it performs via the ranger method
 
 ```{r}
 ctrl <- trainControl(method = "cv", 
@@ -2127,7 +2129,7 @@ str(pm_alt)
 
 ## Addressing Class Imbalance
 
-We have something of a problme in the Pima data. If we look at the number of positive cases vs the negative cases there is an imbalance which might be impacting the construction of our model. We have almost twice as many negative cases as we do positive. It's not clear that this is a problem and if this proportion accurately reflects the prevalence diabetes in a larger population then perhaps we should accept this. However, we might not know the true prevalence either in the Pima population or a more general one. 
+We have something of a problem in the Pima data. If we look at the number of positive cases vs the negative cases there is an imbalance which might be impacting the construction of our model. We have almost twice as many negative cases as we do positive. It's not clear that this is a problem and if this proportion accurately reflects the prevalence diabetes in a larger population then perhaps we should accept this. However, we might not know the true prevalence either in the Pima population or a more general one. 
 
 ```{r pimatab}
 pm %>% count(diabetes)
@@ -2135,7 +2137,7 @@ pm %>% count(diabetes)
 
 What techniques exist to deal with this ? There is the concept of "Sub Sampling" which uses sampling (e.g. bootstrap) to produce a training set that balances out the distribution of cases. This includes **down sampling**, **up sampling**, and **hybrid sampling**. Of course there are packages that do this although the **caret** package itself has some functions to help. We'll present a **down sampling** example. 
 
-Down sampling "randomly subset all the classes in the training set so that their class frequencies match the least prevalent class". In thise case we'll use sampling to create a new training set where the two classes counts are equal. Whether this is advisable is another question altogether but let's see the impact it has on the predictive model. 
+Down sampling "randomly subset all the classes in the training set so that their class frequencies match the least prevalent class". In this case we'll use sampling to create a new training set where the two classes counts are equal. Whether this is advisable is another question altogether but let's see the impact it has on the predictive model. 
 
 
 ```{r downsample1}
@@ -2179,7 +2181,7 @@ colAUC(unbalanced_preds[,2],test$diabetes,plotROC = TRUE)
 
 # Decision Trees
 
-Tree-based methods employ a segmentation strategy that partitions the feature / predictor space into a series of decisions which has the added benefit of being easy to understand. Think of it as a flow chart for making decsions. The viewer of the chart is presented with a diagram that offers outcomes in response to (yes / no) questions (decisions) about important predictors found in the data set. 
+Tree-based methods employ a segmentation strategy that partitions the feature / predictor space into a series of decisions which has the added benefit of being easy to understand. Think of it as a flow chart for making decisions. The viewer of the chart is presented with a diagram that offers outcomes in response to (yes / no) questions (decisions) about important predictors found in the data set. 
 
 ## Advantages
 
@@ -2715,7 +2717,7 @@ A slight improvement over the bagged trees.
 
 ## Boosted Trees
 
-We'll finish off this section with a discussion on boosted trees which represents an extention to random forests. Here is how we have been progressing thus far:
+We'll finish off this section with a discussion on boosted trees which represents an extension to random forests. Here is how we have been progressing thus far:
 
   1) Single Decision Tree
   2) Bagged Decision Trees (Aggregated Trees using all features)
@@ -2836,7 +2838,7 @@ boosted_caret$results[1,]
 
 # Using Methods Other Than lm 
 
-So when considering our inital example of using the **lm** function I think (hope) that I have convinced you that using caret to call lm is the way to go since it generalizes the process of cross fold validation and the presentation of results. It's also quite convenient in that we can use other methods than lm to do some preductions. 
+So when considering our initial example of using the **lm** function I think (hope) that I have convinced you that using caret to call lm is the way to go since it generalizes the process of cross fold validation and the presentation of results. It's also quite convenient in that we can use other methods than lm to do some predictions. 
 
 To that end, let's look at random forests to see if it improves the situation. Note that we aren't, at least at this point, trying to understand the underlying details and subtleties of any of the alternative functions we might use although that is ultimately very important. However, we'll defer the conversation until later. Many people are surprised to learn that random Forests (or even a single Decision Tree) can be used to predict a numeric outcome, but they can be. The advantages of using random Forests include the following:
 
@@ -2941,7 +2943,7 @@ sapply(3:8,make_mtcars_rf)
 
 While this is fine, it would be nice if there were an easier way to handle this process. Besides, if we pick another method (e.g. the **ranger** function) then we have to deal with whatever arguments and hyperparameters that method requires.  
 
-The above is an example of what we would have to do if we didn't have someting like caret to help us try out different values of the **mtry** hyperparameter. As we saw from our earlier work, the model **caret_rf** tried three different values of the **mtry** hyperparameter:
+The above is an example of what we would have to do if we didn't have something like caret to help us try out different values of the **mtry** hyperparameter. As we saw from our earlier work, the model **caret_rf** tried three different values of the **mtry** hyperparameter:
 
 ```{r}
 caret_rf
@@ -2979,11 +2981,11 @@ The process of finding the "right" values for these parameters is generally refe
 
 Just to review - things like coefficients and residuals are parameters that are generated by a call to the **lm** function. They don't actually exist until the function does some work. The **hyperparameters** are specific to whatever algorithm (and supporting R function) you are using. Concepts such as coefficients and intercept, however, are parameters that would be generated in this case by lm.
 
-More generally, what if we wanted to use other functions to do some predicting ? You can check this page for a list of caret supported methods along with any hyperparamters available for tuning. Obviously, if you know the underlying method you can refer to the help page for it to see what paramters exist. 
+More generally, what if we wanted to use other functions to do some predicting ? You can check this page for a list of caret supported methods along with any hyperparamters available for tuning. Obviously, if you know the underlying method you can refer to the help page for it to see what parameters exist. 
 
 ### Multiple Hyperparameters ? 
 
-Let's look at another method for random forests such as the **ranger** function which allages to build trees very rapidly. We can easily call it via the **train** function. If you consult the reference manual for the caret implementation of **ranger** you will see that it supports three hyperparameters: **mtry, splitrule**, and **min.node.size**.
+Let's look at another method for random forests such as the **ranger** function which alleges to build trees very rapidly. We can easily call it via the **train** function. If you consult the reference manual for the caret implementation of **ranger** you will see that it supports three hyperparameters: **mtry, splitrule**, and **min.node.size**.
 
 
 ```{r rangerinoke}
@@ -2996,7 +2998,7 @@ Metrics::rmse(new_test$mpg, predict(caret_ranger,new_test))
 
 ```
 
-And then we can plot these results to get a more intutive view of the output. 
+And then we can plot these results to get a more intuitive view of the output. 
 
 ```{r plotrangerinvoke}
 plot(caret_ranger)
@@ -3283,7 +3285,7 @@ mtcars[,-1][,highcorr]
 
 # Data Pre Processing
 
-ata rarely arrives in a form that is directly suitable for use with a modeling method. There are a number of considerations to make such as how to handle missing data, highly correlated variables, and class imbalances - some categories are over or under represented. Additionally, some variables, also known as "features", will require transformation or will need to be used to create new variables.
+data rarely arrives in a form that is directly suitable for use with a modeling method. There are a number of considerations to make such as how to handle missing data, highly correlated variables, and class imbalances - some categories are over or under represented. Additionally, some variables, also known as "features", will require transformation or will need to be used to create new variables.
 
 ## Types of Pre Processing 
 
@@ -4064,7 +4066,7 @@ str(admissions)
 
 Let's examine this data by determining the number of unique values assumed by each feature. This helps us understand if a variable is a category / factor variable or a continuous quantity. It appears that `admit` takes on only two distinct values and rank assumes only four which suggests that both might be more of a category than a quantity upon which we could perform lots of calculations. 
 
-As it relates to `admit`, this is a `yes / no` assessement and there is no inherent order even though it has been encoded as a 0 or a 1.  This might be something that we might predict with a model.
+As it relates to `admit`, this is a `yes / no` assessment and there is no inherent order even though it has been encoded as a 0 or a 1.  This might be something that we might predict with a model.
 
 We will treat the variables gre and gpa as continuous. The variable rank takes on the values 1 through 4. Institutions with a rank of 1 have the highest prestige, while those with a rank of 4 have the lowest. 
 
