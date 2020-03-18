@@ -1939,9 +1939,9 @@ pm_model_glm <- glm(diabetes ~ .,
 pm_model_fitpreds <- predict(pm_model_glm,test,
                              type="response")
 
-fitpredt <- function(t) ifelse(pm_model_fitpreds > t , "pos","neg")
+fitpredt <- ifelse(pm_model_fitpreds > .385,"pos","neg")
 
-fitpreds <- factor(fitpredt(.4),level=levels(test$diabetes))
+fitpreds <- factor(fitpredt,level=levels(test$diabetes))
 
 caret::confusionMatrix(fitpreds,
                        test$diabetes,
@@ -1958,9 +1958,7 @@ colAUC(pm_model_fitpreds,test$diabetes,plotROC=TRUE)
 
 But wait, we've already been through the whole ROC curve, AUC, confusion matrix route so why would we take a manual approach if we have the **caret** package readily available ? 
 
-We can explore any number methods, implement K Fold Cross Validation,and get feedback on the performance measures all at the same time. Let's reframe our above work using the caret package conveniences. 
-
-We've seen this before in the regression section so we'll dive right in with a realistic example. We want to use Cross Fold validation here. We'll select a metric of "Accuracy" and process the data by centering and scaling it since we have data on different measure scales. 
+We can explore any number methods, implement K Fold Cross Validation,and get feedback on the performance measures all at the same time. Let's reframe our above work using the caret package conveniences. We want to use Cross Fold validation here. 
 
 ```{r logit1}
 ctrl <- trainControl(method = "cv", 
@@ -1969,10 +1967,8 @@ ctrl <- trainControl(method = "cv",
 pm_glm_mod <- train(form = diabetes ~ .,
                     data = train,
                     trControl = ctrl,
-                    metric = "Accuracy",
                     method = "glm",
-                    family = "binomial",
-                    preProc = c("center", "scale"))
+                    family = "binomial")
 pm_glm_mod
 pm_glm_mod$results
 ```
@@ -1983,6 +1979,8 @@ So we get an estimate of a 77% accuracy rate when the model is applied to out of
 pm_glm_pred_labels <- predict(pm_glm_mod,test)
 confusionMatrix(pm_glm_pred_labels,test$diabetes)
 ```
+
+Actually not too bad. 
 
 The **train** function provides is with an object that contains lots of information but in no way interferes with the results of the glm model. It's as if you had built it using the standalone glm function which means that you can easily examine the model diagnostics:
 
@@ -2002,7 +2000,6 @@ We can certainly change the scoring metric to prioritize, for example, the area 
 ctrl <- trainControl(method = "cv", 
                      number = 5,
                      classProbs = T,
-                     savePredictions = T,   
                      summaryFunction = twoClassSummary)
 
 pm_glm_mod <- train(form = diabetes ~ .,
@@ -2010,8 +2007,7 @@ pm_glm_mod <- train(form = diabetes ~ .,
                     trControl = ctrl,
                     metric = "ROC",
                     method = "glm",
-                    family = "binomial",
-                    preProc = c("center", "scale"))
+                    family = "binomial")
 
 pm_glm_mod$results
 ```

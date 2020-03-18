@@ -490,9 +490,9 @@ corresponds to a “complexity parameter” which influences how the tree splits
 <h3><span class="header-section-number">8.3.2</span> Tree Splitting</h3>
 <p>The resulting tree can be thought of as an upside down tree with the root at the top. The “trunk” proceeds downward and splits into subsets based on some decision (hence the word “decision” in the title). When classifying data the idea is to segment or partition data into groups/regions where each group contains or represents a single class (“yes/no”, “positive/negative”).</p>
 <p>These groups or regions would represent a “pure” region. This is not always possible so a best effort is made. These regions are separated by decision boundaries which are used to make decisions. We’ll plot some example data to illustrate the case.</p>
-<p><img src="biosml_files/figure-html/unnamed-chunk-63-1.png" width="672" /></p>
-<p><img src="biosml_files/figure-html/unnamed-chunk-64-1.png" width="672" /></p>
-<p><img src="biosml_files/figure-html/unnamed-chunk-65-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-44-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-45-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-46-1.png" width="672" /></p>
 </div>
 </div>
 <div id="gini-index" class="section level2">
@@ -579,7 +579,7 @@ RMSE = \sqrt\frac{\sum_i^n(P_i-O_i)^2}{n}
 <div class="sourceCode" id="cb306"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb306-1" data-line-number="1"><span class="co"># Plot the tree model</span></a>
 <a class="sourceLine" id="cb306-2" data-line-number="2"><span class="kw">rpart.plot</span>(<span class="dt">x =</span> mass_pima_mod, </a>
 <a class="sourceLine" id="cb306-3" data-line-number="3">           <span class="dt">yesno =</span> <span class="dv">2</span>, <span class="dt">type =</span> <span class="dv">0</span>, <span class="dt">extra =</span> <span class="dv">0</span>)</a></code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-67-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-48-1.png" width="672" /></p>
 <p>Let’s compute the RMSE for this model.</p>
 <div class="sourceCode" id="cb307"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb307-1" data-line-number="1"><span class="co"># Generate predictions on a test set</span></a>
 <a class="sourceLine" id="cb307-2" data-line-number="2">pred &lt;-<span class="st"> </span><span class="kw">predict</span>(<span class="dt">object =</span> mass_pima_mod,   <span class="co"># model object </span></a>
@@ -608,7 +608,7 @@ RMSE = \sqrt\frac{\sum_i^n(P_i-O_i)^2}{n}
 <p>In effect, it is doing some work for you so you don’t have to. At the end of the run it will produce a table for inspection. The results of this table can then be used to “prune” the tree model to get a “better” tree - one that performs better than an “un pruned” tree. Let’s look at the pima mass model:</p>
 <div class="sourceCode" id="cb309"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb309-1" data-line-number="1"><span class="co"># You can plot the modelling object</span></a>
 <a class="sourceLine" id="cb309-2" data-line-number="2"><span class="kw">plot</span>(mass_pima_mod)</a></code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-69-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-50-1.png" width="672" /></p>
 <div class="sourceCode" id="cb310"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb310-1" data-line-number="1"><span class="co"># You can inspect the table manually</span></a>
 <a class="sourceLine" id="cb310-2" data-line-number="2">mass_pima_mod<span class="op">$</span>cptable</a></code></pre></div>
 <pre><code>##            CP nsplit rel error    xerror       xstd
@@ -632,7 +632,7 @@ RMSE = \sqrt\frac{\sum_i^n(P_i-O_i)^2}{n}
 <a class="sourceLine" id="cb313-3" data-line-number="3">                          </a>
 <a class="sourceLine" id="cb313-4" data-line-number="4"><span class="co"># Plot the optimized model</span></a>
 <a class="sourceLine" id="cb313-5" data-line-number="5"><span class="kw">rpart.plot</span>(mass_pima_mod_opt, <span class="dt">yesno =</span> <span class="dv">2</span>, <span class="dt">type =</span> <span class="dv">0</span>, <span class="dt">extra =</span> <span class="dv">0</span>)</a></code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-71-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-52-1.png" width="672" /></p>
 <p>Does this optimized model perform any better ? Not really, because the optimal CP value turned out to be 0.01 which is actually the same as the default.</p>
 <div class="sourceCode" id="cb314"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb314-1" data-line-number="1"><span class="co"># Generate predictions on a test set</span></a>
 <a class="sourceLine" id="cb314-2" data-line-number="2">pred &lt;-<span class="st"> </span><span class="kw">predict</span>(<span class="dt">object =</span> mass_pima_mod_opt,   <span class="co"># model object </span></a>
@@ -797,7 +797,7 @@ RMSE = \sqrt\frac{\sum_i^n(P_i-O_i)^2}{n}
 <a class="sourceLine" id="cb327-32" data-line-number="32">}</a></code></pre></div>
 <p>Now check all of the accuracy estimates and then average them. Remember this is supposed to help us to better estimate the out of sample error.</p>
 <div class="sourceCode" id="cb328"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb328-1" data-line-number="1"><span class="kw">boxplot</span>(aucval)</a></code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-76-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-57-1.png" width="672" /></p>
 <div class="sourceCode" id="cb329"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb329-1" data-line-number="1"><span class="kw">mean</span>(aucval)</a></code></pre></div>
 <pre><code>## [1] 0.8217163</code></pre>
 <p>Now we’ll compare this to the function called “bagging” from the <strong>ipred</strong> package which does bagged trees directly.</p>
@@ -851,7 +851,7 @@ RMSE = \sqrt\frac{\sum_i^n(P_i-O_i)^2}{n}
 ## [5,] 0.2987013 0.2144928 0.4484536
 ## [6,] 0.2929825 0.1934605 0.4729064</code></pre>
 <div class="sourceCode" id="cb339"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb339-1" data-line-number="1"><span class="kw">plot</span>(pm_rf_model)</a></code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-79-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-60-1.png" width="672" /></p>
 <p>Do some predictions with this model.</p>
 <div class="sourceCode" id="cb340"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb340-1" data-line-number="1">rf_pred &lt;-<span class="st"> </span><span class="kw">predict</span>(pm_rf_model,</a>
 <a class="sourceLine" id="cb340-2" data-line-number="2">                   <span class="dt">newdata =</span> pm_test, <span class="dt">type=</span><span class="st">&quot;prob&quot;</span>)</a>
@@ -940,8 +940,7 @@ RMSE = \sqrt\frac{\sum_i^n(P_i-O_i)^2}{n}
 ##   0.04807692  0.6637424  0.8027273  0.4600000
 ##   0.17307692  0.5006364  0.8518182  0.1600000
 ## 
-## ROC was used to select the optimal model using the
-##  largest value.
+## ROC was used to select the optimal model using the largest value.
 ## The final value used for the model was cp = 0.04807692.</code></pre>
 <p>Next, we try out the bagging approach</p>
 <div class="sourceCode" id="cb349"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb349-1" data-line-number="1">bagging_caret &lt;-<span class="st">    </span><span class="kw">train</span>(diabetes <span class="op">~</span><span class="st"> </span>.,</a>
@@ -986,8 +985,7 @@ RMSE = \sqrt\frac{\sum_i^n(P_i-O_i)^2}{n}
 ##   5     0.8098939  0.8527273  0.5533333
 ##   8     0.7989091  0.8527273  0.5333333
 ## 
-## ROC was used to select the optimal model using the
-##  largest value.
+## ROC was used to select the optimal model using the largest value.
 ## The final value used for the model was mtry = 2.</code></pre>
 <p>And finally, the boosted approach:</p>
 <div class="sourceCode" id="cb353"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb353-1" data-line-number="1">boosted_caret &lt;-<span class="st">    </span><span class="kw">train</span>(diabetes <span class="op">~</span><span class="st"> </span>.,</a>
@@ -1001,31 +999,25 @@ RMSE = \sqrt\frac{\sum_i^n(P_i-O_i)^2}{n}
 <div class="sourceCode" id="cb354"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb354-1" data-line-number="1"><span class="kw">cat</span>(<span class="st">&quot;Results for Rpart </span><span class="ch">\n</span><span class="st">&quot;</span>)</a></code></pre></div>
 <pre><code>## Results for Rpart</code></pre>
 <div class="sourceCode" id="cb356"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb356-1" data-line-number="1">rpart_caret<span class="op">$</span>results[<span class="dv">1</span>,]</a></code></pre></div>
-<pre><code>##           cp       ROC      Sens      Spec     ROCSD
-## 1 0.02884615 0.6598333 0.8027273 0.4166667 0.1334386
-##       SensSD    SpecSD
-## 1 0.09554349 0.2206892</code></pre>
+<pre><code>##           cp       ROC      Sens      Spec     ROCSD     SensSD    SpecSD
+## 1 0.02884615 0.6598333 0.8027273 0.4166667 0.1334386 0.09554349 0.2206892</code></pre>
 <div class="sourceCode" id="cb358"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb358-1" data-line-number="1"><span class="kw">cat</span>(<span class="st">&quot;Results for Bagging </span><span class="ch">\n</span><span class="st">&quot;</span>)</a></code></pre></div>
 <pre><code>## Results for Bagging</code></pre>
 <div class="sourceCode" id="cb360"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb360-1" data-line-number="1">bagging_caret<span class="op">$</span>results[<span class="dv">1</span>,]</a></code></pre></div>
-<pre><code>##   parameter       ROC      Sens      Spec      ROCSD
-## 1      none 0.7810152 0.8336364 0.5566667 0.09758653
-##       SensSD    SpecSD
-## 1 0.07879371 0.2096735</code></pre>
+<pre><code>##   parameter       ROC      Sens      Spec      ROCSD     SensSD    SpecSD
+## 1      none 0.7810152 0.8336364 0.5566667 0.09758653 0.07879371 0.2096735</code></pre>
 <div class="sourceCode" id="cb362"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb362-1" data-line-number="1"><span class="kw">cat</span>(<span class="st">&quot;Results for Random Forest </span><span class="ch">\n</span><span class="st">&quot;</span>)</a></code></pre></div>
 <pre><code>## Results for Random Forest</code></pre>
 <div class="sourceCode" id="cb364"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb364-1" data-line-number="1">rf_caret<span class="op">$</span>results[<span class="dv">1</span>,]</a></code></pre></div>
-<pre><code>##   mtry       ROC      Sens Spec     ROCSD    SensSD
-## 1    2 0.8137576 0.8636364 0.55 0.1457962 0.1036523
-##      SpecSD
-## 1 0.2389535</code></pre>
+<pre><code>##   mtry       ROC      Sens Spec     ROCSD    SensSD    SpecSD
+## 1    2 0.8137576 0.8636364 0.55 0.1457962 0.1036523 0.2389535</code></pre>
 <div class="sourceCode" id="cb366"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb366-1" data-line-number="1"><span class="kw">cat</span>(<span class="st">&quot;Results for Boosted Trees </span><span class="ch">\n</span><span class="st">&quot;</span>)</a></code></pre></div>
 <pre><code>## Results for Boosted Trees</code></pre>
 <div class="sourceCode" id="cb368"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb368-1" data-line-number="1">boosted_caret<span class="op">$</span>results[<span class="dv">1</span>,]</a></code></pre></div>
-<pre><code>##   shrinkage interaction.depth n.minobsinnode n.trees   ROC
-## 1       0.1                 1             10      50 0.799
-##        Sens      Spec    ROCSD   SensSD    SpecSD
-## 1 0.8445455 0.5333333 0.106574 0.109967 0.2591534</code></pre>
+<pre><code>##   shrinkage interaction.depth n.minobsinnode n.trees   ROC      Sens
+## 1       0.1                 1             10      50 0.799 0.8445455
+##        Spec    ROCSD   SensSD    SpecSD
+## 1 0.5333333 0.106574 0.109967 0.2591534</code></pre>
 </div>
 </div>
             </section>
