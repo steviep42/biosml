@@ -2118,7 +2118,7 @@ Now, what would have happened had we been stuck with the version of the data fra
 str(pm)
 ```
 
-While this is goog to go, we could have processed it as follows which is something that you might have to do in other languages. This is a form of one hot encoding although the values in this case occupy one column since that is the column to be predicted. 
+While this is good to go, we could have processed it as follows which is something that you might have to do in other languages. This is a form of one hot encoding although the values in this case occupy one column since that is the column to be predicted. 
 
 ```{r}
 pm_alt <- pm %>% 

@@ -418,7 +418,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## The final value used for the model was mtry = 6.</code></pre>
 <p>As a matter of fact we can plot this model and it will show us something interesting. In particular, we now see that using values less than 6 predictors / columns / features results in lower RMSE. If we use more, than the RMSE goes up. This is the power of methods that use hyperparamters. If we move through a number of values for the <strong>mtry</strong> then perhaps we can find the best value to get the best result.</p>
 <div class="sourceCode" id="cb389"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb389-1" data-line-number="1"><span class="kw">plot</span>(caret_rf)</a></code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-66-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-70-1.png" width="672" /></p>
 <p>Telling <strong>caret</strong> to use more values of <strong>mtry</strong> is possible. This will explicitly try all values from 1 - 10 inclusive. Note that the model gets built for each value of <strong>mtry</strong>. This causes the model building process to take longer than it normally would.</p>
 <div class="sourceCode" id="cb390"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb390-1" data-line-number="1">caret_rf &lt;-<span class="st"> </span><span class="kw">train</span>(mpg <span class="op">~</span><span class="st"> </span>.,</a>
 <a class="sourceLine" id="cb390-2" data-line-number="2">                  <span class="dt">data =</span> new_train,</a>

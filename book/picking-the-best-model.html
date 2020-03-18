@@ -467,7 +467,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## Performance metrics: MAE, RMSE, Rsquared 
 ## Time estimates for: everything, final model fit</code></pre>
 <div class="sourceCode" id="cb429"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb429-1" data-line-number="1"><span class="kw">dotplot</span>(results)</a></code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-69-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-73-1.png" width="672" /></p>
 </div>
 <div id="model-performance" class="section level2">
 <h2><span class="header-section-number">10.4</span> Model Performance</h2>
@@ -522,7 +522,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## GLMNET 0.6034 0.6498            -0.02493
 ## RANGER 0.4937 0.3675   0.5323</code></pre>
 <div class="sourceCode" id="cb442"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb442-1" data-line-number="1"><span class="kw">dotplot</span>(difs)</a></code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-70-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-74-1.png" width="672" /></p>
 </div>
 <div id="feature-selection" class="section level2">
 <h2><span class="header-section-number">10.5</span> Feature Selection</h2>
@@ -562,7 +562,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## The top 3 variables (out of 3):
 ##    wt, am, drat</code></pre>
 <div class="sourceCode" id="cb445"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb445-1" data-line-number="1"><span class="kw">plot</span>(results,<span class="dt">type=</span><span class="kw">c</span>(<span class="st">&quot;o&quot;</span>,<span class="st">&quot;g&quot;</span>))</a></code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-71-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-75-1.png" width="672" /></p>
 <p>What we get back is some idea about the important features. We could then build a model with caret that uses only these features to see if the suggested RMSE value mentioned in the rfe process matches.</p>
 </div>
 </div>
