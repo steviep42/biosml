@@ -1324,7 +1324,7 @@ my_lm$control$indexOut
 
 ## One Size Fits All
 
-So this is where things get interesting. If we wanted to use another method such as Random Forests, we do NOT have to change much at all. We just provide the name of the desired method which in this case, is **ranger** which is a function we've already seen. 
+So this is where things get interesting. If we wanted to use another method such as Random Forests, we do NOT have to change much at all. We just provide the name of the desired method which in this case, is **ranger** which is a function to create Random Forests. 
 
 
 ```{r range11}
@@ -1344,6 +1344,34 @@ my_ranger
 
 Metrics::rmse(Test$mpg,predict(my_ranger,Test))
 ```
+
+## Alternative Calling Sequence
+
+It is native to R to want to use a formula when specifying the goal of the modeling process. We've been using something along the lines of "mpg ~ ." because R uses this format for many different statistical functions. However, it is also possible to specify the predictor variables as X and the predicted variable as Y. In the above example, this would look like:
+
+
+```{r alterna}
+my_ctrl <- trainControl(
+    method = "cv", 
+    number = 3,
+    verboseIter = FALSE 
+  )
+
+my_ranger <- train(
+  x = Train[,-1],    # Everything BUT the MPG column
+  y = Train[,1],     # The MPG column
+  method = "ranger",
+  tuneLength = 6,    
+  trControl = my_ctrl
+)
+
+my_ranger
+
+Metrics::rmse(Test$mpg,predict(my_ranger,Test))
+```
+
+
+
 
 ## Hyperparameters 
 
@@ -1433,32 +1461,6 @@ my_ranger
 
 Metrics::rmse(Test$mpg,predict(my_ranger,Test))
 
-plot(my_ranger)
-```
-
-## Alternative Calling Sequence
-
-It is native to R to want to use a formula when specifying the goal of the modeling process. We've been using something along the lines of "mpg ~ ." because R uses this format for many different statistical functions. However, it is also possible to specify the predictor variables as X and the predicted variable as Y. In the above example, this would look like:
-
-
-```{r alterna}
-my_ctrl <- trainControl(
-    method = "cv", 
-    number = 3,
-    verboseIter = FALSE 
-  )
-
-my_ranger <- train(
-  x = Train[,-1],    # Everything BUT the MPG column
-  y = Train[,1],     # The MPG column
-  method = "ranger",
-  tuneLength = 6,    
-  trControl = my_ctrl
-)
-
-my_ranger
-
-Metrics::rmse(Test$mpg,predict(my_ranger,Test))
 plot(my_ranger)
 ```
 
