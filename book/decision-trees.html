@@ -491,9 +491,9 @@ corresponds to a “complexity parameter” which influences how the tree splits
 <h3><span class="header-section-number">8.3.2</span> Tree Splitting</h3>
 <p>The resulting tree can be thought of as an upside down tree with the root at the top. The “trunk” proceeds downward and splits into subsets based on some decision (hence the word “decision” in the title). When classifying data the idea is to segment or partition data into groups/regions where each group contains or represents a single class (“yes/no”, “positive/negative”).</p>
 <p>These groups or regions would represent a “pure” region. This is not always possible so a best effort is made. These regions are separated by decision boundaries which are used to make decisions. We’ll plot some example data to illustrate the case.</p>
-<p><img src="biosml_files/figure-html/unnamed-chunk-39-1.png" width="672" /></p>
-<p><img src="biosml_files/figure-html/unnamed-chunk-40-1.png" width="672" /></p>
-<p><img src="biosml_files/figure-html/unnamed-chunk-41-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-47-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-48-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-49-1.png" width="672" /></p>
 </div>
 </div>
 <div id="gini-index" class="section level2">
@@ -580,7 +580,7 @@ RMSE = \sqrt\frac{\sum_i^n(P_i-O_i)^2}{n}
 <div class="sourceCode" id="cb316"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb316-1" data-line-number="1"><span class="co"># Plot the tree model</span></a>
 <a class="sourceLine" id="cb316-2" data-line-number="2"><span class="kw">rpart.plot</span>(<span class="dt">x =</span> mass_pima_mod, </a>
 <a class="sourceLine" id="cb316-3" data-line-number="3">           <span class="dt">yesno =</span> <span class="dv">2</span>, <span class="dt">type =</span> <span class="dv">0</span>, <span class="dt">extra =</span> <span class="dv">0</span>)</a></code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-43-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-51-1.png" width="672" /></p>
 <p>Let’s compute the RMSE for this model.</p>
 <div class="sourceCode" id="cb317"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb317-1" data-line-number="1"><span class="co"># Generate predictions on a test set</span></a>
 <a class="sourceLine" id="cb317-2" data-line-number="2">pred &lt;-<span class="st"> </span><span class="kw">predict</span>(<span class="dt">object =</span> mass_pima_mod,   <span class="co"># model object </span></a>
@@ -608,8 +608,8 @@ RMSE = \sqrt\frac{\sum_i^n(P_i-O_i)^2}{n}
 <p>There are other hyper parameters but we can start with these. The <strong>rpart.control</strong> function will do something called cross validation which involves repeatedly running the <strong>rpart</strong> some number of times (10 by default) while internally specifying different values for the above mentioned hyper parameters.</p>
 <p>In effect, it is doing some work for you so you don’t have to. At the end of the run it will produce a table for inspection. The results of this table can then be used to “prune” the tree model to get a “better” tree - one that performs better than an “un pruned” tree. Let’s look at the pima mass model:</p>
 <div class="sourceCode" id="cb319"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb319-1" data-line-number="1"><span class="co"># You can plot the modelling object</span></a>
-<a class="sourceLine" id="cb319-2" data-line-number="2"><span class="kw">plot</span>(mass_pima_mod)</a></code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-45-1.png" width="672" /></p>
+<a class="sourceLine" id="cb319-2" data-line-number="2"><span class="kw">rpart.plot</span>(mass_pima_mod,<span class="dt">yesno =</span> <span class="dv">2</span>, <span class="dt">type =</span> <span class="dv">0</span>, <span class="dt">extra =</span> <span class="dv">0</span>)</a></code></pre></div>
+<p><img src="biosml_files/figure-html/unnamed-chunk-53-1.png" width="672" /></p>
 <div class="sourceCode" id="cb320"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb320-1" data-line-number="1"><span class="co"># You can inspect the table manually</span></a>
 <a class="sourceLine" id="cb320-2" data-line-number="2">mass_pima_mod<span class="op">$</span>cptable</a></code></pre></div>
 <pre><code>##            CP nsplit rel error    xerror       xstd
@@ -633,7 +633,7 @@ RMSE = \sqrt\frac{\sum_i^n(P_i-O_i)^2}{n}
 <a class="sourceLine" id="cb323-3" data-line-number="3">                          </a>
 <a class="sourceLine" id="cb323-4" data-line-number="4"><span class="co"># Plot the optimized model</span></a>
 <a class="sourceLine" id="cb323-5" data-line-number="5"><span class="kw">rpart.plot</span>(mass_pima_mod_opt, <span class="dt">yesno =</span> <span class="dv">2</span>, <span class="dt">type =</span> <span class="dv">0</span>, <span class="dt">extra =</span> <span class="dv">0</span>)</a></code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-47-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-55-1.png" width="672" /></p>
 <p>Does this optimized model perform any better ? Not really, because the optimal CP value turned out to be 0.01 which is actually the same as the default.</p>
 <div class="sourceCode" id="cb324"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb324-1" data-line-number="1"><span class="co"># Generate predictions on a test set</span></a>
 <a class="sourceLine" id="cb324-2" data-line-number="2">pred &lt;-<span class="st"> </span><span class="kw">predict</span>(<span class="dt">object =</span> mass_pima_mod_opt,   <span class="co"># model object </span></a>
@@ -798,7 +798,7 @@ RMSE = \sqrt\frac{\sum_i^n(P_i-O_i)^2}{n}
 <a class="sourceLine" id="cb337-32" data-line-number="32">}</a></code></pre></div>
 <p>Now check all of the accuracy estimates and then average them. Remember this is supposed to help us to better estimate the out of sample error.</p>
 <div class="sourceCode" id="cb338"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb338-1" data-line-number="1"><span class="kw">boxplot</span>(aucval)</a></code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-52-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-60-1.png" width="672" /></p>
 <div class="sourceCode" id="cb339"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb339-1" data-line-number="1"><span class="kw">mean</span>(aucval)</a></code></pre></div>
 <pre><code>## [1] 0.8217163</code></pre>
 <p>Now we’ll compare this to the function called “bagging” from the <strong>ipred</strong> package which does bagged trees directly.</p>
@@ -852,7 +852,7 @@ RMSE = \sqrt\frac{\sum_i^n(P_i-O_i)^2}{n}
 ## [5,] 0.2987013 0.2144928 0.4484536
 ## [6,] 0.2929825 0.1934605 0.4729064</code></pre>
 <div class="sourceCode" id="cb349"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb349-1" data-line-number="1"><span class="kw">plot</span>(pm_rf_model)</a></code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-55-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-63-1.png" width="672" /></p>
 <p>Do some predictions with this model.</p>
 <div class="sourceCode" id="cb350"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb350-1" data-line-number="1">rf_pred &lt;-<span class="st"> </span><span class="kw">predict</span>(pm_rf_model,</a>
 <a class="sourceLine" id="cb350-2" data-line-number="2">                   <span class="dt">newdata =</span> pm_test, <span class="dt">type=</span><span class="st">&quot;prob&quot;</span>)</a>
@@ -1015,10 +1015,10 @@ RMSE = \sqrt\frac{\sum_i^n(P_i-O_i)^2}{n}
 <div class="sourceCode" id="cb376"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb376-1" data-line-number="1"><span class="kw">cat</span>(<span class="st">&quot;Results for Boosted Trees </span><span class="ch">\n</span><span class="st">&quot;</span>)</a></code></pre></div>
 <pre><code>## Results for Boosted Trees</code></pre>
 <div class="sourceCode" id="cb378"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb378-1" data-line-number="1">boosted_caret<span class="op">$</span>results[<span class="dv">1</span>,]</a></code></pre></div>
-<pre><code>##   shrinkage interaction.depth n.minobsinnode n.trees   ROC      Sens      Spec    ROCSD
-## 1       0.1                 1             10      50 0.799 0.8445455 0.5333333 0.106574
-##     SensSD    SpecSD
-## 1 0.109967 0.2591534</code></pre>
+<pre><code>##   shrinkage interaction.depth n.minobsinnode n.trees   ROC      Sens      Spec
+## 1       0.1                 1             10      50 0.799 0.8445455 0.5333333
+##      ROCSD   SensSD    SpecSD
+## 1 0.106574 0.109967 0.2591534</code></pre>
 </div>
 </div>
             </section>

@@ -1371,8 +1371,6 @@ Metrics::rmse(Test$mpg,predict(my_ranger,Test))
 ```
 
 
-
-
 ## Hyperparameters 
 
 This model returns more information than say the **lm** function because this method uses something called "hyperparameters" which are arguments to a given method that gets set before you call the method. In this case there are two hyperparameters called **mtry** and **splitrule** that assume default variables if we don't supply values.
@@ -1413,7 +1411,6 @@ Metrics::rmse(Test$mpg,predict(my_rf,Test))
 If you have a questions about what hyper parameters can be tuned for a given method then you can refer to the online [caret documentation](https://topepo.github.io/caret/available-models.html) Here is a screenshot of the table of supported models and associated tuning parameters. 
 
 ![](./pics/avmodels.png)
-
 
 Another way to do this within the caret package itself is that if you already know the abbreviation for the specific method you wish to use (e.g. "rf") then you can use some built in functions to help you. Remember that **caret** does not replace or rewrite functions, it merely provides a nice wrapper around them. Since each underlying model is it a standalone R package and associated set of functions you can always call them directly. 
 
@@ -2498,7 +2495,7 @@ In effect, it is doing some work for you so you don't have to. At the end of the
 
 ```{r}
 # You can plot the modelling object
-plot(mass_pima_mod)
+rpart.plot(mass_pima_mod,yesno = 2, type = 0, extra = 0)
 
 # You can inspect the table manually
 mass_pima_mod$cptable
