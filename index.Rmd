@@ -1261,8 +1261,8 @@ We could also repeat the 5 times CV validation an arbitrary number of times to g
 
 ```{r}
 control <- trainControl(method = "repeatedcv",  # Repeated Cross Fold
-                        number  = 3,          # 5 Folds
-                        repeats = 3,         # Repeats
+                        number  = 3,          # 3 Folds
+                        repeats = 3,          # Repeats
                         verboseIter = FALSE)  # Verbose
 
 set.seed(123) # Make this example reproducible
@@ -1276,6 +1276,51 @@ my_lm <- train(
 
 Metrics::rmse(Test$mpg,predict(my_lm,Test))
 ```
+
+## Reproducible Results
+
+So this is where using a package like **caret** really pays off in that not only does it provide a nice, consistent front end for a large number of methods, it gives you back an object containing all of the results plus all thing used to provide the final estimate on out of band error. 
+
+While digging in deeper into the object can be scary, it does pay off to spend time looking at it. Think of it this way, if you don't use something like caret then you will have to write your own loops to keep track of, for example, the RMSE resulting from each train/test pair in a cross fold validation. This of course is fine but caret makes it easier. Let's study the previous example in greater detail.
+
+To get the best result (e.g. RMSE, R-Squared, MAE) directly:
+
+```{r bestresult}
+my_lm$result
+```
+
+To see the results coming from each train / test pair using to build the final Out of Sample Error estimate. Why are there 9 rows here ? 
+
+```{r datacheck}
+my_lm$resample
+```
+
+Given that this is the underlying information that was used to build the ultimate out of sample error estimate, we should be able to take the average of the RMSE column which should match what we get in the final result. 
+
+```{r avgrmse}
+# Access the RMSE column
+my_lm$resample[,'RMSE']
+
+# What is the average
+my_lm$resample[,'RMSE'] %>% mean
+
+# Does it match what we get in the final result ?
+my_lm$results[,'RMSE']
+
+```
+
+The object is even more complete in that it provides you with access to the underlying sampled data used to generate the intermediate train / test and final results. The following will give us the row numbers of the training data used per iteration.
+
+```{r indexin}
+my_lm$control$index
+```
+
+The following will give us the row numbers of the corresponding test data used per iteration. The general idea here is that you could recreate the final result by writing your own code if you were asked to do so.
+
+```{r indexout}
+my_lm$control$indexOut
+```
+
 
 ## One Size Fits All
 
