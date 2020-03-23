@@ -3096,8 +3096,9 @@ If we are using a method that has hyperparamters then maybe we want an intermedi
 
 # Picking The Best Model
 
-It's always of interest to compare the results of one model to another (or even more) to determine the "best" model to share with some else. On the other hand, it's easy to get carried away with trying out different models in an attempt to make performance improvements especially when the might only be marginally better. It's also wise to pick methods that you know how to reasonably defend over those that you can't. For example, picking a Neural Net model might result in better accuracy although if you are challenged on the results in some way, would you be able to address all concerns ? If a logistic regression model resulted in a comparable result then you might should stick with that result since it's a well-known method that few would question. 
+It's always of interest to compare the results of one model to another (or even more) to determine the "best" model to share with some else. On the other hand, it's easy to get carried away with trying out different models in an attempt to make performance improvements especially when the might only be marginally better. 
 
+It's also wise to pick methods that you know how to reasonably defend over those that you can't. For example, picking a Neural Net model might result in better accuracy although if you are challenged on the results in some way, would you be able to address all concerns ? If a logistic regression model resulted in a comparable result then you might should stick with that result since it's a well-known method that few would question. 
 
 ## An Example 
 
@@ -3119,14 +3120,12 @@ control <- trainControl(method = "cv",       # Cross Fold
                         verboseIter = FALSE)  # Verbose
 # Train the model
 
-#set.seed(123) # Make this example reproducible
-my_lm <- train(
-  mpg ~ wt, 
-  example_Train,
-  method = "lm",
-  preProc = c("center","scale"),
-  trControl = control
-)
+set.seed(123) # Make this example reproducible
+my_lm <- train(mpg ~ wt, 
+               example_Train,
+               method = "lm",
+               preProc = c("center","scale"),
+               trControl = control)
 
 my_lm
 plot(mpg~wt,data=example_Train,main="Train Data")
@@ -3134,7 +3133,6 @@ abline(lm_fit$finalModel,lty=2)
 ```
 
 So does this model perform better than a model built using a support vector machine ? It's easy to generate such a model by reusing much of the same information from above. 
-
 
 This is arguably one of the best features of the **caret** package as it helps us execute any number of models and then assess their performance on new data. Let's look at our models thus far. In fact, it's so easy to generate them with caret, we'll just make them here again. Let's set a common **trainControl** list. We'll use the **Train** and **Test** sets from above.
 
@@ -3180,7 +3178,7 @@ cat("RMSE for smv is: ",Metrics::rmse(example_Test$mpg,svm_preds),"\n")
 
 ## More Comparisons
 
-Let's keep going. We'll use some more methods to see how they perform on the same data. The cool think about caret is that we can reuse the same control object and seeds to facilitate reproducibility. We'll pick two other methods in addition to the ones we have to see how we can compare them all. In reality, this would be just the beginning of the process, not the end since if we pick a method with hyperparameters then we would want to tune those. 
+Let's keep going. We'll use some more methods to see how they perform on the same data. The cool thing about caret is that we can reuse the same control object and seeds to facilitate reproducibility. We'll pick two other methods in addition to the ones we have to see how we can compare them all. In reality, this would be just the beginning of the process, not the end since if we pick a method with hyperparameters then we would want to tune those. 
 
 
 ```{r pickthe5}
@@ -3271,11 +3269,12 @@ summary(difs)
 dotplot(difs)
 ```
 
+
 ## Feature Selection
 
 Features are the columns in your data set. Up until now we have not been concerned with the formula being specified choosing rather to focus on how to run models with the caret package. However, knowing how to select the "best" subset of features is important since an overspcified formula might result in very long training times and, even then, it might not be that good of a model for predicting out of sample error. Of course, various methods have ways to deal with this problem. 
 
-For example, Stepwise regression is one way to look at combinations of predictor variables to arrive at the optimal feature set according to some score (e.g. AIC, BIC). This process is implemented recursively. However, none of this should be a substitute for solid intuition about the data or knowing how features vary with each other (if at all). Still, packages such as caret have ways to assist with feature selection. We'll look at a few here:
+For example, Stepwise regression is one way to look at combinations of predictor variables to arrive at the optimal feature set according to some score (e.g. AIC, BIC). This process is implemented recursively. However, none of this should be a substitute for solid intuition about the data or knowing how features vary with each other (if at all). Still, packages such as caret have ways to assist with feature selection. 
 
 ### Recursive Feature Elimination
 
@@ -3318,18 +3317,10 @@ correlations <- cor(mtcars[,-1])
 mtcars[,-1][,highcorr]
 ```
 
-### Feature Importance
-
-```{r}
-
-```
-
-
-
 
 # Data Pre Processing
 
-data rarely arrives in a form that is directly suitable for use with a modeling method. There are a number of considerations to make such as how to handle missing data, highly correlated variables, and class imbalances - some categories are over or under represented. Additionally, some variables, also known as "features", will require transformation or will need to be used to create new variables.
+Data rarely arrives in a form that is directly suitable for use with a modeling method. There are a number of considerations to make such as how to handle missing data, highly correlated variables, and class imbalances - some categories are over or under represented. Additionally, some variables, also known as "features", will require transformation or will need to be used to create new variables.
 
 ## Types of Pre Processing 
 

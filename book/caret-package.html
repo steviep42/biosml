@@ -239,7 +239,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="10.5" data-path="picking-the-best-model.html"><a href="picking-the-best-model.html#feature-selection"><i class="fa fa-check"></i><b>10.5</b> Feature Selection</a><ul>
 <li class="chapter" data-level="10.5.1" data-path="picking-the-best-model.html"><a href="picking-the-best-model.html#recursive-feature-elimination"><i class="fa fa-check"></i><b>10.5.1</b> Recursive Feature Elimination</a></li>
 <li class="chapter" data-level="10.5.2" data-path="picking-the-best-model.html"><a href="picking-the-best-model.html#redundant-feature-removal"><i class="fa fa-check"></i><b>10.5.2</b> Redundant Feature Removal</a></li>
-<li class="chapter" data-level="10.5.3" data-path="picking-the-best-model.html"><a href="picking-the-best-model.html#feature-importance"><i class="fa fa-check"></i><b>10.5.3</b> Feature Importance</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="11" data-path="data-pre-processing.html"><a href="data-pre-processing.html"><i class="fa fa-check"></i><b>11</b> Data Pre Processing</a><ul>
@@ -739,7 +738,7 @@ future predictions</li>
 <p>This model returns more information than say the <strong>lm</strong> function because this method uses something called “hyperparameters” which are arguments to a given method that gets set before you call the method. In this case there are two hyperparameters called <strong>mtry</strong> and <strong>splitrule</strong> that assume default variables if we don’t supply values.</p>
 <p>We can get a plot of how the RMSE and R squared value varied with different values of <strong>mtry</strong> as well the <strong>splitrule</strong>. Here we see that an mtry value of 6 randomly selected columns / variables provides the lowest RMSE.</p>
 <div class="sourceCode" id="cb164"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb164-1" data-line-number="1"><span class="kw">ggplot</span>(my_ranger) <span class="op">+</span><span class="st"> </span><span class="kw">theme</span>(<span class="dt">legend.position =</span> <span class="st">&quot;top&quot;</span>)</a></code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
 <p>We can use the <strong>tuneLength</strong> argument to tell the <strong>train</strong> function to use N different values of <strong>mtry</strong> which is a <strong>hyperparameter</strong> to the randomForest package. The value relates to the number of columns in the data frame. We have 11 total and we are trying to predict one of them (mpg). So we can tell the <strong>train</strong> function to randomly select N variables (up to 10) when a tree is split.</p>
 <div class="sourceCode" id="cb165"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb165-1" data-line-number="1">my_ctrl &lt;-<span class="st"> </span><span class="kw">trainControl</span>(</a>
 <a class="sourceLine" id="cb165-2" data-line-number="2">    <span class="dt">method =</span> <span class="st">&quot;cv&quot;</span>, </a>
@@ -874,7 +873,7 @@ future predictions</li>
 ## RMSE was used to select the optimal model using the smallest value.
 ## The final value used for the model was mtry = 6.</code></pre>
 <div class="sourceCode" id="cb169"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb169-1" data-line-number="1"><span class="kw">plot</span>(my_rf)</a></code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
 <div class="sourceCode" id="cb170"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb170-1" data-line-number="1">Metrics<span class="op">::</span><span class="kw">rmse</span>(Test<span class="op">$</span>mpg,<span class="kw">predict</span>(my_rf,Test))</a></code></pre></div>
 <pre><code>## [1] 2.23303</code></pre>
 <p>If you have a questions about what hyper parameters can be tuned for a given method then you can refer to the online <a href="https://topepo.github.io/caret/available-models.html">caret documentation</a> Here is a screenshot of the table of supported models and associated tuning parameters.</p>
@@ -949,7 +948,7 @@ future predictions</li>
 <div class="sourceCode" id="cb184"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb184-1" data-line-number="1">Metrics<span class="op">::</span><span class="kw">rmse</span>(Test<span class="op">$</span>mpg,<span class="kw">predict</span>(my_ranger,Test))</a></code></pre></div>
 <pre><code>## [1] 3.042224</code></pre>
 <div class="sourceCode" id="cb186"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb186-1" data-line-number="1"><span class="kw">plot</span>(my_ranger)</a></code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-24-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
 </div>
 </div>
             </section>
