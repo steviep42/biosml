@@ -2930,7 +2930,7 @@ Metrics::rmse(new_test$mpg, predict(caret_rf,new_test))
 
 So the random Forest approach, in this case, produces a much lower RMSE for the test data frame. The larger question relates to why there is more information in the output for the rf model. What is the **mtry** argument and why does it take on three different values during the execution of the function ? 
 
-```{r}
+```{r caretreveal}
 caret_rf
 ```
 
@@ -2952,16 +2952,16 @@ If we had called the random Forest function without using caret we could supply 
 library(randomForest)
 
 non_caret_rf <- randomForest(mpg~.,
-                             data= new_train,
-                             mtry=3,      # This is the default 
-                             importance=TRUE)
+                             data = new_train,
+                             mtry = 3,      # This is the default 
+                             importance = TRUE)
 
 # Check out the RMSE of the preditcions 
 Metrics::rmse(new_test$mpg,predict(non_caret_rf,new_test))
 
 ```
 
-We could also write a loop to do this for multiple values of mtry. 
+This provides information corresponding to one value of **mtry** - in this case 3. To get an idea about how the model performs with other values of **mtry** we could write a function to do this. In this case, we set the default value of **mtry** to 3.
 
 ```{r rffunctiondef}
 make_mtcars_rf <- function(mtry=3) {

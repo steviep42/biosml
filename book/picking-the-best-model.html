@@ -236,11 +236,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="10.2" data-path="picking-the-best-model.html"><a href="picking-the-best-model.html#more-comparisons"><i class="fa fa-check"></i><b>10.2</b> More Comparisons</a></li>
 <li class="chapter" data-level="10.3" data-path="picking-the-best-model.html"><a href="picking-the-best-model.html#using-the-resamples-function"><i class="fa fa-check"></i><b>10.3</b> Using the resamples() function</a></li>
 <li class="chapter" data-level="10.4" data-path="picking-the-best-model.html"><a href="picking-the-best-model.html#model-performance"><i class="fa fa-check"></i><b>10.4</b> Model Performance</a></li>
-<li class="chapter" data-level="10.5" data-path="picking-the-best-model.html"><a href="picking-the-best-model.html#feature-selection"><i class="fa fa-check"></i><b>10.5</b> Feature Selection</a><ul>
+<li class="chapter" data-level="10.5" data-path="picking-the-best-model.html"><a href="picking-the-best-model.html#feature-evaluation"><i class="fa fa-check"></i><b>10.5</b> Feature Evaluation</a><ul>
 <li class="chapter" data-level="10.5.1" data-path="picking-the-best-model.html"><a href="picking-the-best-model.html#identifying-redundant-features"><i class="fa fa-check"></i><b>10.5.1</b> Identifying Redundant Features</a></li>
 <li class="chapter" data-level="10.5.2" data-path="picking-the-best-model.html"><a href="picking-the-best-model.html#highly-correlated-variables"><i class="fa fa-check"></i><b>10.5.2</b> Highly Correlated Variables</a></li>
 <li class="chapter" data-level="10.5.3" data-path="picking-the-best-model.html"><a href="picking-the-best-model.html#ranking-features"><i class="fa fa-check"></i><b>10.5.3</b> Ranking Features</a></li>
-<li class="chapter" data-level="10.5.4" data-path="picking-the-best-model.html"><a href="picking-the-best-model.html#feature-selection-1"><i class="fa fa-check"></i><b>10.5.4</b> Feature Selection</a></li>
+<li class="chapter" data-level="10.5.4" data-path="picking-the-best-model.html"><a href="picking-the-best-model.html#feature-selection"><i class="fa fa-check"></i><b>10.5.4</b> Feature Selection</a></li>
 <li class="chapter" data-level="10.5.5" data-path="picking-the-best-model.html"><a href="picking-the-best-model.html#recursive-feature-elimination"><i class="fa fa-check"></i><b>10.5.5</b> Recursive Feature Elimination</a></li>
 </ul></li>
 </ul></li>
@@ -484,8 +484,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="sourceCode" id="cb448"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb448-1" data-line-number="1">Metrics<span class="op">::</span><span class="kw">rmse</span>(example_Test<span class="op">$</span>mpg,<span class="kw">predict</span>(comp_mod_ranger,example_Test))</a></code></pre></div>
 <pre><code>## [1] 2.288412</code></pre>
 </div>
-<div id="feature-selection" class="section level2">
-<h2><span class="header-section-number">10.5</span> Feature Selection</h2>
+<div id="feature-evaluation" class="section level2">
+<h2><span class="header-section-number">10.5</span> Feature Evaluation</h2>
 <p>Features are the columns in your data set. Up until now we have not been concerned with the formula being specified choosing rather to focus on how to run models with the caret package. However, knowing how to select the “best” subset of features is important since an overspcified formula might result in very long training times and, even then, it might not be that good of a model for predicting out of sample error. Of course, various methods have ways to deal with this problem.</p>
 <p>For example, Stepwise regression is one way to look at combinations of predictor variables to arrive at the optimal feature set according to some score (e.g. AIC, BIC). This process is implemented recursively. However, none of this should be a substitute for solid intuition about the data or knowing how features vary with each other (if at all).
 Still, packages such as caret have ways to assist with feature selection.</p>
@@ -604,7 +604,7 @@ Still, packages such as caret have ways to assist with feature selection.</p>
 ## Multiple R-squared:  0.8028, Adjusted R-squared:  0.7782 
 ## F-statistic: 32.57 on 3 and 24 DF,  p-value: 1.26e-08</code></pre>
 </div>
-<div id="feature-selection-1" class="section level3">
+<div id="feature-selection" class="section level3">
 <h3><span class="header-section-number">10.5.4</span> Feature Selection</h3>
 <p>Being able to automatically include only the most important features is desirable (again an example might be Step Wise Regression). Caret provides its own function to do a simple backwards selection to recursively eliminate features based on how they contribute (or not) to the model. You could do all of this by hand yourself of course.</p>
 <p>Automatic feature selection methods can be used to build many models with different subsets of a dataset and identify those attributes that are and are not required to build an accurate model. The <strong>caret</strong> package has a function called *rfe** to implement this. However, it involves some additional setup:</p>

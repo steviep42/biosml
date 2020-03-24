@@ -236,11 +236,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="10.2" data-path="picking-the-best-model.html"><a href="picking-the-best-model.html#more-comparisons"><i class="fa fa-check"></i><b>10.2</b> More Comparisons</a></li>
 <li class="chapter" data-level="10.3" data-path="picking-the-best-model.html"><a href="picking-the-best-model.html#using-the-resamples-function"><i class="fa fa-check"></i><b>10.3</b> Using the resamples() function</a></li>
 <li class="chapter" data-level="10.4" data-path="picking-the-best-model.html"><a href="picking-the-best-model.html#model-performance"><i class="fa fa-check"></i><b>10.4</b> Model Performance</a></li>
-<li class="chapter" data-level="10.5" data-path="picking-the-best-model.html"><a href="picking-the-best-model.html#feature-selection"><i class="fa fa-check"></i><b>10.5</b> Feature Selection</a><ul>
+<li class="chapter" data-level="10.5" data-path="picking-the-best-model.html"><a href="picking-the-best-model.html#feature-evaluation"><i class="fa fa-check"></i><b>10.5</b> Feature Evaluation</a><ul>
 <li class="chapter" data-level="10.5.1" data-path="picking-the-best-model.html"><a href="picking-the-best-model.html#identifying-redundant-features"><i class="fa fa-check"></i><b>10.5.1</b> Identifying Redundant Features</a></li>
 <li class="chapter" data-level="10.5.2" data-path="picking-the-best-model.html"><a href="picking-the-best-model.html#highly-correlated-variables"><i class="fa fa-check"></i><b>10.5.2</b> Highly Correlated Variables</a></li>
 <li class="chapter" data-level="10.5.3" data-path="picking-the-best-model.html"><a href="picking-the-best-model.html#ranking-features"><i class="fa fa-check"></i><b>10.5.3</b> Ranking Features</a></li>
-<li class="chapter" data-level="10.5.4" data-path="picking-the-best-model.html"><a href="picking-the-best-model.html#feature-selection-1"><i class="fa fa-check"></i><b>10.5.4</b> Feature Selection</a></li>
+<li class="chapter" data-level="10.5.4" data-path="picking-the-best-model.html"><a href="picking-the-best-model.html#feature-selection"><i class="fa fa-check"></i><b>10.5.4</b> Feature Selection</a></li>
 <li class="chapter" data-level="10.5.5" data-path="picking-the-best-model.html"><a href="picking-the-best-model.html#recursive-feature-elimination"><i class="fa fa-check"></i><b>10.5.5</b> Recursive Feature Elimination</a></li>
 </ul></li>
 </ul></li>
@@ -372,14 +372,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="sourceCode" id="cb392"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb392-1" data-line-number="1"><span class="kw">library</span>(randomForest)</a>
 <a class="sourceLine" id="cb392-2" data-line-number="2"></a>
 <a class="sourceLine" id="cb392-3" data-line-number="3">non_caret_rf &lt;-<span class="st"> </span><span class="kw">randomForest</span>(mpg<span class="op">~</span>.,</a>
-<a class="sourceLine" id="cb392-4" data-line-number="4">                             <span class="dt">data=</span> new_train,</a>
-<a class="sourceLine" id="cb392-5" data-line-number="5">                             <span class="dt">mtry=</span><span class="dv">3</span>,      <span class="co"># This is the default </span></a>
-<a class="sourceLine" id="cb392-6" data-line-number="6">                             <span class="dt">importance=</span><span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb392-4" data-line-number="4">                             <span class="dt">data =</span> new_train,</a>
+<a class="sourceLine" id="cb392-5" data-line-number="5">                             <span class="dt">mtry =</span> <span class="dv">3</span>,      <span class="co"># This is the default </span></a>
+<a class="sourceLine" id="cb392-6" data-line-number="6">                             <span class="dt">importance =</span> <span class="ot">TRUE</span>)</a>
 <a class="sourceLine" id="cb392-7" data-line-number="7"></a>
 <a class="sourceLine" id="cb392-8" data-line-number="8"><span class="co"># Check out the RMSE of the preditcions </span></a>
 <a class="sourceLine" id="cb392-9" data-line-number="9">Metrics<span class="op">::</span><span class="kw">rmse</span>(new_test<span class="op">$</span>mpg,<span class="kw">predict</span>(non_caret_rf,new_test))</a></code></pre></div>
 <pre><code>## [1] 1.903625</code></pre>
-<p>We could also write a loop to do this for multiple values of mtry.</p>
+<p>This provides information corresponding to one value of <strong>mtry</strong> - in this case 3. To get an idea about how the model performs with other values of <strong>mtry</strong> we could write a function to do this. In this case, we set the default value of <strong>mtry</strong> to 3.</p>
 <div class="sourceCode" id="cb394"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb394-1" data-line-number="1">make_mtcars_rf &lt;-<span class="st"> </span><span class="cf">function</span>(<span class="dt">mtry=</span><span class="dv">3</span>) {</a>
 <a class="sourceLine" id="cb394-2" data-line-number="2">    my_rf &lt;-<span class="st"> </span><span class="kw">randomForest</span>(mpg<span class="op">~</span>.,</a>
 <a class="sourceLine" id="cb394-3" data-line-number="3">                          <span class="dt">data =</span> new_train,</a>

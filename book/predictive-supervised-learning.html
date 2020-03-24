@@ -236,11 +236,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="10.2" data-path="picking-the-best-model.html"><a href="picking-the-best-model.html#more-comparisons"><i class="fa fa-check"></i><b>10.2</b> More Comparisons</a></li>
 <li class="chapter" data-level="10.3" data-path="picking-the-best-model.html"><a href="picking-the-best-model.html#using-the-resamples-function"><i class="fa fa-check"></i><b>10.3</b> Using the resamples() function</a></li>
 <li class="chapter" data-level="10.4" data-path="picking-the-best-model.html"><a href="picking-the-best-model.html#model-performance"><i class="fa fa-check"></i><b>10.4</b> Model Performance</a></li>
-<li class="chapter" data-level="10.5" data-path="picking-the-best-model.html"><a href="picking-the-best-model.html#feature-selection"><i class="fa fa-check"></i><b>10.5</b> Feature Selection</a><ul>
+<li class="chapter" data-level="10.5" data-path="picking-the-best-model.html"><a href="picking-the-best-model.html#feature-evaluation"><i class="fa fa-check"></i><b>10.5</b> Feature Evaluation</a><ul>
 <li class="chapter" data-level="10.5.1" data-path="picking-the-best-model.html"><a href="picking-the-best-model.html#identifying-redundant-features"><i class="fa fa-check"></i><b>10.5.1</b> Identifying Redundant Features</a></li>
 <li class="chapter" data-level="10.5.2" data-path="picking-the-best-model.html"><a href="picking-the-best-model.html#highly-correlated-variables"><i class="fa fa-check"></i><b>10.5.2</b> Highly Correlated Variables</a></li>
 <li class="chapter" data-level="10.5.3" data-path="picking-the-best-model.html"><a href="picking-the-best-model.html#ranking-features"><i class="fa fa-check"></i><b>10.5.3</b> Ranking Features</a></li>
-<li class="chapter" data-level="10.5.4" data-path="picking-the-best-model.html"><a href="picking-the-best-model.html#feature-selection-1"><i class="fa fa-check"></i><b>10.5.4</b> Feature Selection</a></li>
+<li class="chapter" data-level="10.5.4" data-path="picking-the-best-model.html"><a href="picking-the-best-model.html#feature-selection"><i class="fa fa-check"></i><b>10.5.4</b> Feature Selection</a></li>
 <li class="chapter" data-level="10.5.5" data-path="picking-the-best-model.html"><a href="picking-the-best-model.html#recursive-feature-elimination"><i class="fa fa-check"></i><b>10.5.5</b> Recursive Feature Elimination</a></li>
 </ul></li>
 </ul></li>
@@ -385,7 +385,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <a class="sourceLine" id="cb8-2" data-line-number="2"><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x=</span>age)) <span class="op">+</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb8-3" data-line-number="3"><span class="st">  </span><span class="kw">geom_histogram</span>(<span class="kw">aes</span>(<span class="dt">fill=</span>survived),<span class="dt">bins=</span><span class="dv">20</span>) <span class="op">+</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb8-4" data-line-number="4"><span class="st">  </span><span class="kw">theme_light</span>() <span class="op">+</span><span class="st"> </span><span class="kw">facet_wrap</span>(<span class="op">~</span>pclass)</a></code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
 </div>
 </div>
 <div id="bias-vs-variance" class="section level2">
