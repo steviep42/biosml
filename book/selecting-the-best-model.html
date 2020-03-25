@@ -310,11 +310,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="an-example" class="section level2">
 <h2><span class="header-section-number">10.1</span> An Example</h2>
 <p>As an example, let’s go back to the linear modeling example back in the section wherein we introduced the <strong>caret</strong> package.</p>
-<div class="sourceCode" id="cb428"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb428-1" data-line-number="1"><span class="kw">set.seed</span>(<span class="dv">123</span>) <span class="co"># Make this example reproducible</span></a>
-<a class="sourceLine" id="cb428-2" data-line-number="2">idx &lt;-<span class="st"> </span><span class="kw">createDataPartition</span>(mtcars<span class="op">$</span>mpg, <span class="dt">p =</span> <span class="fl">.8</span>, </a>
-<a class="sourceLine" id="cb428-3" data-line-number="3">                           <span class="dt">list =</span> <span class="ot">FALSE</span>, </a>
-<a class="sourceLine" id="cb428-4" data-line-number="4">                           <span class="dt">times =</span> <span class="dv">1</span>)</a>
-<a class="sourceLine" id="cb428-5" data-line-number="5"><span class="kw">head</span>(idx)</a></code></pre></div>
+<div class="sourceCode" id="cb426"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb426-1" data-line-number="1"><span class="kw">set.seed</span>(<span class="dv">123</span>) <span class="co"># Make this example reproducible</span></a>
+<a class="sourceLine" id="cb426-2" data-line-number="2">idx &lt;-<span class="st"> </span><span class="kw">createDataPartition</span>(mtcars<span class="op">$</span>mpg, <span class="dt">p =</span> <span class="fl">.8</span>, </a>
+<a class="sourceLine" id="cb426-3" data-line-number="3">                           <span class="dt">list =</span> <span class="ot">FALSE</span>, </a>
+<a class="sourceLine" id="cb426-4" data-line-number="4">                           <span class="dt">times =</span> <span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb426-5" data-line-number="5"><span class="kw">head</span>(idx)</a></code></pre></div>
 <pre><code>##      Resample1
 ## [1,]         1
 ## [2,]         3
@@ -322,23 +322,23 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## [4,]         5
 ## [5,]         6
 ## [6,]         8</code></pre>
-<div class="sourceCode" id="cb430"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb430-1" data-line-number="1">example_Train &lt;-<span class="st"> </span>mtcars[ idx,]</a>
-<a class="sourceLine" id="cb430-2" data-line-number="2">example_Test  &lt;-<span class="st"> </span>mtcars[<span class="op">-</span>idx,]</a>
-<a class="sourceLine" id="cb430-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb430-4" data-line-number="4"><span class="co">#</span></a>
-<a class="sourceLine" id="cb430-5" data-line-number="5">control &lt;-<span class="st"> </span><span class="kw">trainControl</span>(<span class="dt">method =</span> <span class="st">&quot;cv&quot;</span>,       <span class="co"># Cross Fold</span></a>
-<a class="sourceLine" id="cb430-6" data-line-number="6">                        <span class="dt">number =</span> <span class="dv">5</span>,          <span class="co"># 5 Folds</span></a>
-<a class="sourceLine" id="cb430-7" data-line-number="7">                        <span class="dt">verboseIter =</span> <span class="ot">FALSE</span>)  <span class="co"># Verbose</span></a>
-<a class="sourceLine" id="cb430-8" data-line-number="8"><span class="co"># Train the model</span></a>
-<a class="sourceLine" id="cb430-9" data-line-number="9"></a>
-<a class="sourceLine" id="cb430-10" data-line-number="10"><span class="kw">set.seed</span>(<span class="dv">123</span>) <span class="co"># Make this example reproducible</span></a>
-<a class="sourceLine" id="cb430-11" data-line-number="11">my_lm &lt;-<span class="st"> </span><span class="kw">train</span>(mpg <span class="op">~</span><span class="st"> </span>wt, </a>
-<a class="sourceLine" id="cb430-12" data-line-number="12">               example_Train,</a>
-<a class="sourceLine" id="cb430-13" data-line-number="13">               <span class="dt">method =</span> <span class="st">&quot;lm&quot;</span>,</a>
-<a class="sourceLine" id="cb430-14" data-line-number="14">               <span class="dt">preProc =</span> <span class="kw">c</span>(<span class="st">&quot;center&quot;</span>,<span class="st">&quot;scale&quot;</span>),</a>
-<a class="sourceLine" id="cb430-15" data-line-number="15">               <span class="dt">trControl =</span> control)</a>
-<a class="sourceLine" id="cb430-16" data-line-number="16"></a>
-<a class="sourceLine" id="cb430-17" data-line-number="17">my_lm</a></code></pre></div>
+<div class="sourceCode" id="cb428"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb428-1" data-line-number="1">example_Train &lt;-<span class="st"> </span>mtcars[ idx,]</a>
+<a class="sourceLine" id="cb428-2" data-line-number="2">example_Test  &lt;-<span class="st"> </span>mtcars[<span class="op">-</span>idx,]</a>
+<a class="sourceLine" id="cb428-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb428-4" data-line-number="4"><span class="co">#</span></a>
+<a class="sourceLine" id="cb428-5" data-line-number="5">control &lt;-<span class="st"> </span><span class="kw">trainControl</span>(<span class="dt">method =</span> <span class="st">&quot;cv&quot;</span>,       <span class="co"># Cross Fold</span></a>
+<a class="sourceLine" id="cb428-6" data-line-number="6">                        <span class="dt">number =</span> <span class="dv">5</span>,          <span class="co"># 5 Folds</span></a>
+<a class="sourceLine" id="cb428-7" data-line-number="7">                        <span class="dt">verboseIter =</span> <span class="ot">FALSE</span>)  <span class="co"># Verbose</span></a>
+<a class="sourceLine" id="cb428-8" data-line-number="8"><span class="co"># Train the model</span></a>
+<a class="sourceLine" id="cb428-9" data-line-number="9"></a>
+<a class="sourceLine" id="cb428-10" data-line-number="10"><span class="kw">set.seed</span>(<span class="dv">123</span>) <span class="co"># Make this example reproducible</span></a>
+<a class="sourceLine" id="cb428-11" data-line-number="11">my_lm &lt;-<span class="st"> </span><span class="kw">train</span>(mpg <span class="op">~</span><span class="st"> </span>wt, </a>
+<a class="sourceLine" id="cb428-12" data-line-number="12">               example_Train,</a>
+<a class="sourceLine" id="cb428-13" data-line-number="13">               <span class="dt">method =</span> <span class="st">&quot;lm&quot;</span>,</a>
+<a class="sourceLine" id="cb428-14" data-line-number="14">               <span class="dt">preProc =</span> <span class="kw">c</span>(<span class="st">&quot;center&quot;</span>,<span class="st">&quot;scale&quot;</span>),</a>
+<a class="sourceLine" id="cb428-15" data-line-number="15">               <span class="dt">trControl =</span> control)</a>
+<a class="sourceLine" id="cb428-16" data-line-number="16"></a>
+<a class="sourceLine" id="cb428-17" data-line-number="17">my_lm</a></code></pre></div>
 <pre><code>## Linear Regression 
 ## 
 ## 28 samples
@@ -353,21 +353,21 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ##   2.674278  0.8128595  2.255329
 ## 
 ## Tuning parameter &#39;intercept&#39; was held constant at a value of TRUE</code></pre>
-<div class="sourceCode" id="cb432"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb432-1" data-line-number="1"><span class="kw">plot</span>(mpg<span class="op">~</span>wt,<span class="dt">data=</span>example_Train,<span class="dt">main=</span><span class="st">&quot;Train Data&quot;</span>)</a>
-<a class="sourceLine" id="cb432-2" data-line-number="2"><span class="kw">abline</span>(lm_fit<span class="op">$</span>finalModel,<span class="dt">lty=</span><span class="dv">2</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb430"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb430-1" data-line-number="1"><span class="kw">plot</span>(mpg<span class="op">~</span>wt,<span class="dt">data=</span>example_Train,<span class="dt">main=</span><span class="st">&quot;Train Data&quot;</span>)</a>
+<a class="sourceLine" id="cb430-2" data-line-number="2"><span class="kw">abline</span>(lm_fit<span class="op">$</span>finalModel,<span class="dt">lty=</span><span class="dv">2</span>)</a></code></pre></div>
 <p><img src="biosml_files/figure-html/pickthe1-1.png" width="672" /></p>
 <p>So does this model perform better than a model built using a support vector machine ? It’s easy to generate such a model by reusing much of the same information from above.</p>
 <p>This is arguably one of the best features of the <strong>caret</strong> package as it helps us execute any number of models and then assess their performance on new data. Let’s look at our models thus far. In fact, it’s so easy to generate them with caret, we’ll just make them here again. Let’s set a common <strong>trainControl</strong> list. We’ll use the <strong>Train</strong> and <strong>Test</strong> sets from above.</p>
-<div class="sourceCode" id="cb433"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb433-1" data-line-number="1"><span class="co">#set.seed(123) # Make this example reproducible</span></a>
-<a class="sourceLine" id="cb433-2" data-line-number="2">my_svm &lt;-<span class="st"> </span><span class="kw">train</span>(</a>
-<a class="sourceLine" id="cb433-3" data-line-number="3">  mpg <span class="op">~</span><span class="st"> </span>wt, </a>
-<a class="sourceLine" id="cb433-4" data-line-number="4">  example_Train,</a>
-<a class="sourceLine" id="cb433-5" data-line-number="5">  <span class="dt">method =</span> <span class="st">&quot;svmRadial&quot;</span>,</a>
-<a class="sourceLine" id="cb433-6" data-line-number="6">  <span class="dt">preProc =</span> <span class="kw">c</span>(<span class="st">&quot;center&quot;</span>,<span class="st">&quot;scale&quot;</span>),</a>
-<a class="sourceLine" id="cb433-7" data-line-number="7">  <span class="dt">trControl =</span> control</a>
-<a class="sourceLine" id="cb433-8" data-line-number="8">)</a>
-<a class="sourceLine" id="cb433-9" data-line-number="9"></a>
-<a class="sourceLine" id="cb433-10" data-line-number="10">my_svm</a></code></pre></div>
+<div class="sourceCode" id="cb431"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb431-1" data-line-number="1"><span class="co">#set.seed(123) # Make this example reproducible</span></a>
+<a class="sourceLine" id="cb431-2" data-line-number="2">my_svm &lt;-<span class="st"> </span><span class="kw">train</span>(</a>
+<a class="sourceLine" id="cb431-3" data-line-number="3">  mpg <span class="op">~</span><span class="st"> </span>wt, </a>
+<a class="sourceLine" id="cb431-4" data-line-number="4">  example_Train,</a>
+<a class="sourceLine" id="cb431-5" data-line-number="5">  <span class="dt">method =</span> <span class="st">&quot;svmRadial&quot;</span>,</a>
+<a class="sourceLine" id="cb431-6" data-line-number="6">  <span class="dt">preProc =</span> <span class="kw">c</span>(<span class="st">&quot;center&quot;</span>,<span class="st">&quot;scale&quot;</span>),</a>
+<a class="sourceLine" id="cb431-7" data-line-number="7">  <span class="dt">trControl =</span> control</a>
+<a class="sourceLine" id="cb431-8" data-line-number="8">)</a>
+<a class="sourceLine" id="cb431-9" data-line-number="9"></a>
+<a class="sourceLine" id="cb431-10" data-line-number="10">my_svm</a></code></pre></div>
 <pre><code>## Support Vector Machines with Radial Basis Function Kernel 
 ## 
 ## 28 samples
@@ -387,73 +387,73 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## RMSE was used to select the optimal model using the smallest value.
 ## The final values used for the model were sigma = 4.935503 and C = 1.</code></pre>
 <p>So let’s plot the training data as well as the resulting regression line (in the color black) coming from the lm object. We’ll also plot the results from the Support Vector Machine predictions on the same graph (in red). From this plot it appears that the Support Vector Machine does a better job of “following” the actual data - at least for the training data. We might even be able to improve the SVM performance if we tune the hyperparameters but the default without tuning seems better than the lm. It’s this type of observation that leads one to consider if there are yet other methods that would result in even better results.</p>
-<div class="sourceCode" id="cb435"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb435-1" data-line-number="1"><span class="kw">plot</span>(mpg<span class="op">~</span>wt,<span class="dt">data=</span>example_Train,<span class="dt">main=</span><span class="st">&quot;Train Data&quot;</span>)</a>
-<a class="sourceLine" id="cb435-2" data-line-number="2"><span class="kw">abline</span>(lm_fit<span class="op">$</span>finalModel)</a>
-<a class="sourceLine" id="cb435-3" data-line-number="3"><span class="kw">grid</span>()</a>
-<a class="sourceLine" id="cb435-4" data-line-number="4">svm_preds &lt;-<span class="st"> </span><span class="kw">predict</span>(my_svm,example_Train)</a>
-<a class="sourceLine" id="cb435-5" data-line-number="5"></a>
-<a class="sourceLine" id="cb435-6" data-line-number="6">pdf &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="kw">cbind</span>(Train<span class="op">$</span>wt,svm_preds)) </a>
-<a class="sourceLine" id="cb435-7" data-line-number="7"><span class="kw">points</span>(svm_preds<span class="op">~</span>V1,<span class="dt">data=</span>pdf[<span class="kw">order</span>(pdf<span class="op">$</span>V1),],<span class="dt">col=</span><span class="st">&quot;red&quot;</span>,<span class="dt">pch=</span><span class="dv">4</span>,<span class="dt">type=</span><span class="st">&quot;l&quot;</span>)</a>
-<a class="sourceLine" id="cb435-8" data-line-number="8"><span class="kw">legend</span>(<span class="st">&quot;topright&quot;</span>,<span class="kw">c</span>(<span class="st">&quot;lm&quot;</span>,<span class="st">&quot;svm&quot;</span>),<span class="dt">col=</span><span class="kw">c</span>(<span class="st">&quot;black&quot;</span>,<span class="st">&quot;red&quot;</span>),<span class="dt">lty=</span><span class="dv">1</span>,<span class="dt">cex=</span><span class="dv">1</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb433"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb433-1" data-line-number="1"><span class="kw">plot</span>(mpg<span class="op">~</span>wt,<span class="dt">data=</span>example_Train,<span class="dt">main=</span><span class="st">&quot;Train Data&quot;</span>)</a>
+<a class="sourceLine" id="cb433-2" data-line-number="2"><span class="kw">abline</span>(lm_fit<span class="op">$</span>finalModel)</a>
+<a class="sourceLine" id="cb433-3" data-line-number="3"><span class="kw">grid</span>()</a>
+<a class="sourceLine" id="cb433-4" data-line-number="4">svm_preds &lt;-<span class="st"> </span><span class="kw">predict</span>(my_svm,example_Train)</a>
+<a class="sourceLine" id="cb433-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb433-6" data-line-number="6">pdf &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="kw">cbind</span>(Train<span class="op">$</span>wt,svm_preds)) </a>
+<a class="sourceLine" id="cb433-7" data-line-number="7"><span class="kw">points</span>(svm_preds<span class="op">~</span>V1,<span class="dt">data=</span>pdf[<span class="kw">order</span>(pdf<span class="op">$</span>V1),],<span class="dt">col=</span><span class="st">&quot;red&quot;</span>,<span class="dt">pch=</span><span class="dv">4</span>,<span class="dt">type=</span><span class="st">&quot;l&quot;</span>)</a>
+<a class="sourceLine" id="cb433-8" data-line-number="8"><span class="kw">legend</span>(<span class="st">&quot;topright&quot;</span>,<span class="kw">c</span>(<span class="st">&quot;lm&quot;</span>,<span class="st">&quot;svm&quot;</span>),<span class="dt">col=</span><span class="kw">c</span>(<span class="st">&quot;black&quot;</span>,<span class="st">&quot;red&quot;</span>),<span class="dt">lty=</span><span class="dv">1</span>,<span class="dt">cex=</span><span class="dv">1</span>)</a></code></pre></div>
 <p><img src="biosml_files/figure-html/pickthe3-1.png" width="672" /></p>
 <p>In terms of the RMSE for the Test set predictions, which method is better (i.e. the lowest RMSE) ?</p>
-<div class="sourceCode" id="cb436"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb436-1" data-line-number="1">lm_preds &lt;-<span class="st"> </span><span class="kw">predict</span>(my_lm,example_Train)</a>
-<a class="sourceLine" id="cb436-2" data-line-number="2">svm_preds &lt;-<span class="st"> </span><span class="kw">predict</span>(my_svm,example_Train)</a>
-<a class="sourceLine" id="cb436-3" data-line-number="3"><span class="co">#</span></a>
-<a class="sourceLine" id="cb436-4" data-line-number="4"><span class="kw">cat</span>(<span class="st">&quot;RMSE for lm is: &quot;</span>,Metrics<span class="op">::</span><span class="kw">rmse</span>(example_Test<span class="op">$</span>mpg,lm_preds),<span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb434"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb434-1" data-line-number="1">lm_preds &lt;-<span class="st"> </span><span class="kw">predict</span>(my_lm,example_Train)</a>
+<a class="sourceLine" id="cb434-2" data-line-number="2">svm_preds &lt;-<span class="st"> </span><span class="kw">predict</span>(my_svm,example_Train)</a>
+<a class="sourceLine" id="cb434-3" data-line-number="3"><span class="co">#</span></a>
+<a class="sourceLine" id="cb434-4" data-line-number="4"><span class="kw">cat</span>(<span class="st">&quot;RMSE for lm is: &quot;</span>,Metrics<span class="op">::</span><span class="kw">rmse</span>(example_Test<span class="op">$</span>mpg,lm_preds),<span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>)</a></code></pre></div>
 <pre><code>## RMSE for lm is:  9.656877</code></pre>
-<div class="sourceCode" id="cb438"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb438-1" data-line-number="1"><span class="kw">cat</span>(<span class="st">&quot;RMSE for smv is: &quot;</span>,Metrics<span class="op">::</span><span class="kw">rmse</span>(example_Test<span class="op">$</span>mpg,svm_preds),<span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb436"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb436-1" data-line-number="1"><span class="kw">cat</span>(<span class="st">&quot;RMSE for smv is: &quot;</span>,Metrics<span class="op">::</span><span class="kw">rmse</span>(example_Test<span class="op">$</span>mpg,svm_preds),<span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>)</a></code></pre></div>
 <pre><code>## RMSE for smv is:  9.148044</code></pre>
 </div>
 <div id="more-comparisons" class="section level2">
 <h2><span class="header-section-number">10.2</span> More Comparisons</h2>
 <p>Let’s keep going. We’ll use some more methods to see how they perform on the same data. The cool thing about caret is that we can reuse the same control object and seeds to facilitate reproducibility. We’ll pick two other methods in addition to the ones we have to see how we can compare them all. In reality, this would be just the beginning of the process, not the end since if we pick a method with hyperparameters then we would want to tune those.</p>
-<div class="sourceCode" id="cb440"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb440-1" data-line-number="1">control &lt;-<span class="st"> </span><span class="kw">trainControl</span>(<span class="dt">method =</span> <span class="st">&quot;cv&quot;</span>,       <span class="co"># Cross Fold</span></a>
-<a class="sourceLine" id="cb440-2" data-line-number="2">                        <span class="dt">number =</span> <span class="dv">5</span>,          <span class="co"># 5 Folds</span></a>
-<a class="sourceLine" id="cb440-3" data-line-number="3">                        <span class="dt">verboseIter =</span> <span class="ot">FALSE</span>)  <span class="co"># Verbose</span></a></code></pre></div>
+<div class="sourceCode" id="cb438"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb438-1" data-line-number="1">control &lt;-<span class="st"> </span><span class="kw">trainControl</span>(<span class="dt">method =</span> <span class="st">&quot;cv&quot;</span>,       <span class="co"># Cross Fold</span></a>
+<a class="sourceLine" id="cb438-2" data-line-number="2">                        <span class="dt">number =</span> <span class="dv">5</span>,          <span class="co"># 5 Folds</span></a>
+<a class="sourceLine" id="cb438-3" data-line-number="3">                        <span class="dt">verboseIter =</span> <span class="ot">FALSE</span>)  <span class="co"># Verbose</span></a></code></pre></div>
 <p>Note that we will be predicting the MPG value as a function of all variables in the data frame.</p>
-<div class="sourceCode" id="cb441"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb441-1" data-line-number="1"><span class="co"># Train the lm model</span></a>
-<a class="sourceLine" id="cb441-2" data-line-number="2"><span class="kw">set.seed</span>(<span class="dv">123</span>)</a>
-<a class="sourceLine" id="cb441-3" data-line-number="3">comp_mod_lm &lt;-<span class="st"> </span><span class="kw">train</span>(mpg <span class="op">~</span><span class="st"> </span>.,</a>
-<a class="sourceLine" id="cb441-4" data-line-number="4">                     example_Train,</a>
-<a class="sourceLine" id="cb441-5" data-line-number="5">                     <span class="dt">method =</span> <span class="st">&quot;lm&quot;</span>,</a>
-<a class="sourceLine" id="cb441-6" data-line-number="6">                     <span class="dt">preProc =</span> <span class="kw">c</span>(<span class="st">&quot;center&quot;</span>,<span class="st">&quot;scale&quot;</span>),</a>
-<a class="sourceLine" id="cb441-7" data-line-number="7">                     <span class="dt">trControl =</span> control)</a>
-<a class="sourceLine" id="cb441-8" data-line-number="8"></a>
-<a class="sourceLine" id="cb441-9" data-line-number="9"></a>
-<a class="sourceLine" id="cb441-10" data-line-number="10"><span class="co"># Train the SVM Radial Model</span></a>
-<a class="sourceLine" id="cb441-11" data-line-number="11"><span class="kw">set.seed</span>(<span class="dv">123</span>)</a>
-<a class="sourceLine" id="cb441-12" data-line-number="12">comp_mod_svm &lt;-<span class="st"> </span><span class="kw">train</span>(mpg <span class="op">~</span><span class="st"> </span>.,</a>
-<a class="sourceLine" id="cb441-13" data-line-number="13">                     example_Train,</a>
-<a class="sourceLine" id="cb441-14" data-line-number="14">                     <span class="dt">method =</span> <span class="st">&quot;svmRadial&quot;</span>,</a>
-<a class="sourceLine" id="cb441-15" data-line-number="15">                     <span class="dt">preProc =</span> <span class="kw">c</span>(<span class="st">&quot;center&quot;</span>,<span class="st">&quot;scale&quot;</span>),</a>
-<a class="sourceLine" id="cb441-16" data-line-number="16">                     <span class="dt">trControl =</span> control)</a>
-<a class="sourceLine" id="cb441-17" data-line-number="17"></a>
-<a class="sourceLine" id="cb441-18" data-line-number="18"><span class="co"># Train the Lasso and Elastic-Net Regularized Generalized Linear Models</span></a>
-<a class="sourceLine" id="cb441-19" data-line-number="19"><span class="kw">set.seed</span>(<span class="dv">123</span>)</a>
-<a class="sourceLine" id="cb441-20" data-line-number="20">comp_mod_glmnet &lt;-<span class="st"> </span><span class="kw">train</span>(mpg <span class="op">~</span><span class="st"> </span>.,</a>
-<a class="sourceLine" id="cb441-21" data-line-number="21">                     example_Train,</a>
-<a class="sourceLine" id="cb441-22" data-line-number="22">                     <span class="dt">method =</span> <span class="st">&quot;glmnet&quot;</span>,</a>
-<a class="sourceLine" id="cb441-23" data-line-number="23">                     <span class="dt">preProc =</span> <span class="kw">c</span>(<span class="st">&quot;center&quot;</span>,<span class="st">&quot;scale&quot;</span>),</a>
-<a class="sourceLine" id="cb441-24" data-line-number="24">                     <span class="dt">trControl =</span> control)</a>
-<a class="sourceLine" id="cb441-25" data-line-number="25"></a>
-<a class="sourceLine" id="cb441-26" data-line-number="26"><span class="co"># Train the Random Forest Model</span></a>
-<a class="sourceLine" id="cb441-27" data-line-number="27"><span class="kw">set.seed</span>(<span class="dv">123</span>)</a>
-<a class="sourceLine" id="cb441-28" data-line-number="28">comp_mod_ranger &lt;-<span class="st"> </span><span class="kw">train</span>(mpg <span class="op">~</span><span class="st"> </span>.,</a>
-<a class="sourceLine" id="cb441-29" data-line-number="29">                     example_Train,</a>
-<a class="sourceLine" id="cb441-30" data-line-number="30">                     <span class="dt">method =</span> <span class="st">&quot;ranger&quot;</span>,</a>
-<a class="sourceLine" id="cb441-31" data-line-number="31">                     <span class="dt">preProc =</span> <span class="kw">c</span>(<span class="st">&quot;center&quot;</span>,<span class="st">&quot;scale&quot;</span>),</a>
-<a class="sourceLine" id="cb441-32" data-line-number="32">                     <span class="dt">trControl =</span> control)</a></code></pre></div>
+<div class="sourceCode" id="cb439"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb439-1" data-line-number="1"><span class="co"># Train the lm model</span></a>
+<a class="sourceLine" id="cb439-2" data-line-number="2"><span class="kw">set.seed</span>(<span class="dv">123</span>)</a>
+<a class="sourceLine" id="cb439-3" data-line-number="3">comp_mod_lm &lt;-<span class="st"> </span><span class="kw">train</span>(mpg <span class="op">~</span><span class="st"> </span>.,</a>
+<a class="sourceLine" id="cb439-4" data-line-number="4">                     example_Train,</a>
+<a class="sourceLine" id="cb439-5" data-line-number="5">                     <span class="dt">method =</span> <span class="st">&quot;lm&quot;</span>,</a>
+<a class="sourceLine" id="cb439-6" data-line-number="6">                     <span class="dt">preProc =</span> <span class="kw">c</span>(<span class="st">&quot;center&quot;</span>,<span class="st">&quot;scale&quot;</span>),</a>
+<a class="sourceLine" id="cb439-7" data-line-number="7">                     <span class="dt">trControl =</span> control)</a>
+<a class="sourceLine" id="cb439-8" data-line-number="8"></a>
+<a class="sourceLine" id="cb439-9" data-line-number="9"></a>
+<a class="sourceLine" id="cb439-10" data-line-number="10"><span class="co"># Train the SVM Radial Model</span></a>
+<a class="sourceLine" id="cb439-11" data-line-number="11"><span class="kw">set.seed</span>(<span class="dv">123</span>)</a>
+<a class="sourceLine" id="cb439-12" data-line-number="12">comp_mod_svm &lt;-<span class="st"> </span><span class="kw">train</span>(mpg <span class="op">~</span><span class="st"> </span>.,</a>
+<a class="sourceLine" id="cb439-13" data-line-number="13">                     example_Train,</a>
+<a class="sourceLine" id="cb439-14" data-line-number="14">                     <span class="dt">method =</span> <span class="st">&quot;svmRadial&quot;</span>,</a>
+<a class="sourceLine" id="cb439-15" data-line-number="15">                     <span class="dt">preProc =</span> <span class="kw">c</span>(<span class="st">&quot;center&quot;</span>,<span class="st">&quot;scale&quot;</span>),</a>
+<a class="sourceLine" id="cb439-16" data-line-number="16">                     <span class="dt">trControl =</span> control)</a>
+<a class="sourceLine" id="cb439-17" data-line-number="17"></a>
+<a class="sourceLine" id="cb439-18" data-line-number="18"><span class="co"># Train the Lasso and Elastic-Net Regularized Generalized Linear Models</span></a>
+<a class="sourceLine" id="cb439-19" data-line-number="19"><span class="kw">set.seed</span>(<span class="dv">123</span>)</a>
+<a class="sourceLine" id="cb439-20" data-line-number="20">comp_mod_glmnet &lt;-<span class="st"> </span><span class="kw">train</span>(mpg <span class="op">~</span><span class="st"> </span>.,</a>
+<a class="sourceLine" id="cb439-21" data-line-number="21">                     example_Train,</a>
+<a class="sourceLine" id="cb439-22" data-line-number="22">                     <span class="dt">method =</span> <span class="st">&quot;glmnet&quot;</span>,</a>
+<a class="sourceLine" id="cb439-23" data-line-number="23">                     <span class="dt">preProc =</span> <span class="kw">c</span>(<span class="st">&quot;center&quot;</span>,<span class="st">&quot;scale&quot;</span>),</a>
+<a class="sourceLine" id="cb439-24" data-line-number="24">                     <span class="dt">trControl =</span> control)</a>
+<a class="sourceLine" id="cb439-25" data-line-number="25"></a>
+<a class="sourceLine" id="cb439-26" data-line-number="26"><span class="co"># Train the Random Forest Model</span></a>
+<a class="sourceLine" id="cb439-27" data-line-number="27"><span class="kw">set.seed</span>(<span class="dv">123</span>)</a>
+<a class="sourceLine" id="cb439-28" data-line-number="28">comp_mod_ranger &lt;-<span class="st"> </span><span class="kw">train</span>(mpg <span class="op">~</span><span class="st"> </span>.,</a>
+<a class="sourceLine" id="cb439-29" data-line-number="29">                     example_Train,</a>
+<a class="sourceLine" id="cb439-30" data-line-number="30">                     <span class="dt">method =</span> <span class="st">&quot;ranger&quot;</span>,</a>
+<a class="sourceLine" id="cb439-31" data-line-number="31">                     <span class="dt">preProc =</span> <span class="kw">c</span>(<span class="st">&quot;center&quot;</span>,<span class="st">&quot;scale&quot;</span>),</a>
+<a class="sourceLine" id="cb439-32" data-line-number="32">                     <span class="dt">trControl =</span> control)</a></code></pre></div>
 </div>
 <div id="using-the-resamples-function" class="section level2">
 <h2><span class="header-section-number">10.3</span> Using the resamples() function</h2>
 <p>Now, here comes the “magic”. Because we built four different modeling objects on the same data set and seeds we can now use the <strong>resamples</strong> function to collect, analyze, and visualize a set of results. This is pretty powerful.</p>
-<div class="sourceCode" id="cb442"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb442-1" data-line-number="1">results &lt;-<span class="st"> </span><span class="kw">resamples</span>(<span class="kw">list</span>(<span class="dt">LM     =</span> comp_mod_lm, </a>
-<a class="sourceLine" id="cb442-2" data-line-number="2">                          <span class="dt">SVM    =</span> comp_mod_svm, </a>
-<a class="sourceLine" id="cb442-3" data-line-number="3">                          <span class="dt">GLMNET =</span> comp_mod_glmnet,</a>
-<a class="sourceLine" id="cb442-4" data-line-number="4">                          <span class="dt">RANGER =</span> comp_mod_ranger))</a>
-<a class="sourceLine" id="cb442-5" data-line-number="5"></a>
-<a class="sourceLine" id="cb442-6" data-line-number="6"><span class="kw">summary</span>(results)</a></code></pre></div>
+<div class="sourceCode" id="cb440"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb440-1" data-line-number="1">results &lt;-<span class="st"> </span><span class="kw">resamples</span>(<span class="kw">list</span>(<span class="dt">LM     =</span> comp_mod_lm, </a>
+<a class="sourceLine" id="cb440-2" data-line-number="2">                          <span class="dt">SVM    =</span> comp_mod_svm, </a>
+<a class="sourceLine" id="cb440-3" data-line-number="3">                          <span class="dt">GLMNET =</span> comp_mod_glmnet,</a>
+<a class="sourceLine" id="cb440-4" data-line-number="4">                          <span class="dt">RANGER =</span> comp_mod_ranger))</a>
+<a class="sourceLine" id="cb440-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb440-6" data-line-number="6"><span class="kw">summary</span>(results)</a></code></pre></div>
 <pre><code>## 
 ## Call:
 ## summary.resamples(object = results)
@@ -482,24 +482,24 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## GLMNET 0.8083109 0.8525418 0.8819329 0.8816976 0.8845961 0.9811066    0
 ## RANGER 0.8581519 0.8779259 0.8928333 0.9066298 0.9228603 0.9813776    0</code></pre>
 <p>We can visualize the results. For whatever reason, the caret package favors use of the <strong>lattice</strong> graphics package. Most of the work here is in telling the dotplot function that we need to plot each of the metrics on its own respective scale to improve viewabilty.</p>
-<div class="sourceCode" id="cb444"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb444-1" data-line-number="1">scales &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">x=</span><span class="kw">list</span>(<span class="dt">relation=</span><span class="st">&quot;free&quot;</span>), <span class="dt">y=</span><span class="kw">list</span>(<span class="dt">relation=</span><span class="st">&quot;free&quot;</span>)) </a>
-<a class="sourceLine" id="cb444-2" data-line-number="2"><span class="kw">dotplot</span>(results,<span class="dt">scales=</span>scales)</a></code></pre></div>
+<div class="sourceCode" id="cb442"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb442-1" data-line-number="1">scales &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">x=</span><span class="kw">list</span>(<span class="dt">relation=</span><span class="st">&quot;free&quot;</span>), <span class="dt">y=</span><span class="kw">list</span>(<span class="dt">relation=</span><span class="st">&quot;free&quot;</span>)) </a>
+<a class="sourceLine" id="cb442-2" data-line-number="2"><span class="kw">dotplot</span>(results,<span class="dt">scales=</span>scales)</a></code></pre></div>
 <p><img src="biosml_files/figure-html/dpres-1.png" width="672" /></p>
-<div class="sourceCode" id="cb445"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb445-1" data-line-number="1">scales &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">x=</span><span class="kw">list</span>(<span class="dt">relation=</span><span class="st">&quot;free&quot;</span>), <span class="dt">y=</span><span class="kw">list</span>(<span class="dt">relation=</span><span class="st">&quot;free&quot;</span>)) </a>
-<a class="sourceLine" id="cb445-2" data-line-number="2"><span class="kw">bwplot</span>(results, <span class="dt">scales=</span>scales)</a></code></pre></div>
+<div class="sourceCode" id="cb443"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb443-1" data-line-number="1">scales &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">x=</span><span class="kw">list</span>(<span class="dt">relation=</span><span class="st">&quot;free&quot;</span>), <span class="dt">y=</span><span class="kw">list</span>(<span class="dt">relation=</span><span class="st">&quot;free&quot;</span>)) </a>
+<a class="sourceLine" id="cb443-2" data-line-number="2"><span class="kw">bwplot</span>(results, <span class="dt">scales=</span>scales)</a></code></pre></div>
 <p><img src="biosml_files/figure-html/bwscale-1.png" width="672" /></p>
-<div class="sourceCode" id="cb446"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb446-1" data-line-number="1"><span class="co">#bwplot(results)</span></a></code></pre></div>
+<div class="sourceCode" id="cb444"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb444-1" data-line-number="1"><span class="co">#bwplot(results)</span></a></code></pre></div>
 </div>
 <div id="model-performance" class="section level2">
 <h2><span class="header-section-number">10.4</span> Model Performance</h2>
 <p>Of course, we can now use the Test data frame to see how the RMSE looks on the holdout data frame.</p>
-<div class="sourceCode" id="cb447"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb447-1" data-line-number="1">Metrics<span class="op">::</span><span class="kw">rmse</span>(example_Test<span class="op">$</span>mpg,<span class="kw">predict</span>(comp_mod_lm,example_Test))</a></code></pre></div>
+<div class="sourceCode" id="cb445"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb445-1" data-line-number="1">Metrics<span class="op">::</span><span class="kw">rmse</span>(example_Test<span class="op">$</span>mpg,<span class="kw">predict</span>(comp_mod_lm,example_Test))</a></code></pre></div>
 <pre><code>## [1] 4.808981</code></pre>
+<div class="sourceCode" id="cb447"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb447-1" data-line-number="1">Metrics<span class="op">::</span><span class="kw">rmse</span>(example_Test<span class="op">$</span>mpg,<span class="kw">predict</span>(comp_mod_svm,example_Test))</a></code></pre></div>
+<pre><code>## [1] 3.65783</code></pre>
 <div class="sourceCode" id="cb449"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb449-1" data-line-number="1">Metrics<span class="op">::</span><span class="kw">rmse</span>(example_Test<span class="op">$</span>mpg,<span class="kw">predict</span>(comp_mod_svm,example_Test))</a></code></pre></div>
 <pre><code>## [1] 3.65783</code></pre>
-<div class="sourceCode" id="cb451"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb451-1" data-line-number="1">Metrics<span class="op">::</span><span class="kw">rmse</span>(example_Test<span class="op">$</span>mpg,<span class="kw">predict</span>(comp_mod_svm,example_Test))</a></code></pre></div>
-<pre><code>## [1] 3.65783</code></pre>
-<div class="sourceCode" id="cb453"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb453-1" data-line-number="1">Metrics<span class="op">::</span><span class="kw">rmse</span>(example_Test<span class="op">$</span>mpg,<span class="kw">predict</span>(comp_mod_ranger,example_Test))</a></code></pre></div>
+<div class="sourceCode" id="cb451"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb451-1" data-line-number="1">Metrics<span class="op">::</span><span class="kw">rmse</span>(example_Test<span class="op">$</span>mpg,<span class="kw">predict</span>(comp_mod_ranger,example_Test))</a></code></pre></div>
 <pre><code>## [1] 2.288412</code></pre>
 </div>
 <div id="feature-evaluation" class="section level2">
@@ -516,9 +516,9 @@ Still, packages such as caret have ways to assist with feature selection.</p>
 <p>In an earlier section we looked at the correlations between the variables in the mtcars data frame. When there are a number of strongly correlated variables the issue of multicollinerarity might exist. One variable might be sufficient to represent the information of one or more other variables which is useful when building models because it would allow us to leave out comparatively low information variables.</p>
 <p>Techniques like PCA Principal Components Analysis can be used to recombine features in a way that explains most of the variation of data set. A simpler way might be to look for highly correlated sets of variables and remove those over a certain threshold of correlation from the data frame.</p>
 <p>Let’s look at the mtcars data frame again to see what variables are correlated.</p>
-<div class="sourceCode" id="cb455"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb455-1" data-line-number="1"><span class="kw">data</span>(mtcars)</a>
-<a class="sourceLine" id="cb455-2" data-line-number="2">correlations &lt;-<span class="st"> </span><span class="kw">cor</span>(mtcars)</a>
-<a class="sourceLine" id="cb455-3" data-line-number="3">correlations[<span class="dv">1</span><span class="op">:</span><span class="dv">6</span>, <span class="dv">1</span><span class="op">:</span><span class="dv">6</span>]</a></code></pre></div>
+<div class="sourceCode" id="cb453"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb453-1" data-line-number="1"><span class="kw">data</span>(mtcars)</a>
+<a class="sourceLine" id="cb453-2" data-line-number="2">correlations &lt;-<span class="st"> </span><span class="kw">cor</span>(mtcars)</a>
+<a class="sourceLine" id="cb453-3" data-line-number="3">correlations[<span class="dv">1</span><span class="op">:</span><span class="dv">6</span>, <span class="dv">1</span><span class="op">:</span><span class="dv">6</span>]</a></code></pre></div>
 <pre><code>##             mpg        cyl       disp         hp       drat         wt
 ## mpg   1.0000000 -0.8521620 -0.8475514 -0.7761684  0.6811719 -0.8676594
 ## cyl  -0.8521620  1.0000000  0.9020329  0.8324475 -0.6999381  0.7824958
@@ -527,44 +527,44 @@ Still, packages such as caret have ways to assist with feature selection.</p>
 ## drat  0.6811719 -0.6999381 -0.7102139 -0.4487591  1.0000000 -0.7124406
 ## wt   -0.8676594  0.7824958  0.8879799  0.6587479 -0.7124406  1.0000000</code></pre>
 <p>It turns out that there are lots of strong correlations going on here. The darker the circle the stronger the correlation.</p>
-<div class="sourceCode" id="cb457"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb457-1" data-line-number="1"><span class="kw">suppressMessages</span>(<span class="kw">library</span>(corrplot))</a>
-<a class="sourceLine" id="cb457-2" data-line-number="2"><span class="kw">corrplot</span>(correlations, <span class="dt">order=</span><span class="st">&quot;hclust&quot;</span>)</a></code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-85-1.png" width="672" /></p>
+<div class="sourceCode" id="cb455"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb455-1" data-line-number="1"><span class="kw">suppressMessages</span>(<span class="kw">library</span>(corrplot))</a>
+<a class="sourceLine" id="cb455-2" data-line-number="2"><span class="kw">corrplot</span>(correlations, <span class="dt">order=</span><span class="st">&quot;hclust&quot;</span>)</a></code></pre></div>
+<p><img src="biosml_files/figure-html/unnamed-chunk-62-1.png" width="672" /></p>
 <p>The <strong>caret</strong> package has some functions that can help us identify highly correlated variables that might be a candidates for removal prior to use in building a model. One of the variables that is highly correlated with others is <strong>mpg</strong> Since that is the one we are trying to predict, we’ll keep it around. The following columns from mtcars have a correlation of .75 (or higher) with some other variable(s)</p>
-<div class="sourceCode" id="cb458"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb458-1" data-line-number="1">(highcorr &lt;-<span class="st"> </span><span class="kw">findCorrelation</span>(correlations, <span class="dt">cutoff=</span>.<span class="dv">75</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb456"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb456-1" data-line-number="1">(highcorr &lt;-<span class="st"> </span><span class="kw">findCorrelation</span>(correlations, <span class="dt">cutoff=</span>.<span class="dv">75</span>))</a></code></pre></div>
 <pre><code>## [1]  2  3  1 10</code></pre>
-<div class="sourceCode" id="cb460"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb460-1" data-line-number="1"><span class="kw">names</span>(mtcars[,highcorr])</a></code></pre></div>
+<div class="sourceCode" id="cb458"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb458-1" data-line-number="1"><span class="kw">names</span>(mtcars[,highcorr])</a></code></pre></div>
 <pre><code>## [1] &quot;cyl&quot;  &quot;disp&quot; &quot;mpg&quot;  &quot;gear&quot;</code></pre>
 <p>So let’s remove those variables from consideration although we’ll keep the <strong>mpg</strong> variable since that is what we will be predicting.</p>
-<div class="sourceCode" id="cb462"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb462-1" data-line-number="1"><span class="kw">data</span>(mtcars)</a>
-<a class="sourceLine" id="cb462-2" data-line-number="2">decorrel_mtcars &lt;-<span class="st"> </span>mtcars[,<span class="op">-</span>highcorr[highcorr <span class="op">!=</span><span class="st"> </span><span class="dv">1</span>]]</a></code></pre></div>
+<div class="sourceCode" id="cb460"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb460-1" data-line-number="1"><span class="kw">data</span>(mtcars)</a>
+<a class="sourceLine" id="cb460-2" data-line-number="2">decorrel_mtcars &lt;-<span class="st"> </span>mtcars[,<span class="op">-</span>highcorr[highcorr <span class="op">!=</span><span class="st"> </span><span class="dv">1</span>]]</a></code></pre></div>
 <p>This might yield a better model though it’s tough to tell.</p>
-<div class="sourceCode" id="cb463"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb463-1" data-line-number="1">idx &lt;-<span class="st"> </span><span class="kw">createDataPartition</span>(decorrel_mtcars<span class="op">$</span>mpg, <span class="dt">p =</span> <span class="fl">.8</span>, </a>
-<a class="sourceLine" id="cb463-2" data-line-number="2">                                  <span class="dt">list =</span> <span class="ot">FALSE</span>, </a>
-<a class="sourceLine" id="cb463-3" data-line-number="3">                                  <span class="dt">times =</span> <span class="dv">1</span>)</a>
-<a class="sourceLine" id="cb463-4" data-line-number="4">train &lt;-<span class="st"> </span>decorrel_mtcars[ idx,]</a>
-<a class="sourceLine" id="cb463-5" data-line-number="5">test  &lt;-<span class="st"> </span>decorrel_mtcars[<span class="op">-</span>idx,]</a>
-<a class="sourceLine" id="cb463-6" data-line-number="6"></a>
-<a class="sourceLine" id="cb463-7" data-line-number="7">decorrel_lm &lt;-<span class="st"> </span><span class="kw">train</span>(mpg<span class="op">~</span>.,</a>
-<a class="sourceLine" id="cb463-8" data-line-number="8">                     <span class="dt">data =</span> train,</a>
-<a class="sourceLine" id="cb463-9" data-line-number="9">                     <span class="dt">method =</span> <span class="st">&quot;lm&quot;</span>,</a>
-<a class="sourceLine" id="cb463-10" data-line-number="10">                     <span class="dt">metric =</span> <span class="st">&quot;RMSE&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb461"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb461-1" data-line-number="1">idx &lt;-<span class="st"> </span><span class="kw">createDataPartition</span>(decorrel_mtcars<span class="op">$</span>mpg, <span class="dt">p =</span> <span class="fl">.8</span>, </a>
+<a class="sourceLine" id="cb461-2" data-line-number="2">                                  <span class="dt">list =</span> <span class="ot">FALSE</span>, </a>
+<a class="sourceLine" id="cb461-3" data-line-number="3">                                  <span class="dt">times =</span> <span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb461-4" data-line-number="4">train &lt;-<span class="st"> </span>decorrel_mtcars[ idx,]</a>
+<a class="sourceLine" id="cb461-5" data-line-number="5">test  &lt;-<span class="st"> </span>decorrel_mtcars[<span class="op">-</span>idx,]</a>
+<a class="sourceLine" id="cb461-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb461-7" data-line-number="7">decorrel_lm &lt;-<span class="st"> </span><span class="kw">train</span>(mpg<span class="op">~</span>.,</a>
+<a class="sourceLine" id="cb461-8" data-line-number="8">                     <span class="dt">data =</span> train,</a>
+<a class="sourceLine" id="cb461-9" data-line-number="9">                     <span class="dt">method =</span> <span class="st">&quot;lm&quot;</span>,</a>
+<a class="sourceLine" id="cb461-10" data-line-number="10">                     <span class="dt">metric =</span> <span class="st">&quot;RMSE&quot;</span>)</a></code></pre></div>
 </div>
 <div id="ranking-features" class="section level3">
 <h3><span class="header-section-number">10.5.3</span> Ranking Features</h3>
 <p>Another approach would be to identify the important variables as determined by a rigorous, reliable and statistically aware process. Some models will report this information as part of the computation. The <strong>caret</strong> package has a function called <strong>varImp</strong> which helps to calculate relative variable importance within an object produced by the <strong>train</strong> function. What this means for us is that we can take most models built with <strong>train</strong> and pass it to the <strong>varImp</strong> function.</p>
-<div class="sourceCode" id="cb464"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb464-1" data-line-number="1">idx &lt;-<span class="st"> </span><span class="kw">createDataPartition</span>(mtcars<span class="op">$</span>mpg, <span class="dt">p =</span> <span class="fl">.8</span>, </a>
-<a class="sourceLine" id="cb464-2" data-line-number="2">                                  <span class="dt">list =</span> <span class="ot">FALSE</span>, </a>
-<a class="sourceLine" id="cb464-3" data-line-number="3">                                  <span class="dt">times =</span> <span class="dv">1</span>)</a>
-<a class="sourceLine" id="cb464-4" data-line-number="4">train &lt;-<span class="st"> </span>mtcars[ idx,]</a>
-<a class="sourceLine" id="cb464-5" data-line-number="5">test  &lt;-<span class="st"> </span>mtcars[<span class="op">-</span>idx,]</a>
-<a class="sourceLine" id="cb464-6" data-line-number="6"></a>
-<a class="sourceLine" id="cb464-7" data-line-number="7">myLm &lt;-<span class="st"> </span><span class="kw">train</span>(mpg<span class="op">~</span>.,</a>
-<a class="sourceLine" id="cb464-8" data-line-number="8">                     <span class="dt">data =</span> train,</a>
-<a class="sourceLine" id="cb464-9" data-line-number="9">                     <span class="dt">method =</span> <span class="st">&quot;lm&quot;</span>,</a>
-<a class="sourceLine" id="cb464-10" data-line-number="10">                     <span class="dt">metric =</span> <span class="st">&quot;RMSE&quot;</span>)</a>
-<a class="sourceLine" id="cb464-11" data-line-number="11"></a>
-<a class="sourceLine" id="cb464-12" data-line-number="12"><span class="kw">summary</span>(myLm)</a></code></pre></div>
+<div class="sourceCode" id="cb462"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb462-1" data-line-number="1">idx &lt;-<span class="st"> </span><span class="kw">createDataPartition</span>(mtcars<span class="op">$</span>mpg, <span class="dt">p =</span> <span class="fl">.8</span>, </a>
+<a class="sourceLine" id="cb462-2" data-line-number="2">                                  <span class="dt">list =</span> <span class="ot">FALSE</span>, </a>
+<a class="sourceLine" id="cb462-3" data-line-number="3">                                  <span class="dt">times =</span> <span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb462-4" data-line-number="4">train &lt;-<span class="st"> </span>mtcars[ idx,]</a>
+<a class="sourceLine" id="cb462-5" data-line-number="5">test  &lt;-<span class="st"> </span>mtcars[<span class="op">-</span>idx,]</a>
+<a class="sourceLine" id="cb462-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb462-7" data-line-number="7">myLm &lt;-<span class="st"> </span><span class="kw">train</span>(mpg<span class="op">~</span>.,</a>
+<a class="sourceLine" id="cb462-8" data-line-number="8">                     <span class="dt">data =</span> train,</a>
+<a class="sourceLine" id="cb462-9" data-line-number="9">                     <span class="dt">method =</span> <span class="st">&quot;lm&quot;</span>,</a>
+<a class="sourceLine" id="cb462-10" data-line-number="10">                     <span class="dt">metric =</span> <span class="st">&quot;RMSE&quot;</span>)</a>
+<a class="sourceLine" id="cb462-11" data-line-number="11"></a>
+<a class="sourceLine" id="cb462-12" data-line-number="12"><span class="kw">summary</span>(myLm)</a></code></pre></div>
 <pre><code>## 
 ## Call:
 ## lm(formula = .outcome ~ ., data = dat)
@@ -592,15 +592,15 @@ Still, packages such as caret have ways to assist with feature selection.</p>
 ## F-statistic: 12.11 on 10 and 17 DF,  p-value: 6.934e-06</code></pre>
 <p>If you look at the summary of the model it looks pretty bleak because mot of the coefficients aren’t significant. You wouldn’t want to take your career on this model.</p>
 <p>Now let’s see what variables are considered to be important by using <strong>varImp</strong>. Remember that this might lead us to use a subset of the more prominent variables in the formation of a new model in case, for example, the coefficients in the existing model weren’t significant.</p>
-<div class="sourceCode" id="cb466"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb466-1" data-line-number="1"><span class="kw">plot</span>(<span class="kw">varImp</span>(myLm))</a></code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-90-1.png" width="672" /></p>
+<div class="sourceCode" id="cb464"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb464-1" data-line-number="1"><span class="kw">plot</span>(<span class="kw">varImp</span>(myLm))</a></code></pre></div>
+<p><img src="biosml_files/figure-html/unnamed-chunk-67-1.png" width="672" /></p>
 <p>How do things look in the model if we limit the formula to some of the “important” (allegedly) features ? Well, it explains more of the variance with fewer predictors (the R^2 value). Both <strong>wt</strong> and <strong>hp</strong> are significant. That’s a start.</p>
-<div class="sourceCode" id="cb467"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb467-1" data-line-number="1">myLm &lt;-<span class="st"> </span><span class="kw">train</span>(mpg<span class="op">~</span>wt<span class="op">+</span>disp<span class="op">+</span>hp,</a>
-<a class="sourceLine" id="cb467-2" data-line-number="2">                     <span class="dt">data =</span> train,</a>
-<a class="sourceLine" id="cb467-3" data-line-number="3">                     <span class="dt">method =</span> <span class="st">&quot;lm&quot;</span>,</a>
-<a class="sourceLine" id="cb467-4" data-line-number="4">                     <span class="dt">metric =</span> <span class="st">&quot;RMSE&quot;</span>)</a>
-<a class="sourceLine" id="cb467-5" data-line-number="5"></a>
-<a class="sourceLine" id="cb467-6" data-line-number="6"><span class="kw">summary</span>(myLm)</a></code></pre></div>
+<div class="sourceCode" id="cb465"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb465-1" data-line-number="1">myLm &lt;-<span class="st"> </span><span class="kw">train</span>(mpg<span class="op">~</span>wt<span class="op">+</span>disp<span class="op">+</span>hp,</a>
+<a class="sourceLine" id="cb465-2" data-line-number="2">                     <span class="dt">data =</span> train,</a>
+<a class="sourceLine" id="cb465-3" data-line-number="3">                     <span class="dt">method =</span> <span class="st">&quot;lm&quot;</span>,</a>
+<a class="sourceLine" id="cb465-4" data-line-number="4">                     <span class="dt">metric =</span> <span class="st">&quot;RMSE&quot;</span>)</a>
+<a class="sourceLine" id="cb465-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb465-6" data-line-number="6"><span class="kw">summary</span>(myLm)</a></code></pre></div>
 <pre><code>## 
 ## Call:
 ## lm(formula = .outcome ~ ., data = dat)
@@ -626,14 +626,14 @@ Still, packages such as caret have ways to assist with feature selection.</p>
 <h3><span class="header-section-number">10.5.4</span> Feature Selection</h3>
 <p>Being able to automatically include only the most important features is desirable (again an example might be Step Wise Regression). Caret provides its own function to do a simple backwards selection to recursively eliminate features based on how they contribute (or not) to the model. You could do all of this by hand yourself of course.</p>
 <p>Automatic feature selection methods can be used to build many models with different subsets of a dataset and identify those attributes that are and are not required to build an accurate model. The <strong>caret</strong> package has a function called *rfe** to implement this. However, it involves some additional setup:</p>
-<div class="sourceCode" id="cb469"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb469-1" data-line-number="1">rfeControl &lt;-<span class="st"> </span><span class="kw">rfeControl</span>(<span class="dt">functions=</span>lmFuncs, <span class="dt">method=</span><span class="st">&quot;cv&quot;</span>, <span class="dt">number=</span><span class="dv">10</span>)</a>
-<a class="sourceLine" id="cb469-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb469-3" data-line-number="3">results &lt;-<span class="st"> </span><span class="kw">rfe</span>(mtcars[,<span class="dv">2</span><span class="op">:</span><span class="dv">11</span>], </a>
-<a class="sourceLine" id="cb469-4" data-line-number="4">               mtcars[,<span class="dv">1</span>], </a>
-<a class="sourceLine" id="cb469-5" data-line-number="5">               <span class="dt">sizes=</span><span class="kw">c</span>(<span class="dv">2</span><span class="op">:</span><span class="dv">11</span>), </a>
-<a class="sourceLine" id="cb469-6" data-line-number="6">               <span class="dt">rfeControl=</span>rfeControl)</a>
-<a class="sourceLine" id="cb469-7" data-line-number="7"></a>
-<a class="sourceLine" id="cb469-8" data-line-number="8"><span class="kw">print</span>(results)</a></code></pre></div>
+<div class="sourceCode" id="cb467"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb467-1" data-line-number="1">rfeControl &lt;-<span class="st"> </span><span class="kw">rfeControl</span>(<span class="dt">functions=</span>lmFuncs, <span class="dt">method=</span><span class="st">&quot;cv&quot;</span>, <span class="dt">number=</span><span class="dv">10</span>)</a>
+<a class="sourceLine" id="cb467-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb467-3" data-line-number="3">results &lt;-<span class="st"> </span><span class="kw">rfe</span>(mtcars[,<span class="dv">2</span><span class="op">:</span><span class="dv">11</span>], </a>
+<a class="sourceLine" id="cb467-4" data-line-number="4">               mtcars[,<span class="dv">1</span>], </a>
+<a class="sourceLine" id="cb467-5" data-line-number="5">               <span class="dt">sizes=</span><span class="kw">c</span>(<span class="dv">2</span><span class="op">:</span><span class="dv">11</span>), </a>
+<a class="sourceLine" id="cb467-6" data-line-number="6">               <span class="dt">rfeControl=</span>rfeControl)</a>
+<a class="sourceLine" id="cb467-7" data-line-number="7"></a>
+<a class="sourceLine" id="cb467-8" data-line-number="8"><span class="kw">print</span>(results)</a></code></pre></div>
 <pre><code>## 
 ## Recursive feature selection
 ## 
@@ -654,14 +654,14 @@ Still, packages such as caret have ways to assist with feature selection.</p>
 ## 
 ## The top 5 variables (out of 5):
 ##    wt, am, drat, gear, qsec</code></pre>
-<div class="sourceCode" id="cb471"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb471-1" data-line-number="1"><span class="kw">plot</span>(results,<span class="dt">type=</span><span class="kw">c</span>(<span class="st">&quot;g&quot;</span>,<span class="st">&quot;o&quot;</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb469"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb469-1" data-line-number="1"><span class="kw">plot</span>(results,<span class="dt">type=</span><span class="kw">c</span>(<span class="st">&quot;g&quot;</span>,<span class="st">&quot;o&quot;</span>))</a></code></pre></div>
 <p><img src="biosml_files/figure-html/rfectrl11-1.png" width="672" /></p>
-<div class="sourceCode" id="cb472"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb472-1" data-line-number="1">myLm &lt;-<span class="st"> </span><span class="kw">train</span>(mpg<span class="op">~</span>wt<span class="op">+</span>am<span class="op">+</span>qsec,</a>
-<a class="sourceLine" id="cb472-2" data-line-number="2">                     <span class="dt">data =</span> train,</a>
-<a class="sourceLine" id="cb472-3" data-line-number="3">                     <span class="dt">method =</span> <span class="st">&quot;lm&quot;</span>,</a>
-<a class="sourceLine" id="cb472-4" data-line-number="4">                     <span class="dt">metric =</span> <span class="st">&quot;RMSE&quot;</span>)</a>
-<a class="sourceLine" id="cb472-5" data-line-number="5"></a>
-<a class="sourceLine" id="cb472-6" data-line-number="6"><span class="kw">summary</span>(myLm)</a></code></pre></div>
+<div class="sourceCode" id="cb470"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb470-1" data-line-number="1">myLm &lt;-<span class="st"> </span><span class="kw">train</span>(mpg<span class="op">~</span>wt<span class="op">+</span>am<span class="op">+</span>qsec,</a>
+<a class="sourceLine" id="cb470-2" data-line-number="2">                     <span class="dt">data =</span> train,</a>
+<a class="sourceLine" id="cb470-3" data-line-number="3">                     <span class="dt">method =</span> <span class="st">&quot;lm&quot;</span>,</a>
+<a class="sourceLine" id="cb470-4" data-line-number="4">                     <span class="dt">metric =</span> <span class="st">&quot;RMSE&quot;</span>)</a>
+<a class="sourceLine" id="cb470-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb470-6" data-line-number="6"><span class="kw">summary</span>(myLm)</a></code></pre></div>
 <pre><code>## 
 ## Call:
 ## lm(formula = .outcome ~ ., data = dat)
@@ -692,14 +692,14 @@ Still, packages such as caret have ways to assist with feature selection.</p>
 <div id="an-example-1" class="section level4">
 <h4><span class="header-section-number">10.5.5.1</span> An Example</h4>
 <p>Let’s work with the <strong>lm</strong> function again to see if we can find some interesting features using some caret functions. The main function for Recursive Feature Elimination is <strong>rfe</strong> which, like the <strong>train</strong> function, accepts a control object to help guide the process. Here we are telling the <strong>rfe</strong> function to use some helper functions to assess predictors. We don’t need to pass it a model - it handles these things under the hood. In this case we’ll use 10 Fold Cross Validation.</p>
-<div class="sourceCode" id="cb474"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb474-1" data-line-number="1"><span class="kw">set.seed</span>(<span class="dv">123</span>)</a>
-<a class="sourceLine" id="cb474-2" data-line-number="2">control &lt;-<span class="st"> </span><span class="kw">rfeControl</span>(<span class="dt">functions=</span>lmFuncs, <span class="dt">method=</span><span class="st">&quot;cv&quot;</span>,<span class="dt">number=</span><span class="dv">10</span>)</a>
-<a class="sourceLine" id="cb474-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb474-4" data-line-number="4">results &lt;-<span class="st"> </span><span class="kw">rfe</span>(mtcars[,<span class="dv">2</span><span class="op">:</span><span class="dv">11</span>],     <span class="co"># Predictor features</span></a>
-<a class="sourceLine" id="cb474-5" data-line-number="5">               mtcars[,<span class="dv">1</span>],        <span class="co"># Predicted features - mpg</span></a>
-<a class="sourceLine" id="cb474-6" data-line-number="6">               <span class="dt">sizes=</span><span class="kw">c</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>),      <span class="co"># pick groups of predictors 1-5 </span></a>
-<a class="sourceLine" id="cb474-7" data-line-number="7">               <span class="dt">rfeControl=</span>control)</a>
-<a class="sourceLine" id="cb474-8" data-line-number="8">results</a></code></pre></div>
+<div class="sourceCode" id="cb472"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb472-1" data-line-number="1"><span class="kw">set.seed</span>(<span class="dv">123</span>)</a>
+<a class="sourceLine" id="cb472-2" data-line-number="2">control &lt;-<span class="st"> </span><span class="kw">rfeControl</span>(<span class="dt">functions=</span>lmFuncs, <span class="dt">method=</span><span class="st">&quot;cv&quot;</span>,<span class="dt">number=</span><span class="dv">10</span>)</a>
+<a class="sourceLine" id="cb472-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb472-4" data-line-number="4">results &lt;-<span class="st"> </span><span class="kw">rfe</span>(mtcars[,<span class="dv">2</span><span class="op">:</span><span class="dv">11</span>],     <span class="co"># Predictor features</span></a>
+<a class="sourceLine" id="cb472-5" data-line-number="5">               mtcars[,<span class="dv">1</span>],        <span class="co"># Predicted features - mpg</span></a>
+<a class="sourceLine" id="cb472-6" data-line-number="6">               <span class="dt">sizes=</span><span class="kw">c</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>),      <span class="co"># pick groups of predictors 1-5 </span></a>
+<a class="sourceLine" id="cb472-7" data-line-number="7">               <span class="dt">rfeControl=</span>control)</a>
+<a class="sourceLine" id="cb472-8" data-line-number="8">results</a></code></pre></div>
 <pre><code>## 
 ## Recursive feature selection
 ## 
@@ -717,8 +717,8 @@ Still, packages such as caret have ways to assist with feature selection.</p>
 ## 
 ## The top 3 variables (out of 3):
 ##    wt, am, drat</code></pre>
-<div class="sourceCode" id="cb476"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb476-1" data-line-number="1"><span class="kw">plot</span>(results,<span class="dt">type=</span><span class="kw">c</span>(<span class="st">&quot;o&quot;</span>,<span class="st">&quot;g&quot;</span>))</a></code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-92-1.png" width="672" /></p>
+<div class="sourceCode" id="cb474"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb474-1" data-line-number="1"><span class="kw">plot</span>(results,<span class="dt">type=</span><span class="kw">c</span>(<span class="st">&quot;o&quot;</span>,<span class="st">&quot;g&quot;</span>))</a></code></pre></div>
+<p><img src="biosml_files/figure-html/unnamed-chunk-69-1.png" width="672" /></p>
 <p>What we get back is some idea about the important features. We could then build a model with caret that uses only these features to see if the suggested RMSE value mentioned in the rfe process matches.</p>
 </div>
 </div>
