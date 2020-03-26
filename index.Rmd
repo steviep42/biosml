@@ -493,7 +493,7 @@ mtcars %>% ggplot(aes(x=mpg)) +
 ```{r mpgtrans}
 mtcars %>% ggplot(aes(x=mpg)) + 
   geom_histogram(bins=8,fill="aquamarine",color="black") + 
-  theme_classic() + 
+  theme_bw() + 
   facet_wrap(~factor(am,labels=c("Auto","Manual")),ncol=1) +
   ggtitle("Distribution of MPG By Transmission Type")
 ```
@@ -753,11 +753,11 @@ It looks to me like the .6 or .7 split provides the least variation for the RMSE
 
 ## Other Methods ? 
 
-Could we improve the situation by using another modeling method ? This would be something that we could try with out much effort as long as we know the name of the method and how to call it. This can sometimes be a challenge as you have to find the documentation for it and figure out how to prepare the data before calling the command. In the above case we just used the formula interface which is favored in R but not all functions support that. Just to say that you will generally have to study each new function to see how it works. 
+Could we improve the situation by using another modeling method ? Or maybe by using another formula ? This would be something that we could try with out much effort as long as we know the name of the method and how to call it. This can sometimes be a challenge as you have to find the documentation for it and figure out how to prepare the data before calling the command. In the above case we just used the formula interface which is favored in R but not all functions support that. Just to say that you will generally have to study each new function to see how it works. 
 
 Let's check out the [XGBoost](https://xgboost.readthedocs.io/en/latest/) function which is an algorithm that has enjoyed recent popularity and celebrity in the world of Data Science. XGBoost is an implementation of gradient boosted decision trees designed for speed and performance. 
 
-XGBoost requires us to specify the input as matrices. We also have to give it the input in the form of X, Y arguments where the first is a matrix of all the predictor variables and the latter is the thing being predicted. In this case the MPG which is the first column
+XGBoost requires us to specify the input as matrices. We also have to give it the input in the form of X, Y arguments where the first is a matrix of all the predictor variables and the latter is the thing being predicted. We'll 
 
 
 ```{r xgbooster, message=FALSE}
@@ -1245,6 +1245,7 @@ my_lm <- train(
   mpg ~ ., 
   Train,
   method = "lm",
+  metric = "RMSE",
   trControl = control
 )
 ```
@@ -1271,6 +1272,7 @@ my_lm <- train(
   mpg ~ ., 
   Train,
   method = "lm",
+  metric = "RMSE",
   trControl = control
 )
 
@@ -1337,6 +1339,7 @@ my_ranger <- train(
   mpg ~ ., 
   Train,
   method = "ranger",
+  metric = "RMSE",
   trControl = control
 )
 

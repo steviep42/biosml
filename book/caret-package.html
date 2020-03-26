@@ -504,8 +504,9 @@ future predictions</li>
 <a class="sourceLine" id="cb134-7" data-line-number="7">  mpg <span class="op">~</span><span class="st"> </span>., </a>
 <a class="sourceLine" id="cb134-8" data-line-number="8">  Train,</a>
 <a class="sourceLine" id="cb134-9" data-line-number="9">  <span class="dt">method =</span> <span class="st">&quot;lm&quot;</span>,</a>
-<a class="sourceLine" id="cb134-10" data-line-number="10">  <span class="dt">trControl =</span> control</a>
-<a class="sourceLine" id="cb134-11" data-line-number="11">)</a></code></pre></div>
+<a class="sourceLine" id="cb134-10" data-line-number="10">  <span class="dt">metric =</span> <span class="st">&quot;RMSE&quot;</span>,</a>
+<a class="sourceLine" id="cb134-11" data-line-number="11">  <span class="dt">trControl =</span> control</a>
+<a class="sourceLine" id="cb134-12" data-line-number="12">)</a></code></pre></div>
 <pre><code>## + Fold1: intercept=TRUE 
 ## - Fold1: intercept=TRUE 
 ## + Fold2: intercept=TRUE 
@@ -548,10 +549,11 @@ future predictions</li>
 <a class="sourceLine" id="cb140-9" data-line-number="9">  mpg <span class="op">~</span><span class="st"> </span>., </a>
 <a class="sourceLine" id="cb140-10" data-line-number="10">  Train,</a>
 <a class="sourceLine" id="cb140-11" data-line-number="11">  <span class="dt">method =</span> <span class="st">&quot;lm&quot;</span>,</a>
-<a class="sourceLine" id="cb140-12" data-line-number="12">  <span class="dt">trControl =</span> control</a>
-<a class="sourceLine" id="cb140-13" data-line-number="13">)</a>
-<a class="sourceLine" id="cb140-14" data-line-number="14"></a>
-<a class="sourceLine" id="cb140-15" data-line-number="15">Metrics<span class="op">::</span><span class="kw">rmse</span>(Test<span class="op">$</span>mpg,<span class="kw">predict</span>(my_lm,Test))</a></code></pre></div>
+<a class="sourceLine" id="cb140-12" data-line-number="12">  <span class="dt">metric =</span> <span class="st">&quot;RMSE&quot;</span>,</a>
+<a class="sourceLine" id="cb140-13" data-line-number="13">  <span class="dt">trControl =</span> control</a>
+<a class="sourceLine" id="cb140-14" data-line-number="14">)</a>
+<a class="sourceLine" id="cb140-15" data-line-number="15"></a>
+<a class="sourceLine" id="cb140-16" data-line-number="16">Metrics<span class="op">::</span><span class="kw">rmse</span>(Test<span class="op">$</span>mpg,<span class="kw">predict</span>(my_lm,Test))</a></code></pre></div>
 <pre><code>## [1] 4.808981</code></pre>
 </div>
 <div id="reproducible-results" class="section level2">
@@ -654,10 +656,11 @@ future predictions</li>
 <a class="sourceLine" id="cb156-7" data-line-number="7">  mpg <span class="op">~</span><span class="st"> </span>., </a>
 <a class="sourceLine" id="cb156-8" data-line-number="8">  Train,</a>
 <a class="sourceLine" id="cb156-9" data-line-number="9">  <span class="dt">method =</span> <span class="st">&quot;ranger&quot;</span>,</a>
-<a class="sourceLine" id="cb156-10" data-line-number="10">  <span class="dt">trControl =</span> control</a>
-<a class="sourceLine" id="cb156-11" data-line-number="11">)</a>
-<a class="sourceLine" id="cb156-12" data-line-number="12"></a>
-<a class="sourceLine" id="cb156-13" data-line-number="13">my_ranger</a></code></pre></div>
+<a class="sourceLine" id="cb156-10" data-line-number="10">  <span class="dt">metric =</span> <span class="st">&quot;RMSE&quot;</span>,</a>
+<a class="sourceLine" id="cb156-11" data-line-number="11">  <span class="dt">trControl =</span> control</a>
+<a class="sourceLine" id="cb156-12" data-line-number="12">)</a>
+<a class="sourceLine" id="cb156-13" data-line-number="13"></a>
+<a class="sourceLine" id="cb156-14" data-line-number="14">my_ranger</a></code></pre></div>
 <pre><code>## Random Forest 
 ## 
 ## 28 samples
@@ -737,7 +740,7 @@ future predictions</li>
 <p>This model returns more information than say the <strong>lm</strong> function because this method uses something called “hyperparameters” which are arguments to a given method that gets set before you call the method. In this case there are two hyperparameters called <strong>mtry</strong> and <strong>splitrule</strong> that assume default variables if we don’t supply values.</p>
 <p>We can get a plot of how the RMSE and R squared value varied with different values of <strong>mtry</strong> as well the <strong>splitrule</strong>. Here we see that an mtry value of 6 randomly selected columns / variables provides the lowest RMSE.</p>
 <div class="sourceCode" id="cb164"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb164-1" data-line-number="1"><span class="kw">ggplot</span>(my_ranger) <span class="op">+</span><span class="st"> </span><span class="kw">theme</span>(<span class="dt">legend.position =</span> <span class="st">&quot;top&quot;</span>)</a></code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-57-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
 <p>We can use the <strong>tuneLength</strong> argument to tell the <strong>train</strong> function to use N different values of <strong>mtry</strong> which is a <strong>hyperparameter</strong> to the randomForest package. The value relates to the number of columns in the data frame. We have 11 total and we are trying to predict one of them (mpg). So we can tell the <strong>train</strong> function to randomly select N variables (up to 10) when a tree is split.</p>
 <div class="sourceCode" id="cb165"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb165-1" data-line-number="1">my_ctrl &lt;-<span class="st"> </span><span class="kw">trainControl</span>(</a>
 <a class="sourceLine" id="cb165-2" data-line-number="2">    <span class="dt">method =</span> <span class="st">&quot;cv&quot;</span>, </a>
@@ -872,7 +875,7 @@ future predictions</li>
 ## RMSE was used to select the optimal model using the smallest value.
 ## The final value used for the model was mtry = 6.</code></pre>
 <div class="sourceCode" id="cb169"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb169-1" data-line-number="1"><span class="kw">plot</span>(my_rf)</a></code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-58-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
 <div class="sourceCode" id="cb170"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb170-1" data-line-number="1">Metrics<span class="op">::</span><span class="kw">rmse</span>(Test<span class="op">$</span>mpg,<span class="kw">predict</span>(my_rf,Test))</a></code></pre></div>
 <pre><code>## [1] 2.23303</code></pre>
 <p>If you have a questions about what hyper parameters can be tuned for a given method then you can refer to the online <a href="https://topepo.github.io/caret/available-models.html">caret documentation</a> Here is a screenshot of the table of supported models and associated tuning parameters.</p>
@@ -951,7 +954,7 @@ future predictions</li>
 <div class="sourceCode" id="cb184"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb184-1" data-line-number="1">Metrics<span class="op">::</span><span class="kw">rmse</span>(Test<span class="op">$</span>mpg,<span class="kw">predict</span>(my_ranger,Test))</a></code></pre></div>
 <pre><code>## [1] 3.042224</code></pre>
 <div class="sourceCode" id="cb186"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb186-1" data-line-number="1"><span class="kw">plot</span>(my_ranger)</a></code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-62-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
 </div>
 </div>
             </section>
