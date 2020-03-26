@@ -3116,7 +3116,7 @@ plot(caret_ranger)
 caret_ranger <- train(mpg ~ .,
                       data = new_train,
                       method = "ranger",
-                      tuneLength = 10)
+                      tuneLength = 5)
 
 caret_ranger$results
 Metrics::rmse(new_test$mpg, predict(caret_ranger,new_test))
