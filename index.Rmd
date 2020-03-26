@@ -431,7 +431,20 @@ A data frame with 32 observations on 11 (numeric) variables.
 
 ## Visualizations
 
-This is a big topic on its own but winds up being the gateway into forming hypotheses to help drive the aims of any machine learning project. On the other hand, some people just start building models with variables they believe to be of interest and only later worry about how the data might look. With respect to the above data frame, the idea of Fuel Economy is usually a popular concept which then leads one to look at the **mpg** feature in the data set. Or, when we look at the Pima Indians dataset, we'll see that the "diabetes" column is sure to be of interest to someone wanting to use other variables from that dataset to predict whether someone has that disease or not. 
+This is a big topic on its own but winds up being the gateway into forming hypotheses to help drive the aims of any machine learning project. On the other hand, some people just start building models with variables they believe to be of interest and only later worry about how the data might look. With respect to the above data frame, the idea of Fuel Economy is usually a popular concept which then leads one to look at the **mpg** feature in the data set.
+
+Remember for the "Levels Of Measurement" section and how it is wise to determine what features are cateogrical or continuous. Within those categories we can then make finer distinctions (e.g. "nominal" vs "ordinal") if we need to. 
+
+```{r mtdistinct}
+mtcars  %>% summarise_all(n_distinct)
+```
+
+```{r}
+str(mtcars)
+```
+
+Which of the variables are categories ? Which of the categories are ordinal (if any) ? 
+
 
 Not all data sets have a clear cut variable that you are trying to predict.  Sometimes you go on a "fishing expedition" to find interesting variables and it's only after working with the data, building models, and evaluating them that one comes to an understanding of what variables / features are actually relevant. In the mean time though, doing some plots can be helpful
 
@@ -841,8 +854,12 @@ What would the RMSE look like if we created say K number of subsets of the data 
     Summarize evaluation score (e.g. mean of RMSE)
 
 
-This is called K-Fold Cross Validation. Here is the general idea in illustrated form relative to mtcars. Assume we want 4 folds. We would divide the data frame into 4 folds of 8 records each. The first model would be built using Fold 1 as the holdout / test data set **after** first combining Folds 2,3 and 4 into a training set set
+This is called K-Fold Cross Validation. A general view of this procedure is depicted in the following figure which shows a 5 Fold scenario.
 
+![](./pics/folds_cv_latex.png)
+
+
+Now, here is the general idea in illustrated form relative to mtcars. Assume we want 4 folds. We would divide the data frame into 4 folds of 8 records each. The first model would be built using Fold 1 as the holdout / test data set **after** first combining Folds 2,3 and 4 into a training set set
 
 ![](./pics/cv1.png)
 

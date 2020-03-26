@@ -1,0 +1,47 @@
+\documentclass[]{article}
+
+\usepackage[table]{xcolor}
+\definecolor{ccellcolor}{HTML}{ff0000}
+
+\newcommand*\revealcline{\noalign{\vskip\arrayrulewidth}}
+\newcommand*\nextrow[1]
+  {\\\cline{#1}\noalign{\vskip1ex}\cline{#1}\revealcline}
+\newcount\ccellA
+\newcommand*\ccell[2]
+  {%
+    \def\tmpa{}%
+    \ccellA=1
+    \loop
+      \ifnum#1=\ccellA
+        \edef\tmpa{\unexpanded\expandafter{\tmpa\cellcolor{ccellcolor}}}%
+      \fi
+    \ifnum#2>\ccellA
+      \advance\ccellA1
+      \edef\tmpa{\unexpanded\expandafter{\tmpa&}}%
+    \repeat
+    \tmpa
+  }
+
+\begin{document}
+\begin{tabular}[c]{l *5{|p{2em}}|}
+  & \multicolumn{5}{c|}{$\longleftarrow$ K = 5 Folds $\longrightarrow$}\\
+  \cline{2-6}\revealcline
+  Model 1 & \ccell{1}{5}
+  \nextrow{2-6}
+  Model 2 & \ccell{2}{5}
+  \nextrow{2-6}
+  Model 3 & \ccell{3}{5}
+  \nextrow{2-6}
+  Model 4 & \ccell{4}{5}
+  \nextrow{2-6}
+  Model 5 & \ccell{5}{5}\\
+  \cline{2-6}
+\end{tabular}\hskip1em
+\begin{tabular}[c]{|p{2em}|l}
+  \cline{1-1}
+  \ccell{0}{1}  & Training
+  \nextrow{1-1}
+  \ccell{1}{1}  & Test\\
+  \cline{1-1}
+\end{tabular}
+\end{document}
