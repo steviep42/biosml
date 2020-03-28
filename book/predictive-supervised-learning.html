@@ -329,13 +329,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <a class="sourceLine" id="cb2-3" data-line-number="3">titan &lt;-<span class="st"> </span><span class="kw">read.csv</span>(url)</a>
 <a class="sourceLine" id="cb2-4" data-line-number="4"></a>
 <a class="sourceLine" id="cb2-5" data-line-number="5"><span class="kw">head</span>(titan)</a></code></pre></div>
-<pre><code>##   pclass survived    sex     age sibsp parch
-## 1    1st        1 female 29.0000     0     0
-## 2    1st        1   male  0.9167     1     2
-## 3    1st        0 female  2.0000     1     2
-## 4    1st        0   male 30.0000     1     2
-## 5    1st        0 female 25.0000     1     2
-## 6    1st        1   male 48.0000     0     0</code></pre>
+<pre><code>##   pclass survived    sex    age sibsp parch
+## 1    1st        1 female 29.000     0     0
+## 2    1st        1   male  0.917     1     2
+## 3    1st        0 female  2.000     1     2
+## 4    1st        0   male 30.000     1     2
+## 5    1st        0 female 25.000     1     2
+## 6    1st        1   male 48.000     0     0</code></pre>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">This data set provides information on the fate of passengers on the fatal maiden voyage of the ocean liner ‘Titanic’, summarized according to economic <span class="kw">status</span> (class), sex, age and survival.</a>
 <a class="sourceLine" id="cb4-2" data-line-number="2"></a>
 <a class="sourceLine" id="cb4-3" data-line-number="3">pclass    Passenger <span class="kw">Class</span>  (<span class="dv">1</span> =<span class="st"> </span>1st; <span class="dv">2</span> =<span class="st"> </span>2nd; <span class="dv">3</span> =<span class="st"> </span>3rd)</a>
@@ -385,7 +385,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <a class="sourceLine" id="cb8-2" data-line-number="2"><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x=</span>age)) <span class="op">+</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb8-3" data-line-number="3"><span class="st">  </span><span class="kw">geom_histogram</span>(<span class="kw">aes</span>(<span class="dt">fill=</span>survived),<span class="dt">bins=</span><span class="dv">20</span>) <span class="op">+</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb8-4" data-line-number="4"><span class="st">  </span><span class="kw">theme_light</span>() <span class="op">+</span><span class="st"> </span><span class="kw">facet_wrap</span>(<span class="op">~</span>pclass)</a></code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
 </div>
 </div>
 <div id="bias-vs-variance" class="section level2">
@@ -472,7 +472,7 @@ If you flip this around a bit, an algorithm whose bias is high generally means t
 <p>Be on the lookout for columns that don’t have very many unique values such as vs, am, and cyl. These are more likely categories by which we might summarize the continuous quantities. As an example - what is the average mpg for each transmission type ?</p>
 <p>What is the average mpg for all cylinder types ? Even though all the variables appear to be numeric doesn’t mean that they can be “computed” on. Does it make sense to take the average of the transmission type ? It’s either 0 or 1 (auto or manual). There is no such thing as a car with a 0.40625 transmission.</p>
 <div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1"><span class="kw">mean</span>(mtcars<span class="op">$</span>am)</a></code></pre></div>
-<pre><code>## [1] 0.40625</code></pre>
+<pre><code>## [1] 0.406</code></pre>
 <p>Perhaps it’s better to count the number of times each transmission type occurs.</p>
 <div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" data-line-number="1"><span class="kw">table</span>(mtcars<span class="op">$</span>am)</a></code></pre></div>
 <pre><code>## 

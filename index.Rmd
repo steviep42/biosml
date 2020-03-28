@@ -1558,9 +1558,22 @@ glm_preds[1:10]
 
 What do we get back from our prediction ? These are probabilities that, for each row in the test data frame, represent the likelihood of that person being positive for diabetes. 
 
-The trick then is to figure out the threshold value (aka "alpha value") over which we would classify the person as being positive for diabetes. 
+The trick then is to figure out the threshold value (aka "alpha value") over which we would classify the person as being positive for diabetes. Most people will generally pick 0.5:
 
-To answer this question, we need to back up a bit and recall that we are dealing with a curve like the one below which is a sigmoid function. The idea is to take our probabilities, which range between 0 and 1, and then pick a threshold over which we would classify that person as being positive for diabetes. 
+```{r perfclass}
+pos_neg <- ifelse(glm_preds > 0.5,"pos","neg")
+
+# Then they would compare this against the known data
+(my_conf <- table(actual=glm_test$diabetes,predicted=pos_neg))
+
+# Then they might use this table to compute an accuracy metric
+estimated_accuracy <- sum(diag(my_conf))/sum(my_conf)
+
+print(paste("Accuracy is",round(estimated_accuracy,2)))
+```
+
+
+To better address this question, we need to back up a bit and recall that we are dealing with a curve like the one below which is a sigmoid function. The idea is to take our probabilities, which range between 0 and 1, and then pick a threshold over which we would classify that person as being positive for diabetes. 
 
 
 ```{r logitplot,echo=FALSE}
