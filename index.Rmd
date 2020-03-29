@@ -1573,7 +1573,7 @@ print(paste("Accuracy is",round(estimated_accuracy,2)))
 ```
 
 
-To better address this question, we need to back up a bit and recall that we are dealing with a curve like the one below which is a sigmoid function. The idea is to take our probabilities, which range between 0 and 1, and then pick a threshold over which we would classify that person as being positive for diabetes. 
+Is this okay ? Not really. To better address this question, we need to back up a bit and recall that we are dealing with a curve like the one below which is a sigmoid function. The idea is to take our probabilities, which range between 0 and 1, and then pick a threshold over which we would classify that person as being positive for diabetes. 
 
 
 ```{r logitplot,echo=FALSE}
@@ -1704,18 +1704,11 @@ accuracy <- (my_confusion[1,1] + my_confusion[2,2]) / sum(my_confusion)
 
 How precise is the model ? This is also known as Positive Predictive Value. We take the number of True Posties (TP) and divide that by the sum of True Positives (TP) and False Positives (FP). The denominator is the sum of row 2 in our matrix.
 
-Precision = TP / (TP + FP) = 47 / (47 + 41) = 0.53
-
-```{r}
-precision <- my_confusion[2,2]/(my_confusion[2,1]+my_confusion[2,2])
-precision %>% round(.,2)
-```
-
 It is helpful to know that **Precision** is also known as the PPV "Positive Predictive Value" since it is concerned with the ratio of True Positives over the sum of all Positive related quantities including the False Positives. The larger the number of FP then the smaller the ratio which results in a lower precision. 
 
 #### Sensitivity
 
-Sensitivity is related to Precision except the ratio we look at is the number of True Positives (TP) divided by the sum of True Positives and False Negatives (which are actually Positives). This tells us how frequently we find a positive case given that it is actually positive. 
+Sensitivity, also known as the True Positive rate, tells us how frequently we find a positive case given that it is actually positive. It is the number of True Positives (TP) divided by the sum of True Positives and False Negatives (which are actually Positives). This 
 
 Sensitivity = TP / (TP + FN) = 47 / (47 + 6) = 0.89
 
@@ -1724,7 +1717,19 @@ sensitivity <- my_confusion[2,2]/(my_confusion[2,2]+my_confusion[1,2])
 sensitivity %>% round(.,2)
 ```
 
-Sensitivity also has synonyms: recall, hit rate, or True Positive Rate (TPR). For example, the concept of True Positive Rate might be more intuitive for you to understand although scientific medical literature might reference Sensitivity. 
+Sensitivity also has the synonyms of "recall" and "hit rate" which might be referenced depending on your domain on interest.
+
+#### False Positive Rate
+
+Just as there is the True Positive Rate there is a False Positive Rate. This tells us how likely it is we will falsely reject the null hypothesis which is a Type I error. 
+
+False Positive Rate = FP / (FP + TN) = 41 / (41 + 59) = .41
+
+```{r}
+fpr <- my_confusion[2,1] / (my_confusion[2,1] + my_confusion[1,1])
+(fpr %>% round(.,2))
+```
+
 
 #### Specificity
 
@@ -1737,22 +1742,18 @@ specificity <- my_confusion[1,1] / (my_confusion[1,1]+ my_confusion[2,1])
 (specificity %>% round(.,2))
 ```
 
-#### False Positive Rate
-
-We compute the FPR as follows:
-
-False Positive Rate = FP / (FP + TN) = 41 / (41 + 59) = .41
+Precision = TP / (TP + FP) = 47 / (47 + 41) = 0.53
 
 ```{r}
-fpr <- my_confusion[2,1] / (my_confusion[2,1] + my_confusion[1,1])
-(fpr %>% round(.,2))
+precision <- my_confusion[2,2]/(my_confusion[2,1]+my_confusion[2,2])
+precision %>% round(.,2)
 ```
 
 ## Picking the Right Metric
 
 There are more ratios we could compute some of which might be more relevant to our classification issue. In reality, picking the "right" metric is a function of your domain of study. Frequently, the sensitivity and specificity are used in medical testing scenarios as is the false positive rate. But you should search the literature in your area of interest to determine what is commonly used. We could say much more about these metrics but we'll keep it simple for now. 
 
-For now, we'll use both the *True Postie Rate* and the *False Positive Rate*. 
+For now, we'll use both the *True Positive Rate* and the *False Positive Rate*. 
 
 ## Wait. Where Are We ? 
 

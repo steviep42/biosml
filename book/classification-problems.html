@@ -367,7 +367,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <a class="sourceLine" id="cb198-3" data-line-number="3"></a>
 <a class="sourceLine" id="cb198-4" data-line-number="4"><span class="kw">print</span>(<span class="kw">paste</span>(<span class="st">&quot;Accuracy is&quot;</span>,<span class="kw">round</span>(estimated_accuracy,<span class="dv">2</span>)))</a></code></pre></div>
 <pre><code>## [1] &quot;Accuracy is 0.8&quot;</code></pre>
-<p>To better address this question, we need to back up a bit and recall that we are dealing with a curve like the one below which is a sigmoid function. The idea is to take our probabilities, which range between 0 and 1, and then pick a threshold over which we would classify that person as being positive for diabetes.</p>
+<p>Is this okay ? Not really. To better address this question, we need to back up a bit and recall that we are dealing with a curve like the one below which is a sigmoid function. The idea is to take our probabilities, which range between 0 and 1, and then pick a threshold over which we would classify that person as being positive for diabetes.</p>
 <p><img src="biosml_files/figure-html/logitplot-1.png" width="672" /></p>
 </div>
 <div id="selecting-the-correct-threshold-alpha" class="section level2">
@@ -458,43 +458,43 @@ definitely get more of the actual negative cases. What if we moved it to say 0.9
 <div id="precision" class="section level4">
 <h4><span class="header-section-number">6.6.1.2</span> Precision</h4>
 <p>How precise is the model ? This is also known as Positive Predictive Value. We take the number of True Posties (TP) and divide that by the sum of True Positives (TP) and False Positives (FP). The denominator is the sum of row 2 in our matrix.</p>
-<p>Precision = TP / (TP + FP) = 47 / (47 + 41) = 0.53</p>
-<div class="sourceCode" id="cb214"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb214-1" data-line-number="1">precision &lt;-<span class="st"> </span>my_confusion[<span class="dv">2</span>,<span class="dv">2</span>]<span class="op">/</span>(my_confusion[<span class="dv">2</span>,<span class="dv">1</span>]<span class="op">+</span>my_confusion[<span class="dv">2</span>,<span class="dv">2</span>])</a>
-<a class="sourceLine" id="cb214-2" data-line-number="2">precision <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">round</span>(.,<span class="dv">2</span>)</a></code></pre></div>
-<pre><code>## [1] 0.53</code></pre>
 <p>It is helpful to know that <strong>Precision</strong> is also known as the PPV “Positive Predictive Value” since it is concerned with the ratio of True Positives over the sum of all Positive related quantities including the False Positives. The larger the number of FP then the smaller the ratio which results in a lower precision.</p>
 </div>
 <div id="sensitivity" class="section level4">
 <h4><span class="header-section-number">6.6.1.3</span> Sensitivity</h4>
-<p>Sensitivity is related to Precision except the ratio we look at is the number of True Positives (TP) divided by the sum of True Positives and False Negatives (which are actually Positives). This tells us how frequently we find a positive case given that it is actually positive.</p>
+<p>Sensitivity, also known as the True Positive rate, tells us how frequently we find a positive case given that it is actually positive. It is the number of True Positives (TP) divided by the sum of True Positives and False Negatives (which are actually Positives). This</p>
 <p>Sensitivity = TP / (TP + FN) = 47 / (47 + 6) = 0.89</p>
-<div class="sourceCode" id="cb216"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb216-1" data-line-number="1">sensitivity &lt;-<span class="st"> </span>my_confusion[<span class="dv">2</span>,<span class="dv">2</span>]<span class="op">/</span>(my_confusion[<span class="dv">2</span>,<span class="dv">2</span>]<span class="op">+</span>my_confusion[<span class="dv">1</span>,<span class="dv">2</span>])</a>
-<a class="sourceLine" id="cb216-2" data-line-number="2">sensitivity <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">round</span>(.,<span class="dv">2</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb214"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb214-1" data-line-number="1">sensitivity &lt;-<span class="st"> </span>my_confusion[<span class="dv">2</span>,<span class="dv">2</span>]<span class="op">/</span>(my_confusion[<span class="dv">2</span>,<span class="dv">2</span>]<span class="op">+</span>my_confusion[<span class="dv">1</span>,<span class="dv">2</span>])</a>
+<a class="sourceLine" id="cb214-2" data-line-number="2">sensitivity <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">round</span>(.,<span class="dv">2</span>)</a></code></pre></div>
 <pre><code>## [1] 0.89</code></pre>
-<p>Sensitivity also has synonyms: recall, hit rate, or True Positive Rate (TPR). For example, the concept of True Positive Rate might be more intuitive for you to understand although scientific medical literature might reference Sensitivity.</p>
+<p>Sensitivity also has the synonyms of “recall” and “hit rate” which might be referenced depending on your domain on interest.</p>
+</div>
+<div id="false-positive-rate" class="section level4">
+<h4><span class="header-section-number">6.6.1.4</span> False Positive Rate</h4>
+<p>Just as there is the True Positive Rate there is a False Positive Rate. This tells us how likely it is we will falsely reject the null hypothesis which is a Type I error.</p>
+<p>False Positive Rate = FP / (FP + TN) = 41 / (41 + 59) = .41</p>
+<div class="sourceCode" id="cb216"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb216-1" data-line-number="1">fpr &lt;-<span class="st"> </span>my_confusion[<span class="dv">2</span>,<span class="dv">1</span>] <span class="op">/</span><span class="st"> </span>(my_confusion[<span class="dv">2</span>,<span class="dv">1</span>] <span class="op">+</span><span class="st"> </span>my_confusion[<span class="dv">1</span>,<span class="dv">1</span>])</a>
+<a class="sourceLine" id="cb216-2" data-line-number="2">(fpr <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">round</span>(.,<span class="dv">2</span>))</a></code></pre></div>
+<pre><code>## [1] 0.41</code></pre>
 </div>
 <div id="specificity" class="section level4">
-<h4><span class="header-section-number">6.6.1.4</span> Specificity</h4>
+<h4><span class="header-section-number">6.6.1.5</span> Specificity</h4>
 <p>Specificity tells us how frequently we find a negative case given that it is actually negative. This is also known as the “True Negative Rate”</p>
 <p>Specificity = TN / (TN + FP) = 59 / (59 + 41) = 0.59</p>
 <div class="sourceCode" id="cb218"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb218-1" data-line-number="1">specificity &lt;-<span class="st"> </span>my_confusion[<span class="dv">1</span>,<span class="dv">1</span>] <span class="op">/</span><span class="st"> </span>(my_confusion[<span class="dv">1</span>,<span class="dv">1</span>]<span class="op">+</span><span class="st"> </span>my_confusion[<span class="dv">2</span>,<span class="dv">1</span>])</a>
 <a class="sourceLine" id="cb218-2" data-line-number="2">(specificity <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">round</span>(.,<span class="dv">2</span>))</a></code></pre></div>
 <pre><code>## [1] 0.59</code></pre>
-</div>
-<div id="false-positive-rate" class="section level4">
-<h4><span class="header-section-number">6.6.1.5</span> False Positive Rate</h4>
-<p>We compute the FPR as follows:</p>
-<p>False Positive Rate = FP / (FP + TN) = 41 / (41 + 59) = .41</p>
-<div class="sourceCode" id="cb220"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb220-1" data-line-number="1">fpr &lt;-<span class="st"> </span>my_confusion[<span class="dv">2</span>,<span class="dv">1</span>] <span class="op">/</span><span class="st"> </span>(my_confusion[<span class="dv">2</span>,<span class="dv">1</span>] <span class="op">+</span><span class="st"> </span>my_confusion[<span class="dv">1</span>,<span class="dv">1</span>])</a>
-<a class="sourceLine" id="cb220-2" data-line-number="2">(fpr <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">round</span>(.,<span class="dv">2</span>))</a></code></pre></div>
-<pre><code>## [1] 0.41</code></pre>
+<p>Precision = TP / (TP + FP) = 47 / (47 + 41) = 0.53</p>
+<div class="sourceCode" id="cb220"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb220-1" data-line-number="1">precision &lt;-<span class="st"> </span>my_confusion[<span class="dv">2</span>,<span class="dv">2</span>]<span class="op">/</span>(my_confusion[<span class="dv">2</span>,<span class="dv">1</span>]<span class="op">+</span>my_confusion[<span class="dv">2</span>,<span class="dv">2</span>])</a>
+<a class="sourceLine" id="cb220-2" data-line-number="2">precision <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">round</span>(.,<span class="dv">2</span>)</a></code></pre></div>
+<pre><code>## [1] 0.53</code></pre>
 </div>
 </div>
 </div>
 <div id="picking-the-right-metric" class="section level2">
 <h2><span class="header-section-number">6.7</span> Picking the Right Metric</h2>
 <p>There are more ratios we could compute some of which might be more relevant to our classification issue. In reality, picking the “right” metric is a function of your domain of study. Frequently, the sensitivity and specificity are used in medical testing scenarios as is the false positive rate. But you should search the literature in your area of interest to determine what is commonly used. We could say much more about these metrics but we’ll keep it simple for now.</p>
-<p>For now, we’ll use both the <em>True Postie Rate</em> and the <em>False Positive Rate</em>.</p>
+<p>For now, we’ll use both the <em>True Positive Rate</em> and the <em>False Positive Rate</em>.</p>
 </div>
 <div id="wait.-where-are-we" class="section level2">
 <h2><span class="header-section-number">6.8</span> Wait. Where Are We ?</h2>
