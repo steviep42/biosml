@@ -195,7 +195,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="6.7" data-path="classification-problems.html"><a href="classification-problems.html#picking-the-right-metric"><i class="fa fa-check"></i><b>6.7</b> Picking the Right Metric</a></li>
 <li class="chapter" data-level="6.8" data-path="classification-problems.html"><a href="classification-problems.html#wait.-where-are-we"><i class="fa fa-check"></i><b>6.8</b> Wait. Where Are We ?</a></li>
-<li class="chapter" data-level="6.9" data-path="classification-problems.html"><a href="classification-problems.html#better-ways-to-compute-the-roc-curve"><i class="fa fa-check"></i><b>6.9</b> Better Ways To Compute The ROC Curve</a></li>
+<li class="chapter" data-level="6.9" data-path="classification-problems.html"><a href="classification-problems.html#other-ways-to-compute-the-roc-curve"><i class="fa fa-check"></i><b>6.9</b> Other Ways To Compute The ROC Curve</a></li>
 <li class="chapter" data-level="6.10" data-path="classification-problems.html"><a href="classification-problems.html#roc-curve-summary"><i class="fa fa-check"></i><b>6.10</b> ROC Curve Summary</a></li>
 </ul></li>
 <li class="chapter" data-level="7" data-path="classification-example.html"><a href="classification-example.html"><i class="fa fa-check"></i><b>7</b> Classification Example</a><ul>
@@ -412,7 +412,7 @@ diabetes - Class variable (test for diabetes)</code></pre>
 <p>And if you haven’t yet enough of ROC curves just yet, we could put up one of those.</p>
 <div class="sourceCode" id="cb258"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb258-1" data-line-number="1"><span class="kw">library</span>(caTools)</a>
 <a class="sourceLine" id="cb258-2" data-line-number="2"><span class="kw">colAUC</span>(pm_model_fitpreds,test<span class="op">$</span>diabetes,<span class="dt">plotROC=</span><span class="ot">TRUE</span>)</a></code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-28-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-30-1.png" width="672" /></p>
 <pre><code>##              [,1]
 ## neg vs. pos 0.892</code></pre>
 <p>But wait, we’ve already been through the whole ROC curve, AUC, confusion matrix route so why would we take a manual approach if we have the <strong>caret</strong> package readily available ?</p>
@@ -566,7 +566,7 @@ diabetes - Class variable (test for diabetes)</code></pre>
 ##  and min.node.size = 1.</code></pre>
 <p>The object can be plotted. Here we see that the max AUC of .825 occurs when mtry is 3 and the Gini criterion is used to evaluate a tree.</p>
 <div class="sourceCode" id="cb274"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb274-1" data-line-number="1"><span class="kw">plot</span>(pm_ranger_mod)</a></code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-33-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-35-1.png" width="672" /></p>
 <div class="sourceCode" id="cb275"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb275-1" data-line-number="1"><span class="kw">max</span>(pm_ranger_mod[[<span class="st">&quot;results&quot;</span>]]<span class="op">$</span>ROC)</a></code></pre></div>
 <pre><code>## [1] 0.824</code></pre>
 <div class="sourceCode" id="cb277"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb277-1" data-line-number="1">preds &lt;-<span class="st"> </span><span class="kw">predict</span>(pm_ranger_mod,test)</a>

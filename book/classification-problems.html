@@ -195,7 +195,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="6.7" data-path="classification-problems.html"><a href="classification-problems.html#picking-the-right-metric"><i class="fa fa-check"></i><b>6.7</b> Picking the Right Metric</a></li>
 <li class="chapter" data-level="6.8" data-path="classification-problems.html"><a href="classification-problems.html#wait.-where-are-we"><i class="fa fa-check"></i><b>6.8</b> Wait. Where Are We ?</a></li>
-<li class="chapter" data-level="6.9" data-path="classification-problems.html"><a href="classification-problems.html#better-ways-to-compute-the-roc-curve"><i class="fa fa-check"></i><b>6.9</b> Better Ways To Compute The ROC Curve</a></li>
+<li class="chapter" data-level="6.9" data-path="classification-problems.html"><a href="classification-problems.html#other-ways-to-compute-the-roc-curve"><i class="fa fa-check"></i><b>6.9</b> Other Ways To Compute The ROC Curve</a></li>
 <li class="chapter" data-level="6.10" data-path="classification-problems.html"><a href="classification-problems.html#roc-curve-summary"><i class="fa fa-check"></i><b>6.10</b> ROC Curve Summary</a></li>
 </ul></li>
 <li class="chapter" data-level="7" data-path="classification-example.html"><a href="classification-example.html"><i class="fa fa-check"></i><b>7</b> Classification Example</a><ul>
@@ -543,60 +543,69 @@ definitely get more of the actual negative cases. What if we moved it to say 0.9
 <a class="sourceLine" id="cb225-12" data-line-number="12"></a>
 <a class="sourceLine" id="cb225-13" data-line-number="13"><span class="kw">text</span>(metrics[,<span class="dv">2</span>],metrics[,<span class="dv">1</span>],<span class="dt">labels=</span>metrics[,<span class="dv">3</span>],<span class="dt">cex=</span><span class="fl">0.8</span>)</a></code></pre></div>
 <p><img src="biosml_files/figure-html/metrtpr-1.png" width="672" /></p>
-<p>It turns out that area under an ROC curve is a measure of the usefulness of a test in general, where a greater area means a more useful test. Ideally we would want the area under the curve (also known as “AUC”) to be as close to 1 as possible. The dashed line above represents a classifier that basically “guesses” the outcome (pos vs neg) using a “coin flip” mentality. Here are some more examples of curves including one that is “perfect”. B and C are okay where as D represents mere guessing.</p>
+<p>It turns out that area under an ROC curve is a measure of the usefulness of a test in general, where a greater area means a more useful test. Ideally we would want the area under the curve (also known as “AUC”) to be as close to 1 as possible. The dashed line above represents a classifier that basically “guesses” the outcome (pos vs neg) using a “coin flip” mentality.</p>
+<p>In case you are wondering, there is a command in R which will make the curve for you. We need to use the prediction PROBABILITES as part of the call to the colAUC function. We also pass in the actual labels for comparison.</p>
+<div class="sourceCode" id="cb226"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb226-1" data-line-number="1"><span class="co"># Use the colAUC function from the caTools package</span></a>
+<a class="sourceLine" id="cb226-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb226-3" data-line-number="3">pm_model_glm_probs &lt;-<span class="st"> </span><span class="kw">predict</span>(glm_model,glm_test,<span class="dt">type=</span><span class="st">&quot;response&quot;</span>)</a>
+<a class="sourceLine" id="cb226-4" data-line-number="4">caTools<span class="op">::</span><span class="kw">colAUC</span>(pm_model_glm_probs,glm_test<span class="op">$</span>diabetes,<span class="dt">plotROC=</span><span class="ot">TRUE</span>)</a></code></pre></div>
+<p><img src="biosml_files/figure-html/carocagain-1.png" width="672" /></p>
+<pre><code>##              [,1]
+## neg vs. pos 0.868</code></pre>
+<p>Here are some more examples of general curves including one that is “perfect”. B and C are okay where as D represents mere guessing.</p>
 <p><img src="pics/multirocs.png" /></p>
 <p>Here is another view of determining how good a ROC curve is:</p>
 <p><img src="biosml_files/figure-html/classroc-1.png" width="672" /></p>
 <p>So, our classifier does better than that but certainly not perfectly. Now, we also care about the threshold that gives us a good balance between the TPR and FPR. I mean if we wanted a max AUC with no other concerns, we would also be accepting a very high FPR. So this is why looking at the curve is useful.</p>
 </div>
-<div id="better-ways-to-compute-the-roc-curve" class="section level2">
-<h2><span class="header-section-number">6.9</span> Better Ways To Compute The ROC Curve</h2>
+<div id="other-ways-to-compute-the-roc-curve" class="section level2">
+<h2><span class="header-section-number">6.9</span> Other Ways To Compute The ROC Curve</h2>
 <p>So by now your head might be reeling from all the details and tedium associated with selecting alpha values, computing matrices, and plotting ROC curves though I it should be no surprise that R (as well as Python) has a number of functions that can compute these things for you.</p>
 <p>As an example, if we wanted to plot the ROC curve we generated by hand we could use the ROCR package. It takes the probabilities returned by our first prediction object as well as the known labels in the glm_test data frame.</p>
-<div class="sourceCode" id="cb226"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb226-1" data-line-number="1"><span class="kw">library</span>(ROCR)</a>
-<a class="sourceLine" id="cb226-2" data-line-number="2">pred &lt;-<span class="st"> </span>ROCR<span class="op">::</span><span class="kw">prediction</span>(<span class="dt">predictions =</span> glm_preds,</a>
-<a class="sourceLine" id="cb226-3" data-line-number="3">                         <span class="dt">labels =</span> glm_test<span class="op">$</span>diabetes)</a>
-<a class="sourceLine" id="cb226-4" data-line-number="4"></a>
-<a class="sourceLine" id="cb226-5" data-line-number="5">perf &lt;-<span class="st"> </span>ROCR<span class="op">::</span><span class="kw">performance</span>(pred,</a>
-<a class="sourceLine" id="cb226-6" data-line-number="6">                    <span class="st">&quot;tpr&quot;</span>,</a>
-<a class="sourceLine" id="cb226-7" data-line-number="7">                    <span class="st">&quot;fpr&quot;</span>)</a>
-<a class="sourceLine" id="cb226-8" data-line-number="8">ROCR<span class="op">::</span><span class="kw">plot</span>(perf,<span class="dt">colorize=</span>T,</a>
-<a class="sourceLine" id="cb226-9" data-line-number="9">     <span class="dt">print.cutoffs.at=</span><span class="kw">seq</span>(<span class="dv">0</span>,<span class="dv">1</span>,<span class="dt">by=</span><span class="fl">0.1</span>),</a>
-<a class="sourceLine" id="cb226-10" data-line-number="10">     <span class="dt">lwd=</span><span class="dv">3</span>,<span class="dt">las=</span><span class="dv">1</span>,<span class="dt">main=</span><span class="st">&quot;A Pretty ROC Curve&quot;</span>)</a>
-<a class="sourceLine" id="cb226-11" data-line-number="11"><span class="kw">abline</span>(<span class="dt">a =</span> <span class="dv">0</span>, <span class="dt">b =</span> <span class="dv">1</span>)</a>
-<a class="sourceLine" id="cb226-12" data-line-number="12"></a>
-<a class="sourceLine" id="cb226-13" data-line-number="13"><span class="kw">grid</span>()</a></code></pre></div>
+<div class="sourceCode" id="cb228"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb228-1" data-line-number="1"><span class="kw">library</span>(ROCR)</a>
+<a class="sourceLine" id="cb228-2" data-line-number="2">pred &lt;-<span class="st"> </span>ROCR<span class="op">::</span><span class="kw">prediction</span>(<span class="dt">predictions =</span> glm_preds,</a>
+<a class="sourceLine" id="cb228-3" data-line-number="3">                         <span class="dt">labels =</span> glm_test<span class="op">$</span>diabetes)</a>
+<a class="sourceLine" id="cb228-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb228-5" data-line-number="5">perf &lt;-<span class="st"> </span>ROCR<span class="op">::</span><span class="kw">performance</span>(pred,</a>
+<a class="sourceLine" id="cb228-6" data-line-number="6">                    <span class="st">&quot;tpr&quot;</span>,</a>
+<a class="sourceLine" id="cb228-7" data-line-number="7">                    <span class="st">&quot;fpr&quot;</span>)</a>
+<a class="sourceLine" id="cb228-8" data-line-number="8">ROCR<span class="op">::</span><span class="kw">plot</span>(perf,<span class="dt">colorize=</span>T,</a>
+<a class="sourceLine" id="cb228-9" data-line-number="9">     <span class="dt">print.cutoffs.at=</span><span class="kw">seq</span>(<span class="dv">0</span>,<span class="dv">1</span>,<span class="dt">by=</span><span class="fl">0.1</span>),</a>
+<a class="sourceLine" id="cb228-10" data-line-number="10">     <span class="dt">lwd=</span><span class="dv">3</span>,<span class="dt">las=</span><span class="dv">1</span>,<span class="dt">main=</span><span class="st">&quot;A Pretty ROC Curve&quot;</span>)</a>
+<a class="sourceLine" id="cb228-11" data-line-number="11"><span class="kw">abline</span>(<span class="dt">a =</span> <span class="dv">0</span>, <span class="dt">b =</span> <span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb228-12" data-line-number="12"></a>
+<a class="sourceLine" id="cb228-13" data-line-number="13"><span class="kw">grid</span>()</a></code></pre></div>
 <p><img src="biosml_files/figure-html/ROCR1-1.png" width="672" /></p>
-<div class="sourceCode" id="cb227"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb227-1" data-line-number="1"><span class="co"># Get the optimal AUC</span></a>
-<a class="sourceLine" id="cb227-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb227-3" data-line-number="3">auc_ROCR &lt;-<span class="st"> </span>ROCR<span class="op">::</span><span class="kw">performance</span>(pred,<span class="dt">measure=</span><span class="st">&quot;auc&quot;</span>)</a>
-<a class="sourceLine" id="cb227-4" data-line-number="4">auc_ROCR &lt;-<span class="st"> </span>auc_ROCR<span class="op">@</span>y.values[[<span class="dv">1</span>]]</a>
-<a class="sourceLine" id="cb227-5" data-line-number="5"><span class="kw">cat</span>(<span class="st">&quot;Optimal AUC is: &quot;</span>,auc_ROCR,<span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb229"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb229-1" data-line-number="1"><span class="co"># Get the optimal AUC</span></a>
+<a class="sourceLine" id="cb229-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb229-3" data-line-number="3">auc_ROCR &lt;-<span class="st"> </span>ROCR<span class="op">::</span><span class="kw">performance</span>(pred,<span class="dt">measure=</span><span class="st">&quot;auc&quot;</span>)</a>
+<a class="sourceLine" id="cb229-4" data-line-number="4">auc_ROCR &lt;-<span class="st"> </span>auc_ROCR<span class="op">@</span>y.values[[<span class="dv">1</span>]]</a>
+<a class="sourceLine" id="cb229-5" data-line-number="5"><span class="kw">cat</span>(<span class="st">&quot;Optimal AUC is: &quot;</span>,auc_ROCR,<span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>)</a></code></pre></div>
 <pre><code>## Optimal AUC is:  0.868</code></pre>
 <p>And if we wanted to see the auc associated with the “optimal” alpha we could use some functions to get that for us:</p>
-<div class="sourceCode" id="cb229"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb229-1" data-line-number="1">pm_model_glm_probs &lt;-<span class="st"> </span><span class="kw">predict</span>(glm_model,glm_test,<span class="dt">type=</span><span class="st">&quot;response&quot;</span>)</a>
-<a class="sourceLine" id="cb229-2" data-line-number="2">myRoc &lt;-<span class="st"> </span>pROC<span class="op">::</span><span class="kw">roc</span>(diabetes<span class="op">~</span>pm_model_glm_probs,</a>
-<a class="sourceLine" id="cb229-3" data-line-number="3">                   <span class="dt">auc=</span><span class="ot">TRUE</span>,<span class="dt">data=</span>glm_test)</a>
-<a class="sourceLine" id="cb229-4" data-line-number="4"></a>
-<a class="sourceLine" id="cb229-5" data-line-number="5">pROC<span class="op">::</span><span class="kw">coords</span>(myRoc, <span class="st">&quot;best&quot;</span>, <span class="dt">ret =</span> <span class="st">&quot;threshold&quot;</span>,<span class="dt">transpose =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb231"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb231-1" data-line-number="1">pm_model_glm_probs &lt;-<span class="st"> </span><span class="kw">predict</span>(glm_model,glm_test,<span class="dt">type=</span><span class="st">&quot;response&quot;</span>)</a>
+<a class="sourceLine" id="cb231-2" data-line-number="2">myRoc &lt;-<span class="st"> </span>pROC<span class="op">::</span><span class="kw">roc</span>(diabetes<span class="op">~</span>pm_model_glm_probs,</a>
+<a class="sourceLine" id="cb231-3" data-line-number="3">                   <span class="dt">auc=</span><span class="ot">TRUE</span>,<span class="dt">data=</span>glm_test)</a>
+<a class="sourceLine" id="cb231-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb231-5" data-line-number="5">pROC<span class="op">::</span><span class="kw">coords</span>(myRoc, <span class="st">&quot;best&quot;</span>, <span class="dt">ret =</span> <span class="st">&quot;threshold&quot;</span>,<span class="dt">transpose =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
 <pre><code>## threshold 
 ##     0.385</code></pre>
-<div class="sourceCode" id="cb231"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb231-1" data-line-number="1"><span class="kw">get_tprfpr</span>(.<span class="dv">3850002</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb233"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb233-1" data-line-number="1"><span class="kw">get_tprfpr</span>(.<span class="dv">3850002</span>)</a></code></pre></div>
 <pre><code>##   tpr   fpr alpha 
 ## 0.774 0.160 0.385</code></pre>
 <p>And while I’m at it, I might as well show you how easy it is to compute a confusion matrix corresponding to the ideal threshold.</p>
-<div class="sourceCode" id="cb233"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb233-1" data-line-number="1">glm_label_preds &lt;-<span class="st"> </span><span class="kw">ifelse</span>(glm_preds <span class="op">&gt;</span><span class="st"> </span><span class="fl">0.385</span>,<span class="st">&quot;pos&quot;</span>,<span class="st">&quot;neg&quot;</span>)</a>
-<a class="sourceLine" id="cb233-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb233-3" data-line-number="3"><span class="co"># We have to make the labels into a factor since</span></a>
-<a class="sourceLine" id="cb233-4" data-line-number="4"><span class="co"># the diabetes column is a factor in the original data dset</span></a>
-<a class="sourceLine" id="cb233-5" data-line-number="5"></a>
-<a class="sourceLine" id="cb233-6" data-line-number="6">glm_label_preds &lt;-<span class="st"> </span><span class="kw">factor</span>(glm_label_preds, </a>
-<a class="sourceLine" id="cb233-7" data-line-number="7">                         <span class="dt">levels =</span> <span class="kw">levels</span>(glm_test[[<span class="st">&quot;diabetes&quot;</span>]]))</a></code></pre></div>
-<div class="sourceCode" id="cb234"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb234-1" data-line-number="1"><span class="co"># How does this compare to the truth ?</span></a>
-<a class="sourceLine" id="cb234-2" data-line-number="2">my_confusion &lt;-<span class="st"> </span><span class="kw">table</span>(<span class="dt">predicted =</span> glm_label_preds,</a>
-<a class="sourceLine" id="cb234-3" data-line-number="3">                      <span class="dt">actual =</span> glm_test<span class="op">$</span>diabetes)</a></code></pre></div>
+<div class="sourceCode" id="cb235"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb235-1" data-line-number="1">glm_label_preds &lt;-<span class="st"> </span><span class="kw">ifelse</span>(glm_preds <span class="op">&gt;</span><span class="st"> </span><span class="fl">0.385</span>,<span class="st">&quot;pos&quot;</span>,<span class="st">&quot;neg&quot;</span>)</a>
+<a class="sourceLine" id="cb235-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb235-3" data-line-number="3"><span class="co"># We have to make the labels into a factor since</span></a>
+<a class="sourceLine" id="cb235-4" data-line-number="4"><span class="co"># the diabetes column is a factor in the original data dset</span></a>
+<a class="sourceLine" id="cb235-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb235-6" data-line-number="6">glm_label_preds &lt;-<span class="st"> </span><span class="kw">factor</span>(glm_label_preds, </a>
+<a class="sourceLine" id="cb235-7" data-line-number="7">                         <span class="dt">levels =</span> <span class="kw">levels</span>(glm_test[[<span class="st">&quot;diabetes&quot;</span>]]))</a></code></pre></div>
+<div class="sourceCode" id="cb236"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb236-1" data-line-number="1"><span class="co"># How does this compare to the truth ?</span></a>
+<a class="sourceLine" id="cb236-2" data-line-number="2">my_confusion &lt;-<span class="st"> </span><span class="kw">table</span>(<span class="dt">predicted =</span> glm_label_preds,</a>
+<a class="sourceLine" id="cb236-3" data-line-number="3">                      <span class="dt">actual =</span> glm_test<span class="op">$</span>diabetes)</a></code></pre></div>
 <p>We could use a function from the <strong>caret</strong> package called <strong>confusionMatrix</strong> to show us the relevant metrics. Much better than doing it by hand.</p>
-<div class="sourceCode" id="cb235"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb235-1" data-line-number="1">caret<span class="op">::</span><span class="kw">confusionMatrix</span>(my_confusion,<span class="dt">positive=</span><span class="st">&quot;pos&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb237"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb237-1" data-line-number="1">caret<span class="op">::</span><span class="kw">confusionMatrix</span>(my_confusion,<span class="dt">positive=</span><span class="st">&quot;pos&quot;</span>)</a></code></pre></div>
 <pre><code>## Confusion Matrix and Statistics
 ## 
 ##          actual
@@ -625,8 +634,8 @@ definitely get more of the actual negative cases. What if we moved it to say 0.9
 ##        &#39;Positive&#39; Class : pos           
 ## </code></pre>
 <p>We could also work directly with our labelled predictions and known labels.</p>
-<div class="sourceCode" id="cb237"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb237-1" data-line-number="1">caret<span class="op">::</span><span class="kw">confusionMatrix</span>(glm_label_preds,</a>
-<a class="sourceLine" id="cb237-2" data-line-number="2">                       glm_test<span class="op">$</span>diabetes,<span class="dt">positive=</span><span class="st">&quot;pos&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb239"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb239-1" data-line-number="1">caret<span class="op">::</span><span class="kw">confusionMatrix</span>(glm_label_preds,</a>
+<a class="sourceLine" id="cb239-2" data-line-number="2">                       glm_test<span class="op">$</span>diabetes,<span class="dt">positive=</span><span class="st">&quot;pos&quot;</span>)</a></code></pre></div>
 <pre><code>## Confusion Matrix and Statistics
 ## 
 ##           Reference
@@ -658,13 +667,6 @@ definitely get more of the actual negative cases. What if we moved it to say 0.9
 <div id="roc-curve-summary" class="section level2">
 <h2><span class="header-section-number">6.10</span> ROC Curve Summary</h2>
 <p>The above can be confusing although what you will soon discover is that being able to compute the AUC (Area Under Curve) will be sufficient to judge the quality of a model - well in general it’s a good start. The <strong>caret</strong> package can do that for you so you don’t need to use the various functions about to find that. You might want to put up a ROC curve based on some predictions in which case you would still need to use one of the above functions. If you just want to see a basic ROC Curve then take this approach which will give you both the AUC and a ROC Curve albeit it much less “pretty” than the one above.</p>
-<div class="sourceCode" id="cb239"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb239-1" data-line-number="1"><span class="co"># Use the colAUC function from the caTools package</span></a>
-<a class="sourceLine" id="cb239-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb239-3" data-line-number="3">pm_model_glm_probs &lt;-<span class="st"> </span><span class="kw">predict</span>(glm_model,glm_test,<span class="dt">type=</span><span class="st">&quot;response&quot;</span>)</a>
-<a class="sourceLine" id="cb239-4" data-line-number="4">caTools<span class="op">::</span><span class="kw">colAUC</span>(pm_model_glm_probs,glm_test<span class="op">$</span>diabetes,<span class="dt">plotROC=</span><span class="ot">TRUE</span>)</a></code></pre></div>
-<p><img src="biosml_files/figure-html/procagain-1.png" width="672" /></p>
-<pre><code>##              [,1]
-## neg vs. pos 0.868</code></pre>
 </div>
 </div>
             </section>
