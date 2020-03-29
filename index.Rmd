@@ -1700,12 +1700,6 @@ accuracy <- (my_confusion[1,1] + my_confusion[2,2]) / sum(my_confusion)
 (accuracy %>% round(.,2))
 ```
 
-#### Precision
-
-How precise is the model ? This is also known as Positive Predictive Value. We take the number of True Posties (TP) and divide that by the sum of True Positives (TP) and False Positives (FP). The denominator is the sum of row 2 in our matrix.
-
-It is helpful to know that **Precision** is also known as the PPV "Positive Predictive Value" since it is concerned with the ratio of True Positives over the sum of all Positive related quantities including the False Positives. The larger the number of FP then the smaller the ratio which results in a lower precision. 
-
 #### Sensitivity
 
 Sensitivity, also known as the True Positive rate, tells us how frequently we find a positive case given that it is actually positive. It is the number of True Positives (TP) divided by the sum of True Positives and False Negatives (which are actually Positives). This 
@@ -1730,7 +1724,6 @@ fpr <- my_confusion[2,1] / (my_confusion[2,1] + my_confusion[1,1])
 (fpr %>% round(.,2))
 ```
 
-
 #### Specificity
 
 Specificity tells us how frequently we find a negative case given that it is actually negative. This is also known as the "True Negative Rate"
@@ -1741,6 +1734,12 @@ Specificity = TN / (TN + FP) = 59 / (59 + 41) = 0.59
 specificity <- my_confusion[1,1] / (my_confusion[1,1]+ my_confusion[2,1])
 (specificity %>% round(.,2))
 ```
+
+#### Precision
+
+How precise is the model ? This is also known as Positive Predictive Value. We take the number of True Posties (TP) and divide that by the sum of True Positives (TP) and False Positives (FP). The denominator is the sum of row 2 in our matrix.
+
+It is helpful to know that **Precision** is also known as the PPV "Positive Predictive Value" since it is concerned with the ratio of True Positives over the sum of all Positive related quantities including the False Positives. The larger the number of FP then the smaller the ratio which results in a lower precision. 
 
 Precision = TP / (TP + FP) = 47 / (47 + 41) = 0.53
 
@@ -1753,7 +1752,7 @@ precision %>% round(.,2)
 
 There are more ratios we could compute some of which might be more relevant to our classification issue. In reality, picking the "right" metric is a function of your domain of study. Frequently, the sensitivity and specificity are used in medical testing scenarios as is the false positive rate. But you should search the literature in your area of interest to determine what is commonly used. We could say much more about these metrics but we'll keep it simple for now. 
 
-For now, we'll use both the *True Positive Rate* and the *False Positive Rate*. 
+For now, we'll use both the *True Positive Rate* and the *False Positive Rate*.
 
 ## Wait. Where Are We ? 
 
@@ -2072,7 +2071,7 @@ pm_glm_mod
 pm_glm_mod$results
 ```
 
-So we get an estimate of a 77% accuracy rate when the model is applied to out of sample data. This isn't so impressive but we aren't here to solve that problem (at least not just yet). So let's make some predictions use thing test data to see what the Accuracy rate is. 
+So we get an estimate of a 77% accuracy rate when the model is applied to out of sample data. This isn't so impressive but we aren't here to solve that problem. So let's make some predictions use thing test data to see what the Accuracy rate is. 
 
 ```{r pmglmlabs}
 pm_glm_pred_labels <- predict(pm_glm_mod,test)
@@ -2124,9 +2123,8 @@ modelLookup("ranger")
 
 Let's try this to see how it performs via the ranger method
 
-```{r}
-ctrl <- trainControl(method = "cv", 
-                     number = 5,
+```{r zzapo}
+ctrl <- trainControl(method = "boot", 
                      classProbs = T,
                      summaryFunction = twoClassSummary)
 
@@ -2150,11 +2148,13 @@ plot(pm_ranger_mod)
 max(pm_ranger_mod[["results"]]$ROC)
 ```
 
+This model has better sensitivity and specificity than the previous one. 
 
-```{r}
+```{r oorang}
 preds <- predict(pm_ranger_mod,test)
 confusionMatrix(preds,test$diabetes)
 ```
+
 
 ## Target Variable Format
 

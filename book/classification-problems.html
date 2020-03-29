@@ -455,13 +455,8 @@ definitely get more of the actual negative cases. What if we moved it to say 0.9
 <a class="sourceLine" id="cb212-2" data-line-number="2">(accuracy <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">round</span>(.,<span class="dv">2</span>))</a></code></pre></div>
 <pre><code>## [1] 0.69</code></pre>
 </div>
-<div id="precision" class="section level4">
-<h4><span class="header-section-number">6.6.1.2</span> Precision</h4>
-<p>How precise is the model ? This is also known as Positive Predictive Value. We take the number of True Posties (TP) and divide that by the sum of True Positives (TP) and False Positives (FP). The denominator is the sum of row 2 in our matrix.</p>
-<p>It is helpful to know that <strong>Precision</strong> is also known as the PPV “Positive Predictive Value” since it is concerned with the ratio of True Positives over the sum of all Positive related quantities including the False Positives. The larger the number of FP then the smaller the ratio which results in a lower precision.</p>
-</div>
 <div id="sensitivity" class="section level4">
-<h4><span class="header-section-number">6.6.1.3</span> Sensitivity</h4>
+<h4><span class="header-section-number">6.6.1.2</span> Sensitivity</h4>
 <p>Sensitivity, also known as the True Positive rate, tells us how frequently we find a positive case given that it is actually positive. It is the number of True Positives (TP) divided by the sum of True Positives and False Negatives (which are actually Positives). This</p>
 <p>Sensitivity = TP / (TP + FN) = 47 / (47 + 6) = 0.89</p>
 <div class="sourceCode" id="cb214"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb214-1" data-line-number="1">sensitivity &lt;-<span class="st"> </span>my_confusion[<span class="dv">2</span>,<span class="dv">2</span>]<span class="op">/</span>(my_confusion[<span class="dv">2</span>,<span class="dv">2</span>]<span class="op">+</span>my_confusion[<span class="dv">1</span>,<span class="dv">2</span>])</a>
@@ -470,7 +465,7 @@ definitely get more of the actual negative cases. What if we moved it to say 0.9
 <p>Sensitivity also has the synonyms of “recall” and “hit rate” which might be referenced depending on your domain on interest.</p>
 </div>
 <div id="false-positive-rate" class="section level4">
-<h4><span class="header-section-number">6.6.1.4</span> False Positive Rate</h4>
+<h4><span class="header-section-number">6.6.1.3</span> False Positive Rate</h4>
 <p>Just as there is the True Positive Rate there is a False Positive Rate. This tells us how likely it is we will falsely reject the null hypothesis which is a Type I error.</p>
 <p>False Positive Rate = FP / (FP + TN) = 41 / (41 + 59) = .41</p>
 <div class="sourceCode" id="cb216"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb216-1" data-line-number="1">fpr &lt;-<span class="st"> </span>my_confusion[<span class="dv">2</span>,<span class="dv">1</span>] <span class="op">/</span><span class="st"> </span>(my_confusion[<span class="dv">2</span>,<span class="dv">1</span>] <span class="op">+</span><span class="st"> </span>my_confusion[<span class="dv">1</span>,<span class="dv">1</span>])</a>
@@ -478,12 +473,17 @@ definitely get more of the actual negative cases. What if we moved it to say 0.9
 <pre><code>## [1] 0.41</code></pre>
 </div>
 <div id="specificity" class="section level4">
-<h4><span class="header-section-number">6.6.1.5</span> Specificity</h4>
+<h4><span class="header-section-number">6.6.1.4</span> Specificity</h4>
 <p>Specificity tells us how frequently we find a negative case given that it is actually negative. This is also known as the “True Negative Rate”</p>
 <p>Specificity = TN / (TN + FP) = 59 / (59 + 41) = 0.59</p>
 <div class="sourceCode" id="cb218"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb218-1" data-line-number="1">specificity &lt;-<span class="st"> </span>my_confusion[<span class="dv">1</span>,<span class="dv">1</span>] <span class="op">/</span><span class="st"> </span>(my_confusion[<span class="dv">1</span>,<span class="dv">1</span>]<span class="op">+</span><span class="st"> </span>my_confusion[<span class="dv">2</span>,<span class="dv">1</span>])</a>
 <a class="sourceLine" id="cb218-2" data-line-number="2">(specificity <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">round</span>(.,<span class="dv">2</span>))</a></code></pre></div>
 <pre><code>## [1] 0.59</code></pre>
+</div>
+<div id="precision" class="section level4">
+<h4><span class="header-section-number">6.6.1.5</span> Precision</h4>
+<p>How precise is the model ? This is also known as Positive Predictive Value. We take the number of True Posties (TP) and divide that by the sum of True Positives (TP) and False Positives (FP). The denominator is the sum of row 2 in our matrix.</p>
+<p>It is helpful to know that <strong>Precision</strong> is also known as the PPV “Positive Predictive Value” since it is concerned with the ratio of True Positives over the sum of all Positive related quantities including the False Positives. The larger the number of FP then the smaller the ratio which results in a lower precision.</p>
 <p>Precision = TP / (TP + FP) = 47 / (47 + 41) = 0.53</p>
 <div class="sourceCode" id="cb220"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb220-1" data-line-number="1">precision &lt;-<span class="st"> </span>my_confusion[<span class="dv">2</span>,<span class="dv">2</span>]<span class="op">/</span>(my_confusion[<span class="dv">2</span>,<span class="dv">1</span>]<span class="op">+</span>my_confusion[<span class="dv">2</span>,<span class="dv">2</span>])</a>
 <a class="sourceLine" id="cb220-2" data-line-number="2">precision <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">round</span>(.,<span class="dv">2</span>)</a></code></pre></div>
