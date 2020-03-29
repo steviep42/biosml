@@ -2078,7 +2078,6 @@ pm_glm_pred_labels <- predict(pm_glm_mod,test)
 confusionMatrix(pm_glm_pred_labels,test$diabetes)
 ```
 
-Actually not too bad. 
 
 The **train** function provides is with an object that contains lots of information but in no way interferes with the results of the glm model. It's as if you had built it using the standalone glm function which means that you can easily examine the model diagnostics:
 
@@ -2092,9 +2091,11 @@ This includes the ability to see the various diagnostic plots:
 plot(pm_glm_mod$finalModel)
 ```
 
-We can certainly change the scoring metric to prioritize, for example, the area under the associated ROC curve. We just need to make some adjustments to the trainControl argument list and the train argument list. But these changes are minor.
+We can certainly change the scoring metric to prioritize, for example, the area under the associated ROC curve. We just need to make some adjustments to the trainControl argument list and the train argument list. But these changes are minor. 
 
-```{r}
+To get the AUC for the ROC we'll need to indicate that this is a two-class problems. Since the ROC curve is based on the predicted class probabilities (which are not computed automatically), the classProbs = TRUE option is used.
+
+```{r twoclassroc}
 ctrl <- trainControl(method = "cv", 
                      number = 5,
                      classProbs = T,

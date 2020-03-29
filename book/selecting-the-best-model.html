@@ -529,7 +529,7 @@ Still, packages such as caret have ways to assist with feature selection.</p>
 <p>It turns out that there are lots of strong correlations going on here. The darker the circle the stronger the correlation.</p>
 <div class="sourceCode" id="cb461"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb461-1" data-line-number="1"><span class="kw">suppressMessages</span>(<span class="kw">library</span>(corrplot))</a>
 <a class="sourceLine" id="cb461-2" data-line-number="2"><span class="kw">corrplot</span>(correlations, <span class="dt">order=</span><span class="st">&quot;hclust&quot;</span>)</a></code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-74-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-63-1.png" width="672" /></p>
 <p>The <strong>caret</strong> package has some functions that can help us identify highly correlated variables that might be a candidates for removal prior to use in building a model. One of the variables that is highly correlated with others is <strong>mpg</strong> Since that is the one we are trying to predict, we’ll keep it around. The following columns from mtcars have a correlation of .75 (or higher) with some other variable(s)</p>
 <div class="sourceCode" id="cb462"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb462-1" data-line-number="1">(highcorr &lt;-<span class="st"> </span><span class="kw">findCorrelation</span>(correlations, <span class="dt">cutoff=</span>.<span class="dv">75</span>))</a></code></pre></div>
 <pre><code>## [1]  2  3  1 10</code></pre>
@@ -593,7 +593,7 @@ Still, packages such as caret have ways to assist with feature selection.</p>
 <p>If you look at the summary of the model it looks pretty bleak because mot of the coefficients aren’t significant. You wouldn’t want to take your career on this model.</p>
 <p>Now let’s see what variables are considered to be important by using <strong>varImp</strong>. Remember that this might lead us to use a subset of the more prominent variables in the formation of a new model in case, for example, the coefficients in the existing model weren’t significant.</p>
 <div class="sourceCode" id="cb470"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb470-1" data-line-number="1"><span class="kw">plot</span>(<span class="kw">varImp</span>(myLm))</a></code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-79-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-68-1.png" width="672" /></p>
 <p>How do things look in the model if we limit the formula to some of the “important” (allegedly) features ? Well, it explains more of the variance with fewer predictors (the R^2 value). Both <strong>wt</strong> and <strong>hp</strong> are significant. That’s a start.</p>
 <div class="sourceCode" id="cb471"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb471-1" data-line-number="1">myLm &lt;-<span class="st"> </span><span class="kw">train</span>(mpg<span class="op">~</span>wt<span class="op">+</span>disp<span class="op">+</span>hp,</a>
 <a class="sourceLine" id="cb471-2" data-line-number="2">                     <span class="dt">data =</span> train,</a>
@@ -718,7 +718,7 @@ Still, packages such as caret have ways to assist with feature selection.</p>
 ## The top 3 variables (out of 3):
 ##    wt, am, drat</code></pre>
 <div class="sourceCode" id="cb480"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb480-1" data-line-number="1"><span class="kw">plot</span>(results,<span class="dt">type=</span><span class="kw">c</span>(<span class="st">&quot;o&quot;</span>,<span class="st">&quot;g&quot;</span>))</a></code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-81-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-70-1.png" width="672" /></p>
 <p>What we get back is some idea about the important features. We could then build a model with caret that uses only these features to see if the suggested RMSE value mentioned in the rfe process matches.</p>
 </div>
 </div>

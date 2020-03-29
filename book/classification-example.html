@@ -412,7 +412,7 @@ diabetes - Class variable (test for diabetes)</code></pre>
 <p>And if you haven’t yet enough of ROC curves just yet, we could put up one of those.</p>
 <div class="sourceCode" id="cb258"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb258-1" data-line-number="1"><span class="kw">library</span>(caTools)</a>
 <a class="sourceLine" id="cb258-2" data-line-number="2"><span class="kw">colAUC</span>(pm_model_fitpreds,test<span class="op">$</span>diabetes,<span class="dt">plotROC=</span><span class="ot">TRUE</span>)</a></code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-41-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-31-1.png" width="672" /></p>
 <pre><code>##              [,1]
 ## neg vs. pos 0.892</code></pre>
 <p>But wait, we’ve already been through the whole ROC curve, AUC, confusion matrix route so why would we take a manual approach if we have the <strong>caret</strong> package readily available ?</p>
@@ -472,7 +472,6 @@ diabetes - Class variable (test for diabetes)</code></pre>
 ##                                         
 ##        &#39;Positive&#39; Class : neg           
 ## </code></pre>
-<p>Actually not too bad.</p>
 <p>The <strong>train</strong> function provides is with an object that contains lots of information but in no way interferes with the results of the glm model. It’s as if you had built it using the standalone glm function which means that you can easily examine the model diagnostics:</p>
 <div class="sourceCode" id="cb266"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb266-1" data-line-number="1"><span class="kw">summary</span>(pm_glm_mod<span class="op">$</span>finalModel)</a></code></pre></div>
 <pre><code>## 
@@ -508,6 +507,7 @@ diabetes - Class variable (test for diabetes)</code></pre>
 <div class="sourceCode" id="cb268"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb268-1" data-line-number="1"><span class="kw">plot</span>(pm_glm_mod<span class="op">$</span>finalModel)</a></code></pre></div>
 <p><img src="biosml_files/figure-html/glmplot-1.png" width="672" /><img src="biosml_files/figure-html/glmplot-2.png" width="672" /><img src="biosml_files/figure-html/glmplot-3.png" width="672" /><img src="biosml_files/figure-html/glmplot-4.png" width="672" /></p>
 <p>We can certainly change the scoring metric to prioritize, for example, the area under the associated ROC curve. We just need to make some adjustments to the trainControl argument list and the train argument list. But these changes are minor.</p>
+<p>To get the AUC for the ROC we’ll need to indicate that this is a two-class problems. Since the ROC curve is based on the predicted class probabilities (which are not computed automatically), the classProbs = TRUE option is used.</p>
 <div class="sourceCode" id="cb269"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb269-1" data-line-number="1">ctrl &lt;-<span class="st"> </span><span class="kw">trainControl</span>(<span class="dt">method =</span> <span class="st">&quot;cv&quot;</span>, </a>
 <a class="sourceLine" id="cb269-2" data-line-number="2">                     <span class="dt">number =</span> <span class="dv">5</span>,</a>
 <a class="sourceLine" id="cb269-3" data-line-number="3">                     <span class="dt">classProbs =</span> T,</a>
@@ -565,7 +565,7 @@ diabetes - Class variable (test for diabetes)</code></pre>
 ##  and min.node.size = 1.</code></pre>
 <p>The object can be plotted. Here we see that the max AUC of .825 occurs when mtry is 3 and the Gini criterion is used to evaluate a tree.</p>
 <div class="sourceCode" id="cb274"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb274-1" data-line-number="1"><span class="kw">plot</span>(pm_ranger_mod)</a></code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-45-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-34-1.png" width="672" /></p>
 <div class="sourceCode" id="cb275"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb275-1" data-line-number="1"><span class="kw">max</span>(pm_ranger_mod[[<span class="st">&quot;results&quot;</span>]]<span class="op">$</span>ROC)</a></code></pre></div>
 <pre><code>## [1] 0.808</code></pre>
 <p>This model has better sensitivity and specificity than the previous one.</p>
