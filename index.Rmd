@@ -2158,6 +2158,56 @@ preds <- predict(pm_rf_mod,test)
 confusionMatrix(preds,test$diabetes)
 ```
 
+## Feature Importance
+
+To inroduce the idea of feature importance, there is a function called **varImp** that looks at a caret model and uses statisics specific to the method under consideration to get an idea as to if and to what extent a feature is relevant to the model. This is important in that it can help you figure out what variables / features to include or exclude when building a formular. 
+
+```{r}
+varImp(pm_glm_mod)
+#
+varImp(pm_rf_mod)
+```
+
+These can even be plotted:
+
+```{r}
+plot(varImp(pm_glm_mod))
+```
+
+
+```{r gridExt}
+library(gridExtra)
+plot1 <- plot(varImp(pm_glm_mod),main="GLM")
+plot2 <- plot(varImp(pm_rf_mod),main="rf")
+grid.arrange(plot1,plot2, ncol=2)
+```
+
+This then makes one wonder as to if the **rf** model could be improved by ommitting some variables. Let's try this:
+
+```{r imprf}
+ctrl <- trainControl(method = "cv", 
+                     number = 5,
+                     classProbs = T,
+                     summaryFunction = twoClassSummary)
+
+pm_rf_mod_imp <- train(diabetes ~ glucose + mass + age + pedigree + pressure,
+                    data = train,
+                    trControl = ctrl,
+                    metric = "ROC",
+                    method = "rf")
+```
+
+now, the question is how did this improve (or not) when compared to the unimproved rf model which used all the features from the data set ? 
+
+```{r comphow}
+# All features
+pm_rf_mod
+
+# 5 features
+pm_rf_mod_imp
+
+```
+
 
 ## Target Variable Format
 
