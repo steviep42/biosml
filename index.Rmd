@@ -1646,7 +1646,9 @@ It is also possible that we apply the test to someone and we say that the do not
 
     - This is known as a "false negative" also known as a Type II Error" 
     
-Here we fail to reject the null hypothesis for this person. A perfect test would have zero false positives and zero false negatives
+Here we fail to reject the null hypothesis for this person. A perfect test would have zero false positives and zero false negatives.
+
+![](./pics/type1and2.png)
 
 ## Confusion Matrix
 
@@ -1737,7 +1739,7 @@ specificity <- my_confusion[1,1] / (my_confusion[1,1]+ my_confusion[2,1])
 
 #### Precision
 
-How precise is the model ? This is also known as Positive Predictive Value. We take the number of True Posties (TP) and divide that by the sum of True Positives (TP) and False Positives (FP). The denominator is the sum of row 2 in our matrix.
+How precise is the model ? Precision is a measure of the ability of a classification model to identify only the relevant data points. This is also known as Positive Predictive Value. We take the number of True Positives (TP) and divide that by the sum of True Positives (TP) and False Positives (FP). The denominator is the sum of row 2 in our matrix.
 
 It is helpful to know that **Precision** is also known as the PPV "Positive Predictive Value" since it is concerned with the ratio of True Positives over the sum of all Positive related quantities including the False Positives. The larger the number of FP then the smaller the ratio which results in a lower precision. 
 
@@ -2013,7 +2015,7 @@ At this point we know that we want to predict "diabetes" and that perhaps glucos
 Let's pick a technique to model the data with the ultimate goal of being able to predict whether someone has diabetes or not. We'll start with the **glm** function in R. We'll take a kitchen sink approach where we predict the diabetes variable ("yes" or "no") based on the rest of the information in the data frame. 
 
 ```{r classcreatedata}
-set.seed(123)
+set.seed(891)
 idx <- createDataPartition(pm$diabetes, p = .8, 
                                   list = FALSE, 
                                   times = 1)
@@ -2036,7 +2038,16 @@ pm_model_glm <- glm(diabetes ~ .,
 
 pm_model_fitpreds <- predict(pm_model_glm,test,
                              type="response")
+```
 
+But, as we learned we can also build a ROC curve to get the AUC which can be a general estimator of how well the model is performing. 
+
+```{r}
+library(caTools)
+colAUC(pm_model_fitpreds,test$diabetes,plotROC=TRUE)
+
+```
+```{r cherrypick}
 fitpredt <- ifelse(pm_model_fitpreds > .385,"pos","neg")
 
 fitpreds <- factor(fitpredt,level=levels(test$diabetes))
@@ -2046,13 +2057,8 @@ caret::confusionMatrix(fitpreds,
                        positive="pos")
 ```
 
-And if you haven't yet enough of ROC curves just yet, we could put up one of those. 
 
-```{r}
-library(caTools)
-colAUC(pm_model_fitpreds,test$diabetes,plotROC=TRUE)
 
-```
 
 But wait, we've already been through the whole ROC curve, AUC, confusion matrix route so why would we take a manual approach if we have the **caret** package readily available ? 
 
@@ -2071,24 +2077,14 @@ pm_glm_mod
 pm_glm_mod$results
 ```
 
-So we get an estimate of a 77% accuracy rate when the model is applied to out of sample data. This isn't so impressive but we aren't here to solve that problem. So let's make some predictions use thing test data to see what the Accuracy rate is. 
+So we get an estimate of a 75% accuracy rate when the model is applied to out of sample data. This isn't so impressive but we aren't here to solve that problem. So let's make some predictions use thing test data to see what the Accuracy rate is. 
 
 ```{r pmglmlabs}
 pm_glm_pred_labels <- predict(pm_glm_mod,test)
-confusionMatrix(pm_glm_pred_labels,test$diabetes)
-```
 
-
-The **train** function provides is with an object that contains lots of information but in no way interferes with the results of the glm model. It's as if you had built it using the standalone glm function which means that you can easily examine the model diagnostics:
-
-```{r glminspect}
-summary(pm_glm_mod$finalModel)
-```
-
-This includes the ability to see the various diagnostic plots:
-
-```{r glmplot}
-plot(pm_glm_mod$finalModel)
+confusionMatrix(pm_glm_pred_labels,
+                test$diabetes,
+                positive = "pos")
 ```
 
 We can certainly change the scoring metric to prioritize, for example, the area under the associated ROC curve. We just need to make some adjustments to the trainControl argument list and the train argument list. But these changes are minor. 
@@ -2105,54 +2101,60 @@ pm_glm_mod <- train(form = diabetes ~ .,
                     data = train,
                     trControl = ctrl,
                     metric = "ROC",
-                    method = "glm",
-                    family = "binomial")
+                    method = "glm")
 
 pm_glm_mod$results
 ```
+
+```{r plot2roc}
+probs <- predict(pm_glm_mod,test,type="prob")[,2]
+caTools::colAUC(probs,test$diabetes,plotROC = T)
+```
+
 
 
 ## Random Forests
 
 Let's use random forests to see what results we get. Random forests are robust to over fitting and are fairly easy to implement. They can improve accuracy by fitting many trees. Each tree is fit to a resampled version of the input data (usually a bootstrap). This is known as bootstrap aggregation or "bagged" trees. At each split, the function takes a random sample of columns (the mtry argument).
 
-The function we will use here, **ranger**, has three hyper parameters which could be set to a range of values which, in turn, could influence the resulting model. With glm, we didn't really have a hyper parameter. We'll worry about hyper parameters later. 
+The function we will use here, **rf**, has at least one "hyper parameter" which could be set to a range of values which, in turn, could influence the resulting model. With glm, we didn't really have a hyper parameter. We'll worry about hyper parameters later. 
 
 ```{r echo=FALSE,eval=FALSE}
-modelLookup("ranger")
+modelLookup("rf")
 ```
 
 Let's try this to see how it performs via the ranger method
 
 ```{r zzapo}
-ctrl <- trainControl(method = "boot", 
+ctrl <- trainControl(method = "cv", 
+                     number = 5,
                      classProbs = T,
                      summaryFunction = twoClassSummary)
 
-pm_ranger_mod <- train(form = diabetes ~ .,
+pm_rf_mod <- train(form = diabetes ~ .,
                     data = train,
                     trControl = ctrl,
                     metric = "ROC",
-                    method = "ranger")
+                    method = "rf")
 ```
 
 By default the training process will move through different values of the algorithms hyper parameters - this is called "tuning". **caret** knows what hyper parameters the method supports and can cycle through possible valid values of these hyper parameters. 
 
 ```{r}
-pm_ranger_mod
+pm_rf_mod
 ```
 
 The object can be plotted. Here we see that the max AUC of .825 occurs when mtry is 3 and the Gini criterion is used to evaluate a tree. 
 
 ```{r}
-plot(pm_ranger_mod)
+plot(pm_rf_mod)
 max(pm_ranger_mod[["results"]]$ROC)
 ```
 
 This model has better sensitivity and specificity than the previous one. 
 
 ```{r oorang}
-preds <- predict(pm_ranger_mod,test)
+preds <- predict(pm_rf_mod,test)
 confusionMatrix(preds,test$diabetes)
 ```
 

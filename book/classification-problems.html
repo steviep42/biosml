@@ -415,7 +415,8 @@ definitely get more of the actual negative cases. What if we moved it to say 0.9
 <pre><code>- This would be an example of a &quot;false positive&quot; also known as a &quot;Type I Error&quot;.  </code></pre>
 <p>It is also possible that we apply the test to someone and we say that the do not have the disease when they actually do.</p>
 <pre><code>- This is known as a &quot;false negative&quot; also known as a Type II Error&quot; </code></pre>
-<p>Here we fail to reject the null hypothesis for this person. A perfect test would have zero false positives and zero false negatives</p>
+<p>Here we fail to reject the null hypothesis for this person. A perfect test would have zero false positives and zero false negatives.</p>
+<p><img src="pics/type1and2.png" /></p>
 </div>
 <div id="confusion-matrix" class="section level2">
 <h2><span class="header-section-number">6.6</span> Confusion Matrix</h2>
@@ -482,7 +483,7 @@ definitely get more of the actual negative cases. What if we moved it to say 0.9
 </div>
 <div id="precision" class="section level4">
 <h4><span class="header-section-number">6.6.1.5</span> Precision</h4>
-<p>How precise is the model ? This is also known as Positive Predictive Value. We take the number of True Posties (TP) and divide that by the sum of True Positives (TP) and False Positives (FP). The denominator is the sum of row 2 in our matrix.</p>
+<p>How precise is the model ? Precision is a measure of the ability of a classification model to identify only the relevant data points. This is also known as Positive Predictive Value. We take the number of True Positives (TP) and divide that by the sum of True Positives (TP) and False Positives (FP). The denominator is the sum of row 2 in our matrix.</p>
 <p>It is helpful to know that <strong>Precision</strong> is also known as the PPV “Positive Predictive Value” since it is concerned with the ratio of True Positives over the sum of all Positive related quantities including the False Positives. The larger the number of FP then the smaller the ratio which results in a lower precision.</p>
 <p>Precision = TP / (TP + FP) = 47 / (47 + 41) = 0.53</p>
 <div class="sourceCode" id="cb220"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb220-1" data-line-number="1">precision &lt;-<span class="st"> </span>my_confusion[<span class="dv">2</span>,<span class="dv">2</span>]<span class="op">/</span>(my_confusion[<span class="dv">2</span>,<span class="dv">1</span>]<span class="op">+</span>my_confusion[<span class="dv">2</span>,<span class="dv">2</span>])</a>

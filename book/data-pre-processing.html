@@ -359,7 +359,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <a class="sourceLine" id="cb493-2" data-line-number="2">        <span class="dt">na.rm=</span><span class="ot">TRUE</span>,</a>
 <a class="sourceLine" id="cb493-3" data-line-number="3">        <span class="dt">main=</span><span class="st">&quot;Distribution of the wt feature&quot;</span>)</a>
 <a class="sourceLine" id="cb493-4" data-line-number="4"><span class="kw">grid</span>()</a></code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-72-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-83-1.png" width="672" /></p>
 <p>To make the substitution would involve the following. First we need to find out which row numbers have missing values for the <strong>wt</strong> feature.</p>
 <div class="sourceCode" id="cb494"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb494-1" data-line-number="1">(missing_wt_indices &lt;-<span class="st"> </span><span class="kw">which</span>(<span class="kw">is.na</span>(mtcars_na<span class="op">$</span>wt)))</a></code></pre></div>
 <pre><code>## [1]  2  9 23</code></pre>
@@ -1064,7 +1064,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## 6 20.2  1    1    0    3</code></pre>
 <p>Check the correlations between <code>am.0</code> and <code>am.1</code>. They are perfectly correlated which could cause problems in the modeling methods. We could express <code>am.0</code> as a linear function of <code>am.1</code>. This is why using the n-1 approach helps deal with the collinearity problem.</p>
 <div class="sourceCode" id="cb604"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb604-1" data-line-number="1"><span class="kw">plot_correlation</span>(dummied_up_mtcars[,<span class="dv">7</span><span class="op">:</span><span class="dv">11</span>])</a></code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-90-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-101-1.png" width="672" /></p>
 </div>
 <div id="admissions-data" class="section level3">
 <h3><span class="header-section-number">11.7.2</span> Admissions Data</h3>
@@ -1251,7 +1251,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <pre><code>## Dummy Variable Object
 ## 
 ## Formula: admit ~ .
-## &lt;environment: 0x7ff68dad2e30&gt;
+## &lt;environment: 0x7ff67ed70900&gt;
 ## 4 variables, 2 factors
 ## Variables and levels will be separated by &#39;.&#39;
 ## A full rank encoding is used</code></pre>

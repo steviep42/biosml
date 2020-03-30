@@ -347,7 +347,7 @@ diabetes - Class variable (test for diabetes)</code></pre>
 <div id="generalized-linear-models" class="section level2">
 <h2><span class="header-section-number">7.2</span> Generalized Linear Models</h2>
 <p>Let’s pick a technique to model the data with the ultimate goal of being able to predict whether someone has diabetes or not. We’ll start with the <strong>glm</strong> function in R. We’ll take a kitchen sink approach where we predict the diabetes variable (“yes” or “no”) based on the rest of the information in the data frame.</p>
-<div class="sourceCode" id="cb250"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb250-1" data-line-number="1"><span class="kw">set.seed</span>(<span class="dv">123</span>)</a>
+<div class="sourceCode" id="cb250"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb250-1" data-line-number="1"><span class="kw">set.seed</span>(<span class="dv">891</span>)</a>
 <a class="sourceLine" id="cb250-2" data-line-number="2">idx &lt;-<span class="st"> </span><span class="kw">createDataPartition</span>(pm<span class="op">$</span>diabetes, <span class="dt">p =</span> <span class="fl">.8</span>, </a>
 <a class="sourceLine" id="cb250-3" data-line-number="3">                                  <span class="dt">list =</span> <span class="ot">FALSE</span>, </a>
 <a class="sourceLine" id="cb250-4" data-line-number="4">                                  <span class="dt">times =</span> <span class="dv">1</span>)</a>
@@ -356,9 +356,9 @@ diabetes - Class variable (test for diabetes)</code></pre>
 ## [1,]         1
 ## [2,]         3
 ## [3,]         4
-## [4,]         6
+## [4,]         5
 ## [5,]         7
-## [6,]         8</code></pre>
+## [6,]         9</code></pre>
 <div class="sourceCode" id="cb252"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb252-1" data-line-number="1">train &lt;-<span class="st"> </span>pm[ idx,]</a>
 <a class="sourceLine" id="cb252-2" data-line-number="2">test  &lt;-<span class="st"> </span>pm[<span class="op">-</span>idx,]</a>
 <a class="sourceLine" id="cb252-3" data-line-number="3"></a>
@@ -373,59 +373,58 @@ diabetes - Class variable (test for diabetes)</code></pre>
 <a class="sourceLine" id="cb256-3" data-line-number="3">                    <span class="dt">family=</span><span class="st">&quot;binomial&quot;</span>)</a>
 <a class="sourceLine" id="cb256-4" data-line-number="4"></a>
 <a class="sourceLine" id="cb256-5" data-line-number="5">pm_model_fitpreds &lt;-<span class="st"> </span><span class="kw">predict</span>(pm_model_glm,test,</a>
-<a class="sourceLine" id="cb256-6" data-line-number="6">                             <span class="dt">type=</span><span class="st">&quot;response&quot;</span>)</a>
-<a class="sourceLine" id="cb256-7" data-line-number="7"></a>
-<a class="sourceLine" id="cb256-8" data-line-number="8">fitpredt &lt;-<span class="st"> </span><span class="kw">ifelse</span>(pm_model_fitpreds <span class="op">&gt;</span><span class="st"> </span><span class="fl">.385</span>,<span class="st">&quot;pos&quot;</span>,<span class="st">&quot;neg&quot;</span>)</a>
-<a class="sourceLine" id="cb256-9" data-line-number="9"></a>
-<a class="sourceLine" id="cb256-10" data-line-number="10">fitpreds &lt;-<span class="st"> </span><span class="kw">factor</span>(fitpredt,<span class="dt">level=</span><span class="kw">levels</span>(test<span class="op">$</span>diabetes))</a>
-<a class="sourceLine" id="cb256-11" data-line-number="11"></a>
-<a class="sourceLine" id="cb256-12" data-line-number="12">caret<span class="op">::</span><span class="kw">confusionMatrix</span>(fitpreds,</a>
-<a class="sourceLine" id="cb256-13" data-line-number="13">                       test<span class="op">$</span>diabetes,</a>
-<a class="sourceLine" id="cb256-14" data-line-number="14">                       <span class="dt">positive=</span><span class="st">&quot;pos&quot;</span>)</a></code></pre></div>
+<a class="sourceLine" id="cb256-6" data-line-number="6">                             <span class="dt">type=</span><span class="st">&quot;response&quot;</span>)</a></code></pre></div>
+<p>But, as we learned we can also build a ROC curve to get the AUC which can be a general estimator of how well the model is performing.</p>
+<div class="sourceCode" id="cb257"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb257-1" data-line-number="1"><span class="kw">library</span>(caTools)</a>
+<a class="sourceLine" id="cb257-2" data-line-number="2"><span class="kw">colAUC</span>(pm_model_fitpreds,test<span class="op">$</span>diabetes,<span class="dt">plotROC=</span><span class="ot">TRUE</span>)</a></code></pre></div>
+<p><img src="biosml_files/figure-html/unnamed-chunk-42-1.png" width="672" /></p>
+<pre><code>##              [,1]
+## neg vs. pos 0.868</code></pre>
+<div class="sourceCode" id="cb259"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb259-1" data-line-number="1">fitpredt &lt;-<span class="st"> </span><span class="kw">ifelse</span>(pm_model_fitpreds <span class="op">&gt;</span><span class="st"> </span><span class="fl">.385</span>,<span class="st">&quot;pos&quot;</span>,<span class="st">&quot;neg&quot;</span>)</a>
+<a class="sourceLine" id="cb259-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb259-3" data-line-number="3">fitpreds &lt;-<span class="st"> </span><span class="kw">factor</span>(fitpredt,<span class="dt">level=</span><span class="kw">levels</span>(test<span class="op">$</span>diabetes))</a>
+<a class="sourceLine" id="cb259-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb259-5" data-line-number="5">caret<span class="op">::</span><span class="kw">confusionMatrix</span>(fitpreds,</a>
+<a class="sourceLine" id="cb259-6" data-line-number="6">                       test<span class="op">$</span>diabetes,</a>
+<a class="sourceLine" id="cb259-7" data-line-number="7">                       <span class="dt">positive=</span><span class="st">&quot;pos&quot;</span>)</a></code></pre></div>
 <pre><code>## Confusion Matrix and Statistics
 ## 
 ##           Reference
 ## Prediction neg pos
-##        neg  85  17
-##        pos  15  36
+##        neg  84  12
+##        pos  16  41
 ##                                         
-##                Accuracy : 0.791         
-##                  95% CI : (0.718, 0.852)
+##                Accuracy : 0.817         
+##                  95% CI : (0.746, 0.875)
 ##     No Information Rate : 0.654         
-##     P-Value [Acc &gt; NIR] : 0.00015       
+##     P-Value [Acc &gt; NIR] : 6.2e-06       
 ##                                         
-##                   Kappa : 0.534         
+##                   Kappa : 0.603         
 ##                                         
-##  Mcnemar&#39;s Test P-Value : 0.85968       
+##  Mcnemar&#39;s Test P-Value : 0.571         
 ##                                         
-##             Sensitivity : 0.679         
-##             Specificity : 0.850         
-##          Pos Pred Value : 0.706         
-##          Neg Pred Value : 0.833         
+##             Sensitivity : 0.774         
+##             Specificity : 0.840         
+##          Pos Pred Value : 0.719         
+##          Neg Pred Value : 0.875         
 ##              Prevalence : 0.346         
-##          Detection Rate : 0.235         
-##    Detection Prevalence : 0.333         
-##       Balanced Accuracy : 0.765         
+##          Detection Rate : 0.268         
+##    Detection Prevalence : 0.373         
+##       Balanced Accuracy : 0.807         
 ##                                         
 ##        &#39;Positive&#39; Class : pos           
 ## </code></pre>
-<p>And if you haven’t yet enough of ROC curves just yet, we could put up one of those.</p>
-<div class="sourceCode" id="cb258"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb258-1" data-line-number="1"><span class="kw">library</span>(caTools)</a>
-<a class="sourceLine" id="cb258-2" data-line-number="2"><span class="kw">colAUC</span>(pm_model_fitpreds,test<span class="op">$</span>diabetes,<span class="dt">plotROC=</span><span class="ot">TRUE</span>)</a></code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-31-1.png" width="672" /></p>
-<pre><code>##              [,1]
-## neg vs. pos 0.892</code></pre>
 <p>But wait, we’ve already been through the whole ROC curve, AUC, confusion matrix route so why would we take a manual approach if we have the <strong>caret</strong> package readily available ?</p>
 <p>We can explore any number methods, implement K Fold Cross Validation,and get feedback on the performance measures all at the same time. Let’s reframe our above work using the caret package conveniences. We want to use Cross Fold validation here.</p>
-<div class="sourceCode" id="cb260"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb260-1" data-line-number="1">ctrl &lt;-<span class="st"> </span><span class="kw">trainControl</span>(<span class="dt">method =</span> <span class="st">&quot;cv&quot;</span>, </a>
-<a class="sourceLine" id="cb260-2" data-line-number="2">                     <span class="dt">number =</span> <span class="dv">5</span>)</a>
-<a class="sourceLine" id="cb260-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb260-4" data-line-number="4">pm_glm_mod &lt;-<span class="st"> </span><span class="kw">train</span>(<span class="dt">form =</span> diabetes <span class="op">~</span><span class="st"> </span>.,</a>
-<a class="sourceLine" id="cb260-5" data-line-number="5">                    <span class="dt">data =</span> train,</a>
-<a class="sourceLine" id="cb260-6" data-line-number="6">                    <span class="dt">trControl =</span> ctrl,</a>
-<a class="sourceLine" id="cb260-7" data-line-number="7">                    <span class="dt">method =</span> <span class="st">&quot;glm&quot;</span>,</a>
-<a class="sourceLine" id="cb260-8" data-line-number="8">                    <span class="dt">family =</span> <span class="st">&quot;binomial&quot;</span>)</a>
-<a class="sourceLine" id="cb260-9" data-line-number="9">pm_glm_mod</a></code></pre></div>
+<div class="sourceCode" id="cb261"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb261-1" data-line-number="1">ctrl &lt;-<span class="st"> </span><span class="kw">trainControl</span>(<span class="dt">method =</span> <span class="st">&quot;cv&quot;</span>, </a>
+<a class="sourceLine" id="cb261-2" data-line-number="2">                     <span class="dt">number =</span> <span class="dv">5</span>)</a>
+<a class="sourceLine" id="cb261-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb261-4" data-line-number="4">pm_glm_mod &lt;-<span class="st"> </span><span class="kw">train</span>(<span class="dt">form =</span> diabetes <span class="op">~</span><span class="st"> </span>.,</a>
+<a class="sourceLine" id="cb261-5" data-line-number="5">                    <span class="dt">data =</span> train,</a>
+<a class="sourceLine" id="cb261-6" data-line-number="6">                    <span class="dt">trControl =</span> ctrl,</a>
+<a class="sourceLine" id="cb261-7" data-line-number="7">                    <span class="dt">method =</span> <span class="st">&quot;glm&quot;</span>,</a>
+<a class="sourceLine" id="cb261-8" data-line-number="8">                    <span class="dt">family =</span> <span class="st">&quot;binomial&quot;</span>)</a>
+<a class="sourceLine" id="cb261-9" data-line-number="9">pm_glm_mod</a></code></pre></div>
 <pre><code>## Generalized Linear Model 
 ## 
 ## 615 samples
@@ -438,108 +437,82 @@ diabetes - Class variable (test for diabetes)</code></pre>
 ## Resampling results:
 ## 
 ##   Accuracy  Kappa
-##   0.764     0.452</code></pre>
-<div class="sourceCode" id="cb262"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb262-1" data-line-number="1">pm_glm_mod<span class="op">$</span>results</a></code></pre></div>
+##   0.772     0.473</code></pre>
+<div class="sourceCode" id="cb263"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb263-1" data-line-number="1">pm_glm_mod<span class="op">$</span>results</a></code></pre></div>
 <pre><code>##   parameter Accuracy Kappa AccuracySD KappaSD
-## 1      none    0.764 0.452     0.0199  0.0531</code></pre>
-<p>So we get an estimate of a 77% accuracy rate when the model is applied to out of sample data. This isn’t so impressive but we aren’t here to solve that problem. So let’s make some predictions use thing test data to see what the Accuracy rate is.</p>
-<div class="sourceCode" id="cb264"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb264-1" data-line-number="1">pm_glm_pred_labels &lt;-<span class="st"> </span><span class="kw">predict</span>(pm_glm_mod,test)</a>
-<a class="sourceLine" id="cb264-2" data-line-number="2"><span class="kw">confusionMatrix</span>(pm_glm_pred_labels,test<span class="op">$</span>diabetes)</a></code></pre></div>
+## 1      none    0.772 0.473     0.0453   0.111</code></pre>
+<p>So we get an estimate of a 75% accuracy rate when the model is applied to out of sample data. This isn’t so impressive but we aren’t here to solve that problem. So let’s make some predictions use thing test data to see what the Accuracy rate is.</p>
+<div class="sourceCode" id="cb265"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb265-1" data-line-number="1">pm_glm_pred_labels &lt;-<span class="st"> </span><span class="kw">predict</span>(pm_glm_mod,test)</a>
+<a class="sourceLine" id="cb265-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb265-3" data-line-number="3"><span class="kw">confusionMatrix</span>(pm_glm_pred_labels,</a>
+<a class="sourceLine" id="cb265-4" data-line-number="4">                test<span class="op">$</span>diabetes,</a>
+<a class="sourceLine" id="cb265-5" data-line-number="5">                <span class="dt">positive =</span> <span class="st">&quot;pos&quot;</span>)</a></code></pre></div>
 <pre><code>## Confusion Matrix and Statistics
 ## 
 ##           Reference
 ## Prediction neg pos
-##        neg  91  21
-##        pos   9  32
+##        neg  89  20
+##        pos  11  33
 ##                                         
-##                Accuracy : 0.804         
-##                  95% CI : (0.732, 0.864)
+##                Accuracy : 0.797         
+##                  95% CI : (0.725, 0.858)
 ##     No Information Rate : 0.654         
-##     P-Value [Acc &gt; NIR] : 3.3e-05       
+##     P-Value [Acc &gt; NIR] : 7.17e-05      
 ##                                         
-##                   Kappa : 0.543         
+##                   Kappa : 0.534         
 ##                                         
-##  Mcnemar&#39;s Test P-Value : 0.0446        
+##  Mcnemar&#39;s Test P-Value : 0.151         
 ##                                         
-##             Sensitivity : 0.910         
-##             Specificity : 0.604         
-##          Pos Pred Value : 0.812         
-##          Neg Pred Value : 0.780         
-##              Prevalence : 0.654         
-##          Detection Rate : 0.595         
-##    Detection Prevalence : 0.732         
-##       Balanced Accuracy : 0.757         
+##             Sensitivity : 0.623         
+##             Specificity : 0.890         
+##          Pos Pred Value : 0.750         
+##          Neg Pred Value : 0.817         
+##              Prevalence : 0.346         
+##          Detection Rate : 0.216         
+##    Detection Prevalence : 0.288         
+##       Balanced Accuracy : 0.756         
 ##                                         
-##        &#39;Positive&#39; Class : neg           
+##        &#39;Positive&#39; Class : pos           
 ## </code></pre>
-<p>The <strong>train</strong> function provides is with an object that contains lots of information but in no way interferes with the results of the glm model. It’s as if you had built it using the standalone glm function which means that you can easily examine the model diagnostics:</p>
-<div class="sourceCode" id="cb266"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb266-1" data-line-number="1"><span class="kw">summary</span>(pm_glm_mod<span class="op">$</span>finalModel)</a></code></pre></div>
-<pre><code>## 
-## Call:
-## NULL
-## 
-## Deviance Residuals: 
-##    Min      1Q  Median      3Q     Max  
-## -2.472  -0.767  -0.440   0.778   2.944  
-## 
-## Coefficients:
-##              Estimate Std. Error z value Pr(&gt;|z|)    
-## (Intercept) -7.811645   0.769430  -10.15  &lt; 2e-16 ***
-## pregnant     0.099830   0.035838    2.79   0.0053 ** 
-## glucose      0.034231   0.004053    8.45  &lt; 2e-16 ***
-## pressure    -0.014867   0.005557   -2.68   0.0075 ** 
-## triceps     -0.000610   0.007625   -0.08   0.9362    
-## insulin     -0.000712   0.000956   -0.74   0.4568    
-## mass         0.080670   0.016546    4.88  1.1e-06 ***
-## pedigree     0.935556   0.338856    2.76   0.0058 ** 
-## age          0.015436   0.010272    1.50   0.1329    
-## ---
-## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
-## 
-## (Dispersion parameter for binomial family taken to be 1)
-## 
-##     Null deviance: 796.05  on 614  degrees of freedom
-## Residual deviance: 598.41  on 606  degrees of freedom
-## AIC: 616.4
-## 
-## Number of Fisher Scoring iterations: 5</code></pre>
-<p>This includes the ability to see the various diagnostic plots:</p>
-<div class="sourceCode" id="cb268"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb268-1" data-line-number="1"><span class="kw">plot</span>(pm_glm_mod<span class="op">$</span>finalModel)</a></code></pre></div>
-<p><img src="biosml_files/figure-html/glmplot-1.png" width="672" /><img src="biosml_files/figure-html/glmplot-2.png" width="672" /><img src="biosml_files/figure-html/glmplot-3.png" width="672" /><img src="biosml_files/figure-html/glmplot-4.png" width="672" /></p>
 <p>We can certainly change the scoring metric to prioritize, for example, the area under the associated ROC curve. We just need to make some adjustments to the trainControl argument list and the train argument list. But these changes are minor.</p>
 <p>To get the AUC for the ROC we’ll need to indicate that this is a two-class problems. Since the ROC curve is based on the predicted class probabilities (which are not computed automatically), the classProbs = TRUE option is used.</p>
-<div class="sourceCode" id="cb269"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb269-1" data-line-number="1">ctrl &lt;-<span class="st"> </span><span class="kw">trainControl</span>(<span class="dt">method =</span> <span class="st">&quot;cv&quot;</span>, </a>
-<a class="sourceLine" id="cb269-2" data-line-number="2">                     <span class="dt">number =</span> <span class="dv">5</span>,</a>
-<a class="sourceLine" id="cb269-3" data-line-number="3">                     <span class="dt">classProbs =</span> T,</a>
-<a class="sourceLine" id="cb269-4" data-line-number="4">                     <span class="dt">summaryFunction =</span> twoClassSummary)</a>
-<a class="sourceLine" id="cb269-5" data-line-number="5"></a>
-<a class="sourceLine" id="cb269-6" data-line-number="6">pm_glm_mod &lt;-<span class="st"> </span><span class="kw">train</span>(<span class="dt">form =</span> diabetes <span class="op">~</span><span class="st"> </span>.,</a>
-<a class="sourceLine" id="cb269-7" data-line-number="7">                    <span class="dt">data =</span> train,</a>
-<a class="sourceLine" id="cb269-8" data-line-number="8">                    <span class="dt">trControl =</span> ctrl,</a>
-<a class="sourceLine" id="cb269-9" data-line-number="9">                    <span class="dt">metric =</span> <span class="st">&quot;ROC&quot;</span>,</a>
-<a class="sourceLine" id="cb269-10" data-line-number="10">                    <span class="dt">method =</span> <span class="st">&quot;glm&quot;</span>,</a>
-<a class="sourceLine" id="cb269-11" data-line-number="11">                    <span class="dt">family =</span> <span class="st">&quot;binomial&quot;</span>)</a>
-<a class="sourceLine" id="cb269-12" data-line-number="12"></a>
-<a class="sourceLine" id="cb269-13" data-line-number="13">pm_glm_mod<span class="op">$</span>results</a></code></pre></div>
-<pre><code>##   parameter  ROC  Sens  Spec  ROCSD SensSD SpecSD
-## 1      none 0.82 0.885 0.549 0.0291 0.0324 0.0746</code></pre>
+<div class="sourceCode" id="cb267"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb267-1" data-line-number="1">ctrl &lt;-<span class="st"> </span><span class="kw">trainControl</span>(<span class="dt">method =</span> <span class="st">&quot;cv&quot;</span>, </a>
+<a class="sourceLine" id="cb267-2" data-line-number="2">                     <span class="dt">number =</span> <span class="dv">5</span>,</a>
+<a class="sourceLine" id="cb267-3" data-line-number="3">                     <span class="dt">classProbs =</span> T,</a>
+<a class="sourceLine" id="cb267-4" data-line-number="4">                     <span class="dt">summaryFunction =</span> twoClassSummary)</a>
+<a class="sourceLine" id="cb267-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb267-6" data-line-number="6">pm_glm_mod &lt;-<span class="st"> </span><span class="kw">train</span>(<span class="dt">form =</span> diabetes <span class="op">~</span><span class="st"> </span>.,</a>
+<a class="sourceLine" id="cb267-7" data-line-number="7">                    <span class="dt">data =</span> train,</a>
+<a class="sourceLine" id="cb267-8" data-line-number="8">                    <span class="dt">trControl =</span> ctrl,</a>
+<a class="sourceLine" id="cb267-9" data-line-number="9">                    <span class="dt">metric =</span> <span class="st">&quot;ROC&quot;</span>,</a>
+<a class="sourceLine" id="cb267-10" data-line-number="10">                    <span class="dt">method =</span> <span class="st">&quot;glm&quot;</span>)</a>
+<a class="sourceLine" id="cb267-11" data-line-number="11"></a>
+<a class="sourceLine" id="cb267-12" data-line-number="12">pm_glm_mod<span class="op">$</span>results</a></code></pre></div>
+<pre><code>##   parameter   ROC  Sens  Spec  ROCSD SensSD SpecSD
+## 1      none 0.825 0.873 0.558 0.0309 0.0311 0.0164</code></pre>
+<div class="sourceCode" id="cb269"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb269-1" data-line-number="1">probs &lt;-<span class="st"> </span><span class="kw">predict</span>(pm_glm_mod,test,<span class="dt">type=</span><span class="st">&quot;prob&quot;</span>)[,<span class="dv">2</span>]</a>
+<a class="sourceLine" id="cb269-2" data-line-number="2">caTools<span class="op">::</span><span class="kw">colAUC</span>(probs,test<span class="op">$</span>diabetes,<span class="dt">plotROC =</span> T)</a></code></pre></div>
+<p><img src="biosml_files/figure-html/plot2roc-1.png" width="672" /></p>
+<pre><code>##              [,1]
+## neg vs. pos 0.868</code></pre>
 </div>
 <div id="random-forests" class="section level2">
 <h2><span class="header-section-number">7.3</span> Random Forests</h2>
 <p>Let’s use random forests to see what results we get. Random forests are robust to over fitting and are fairly easy to implement. They can improve accuracy by fitting many trees. Each tree is fit to a resampled version of the input data (usually a bootstrap). This is known as bootstrap aggregation or “bagged” trees. At each split, the function takes a random sample of columns (the mtry argument).</p>
-<p>The function we will use here, <strong>ranger</strong>, has three hyper parameters which could be set to a range of values which, in turn, could influence the resulting model. With glm, we didn’t really have a hyper parameter. We’ll worry about hyper parameters later.</p>
+<p>The function we will use here, <strong>rf</strong>, has at least one “hyper parameter” which could be set to a range of values which, in turn, could influence the resulting model. With glm, we didn’t really have a hyper parameter. We’ll worry about hyper parameters later.</p>
 <p>Let’s try this to see how it performs via the ranger method</p>
-<div class="sourceCode" id="cb271"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb271-1" data-line-number="1">ctrl &lt;-<span class="st"> </span><span class="kw">trainControl</span>(<span class="dt">method =</span> <span class="st">&quot;boot&quot;</span>, </a>
-<a class="sourceLine" id="cb271-2" data-line-number="2">                     <span class="dt">classProbs =</span> T,</a>
-<a class="sourceLine" id="cb271-3" data-line-number="3">                     <span class="dt">summaryFunction =</span> twoClassSummary)</a>
-<a class="sourceLine" id="cb271-4" data-line-number="4"></a>
-<a class="sourceLine" id="cb271-5" data-line-number="5">pm_ranger_mod &lt;-<span class="st"> </span><span class="kw">train</span>(<span class="dt">form =</span> diabetes <span class="op">~</span><span class="st"> </span>.,</a>
-<a class="sourceLine" id="cb271-6" data-line-number="6">                    <span class="dt">data =</span> train,</a>
-<a class="sourceLine" id="cb271-7" data-line-number="7">                    <span class="dt">trControl =</span> ctrl,</a>
-<a class="sourceLine" id="cb271-8" data-line-number="8">                    <span class="dt">metric =</span> <span class="st">&quot;ROC&quot;</span>,</a>
-<a class="sourceLine" id="cb271-9" data-line-number="9">                    <span class="dt">method =</span> <span class="st">&quot;ranger&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb271"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb271-1" data-line-number="1">ctrl &lt;-<span class="st"> </span><span class="kw">trainControl</span>(<span class="dt">method =</span> <span class="st">&quot;cv&quot;</span>, </a>
+<a class="sourceLine" id="cb271-2" data-line-number="2">                     <span class="dt">number =</span> <span class="dv">5</span>,</a>
+<a class="sourceLine" id="cb271-3" data-line-number="3">                     <span class="dt">classProbs =</span> T,</a>
+<a class="sourceLine" id="cb271-4" data-line-number="4">                     <span class="dt">summaryFunction =</span> twoClassSummary)</a>
+<a class="sourceLine" id="cb271-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb271-6" data-line-number="6">pm_rf_mod &lt;-<span class="st"> </span><span class="kw">train</span>(<span class="dt">form =</span> diabetes <span class="op">~</span><span class="st"> </span>.,</a>
+<a class="sourceLine" id="cb271-7" data-line-number="7">                    <span class="dt">data =</span> train,</a>
+<a class="sourceLine" id="cb271-8" data-line-number="8">                    <span class="dt">trControl =</span> ctrl,</a>
+<a class="sourceLine" id="cb271-9" data-line-number="9">                    <span class="dt">metric =</span> <span class="st">&quot;ROC&quot;</span>,</a>
+<a class="sourceLine" id="cb271-10" data-line-number="10">                    <span class="dt">method =</span> <span class="st">&quot;rf&quot;</span>)</a></code></pre></div>
 <p>By default the training process will move through different values of the algorithms hyper parameters - this is called “tuning”. <strong>caret</strong> knows what hyper parameters the method supports and can cycle through possible valid values of these hyper parameters.</p>
-<div class="sourceCode" id="cb272"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb272-1" data-line-number="1">pm_ranger_mod</a></code></pre></div>
+<div class="sourceCode" id="cb272"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb272-1" data-line-number="1">pm_rf_mod</a></code></pre></div>
 <pre><code>## Random Forest 
 ## 
 ## 615 samples
@@ -547,54 +520,49 @@ diabetes - Class variable (test for diabetes)</code></pre>
 ##   2 classes: &#39;neg&#39;, &#39;pos&#39; 
 ## 
 ## No pre-processing
-## Resampling: Bootstrapped (25 reps) 
-## Summary of sample sizes: 615, 615, 615, 615, 615, 615, ... 
+## Resampling: Cross-Validated (5 fold) 
+## Summary of sample sizes: 492, 492, 492, 492, 492 
 ## Resampling results across tuning parameters:
 ## 
-##   mtry  splitrule   ROC    Sens   Spec 
-##   2     gini        0.799  0.848  0.538
-##   2     extratrees  0.807  0.878  0.503
-##   5     gini        0.795  0.833  0.558
-##   5     extratrees  0.808  0.860  0.538
-##   8     gini        0.790  0.827  0.563
-##   8     extratrees  0.806  0.855  0.543
+##   mtry  ROC    Sens   Spec 
+##   2     0.816  0.858  0.581
+##   5     0.811  0.853  0.591
+##   8     0.811  0.845  0.600
 ## 
-## Tuning parameter &#39;min.node.size&#39; was held constant at a value of 1
 ## ROC was used to select the optimal model using the largest value.
-## The final values used for the model were mtry = 5, splitrule = extratrees
-##  and min.node.size = 1.</code></pre>
+## The final value used for the model was mtry = 2.</code></pre>
 <p>The object can be plotted. Here we see that the max AUC of .825 occurs when mtry is 3 and the Gini criterion is used to evaluate a tree.</p>
-<div class="sourceCode" id="cb274"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb274-1" data-line-number="1"><span class="kw">plot</span>(pm_ranger_mod)</a></code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-34-1.png" width="672" /></p>
+<div class="sourceCode" id="cb274"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb274-1" data-line-number="1"><span class="kw">plot</span>(pm_rf_mod)</a></code></pre></div>
+<p><img src="biosml_files/figure-html/unnamed-chunk-45-1.png" width="672" /></p>
 <div class="sourceCode" id="cb275"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb275-1" data-line-number="1"><span class="kw">max</span>(pm_ranger_mod[[<span class="st">&quot;results&quot;</span>]]<span class="op">$</span>ROC)</a></code></pre></div>
-<pre><code>## [1] 0.808</code></pre>
+<pre><code>## [1] 0.818</code></pre>
 <p>This model has better sensitivity and specificity than the previous one.</p>
-<div class="sourceCode" id="cb277"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb277-1" data-line-number="1">preds &lt;-<span class="st"> </span><span class="kw">predict</span>(pm_ranger_mod,test)</a>
+<div class="sourceCode" id="cb277"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb277-1" data-line-number="1">preds &lt;-<span class="st"> </span><span class="kw">predict</span>(pm_rf_mod,test)</a>
 <a class="sourceLine" id="cb277-2" data-line-number="2"><span class="kw">confusionMatrix</span>(preds,test<span class="op">$</span>diabetes)</a></code></pre></div>
 <pre><code>## Confusion Matrix and Statistics
 ## 
 ##           Reference
 ## Prediction neg pos
-##        neg  90  19
-##        pos  10  34
+##        neg  83  20
+##        pos  17  33
 ##                                         
-##                Accuracy : 0.81          
-##                  95% CI : (0.739, 0.869)
+##                Accuracy : 0.758         
+##                  95% CI : (0.682, 0.824)
 ##     No Information Rate : 0.654         
-##     P-Value [Acc &gt; NIR] : 1.46e-05      
+##     P-Value [Acc &gt; NIR] : 0.00348       
 ##                                         
-##                   Kappa : 0.564         
+##                   Kappa : 0.459         
 ##                                         
-##  Mcnemar&#39;s Test P-Value : 0.137         
+##  Mcnemar&#39;s Test P-Value : 0.74231       
 ##                                         
-##             Sensitivity : 0.900         
-##             Specificity : 0.642         
-##          Pos Pred Value : 0.826         
-##          Neg Pred Value : 0.773         
+##             Sensitivity : 0.830         
+##             Specificity : 0.623         
+##          Pos Pred Value : 0.806         
+##          Neg Pred Value : 0.660         
 ##              Prevalence : 0.654         
-##          Detection Rate : 0.588         
-##    Detection Prevalence : 0.712         
-##       Balanced Accuracy : 0.771         
+##          Detection Rate : 0.542         
+##    Detection Prevalence : 0.673         
+##       Balanced Accuracy : 0.726         
 ##                                         
 ##        &#39;Positive&#39; Class : neg           
 ## </code></pre>
@@ -642,7 +610,7 @@ diabetes - Class variable (test for diabetes)</code></pre>
 ## Resampling results:
 ## 
 ##   Accuracy  Kappa
-##   0.774     0.479</code></pre>
+##   0.772     0.474</code></pre>
 <p>Now, what would have happened had we been stuck with the version of the data frame that has “pos” and “neg” ? We still have the <strong>pm</strong> data frame.</p>
 <div class="sourceCode" id="cb286"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb286-1" data-line-number="1"><span class="kw">str</span>(pm)</a></code></pre></div>
 <pre><code>## &#39;data.frame&#39;:    768 obs. of  9 variables:
@@ -713,14 +681,14 @@ diabetes - Class variable (test for diabetes)</code></pre>
 ## Summary of sample sizes: 344, 344, 344, 344, 344 
 ## Resampling results:
 ## 
-##   ROC   Sens   Spec 
-##   0.82  0.758  0.744</code></pre>
+##   ROC    Sens   Spec 
+##   0.819  0.753  0.693</code></pre>
 <p>Check the predictions:</p>
 <div class="sourceCode" id="cb296"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb296-1" data-line-number="1">down_preds &lt;-<span class="st"> </span><span class="kw">predict</span>(pm_glm_down,test,<span class="dt">type=</span><span class="st">&quot;prob&quot;</span>)</a>
 <a class="sourceLine" id="cb296-2" data-line-number="2"><span class="kw">colAUC</span>(down_preds[,<span class="dv">2</span>],test<span class="op">$</span>diabetes,<span class="dt">plotROC =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
 <p><img src="biosml_files/figure-html/downpred-1.png" width="672" /></p>
 <pre><code>##              [,1]
-## neg vs. pos 0.897</code></pre>
+## neg vs. pos 0.861</code></pre>
 <p>So how does this compare to the <strong>pm_glm_model</strong> we created earlier using the training set that reflected the less balanced data ?</p>
 <div class="sourceCode" id="cb298"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb298-1" data-line-number="1">pm_glm_mod</a></code></pre></div>
 <pre><code>## Generalized Linear Model 
@@ -734,13 +702,13 @@ diabetes - Class variable (test for diabetes)</code></pre>
 ## Summary of sample sizes: 492, 492, 492, 492, 492 
 ## Resampling results:
 ## 
-##   ROC   Sens   Spec 
-##   0.82  0.885  0.549</code></pre>
+##   ROC    Sens   Spec 
+##   0.825  0.873  0.558</code></pre>
 <div class="sourceCode" id="cb300"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb300-1" data-line-number="1">unbalanced_preds &lt;-<span class="st"> </span><span class="kw">predict</span>(pm_glm_mod,test,<span class="dt">type=</span><span class="st">&quot;prob&quot;</span>)</a>
 <a class="sourceLine" id="cb300-2" data-line-number="2"><span class="kw">colAUC</span>(unbalanced_preds[,<span class="dv">2</span>],test<span class="op">$</span>diabetes,<span class="dt">plotROC =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
 <p><img src="biosml_files/figure-html/comparemods-1.png" width="672" /></p>
 <pre><code>##              [,1]
-## neg vs. pos 0.892</code></pre>
+## neg vs. pos 0.868</code></pre>
 </div>
 </div>
             </section>
