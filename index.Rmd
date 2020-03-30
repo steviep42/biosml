@@ -2971,11 +2971,9 @@ boosted_caret$results[1,]
 ```
 
 
-# Using Methods Other Than lm 
+# Using Different Methods
 
-So when considering our initial example of using the **lm** function I think (hope) that I have convinced you that using caret to call lm is the way to go since it generalizes the process of cross fold validation and the presentation of results. It's also quite convenient in that we can use other methods than lm to do some predictions. 
-
-To that end, let's look at random forests to see if it improves the situation. Note that we aren't, at least at this point, trying to understand the underlying details and subtleties of any of the alternative functions we might use although that is ultimately very important. However, we'll defer the conversation until later. Many people are surprised to learn that random Forests (or even a single Decision Tree) can be used to predict a numeric outcome, but they can be. The advantages of using random Forests include the following:
+We started to look at random forests to see if it improve the situation. Note that we aren't, at least at this point, trying to understand the underlying details and subtleties of any of the alternative functions we might use although that is ultimately very important. However, we'll defer the conversation until later. Many people are surprised to learn that random Forests (or even a single Decision Tree) can be used to predict a numeric outcome, but they can be. The advantages of using random Forests include the following:
 
     - easy to use
     - resistant to overfitting
@@ -3008,7 +3006,7 @@ caret_lm$results
 Metrics::rmse(new_test$mpg, predict(caret_lm,new_test))
 ```
 
-The results of the **lm** function are pretty straightforward as are the predictions. So let's see what the **rf** function will give us with the same data. Because we are using caret, all we have to is sub in the desired method which is "ranger".
+The results of the **lm** function are pretty straightforward as are the predictions. So let's see what the **randomForest** function will give us with the same data. Because we are using caret, all we have to is sub in the desired method which is **rf**.
 
 ```{r reprorf}
 control <- trainControl(method = "cv", number = 5)
