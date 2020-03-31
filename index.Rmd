@@ -1797,6 +1797,11 @@ get_tprfpr <- function(thresh=.25,probs=glm_preds) {
   fpr <- myt[2,1] / (myt[2,1] + myt[1,1])
   return(c(tpr=tpr,fpr=fpr,alpha=thresh))
 }
+
+get_tprfpr(.30)
+
+get_tprfpr(.40)
+
 ```
 
 
@@ -1819,7 +1824,17 @@ abline(a=0, b=1,lty=2)
 text(metrics[,2],metrics[,1],labels=metrics[,3],cex=0.8)
 ```
 
-It turns out that area under an ROC curve is a measure of the usefulness of a test in general, where a greater area means a more useful test. Ideally we would want the area under the curve (also known as "AUC") to be as close to 1 as possible. The dashed line above represents a classifier that basically "guesses" the outcome (pos vs neg) using a "coin flip" mentality. 
+It turns out that area under an ROC curve is a measure of the usefulness of a test in general, where a greater area (with respect to TPR and FPR) means a more useful test. Ideally we would want the area under the curve (also known as "AUC") to be as close to 1 as possible. The dashed line above represents a classifier that basically "guesses" the outcome (pos vs neg) using a "coin flip" mentality. 
+
+```{r sumglmpr}
+for (ii in c(0.01,.2,.3,.4)) {
+  perc <- sum(glm_preds > ii)/length(glm_preds)*100
+  mys <- paste(round(perc,2),"of prediction probabilities are greater than",ii)
+    cat(mys,"\n")
+}
+
+```
+
 
 In case you are wondering, there is a command in R which will make the curve for you. We need to use the prediction PROBABILITES as part of the call to the colAUC function. We also pass in the actual labels for comparison. 
 
