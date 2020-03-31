@@ -358,11 +358,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="sourceCode" id="cb196"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb196-1" data-line-number="1">pos_neg &lt;-<span class="st"> </span><span class="kw">ifelse</span>(glm_preds <span class="op">&gt;</span><span class="st"> </span><span class="fl">0.5</span>,<span class="st">&quot;pos&quot;</span>,<span class="st">&quot;neg&quot;</span>)</a>
 <a class="sourceLine" id="cb196-2" data-line-number="2"></a>
 <a class="sourceLine" id="cb196-3" data-line-number="3"><span class="co"># Then they would compare this against the known data</span></a>
-<a class="sourceLine" id="cb196-4" data-line-number="4">(my_conf &lt;-<span class="st"> </span><span class="kw">table</span>(<span class="dt">actual=</span>glm_test<span class="op">$</span>diabetes,<span class="dt">predicted=</span>pos_neg))</a></code></pre></div>
-<pre><code>##       predicted
-## actual neg pos
-##    neg  89  11
-##    pos  20  33</code></pre>
+<a class="sourceLine" id="cb196-4" data-line-number="4">(my_conf &lt;-<span class="st"> </span><span class="kw">table</span>(<span class="dt">predicted=</span>pos_neg,<span class="dt">actual=</span>glm_test<span class="op">$</span>diabetes))</a></code></pre></div>
+<pre><code>##          actual
+## predicted neg pos
+##       neg  89  20
+##       pos  11  33</code></pre>
 <div class="sourceCode" id="cb198"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb198-1" data-line-number="1"><span class="co"># Then they might use this table to compute an accuracy metric</span></a>
 <a class="sourceLine" id="cb198-2" data-line-number="2">estimated_accuracy &lt;-<span class="st"> </span><span class="kw">sum</span>(<span class="kw">diag</span>(my_conf))<span class="op">/</span><span class="kw">sum</span>(my_conf)</a>
 <a class="sourceLine" id="cb198-3" data-line-number="3"></a>
@@ -510,7 +510,7 @@ definitely get more of the actual negative cases. What if we moved it to say 0.9
 <li>Created a table of outcomes (confusion matrix) to compare predictions vs reality</li>
 <li>Computed some important ratios</li>
 </ol>
-<p>While this process was useful the resulting confusion matrix corresponded to just <em>ONE</em> particular threshold ? What if we had picked another value ? We would then get a different confusion matrix as well as different performance measures. In effect we would have to repeat steps 1-6 all over again !!!</p>
+<p>While this process was useful the resulting confusion matrix corresponded to just <em>ONE</em> particular threshold ? What if we had picked another value ? We would then get a different confusion matrix as well as different performance measures. In effect we would have to repeat steps 3-6 all over again !!!</p>
 <p>Let’s find a way to generalize these steps. First, let’s create a function that allows us to compute the True Positive Rate (aka “Sensitivity”) and the False Positive Rate ( 1 - Specificity). If we apply it to our predictions from our example in progress, the output would be as follows.</p>
 <div class="sourceCode" id="cb222"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb222-1" data-line-number="1">get_tprfpr &lt;-<span class="st"> </span><span class="cf">function</span>(pred,true) {</a>
 <a class="sourceLine" id="cb222-2" data-line-number="2">  myt &lt;-<span class="st"> </span><span class="kw">table</span>(pred,true)</a>
@@ -668,7 +668,8 @@ definitely get more of the actual negative cases. What if we moved it to say 0.9
 </div>
 <div id="roc-curve-summary" class="section level2">
 <h2><span class="header-section-number">6.10</span> ROC Curve Summary</h2>
-<p>The above can be confusing although what you will soon discover is that being able to compute the AUC (Area Under Curve) will be sufficient to judge the quality of a model - well in general it’s a good start. The <strong>caret</strong> package can do that for you so you don’t need to use the various functions about to find that. You might want to put up a ROC curve based on some predictions in which case you would still need to use one of the above functions. If you just want to see a basic ROC Curve then take this approach which will give you both the AUC and a ROC Curve albeit it much less “pretty” than the one above.</p>
+<p>The above can be confusing although what you will soon discover is that being able to compute the AUC (Area Under Curve) will be sufficient to judge the quality of a model - well in general it’s a good start. The <strong>caret</strong> package can do that for you so you don’t need to use the various functions about to find that.</p>
+<p>You might want to put up a ROC curve based on some predictions in which case you would still need to use one of the above functions. If you just want to see a basic ROC Curve then take this approach which will give you both the AUC and a ROC Curve albeit it much less “pretty” than the one above.</p>
 </div>
 </div>
             </section>
