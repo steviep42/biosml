@@ -431,7 +431,7 @@ definitely get more of the actual negative cases. What if we moved it to say 0.9
 ##       neg  59   6
 ##       pos  41  47</code></pre>
 <p>Let’s break this down since it is really important to know how to use this construct. First, we notice that there are N = 153 people in this study.</p>
-<p><img src="pics/cm3.png" /></p>
+<p><img src="pics/threemat.png" /></p>
 <p><em>True Positives</em> - With respect to the second row - we predicted that 47 people have the disease that actually do have it. You could then say that the number of TRUE POSITIVES (abbreviated as “TP”) is 47.</p>
 <p><em>False Positives</em> - We also predicted that 41 people have the condition when they in fact do not. We could then say that the number of FALSE POSITIVES, abbreviated as “FP”, is 41.</p>
 <p><em>False Negatives</em> - In the first row we predicted that 6 people do NOT have the disease/condition when they actually do. So you could say that the number of FALSE NEGATIVES (abbreviated as FN) is 6.</p>
@@ -608,45 +608,20 @@ definitely get more of the actual negative cases. What if we moved it to say 0.9
 <a class="sourceLine" id="cb235-7" data-line-number="7">                         <span class="dt">levels =</span> <span class="kw">levels</span>(glm_test[[<span class="st">&quot;diabetes&quot;</span>]]))</a></code></pre></div>
 <div class="sourceCode" id="cb236"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb236-1" data-line-number="1"><span class="co"># How does this compare to the truth ?</span></a>
 <a class="sourceLine" id="cb236-2" data-line-number="2">my_confusion &lt;-<span class="st"> </span><span class="kw">table</span>(<span class="dt">predicted =</span> glm_label_preds,</a>
-<a class="sourceLine" id="cb236-3" data-line-number="3">                      <span class="dt">actual =</span> glm_test<span class="op">$</span>diabetes)</a></code></pre></div>
-<p>We could use a function from the <strong>caret</strong> package called <strong>confusionMatrix</strong> to show us the relevant metrics. Much better than doing it by hand.</p>
-<div class="sourceCode" id="cb237"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb237-1" data-line-number="1">caret<span class="op">::</span><span class="kw">confusionMatrix</span>(my_confusion,<span class="dt">positive=</span><span class="st">&quot;pos&quot;</span>)</a></code></pre></div>
+<a class="sourceLine" id="cb236-3" data-line-number="3">                      <span class="dt">actual =</span> glm_test<span class="op">$</span>diabetes)</a>
+<a class="sourceLine" id="cb236-4" data-line-number="4">my_confusion</a></code></pre></div>
+<pre><code>##          actual
+## predicted neg pos
+##       neg  84  12
+##       pos  16  41</code></pre>
+<p>We could use a function from the <strong>caret</strong> package called <strong>confusionMatrix</strong> to show us the relevant metrics although it can be a bit confusing (no pun intended) because it’s idea of what represents a “positive” and “negative” is not always what you expect.</p>
+<div class="sourceCode" id="cb238"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb238-1" data-line-number="1">caret<span class="op">::</span><span class="kw">confusionMatrix</span>(my_confusion,<span class="dt">positive=</span><span class="st">&quot;pos&quot;</span>)</a></code></pre></div>
 <pre><code>## Confusion Matrix and Statistics
 ## 
 ##          actual
 ## predicted neg pos
 ##       neg  84  12
 ##       pos  16  41
-##                                         
-##                Accuracy : 0.817         
-##                  95% CI : (0.746, 0.875)
-##     No Information Rate : 0.654         
-##     P-Value [Acc &gt; NIR] : 6.2e-06       
-##                                         
-##                   Kappa : 0.603         
-##                                         
-##  Mcnemar&#39;s Test P-Value : 0.571         
-##                                         
-##             Sensitivity : 0.774         
-##             Specificity : 0.840         
-##          Pos Pred Value : 0.719         
-##          Neg Pred Value : 0.875         
-##              Prevalence : 0.346         
-##          Detection Rate : 0.268         
-##    Detection Prevalence : 0.373         
-##       Balanced Accuracy : 0.807         
-##                                         
-##        &#39;Positive&#39; Class : pos           
-## </code></pre>
-<p>We could also work directly with our labelled predictions and known labels.</p>
-<div class="sourceCode" id="cb239"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb239-1" data-line-number="1">caret<span class="op">::</span><span class="kw">confusionMatrix</span>(glm_label_preds,</a>
-<a class="sourceLine" id="cb239-2" data-line-number="2">                       glm_test<span class="op">$</span>diabetes,<span class="dt">positive=</span><span class="st">&quot;pos&quot;</span>)</a></code></pre></div>
-<pre><code>## Confusion Matrix and Statistics
-## 
-##           Reference
-## Prediction neg pos
-##        neg  84  12
-##        pos  16  41
 ##                                         
 ##                Accuracy : 0.817         
 ##                  95% CI : (0.746, 0.875)

@@ -1664,7 +1664,7 @@ my_confusion
 
 Let's break this down since it is really important to know how to use this construct. First, we notice that there are N = 153 people in this study. 
 
-![](./pics/cm3.png)
+![](./pics/threemat.png)
 
 *True Positives* - With respect to the second row - we predicted that 47 people have the disease that actually do have it. You could then say that the number of TRUE POSITIVES (abbreviated as "TP") is 47. 
 
@@ -1917,20 +1917,15 @@ glm_label_preds <- factor(glm_label_preds,
 # How does this compare to the truth ?
 my_confusion <- table(predicted = glm_label_preds,
                       actual = glm_test$diabetes)
+my_confusion
 ```
 
-We could use a function from the **caret** package called **confusionMatrix** to show us the relevant metrics. Much better than doing it by hand. 
+We could use a function from the **caret** package called **confusionMatrix** to show us the relevant metrics although it can be a bit confusing (no pun intended) because it's idea of what represents a "positive" and "negative" is not always what you expect.
 
 ```{r}
 caret::confusionMatrix(my_confusion,positive="pos")
 ```
 
-We could also work directly with our labelled predictions and known labels. 
-
-```{r}
-caret::confusionMatrix(glm_label_preds,
-                       glm_test$diabetes,positive="pos")
-```
 
 ## ROC Curve Summary
 
@@ -2056,17 +2051,16 @@ fitpredt <- ifelse(pm_model_fitpreds > .385,"pos","neg")
 
 fitpreds <- factor(fitpredt,level=levels(test$diabetes))
 
-caret::confusionMatrix(fitpreds,
-                       test$diabetes,
-                       positive="pos")
+mytab <- caret::confusionMatrix(fitpreds,
+                       test$diabetes,positive="pos")
+mytab$overall['Accuracy']
 ```
 
 
 
 
-But wait, we've already been through the whole ROC curve, AUC, confusion matrix route so why would we take a manual approach if we have the **caret** package readily available ? 
 
-We can explore any number methods, implement K Fold Cross Validation,and get feedback on the performance measures all at the same time. Let's reframe our above work using the caret package conveniences. We want to use Cross Fold validation here. 
+We can explore any number of methods, implement K Fold Cross Validation,and get feedback on the performance measures all at the same time. Let's reframe our above work using the caret package conveniences. We want to use Cross Fold validation here. 
 
 ```{r logit1}
 ctrl <- trainControl(method = "cv", 
@@ -2081,17 +2075,18 @@ pm_glm_mod
 pm_glm_mod$results
 ```
 
-So we get an estimate of a 75% accuracy rate when the model is applied to out of sample data. This isn't so impressive but we aren't here to solve that problem. So let's make some predictions use thing test data to see what the Accuracy rate is. 
+So we get an estimate of a 77% accuracy rate when the model is applied to out of sample data. So let's make some predictions use thing test data to see what the Accuracy rate is. 
 
 ```{r pmglmlabs}
 pm_glm_pred_labels <- predict(pm_glm_mod,test)
 
-confusionMatrix(pm_glm_pred_labels,
-                test$diabetes,
-                positive = "pos")
+mytab <- table(pm_glm_pred_labels,test$diabetes)
+
+# We can compute accuracy by hand also
+sum(diag(mytab))/sum(mytab)
 ```
 
-We can certainly change the scoring metric to prioritize, for example, the area under the associated ROC curve. We just need to make some adjustments to the trainControl argument list and the train argument list. But these changes are minor. 
+We can change the scoring metric to prioritize, for example, the area under the associated ROC curve. We just need to make some adjustments to the trainControl argument list and the train argument list. But these changes are minor. 
 
 To get the AUC for the ROC we'll need to indicate that this is a two-class problems. Since the ROC curve is based on the predicted class probabilities (which are not computed automatically), the classProbs = TRUE option is used.
 
@@ -2112,9 +2107,15 @@ pm_glm_mod$results
 
 ```{r plot2roc}
 probs <- predict(pm_glm_mod,test,type="prob")[,2]
-caTools::colAUC(probs,test$diabetes,plotROC = T)
+caTools::colAUC(probs,test$diabetes)
 ```
 
+If you need to plot the ROC curve just set the extra option to be plotROC = TRUE.
+
+
+```{r extraoptt}
+caTools::colAUC(probs,test$diabetes,plotROC = TRUE)
+```
 
 
 ## Random Forests
@@ -2159,7 +2160,7 @@ This model has better sensitivity and specificity than the previous one.
 
 ```{r oorang}
 preds <- predict(pm_rf_mod,test)
-confusionMatrix(preds,test$diabetes)
+confusionMatrix(preds,test$diabetes,positive="pos")
 ```
 
 ## Feature Importance
