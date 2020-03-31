@@ -1534,7 +1534,7 @@ Since we are attempting to predict a binary outcome here ("pos" or "neg") we'll 
 
 Let's use the native **glm** function to do this since it will motivate some important concepts. We'll split the data into a train / test pair using the **createDataPartition** function from caret. We'll go with an 80% / 20% split. You've seen this before with the linear modelling examples. 
 
-![](./PICS/crossvalid.png){width=500}
+![](./PICS/orr.png){width=500}
 
 
 ```{r createdp}
@@ -1648,7 +1648,7 @@ It is also possible that we apply the test to someone and we say that the do not
     
 Here we fail to reject the null hypothesis for this person. A perfect test would have zero false positives and zero false negatives.
 
-![](./pics/type1and2.png)
+![](./pics/type2and1.png)
 
 ## Confusion Matrix
 
@@ -1768,7 +1768,9 @@ We've been doing a lot. We did the following:
 6) Created a table of outcomes (confusion matrix) to compare predictions vs reality
 7) Computed some important ratios
 
-While this process was useful the resulting confusion matrix corresponded to just *ONE* particular threshold ? What if we had picked another value ? We would then get a different confusion matrix as well as different performance measures. In effect we would have to repeat steps 3-6 all over again !!! 
+While this process was useful the resulting confusion matrix corresponded to just *ONE* particular threshold ? What if we had picked another value ? We would then get a different confusion matrix as well as different performance measures. 
+
+> In effect we would have to repeat steps 3-6 all over again for each threshold !!! 
 
 Let's find a way to generalize these steps. First, let's create a function that allows us to compute the True Positive Rate (aka "Sensitivity") and the False Positive Rate ( 1 - Specificity). If we apply it to our predictions from our example in progress, the output would be as follows. 
 

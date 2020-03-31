@@ -334,7 +334,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h2><span class="header-section-number">6.3</span> A Basic Model</h2>
 <p>Since we are attempting to predict a binary outcome here (“pos” or “neg”) we’ll need to use something other than linear regression which is used to predict numeric outcomes. We’ll go with Logistic Regression as it is a tried and true method for doing this type of thing.</p>
 <p>Let’s use the native <strong>glm</strong> function to do this since it will motivate some important concepts. We’ll split the data into a train / test pair using the <strong>createDataPartition</strong> function from caret. We’ll go with an 80% / 20% split. You’ve seen this before with the linear modelling examples.</p>
-<p><img src="pics/crossvalid.png" width="500" /></p>
+<p><img src="pics/orr.png" width="500" /></p>
 <div class="sourceCode" id="cb194"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb194-1" data-line-number="1"><span class="kw">set.seed</span>(<span class="dv">891</span>)</a>
 <a class="sourceLine" id="cb194-2" data-line-number="2">idx &lt;-<span class="st"> </span><span class="kw">createDataPartition</span>(pm<span class="op">$</span>diabetes, <span class="dt">p=</span>.<span class="dv">80</span>, <span class="dt">list=</span><span class="ot">FALSE</span>)</a>
 <a class="sourceLine" id="cb194-3" data-line-number="3"></a>
@@ -417,7 +417,7 @@ definitely get more of the actual negative cases. What if we moved it to say 0.9
 <p>It is also possible that we apply the test to someone and we say that the do not have the disease when they actually do.</p>
 <pre><code>- This is known as a &quot;false negative&quot; also known as a Type II Error&quot; </code></pre>
 <p>Here we fail to reject the null hypothesis for this person. A perfect test would have zero false positives and zero false negatives.</p>
-<p><img src="pics/type1and2.png" /></p>
+<p><img src="pics/type2and1.png" /></p>
 </div>
 <div id="confusion-matrix" class="section level2">
 <h2><span class="header-section-number">6.6</span> Confusion Matrix</h2>
@@ -510,7 +510,10 @@ definitely get more of the actual negative cases. What if we moved it to say 0.9
 <li>Created a table of outcomes (confusion matrix) to compare predictions vs reality</li>
 <li>Computed some important ratios</li>
 </ol>
-<p>While this process was useful the resulting confusion matrix corresponded to just <em>ONE</em> particular threshold ? What if we had picked another value ? We would then get a different confusion matrix as well as different performance measures. In effect we would have to repeat steps 3-6 all over again !!!</p>
+<p>While this process was useful the resulting confusion matrix corresponded to just <em>ONE</em> particular threshold ? What if we had picked another value ? We would then get a different confusion matrix as well as different performance measures.</p>
+<blockquote>
+<p>In effect we would have to repeat steps 3-6 all over again for each threshold !!!</p>
+</blockquote>
 <p>Let’s find a way to generalize these steps. First, let’s create a function that allows us to compute the True Positive Rate (aka “Sensitivity”) and the False Positive Rate ( 1 - Specificity). If we apply it to our predictions from our example in progress, the output would be as follows.</p>
 <div class="sourceCode" id="cb222"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb222-1" data-line-number="1">get_tprfpr &lt;-<span class="st"> </span><span class="cf">function</span>(pred,true) {</a>
 <a class="sourceLine" id="cb222-2" data-line-number="2">  myt &lt;-<span class="st"> </span><span class="kw">table</span>(pred,true)</a>
