@@ -512,7 +512,7 @@ definitely get more of the actual negative cases. What if we moved it to say 0.9
 </ol>
 <p>While this process was useful the resulting confusion matrix corresponded to just <em>ONE</em> particular threshold ? What if we had picked another value ? We would then get a different confusion matrix as well as different performance measures.</p>
 <blockquote>
-<p>In effect we would have to repeat steps 3-6 all over again for each threshold !!!</p>
+<p>In effect we would have to repeat steps 4-7 all over again for each threshold !!!</p>
 </blockquote>
 <p>Let’s find a way to generalize these steps. First, let’s create a function that allows us to compute the True Positive Rate (aka “Sensitivity”) and the False Positive Rate ( 1 - Specificity). If we apply it to our predictions from our example in progress, the output would be as follows.</p>
 <div class="sourceCode" id="cb222"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb222-1" data-line-number="1">get_tprfpr &lt;-<span class="st"> </span><span class="cf">function</span>(pred,true) {</a>

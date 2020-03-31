@@ -1770,7 +1770,7 @@ We've been doing a lot. We did the following:
 
 While this process was useful the resulting confusion matrix corresponded to just *ONE* particular threshold ? What if we had picked another value ? We would then get a different confusion matrix as well as different performance measures. 
 
-> In effect we would have to repeat steps 3-6 all over again for each threshold !!! 
+> In effect we would have to repeat steps 4-7 all over again for each threshold !!! 
 
 Let's find a way to generalize these steps. First, let's create a function that allows us to compute the True Positive Rate (aka "Sensitivity") and the False Positive Rate ( 1 - Specificity). If we apply it to our predictions from our example in progress, the output would be as follows. 
 
