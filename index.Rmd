@@ -2993,9 +2993,9 @@ boosted_caret$results[1,]
 ```
 
 
-# Using Different Methods
+# Comparing Different Methods
 
-We started to look at random forests to see how they perfom. It also provides an opportunity to introduce the concept of hyperparameters which are important to consider since many ML methods will use them. Many people are surprised to learn that random Forests (or even a single Decision Tree) can be used to predict a numeric outcome, but they can be. The advantages of using random Forests include the following:
+We could look at random forests to see how they perfom. It also provides an opportunity to introduce the concept of hyperparameters which are important to consider since many ML methods will use them. Many people are surprised to learn that random Forests (or even a single Decision Tree) can be used to predict a numeric outcome, but they can be. The advantages of using random Forests include the following:
 
     - easy to use
     - resistant to overfitting
@@ -3003,7 +3003,7 @@ We started to look at random forests to see how they perfom. It also provides an
 
 Some problems include:
 
-    - the rd function requires setting hyperparameters 
+    - the rf function requires setting hyperparameters 
     - adjustment of hyperparameters can be specific to the data set
     - default vlaues will requie adjustment or "tuning"
 
@@ -3263,11 +3263,289 @@ Metrics::rmse(new_test$mpg, predict(caret_ranger,new_test))
 
 ```
 
+## Applied To Classification
+
+We could extend this it deal with classification problems. We can adapt our randomForest function for use in predicting the Pima Indians diabetes outcome. 
+
+```{r message=FALSE}
+library(randomForest)
+library(tidyverse)
+```
+
+
+```{r red}
+url <- "https://raw.githubusercontent.com/steviep42/bios534_spring_2020/master/data/pima.csv"
+pm <- read.csv(url)
+```
+
+We'll implement the train / test pair
+
+```{r cret}
+idx <- createDataPartition(pm$diabetes,p=.8,list=FALSE)
+
+rf_train <- pm[ idx,]
+rf_test  <- pm[-idx,]
+```
+
+Next, we'll build the model using the randomForest method
+
+```{r genrf}
+rf_model <- randomForest(diabetes ~ .,
+                         data = rf_train)
+```
+
+
+Then we'll do the usual things of making some predictions and then look at an Accuracy and an AUC.
+
+```{r orf}
+# Get the raw probabilities
+rf_probabilities <- predict(rf_model,rf_test,type="prob")
+```
+
+Compute the AUC:
+
+```{r catools}
+caTools::colAUC(rf_probabilities[,1],rf_test$diabetes)
+```
+
+Well, that was nice but how would we work in the search grid approach to see how this might be impacted by varying the hyper parameters ? We could start by picking parameters at random - as long as they are valid. mtry needs to be from 2 up to some number of features in the data set (this varies with the method) The number of trees should be somewhere between 100 and 1600. 
+
+
+```{r sampldf}
+set.seed(12)
+mtry = sample(3:8,5)
+ntrees = sample(200:1200,5)
+
+my_grid <- data.frame()
+for (ii in 1:length(mtry)) {
+  for (jj in 1:length(ntrees)) {
+    my_grid <- rbind(my_grid,c(mtry[ii],ntrees[jj]))
+  }
+}
+names(my_grid) <- c("mtry","numoftrees")
+my_grid
+
+```
+
+So we could write a function to accept the combined set of randmoized parameters to see how it impacts performance:
+
+
+```{r gridtrz}
+make_diabetes_rf <- function(grid=train_grid) {
+    retlist <- data.frame()
+    for (ii in 1:nrow(grid)) {
+      my_rf <- randomForest(diabetes ~ . ,
+                           data = rf_train,
+                           mtry = grid[ii,]$mtry,
+                           ntree = grid[ii,]$numoftrees,
+                           importance = TRUE)
+      
+      #  Get the AUC
+      rf_probabilities <- predict(my_rf,rf_test,type="prob")
+      auc <- caTools::colAUC(rf_probabilities[,1],rf_test$diabetes)
+    
+      # Get the Accuracy
+      rf_labels <- predict(my_rf,rf_test)
+      myt <- table(rf_labels,rf_test$diabetes)
+      acc <- sum(diag(myt))/sum(myt)
+      
+      # Return a data frame with the information
+      retlist <- rbind(retlist,
+                       c(grid[ii,]$mtry,grid[ii,]$numoftrees,auc,acc))
+      names(retlist) <- c("mtry","ntree","auc","acc")
+    }
+    
+# 
+    return(retlist)
+}
+```
+
+
+Let's see what we get back:
+
+```{r getgrd}
+make_diabetes_rf(my_grid)
+```
+
+So there isn't a lot of variance in the outcomes although we didn't know that previously which is why we performed the random search in the first place. If we wanted to, we could do something less random and more systematic by creating a predictable seqeucne of values for the hyperparameters which would result in a more granular search. In this example, we'll also take advantage of a function called **expand.grid** which will help make the training grid. We could still use the above approach which uses for loops if we wanted to. 
+
+```{r trgr}
+train_grid <- expand.grid(mtry=seq(2,8,1),
+                          numoftrees=seq(200,1400,200))
+train_grid
+```
+
+
+```{r gridtr}
+make_diabetes_rf <- function(grid=train_grid) {
+    retlist <- data.frame()
+    for (ii in 1:nrow(grid)) {
+      my_rf <- randomForest(diabetes ~ . ,
+                           data = rf_train,
+                           mtry = grid[ii,]$mtry,
+                           ntree = grid[ii,]$numoftrees,
+                           importance = TRUE)
+      
+      #  Get the AUC
+      rf_probabilities <- predict(my_rf,rf_test,type="prob")
+      auc <- caTools::colAUC(rf_probabilities[,1],rf_test$diabetes)
+    
+      # Get the Accuracy
+      rf_labels <- predict(my_rf,rf_test)
+      myt <- table(rf_labels,rf_test$diabetes)
+      acc <- sum(diag(myt))/sum(myt)
+      
+      # Return a data frame with the information
+      retlist <- rbind(retlist,
+                       c(grid[ii,]$mtry,grid[ii,]$numoftrees,auc,acc))
+      names(retlist) <- c("mtry","ntree","auc","acc")
+    }
+    
+# 
+    return(retlist)
+}
+```
+
+So we could look at how the AUC varies for the values of mtry and ntrees. What we will experience here is longer run times because the grid has more values than the one we made when using a random approach.
+
+```{r mkdia}
+nrow(my_grid)
+nrow(train_grid)
+#
+stats <- make_diabetes_rf()
+```
+
+This plot will show us what is happening.
+
+```{r statsm}
+stats <- stats %>% mutate(ntree=factor(ntree))
+ggplot(stats,aes(x=mtry,y=auc)) + geom_line() + 
+  facet_grid(~factor(ntree)) + theme_bw() +
+  ggtitle("AUC Across Random Forest Hyperparameters")
+```
+
+So what about the Accuracy ? It would be nice to see that on the graph also. There aren't major variations in these metrics across these parameters. It depends on the method
+
+
+```{r reformv}
+# Reformat the stats data frame into long format
+long_stats <- stats %>% gather(key="variable",value="value",-mtry,-ntree)
+
+# Next, make the plot
+ggplot(data=long_stats,
+       aes(x=mtry, y=value, colour=variable)) +
+       geom_line() + facet_wrap(~ntree) + theme_minimal() +
+       ggtitle("AUC and Accuracy Across Random Forest Hyperparameters")
+
+```
+
+There are other ways to do this as some functions have tuning methods associated with them to help address this issue. The **randomForest** function is one such function. There is the **tuneRF** function available. Let's go back to a basic example:
+
+```{r pretunerf}
+my_rf <- randomForest(diabetes ~ . ,
+                           data = rf_train)
+```
+
+So we could use the **tuneRF** function and pass it our X and Y variables along with some arguments to do a grid search with hyperparameters. The function itself will call the **randomForest** package:
+
+
+```{r runtunef}
+X = rf_train[,1:8]
+Y = rf_train[,9]
+
+my_tune <- tuneRF(X,Y,mtryStart=2,ntreeTry=50,stepFactor=2,doBest=T)
+my_tune
+```
+
+
+```{r deftun}
+# Define the tuning grid: tuneGrid
+tuneGrid <- data.frame(
+  .mtry = c(2, 3, 7),
+  .min.node.size = 5
+)
+
+control <- trainControl( classProbs=T, summaryFunction = twoClassSummary)
+
+my_rf <- train(diabetes~.,
+                     rf_train,
+                     method="rf",
+                     metric="ROC",
+                     trControl = control,
+               tuneLength=7)
+
+```
+
+
 ## Using Validation Data Sets
 
 When building a model, we generate a training and test data set. We use the former to build a model and, if we are using something like the caret package, that process involves cross fold validation or bootstrap sampling to generate a good estimate for out-of-sample error. We then apply the model to the test data frame.
 
 If we are using a method that has hyperparamters then maybe we want an intermediate data set to help validate our ultimate choice of hyperparameters. By taking this approach we can still keep our test data set off to the side for later use  with the trained and validated model. Using this idea doesn't require us to do much beyond generating a third data set. 
+
+
+    The training set is used to build the classifier
+    The validation set is used to tune the algorithm hyperparameters repeatedly. 
+    So there will be some overfitting here, but that is why there is another stage:
+    
+    The test set must not be touched until the classifier is final to prevent 
+    overfitting. It serves to estimate the true accuracy, if you would put the model 
+    into production.
+
+
+```{r genvalid}
+# Simple into 3 sets.
+idx <- sample(seq(1, 3), size = nrow(pm), replace = TRUE, prob = c(.8, .2, .2))
+train <- pm[idx == 1,]
+test <- pm[idx == 2,]
+valid <- pm[idx == 3,]
+
+# 
+
+nrow(train)
+nrow(test)
+nrow(valid)
+```
+
+Then we might build a model using the training data. We'll use Accuracy as a metric.
+
+
+```{r tvtv}
+control <- trainControl(method="cv",number=5)
+
+set.seed(123)
+train_rf <- train(diabetes~.,
+                  data = train,
+                  metric = "Accuracy",
+                  method = "rf", 
+                  trControl = control)
+
+train_rf
+
+set.seed(123)
+valid_rf <- train(diabetes~.,
+                  data=valid,
+                  metric="Accuracy",
+                  method = "rf",
+                  trControl = control)
+valid_rf$bestTune
+
+# Now we would use the value of mtry to find an appropriate value
+# of mtyry to use in the test data
+
+set.seed(123)
+test_rf  <- train(diabetes~.,
+                 data=test,
+                 metric="Accuracy",
+                 method = "rf",
+                 trControl = trainControl(method="none"),
+                 tuneGrid = data.frame(mtry = 5))
+
+
+some_preds <- predict(test_rf,test)
+confusionMatrix(table(preds=some_preds,actual=test$diabetes),positive="pos")
+```
+
 
 
 # Selecting The Best Model

@@ -1,0 +1,1028 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 9 Comparing Different Methods | Predictive Learning in R</title>
+  <meta name="description" content="Chapter 9 Comparing Different Methods | Predictive Learning in R" />
+  <meta name="generator" content="bookdown 0.17 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 9 Comparing Different Methods | Predictive Learning in R" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 9 Comparing Different Methods | Predictive Learning in R" />
+  
+  
+  
+
+<meta name="author" content="Steve Pittard - wsp@emory.edu" />
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="decision-trees.html"/>
+<link rel="next" href="selecting-the-best-model.html"/>
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(data-line-number);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Preface</a><ul>
+<li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#machine-learning"><i class="fa fa-check"></i><b>1.1</b> Machine Learning</a></li>
+<li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#predictive-modeling"><i class="fa fa-check"></i><b>1.2</b> Predictive Modeling</a></li>
+<li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#in-sample-vs-out-of-sample-error"><i class="fa fa-check"></i><b>1.3</b> In-Sample vs Out-Of-Sample Error</a></li>
+<li class="chapter" data-level="1.4" data-path="index.html"><a href="index.html#performance-metrics"><i class="fa fa-check"></i><b>1.4</b> Performance Metrics</a></li>
+<li class="chapter" data-level="1.5" data-path="index.html"><a href="index.html#black-box"><i class="fa fa-check"></i><b>1.5</b> Black Box</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="predictive-supervised-learning.html"><a href="predictive-supervised-learning.html"><i class="fa fa-check"></i><b>2</b> Predictive / Supervised Learning</a><ul>
+<li class="chapter" data-level="2.1" data-path="predictive-supervised-learning.html"><a href="predictive-supervised-learning.html#explanation-vs-prediction"><i class="fa fa-check"></i><b>2.1</b> Explanation vs Prediction</a><ul>
+<li class="chapter" data-level="2.1.1" data-path="predictive-supervised-learning.html"><a href="predictive-supervised-learning.html#titanic-data"><i class="fa fa-check"></i><b>2.1.1</b> Titanic Data</a></li>
+</ul></li>
+<li class="chapter" data-level="2.2" data-path="predictive-supervised-learning.html"><a href="predictive-supervised-learning.html#bias-vs-variance"><i class="fa fa-check"></i><b>2.2</b> Bias vs Variance</a><ul>
+<li class="chapter" data-level="2.2.1" data-path="predictive-supervised-learning.html"><a href="predictive-supervised-learning.html#bias"><i class="fa fa-check"></i><b>2.2.1</b> Bias</a></li>
+<li class="chapter" data-level="2.2.2" data-path="predictive-supervised-learning.html"><a href="predictive-supervised-learning.html#variance"><i class="fa fa-check"></i><b>2.2.2</b> Variance</a></li>
+</ul></li>
+<li class="chapter" data-level="2.3" data-path="predictive-supervised-learning.html"><a href="predictive-supervised-learning.html#overfitting-and-underfitting"><i class="fa fa-check"></i><b>2.3</b> Overfitting and Underfitting</a></li>
+<li class="chapter" data-level="2.4" data-path="predictive-supervised-learning.html"><a href="predictive-supervised-learning.html#some-important-terminology"><i class="fa fa-check"></i><b>2.4</b> Some Important Terminology</a></li>
+<li class="chapter" data-level="2.5" data-path="predictive-supervised-learning.html"><a href="predictive-supervised-learning.html#levels-of-measurement"><i class="fa fa-check"></i><b>2.5</b> Levels of Measurement</a><ul>
+<li class="chapter" data-level="2.5.1" data-path="predictive-supervised-learning.html"><a href="predictive-supervised-learning.html#nominal"><i class="fa fa-check"></i><b>2.5.1</b> Nominal</a></li>
+<li class="chapter" data-level="2.5.2" data-path="predictive-supervised-learning.html"><a href="predictive-supervised-learning.html#ordinal"><i class="fa fa-check"></i><b>2.5.2</b> Ordinal</a></li>
+<li class="chapter" data-level="2.5.3" data-path="predictive-supervised-learning.html"><a href="predictive-supervised-learning.html#interval"><i class="fa fa-check"></i><b>2.5.3</b> Interval</a></li>
+<li class="chapter" data-level="2.5.4" data-path="predictive-supervised-learning.html"><a href="predictive-supervised-learning.html#ratio"><i class="fa fa-check"></i><b>2.5.4</b> Ratio</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="a-motivating-example.html"><a href="a-motivating-example.html"><i class="fa fa-check"></i><b>3</b> A Motivating Example</a><ul>
+<li class="chapter" data-level="3.1" data-path="a-motivating-example.html"><a href="a-motivating-example.html#a-more-detailed-workflow"><i class="fa fa-check"></i><b>3.1</b> A More Detailed Workflow</a></li>
+<li class="chapter" data-level="3.2" data-path="a-motivating-example.html"><a href="a-motivating-example.html#visualizations"><i class="fa fa-check"></i><b>3.2</b> Visualizations</a><ul>
+<li class="chapter" data-level="3.2.1" data-path="a-motivating-example.html"><a href="a-motivating-example.html#scatterplots"><i class="fa fa-check"></i><b>3.2.1</b> Scatterplots</a></li>
+<li class="chapter" data-level="3.2.2" data-path="a-motivating-example.html"><a href="a-motivating-example.html#boxplots"><i class="fa fa-check"></i><b>3.2.2</b> Boxplots</a></li>
+<li class="chapter" data-level="3.2.3" data-path="a-motivating-example.html"><a href="a-motivating-example.html#histograms"><i class="fa fa-check"></i><b>3.2.3</b> Histograms</a></li>
+<li class="chapter" data-level="3.2.4" data-path="a-motivating-example.html"><a href="a-motivating-example.html#tables"><i class="fa fa-check"></i><b>3.2.4</b> Tables</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="a-motivating-example.html"><a href="a-motivating-example.html#correlations"><i class="fa fa-check"></i><b>3.3</b> Correlations</a></li>
+<li class="chapter" data-level="3.4" data-path="a-motivating-example.html"><a href="a-motivating-example.html#building-a-model---in-sample-error"><i class="fa fa-check"></i><b>3.4</b> Building A Model - In Sample Error</a></li>
+<li class="chapter" data-level="3.5" data-path="a-motivating-example.html"><a href="a-motivating-example.html#out-of-sample-data"><i class="fa fa-check"></i><b>3.5</b> Out Of Sample Data</a></li>
+<li class="chapter" data-level="3.6" data-path="a-motivating-example.html"><a href="a-motivating-example.html#some-additional-considerations"><i class="fa fa-check"></i><b>3.6</b> Some Additional Considerations</a></li>
+<li class="chapter" data-level="3.7" data-path="a-motivating-example.html"><a href="a-motivating-example.html#other-methods"><i class="fa fa-check"></i><b>3.7</b> Other Methods ?</a></li>
+<li class="chapter" data-level="3.8" data-path="a-motivating-example.html"><a href="a-motivating-example.html#summary"><i class="fa fa-check"></i><b>3.8</b> Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="training-test-data.html"><a href="training-test-data.html"><i class="fa fa-check"></i><b>4</b> Training / Test Data</a><ul>
+<li class="chapter" data-level="4.1" data-path="training-test-data.html"><a href="training-test-data.html#cross-fold-validation"><i class="fa fa-check"></i><b>4.1</b> Cross Fold Validation</a></li>
+<li class="chapter" data-level="4.2" data-path="training-test-data.html"><a href="training-test-data.html#create-a-function-to-automate-things"><i class="fa fa-check"></i><b>4.2</b> Create A Function To Automate Things</a></li>
+<li class="chapter" data-level="4.3" data-path="training-test-data.html"><a href="training-test-data.html#repeated-cross-validation"><i class="fa fa-check"></i><b>4.3</b> Repeated Cross Validation</a></li>
+<li class="chapter" data-level="4.4" data-path="training-test-data.html"><a href="training-test-data.html#bootstrap"><i class="fa fa-check"></i><b>4.4</b> Bootstrap</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="caret-package.html"><a href="caret-package.html"><i class="fa fa-check"></i><b>5</b> Caret Package</a><ul>
+<li class="chapter" data-level="5.1" data-path="caret-package.html"><a href="caret-package.html#putting-caret-to-work"><i class="fa fa-check"></i><b>5.1</b> Putting caret To Work</a></li>
+<li class="chapter" data-level="5.2" data-path="caret-package.html"><a href="caret-package.html#back-to-the-beginning"><i class="fa fa-check"></i><b>5.2</b> Back To The Beginning</a></li>
+<li class="chapter" data-level="5.3" data-path="caret-package.html"><a href="caret-package.html#splitting"><i class="fa fa-check"></i><b>5.3</b> Splitting</a></li>
+<li class="chapter" data-level="5.4" data-path="caret-package.html"><a href="caret-package.html#calling-the-train-function"><i class="fa fa-check"></i><b>5.4</b> Calling The train() Function</a></li>
+<li class="chapter" data-level="5.5" data-path="caret-package.html"><a href="caret-package.html#reproducible-results"><i class="fa fa-check"></i><b>5.5</b> Reproducible Results</a></li>
+<li class="chapter" data-level="5.6" data-path="caret-package.html"><a href="caret-package.html#one-size-fits-all"><i class="fa fa-check"></i><b>5.6</b> One Size Fits All</a></li>
+<li class="chapter" data-level="5.7" data-path="caret-package.html"><a href="caret-package.html#alternative-calling-sequence"><i class="fa fa-check"></i><b>5.7</b> Alternative Calling Sequence</a></li>
+<li class="chapter" data-level="5.8" data-path="caret-package.html"><a href="caret-package.html#hyperparameters"><i class="fa fa-check"></i><b>5.8</b> Hyperparameters</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="classification-problems.html"><a href="classification-problems.html"><i class="fa fa-check"></i><b>6</b> Classification Problems</a><ul>
+<li class="chapter" data-level="6.1" data-path="classification-problems.html"><a href="classification-problems.html#performance-measures"><i class="fa fa-check"></i><b>6.1</b> Performance Measures</a></li>
+<li class="chapter" data-level="6.2" data-path="classification-problems.html"><a href="classification-problems.html#important-terminology"><i class="fa fa-check"></i><b>6.2</b> Important Terminology</a></li>
+<li class="chapter" data-level="6.3" data-path="classification-problems.html"><a href="classification-problems.html#a-basic-model"><i class="fa fa-check"></i><b>6.3</b> A Basic Model</a></li>
+<li class="chapter" data-level="6.4" data-path="classification-problems.html"><a href="classification-problems.html#selecting-the-correct-threshold-alpha"><i class="fa fa-check"></i><b>6.4</b> Selecting The Correct Threshold / Alpha</a><ul>
+<li class="chapter" data-level="6.4.1" data-path="classification-problems.html"><a href="classification-problems.html#moving-the-threshold"><i class="fa fa-check"></i><b>6.4.1</b> Moving The Threshold</a></li>
+<li class="chapter" data-level="6.4.2" data-path="classification-problems.html"><a href="classification-problems.html#distribution-of-predicted-probabilities"><i class="fa fa-check"></i><b>6.4.2</b> Distribution of Predicted Probabilities</a></li>
+</ul></li>
+<li class="chapter" data-level="6.5" data-path="classification-problems.html"><a href="classification-problems.html#hypothesis-testing"><i class="fa fa-check"></i><b>6.5</b> Hypothesis Testing</a></li>
+<li class="chapter" data-level="6.6" data-path="classification-problems.html"><a href="classification-problems.html#confusion-matrix"><i class="fa fa-check"></i><b>6.6</b> Confusion Matrix</a><ul>
+<li class="chapter" data-level="6.6.1" data-path="classification-problems.html"><a href="classification-problems.html#computing-performance-metrics"><i class="fa fa-check"></i><b>6.6.1</b> Computing Performance Metrics</a></li>
+</ul></li>
+<li class="chapter" data-level="6.7" data-path="classification-problems.html"><a href="classification-problems.html#picking-the-right-metric"><i class="fa fa-check"></i><b>6.7</b> Picking the Right Metric</a></li>
+<li class="chapter" data-level="6.8" data-path="classification-problems.html"><a href="classification-problems.html#wait.-where-are-we"><i class="fa fa-check"></i><b>6.8</b> Wait. Where Are We ?</a></li>
+<li class="chapter" data-level="6.9" data-path="classification-problems.html"><a href="classification-problems.html#other-ways-to-compute-the-roc-curve"><i class="fa fa-check"></i><b>6.9</b> Other Ways To Compute The ROC Curve</a></li>
+<li class="chapter" data-level="6.10" data-path="classification-problems.html"><a href="classification-problems.html#roc-curve-summary"><i class="fa fa-check"></i><b>6.10</b> ROC Curve Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="classification-example.html"><a href="classification-example.html"><i class="fa fa-check"></i><b>7</b> Classification Example</a><ul>
+<li class="chapter" data-level="7.1" data-path="classification-example.html"><a href="classification-example.html#exploratory-plots"><i class="fa fa-check"></i><b>7.1</b> Exploratory Plots</a></li>
+<li class="chapter" data-level="7.2" data-path="classification-example.html"><a href="classification-example.html#generalized-linear-models"><i class="fa fa-check"></i><b>7.2</b> Generalized Linear Models</a></li>
+<li class="chapter" data-level="7.3" data-path="classification-example.html"><a href="classification-example.html#random-forests"><i class="fa fa-check"></i><b>7.3</b> Random Forests</a></li>
+<li class="chapter" data-level="7.4" data-path="classification-example.html"><a href="classification-example.html#feature-importance"><i class="fa fa-check"></i><b>7.4</b> Feature Importance</a></li>
+<li class="chapter" data-level="7.5" data-path="classification-example.html"><a href="classification-example.html#target-variable-format"><i class="fa fa-check"></i><b>7.5</b> Target Variable Format</a></li>
+<li class="chapter" data-level="7.6" data-path="classification-example.html"><a href="classification-example.html#addressing-class-imbalance"><i class="fa fa-check"></i><b>7.6</b> Addressing Class Imbalance</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="decision-trees.html"><a href="decision-trees.html"><i class="fa fa-check"></i><b>8</b> Decision Trees</a><ul>
+<li class="chapter" data-level="8.1" data-path="decision-trees.html"><a href="decision-trees.html#advantages"><i class="fa fa-check"></i><b>8.1</b> Advantages</a></li>
+<li class="chapter" data-level="8.2" data-path="decision-trees.html"><a href="decision-trees.html#a-classification-example"><i class="fa fa-check"></i><b>8.2</b> A Classification Example</a></li>
+<li class="chapter" data-level="8.3" data-path="decision-trees.html"><a href="decision-trees.html#digging-deeper"><i class="fa fa-check"></i><b>8.3</b> Digging Deeper</a><ul>
+<li class="chapter" data-level="8.3.1" data-path="decision-trees.html"><a href="decision-trees.html#evaluating-performance"><i class="fa fa-check"></i><b>8.3.1</b> Evaluating performance</a></li>
+<li class="chapter" data-level="8.3.2" data-path="decision-trees.html"><a href="decision-trees.html#tree-splitting"><i class="fa fa-check"></i><b>8.3.2</b> Tree Splitting</a></li>
+</ul></li>
+<li class="chapter" data-level="8.4" data-path="decision-trees.html"><a href="decision-trees.html#gini-index"><i class="fa fa-check"></i><b>8.4</b> Gini Index</a></li>
+<li class="chapter" data-level="8.5" data-path="decision-trees.html"><a href="decision-trees.html#regression-trees"><i class="fa fa-check"></i><b>8.5</b> Regression Trees</a><ul>
+<li class="chapter" data-level="8.5.1" data-path="decision-trees.html"><a href="decision-trees.html#performance-measure"><i class="fa fa-check"></i><b>8.5.1</b> Performance Measure</a></li>
+</ul></li>
+<li class="chapter" data-level="8.6" data-path="decision-trees.html"><a href="decision-trees.html#parameters-vs-hyperparameters"><i class="fa fa-check"></i><b>8.6</b> Parameters vs Hyperparameters</a></li>
+<li class="chapter" data-level="8.7" data-path="decision-trees.html"><a href="decision-trees.html#grid-searching"><i class="fa fa-check"></i><b>8.7</b> Grid Searching</a></li>
+<li class="chapter" data-level="8.8" data-path="decision-trees.html"><a href="decision-trees.html#bagged-trees"><i class="fa fa-check"></i><b>8.8</b> Bagged Trees</a></li>
+<li class="chapter" data-level="8.9" data-path="decision-trees.html"><a href="decision-trees.html#random-forests-1"><i class="fa fa-check"></i><b>8.9</b> Random Forests</a></li>
+<li class="chapter" data-level="8.10" data-path="decision-trees.html"><a href="decision-trees.html#boosted-trees"><i class="fa fa-check"></i><b>8.10</b> Boosted Trees</a></li>
+<li class="chapter" data-level="8.11" data-path="decision-trees.html"><a href="decision-trees.html#using-caret"><i class="fa fa-check"></i><b>8.11</b> Using caret</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="comparing-different-methods.html"><a href="comparing-different-methods.html"><i class="fa fa-check"></i><b>9</b> Comparing Different Methods</a><ul>
+<li class="chapter" data-level="9.1" data-path="comparing-different-methods.html"><a href="comparing-different-methods.html#parameters-vs-hyperparameters-1"><i class="fa fa-check"></i><b>9.1</b> Parameters vs Hyperparameters</a></li>
+<li class="chapter" data-level="9.2" data-path="comparing-different-methods.html"><a href="comparing-different-methods.html#hyperparameter-tuning"><i class="fa fa-check"></i><b>9.2</b> Hyperparameter Tuning</a><ul>
+<li class="chapter" data-level="9.2.1" data-path="comparing-different-methods.html"><a href="comparing-different-methods.html#multiple-hyperparameters"><i class="fa fa-check"></i><b>9.2.1</b> Multiple Hyperparameters ?</a></li>
+<li class="chapter" data-level="9.2.2" data-path="comparing-different-methods.html"><a href="comparing-different-methods.html#custom-tuning-grid"><i class="fa fa-check"></i><b>9.2.2</b> Custom Tuning Grid</a></li>
+</ul></li>
+<li class="chapter" data-level="9.3" data-path="comparing-different-methods.html"><a href="comparing-different-methods.html#applied-to-classification"><i class="fa fa-check"></i><b>9.3</b> Applied To Classification</a></li>
+<li class="chapter" data-level="9.4" data-path="comparing-different-methods.html"><a href="comparing-different-methods.html#using-validation-data-sets"><i class="fa fa-check"></i><b>9.4</b> Using Validation Data Sets</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="selecting-the-best-model.html"><a href="selecting-the-best-model.html"><i class="fa fa-check"></i><b>10</b> Selecting The Best Model</a><ul>
+<li class="chapter" data-level="10.1" data-path="selecting-the-best-model.html"><a href="selecting-the-best-model.html#an-example"><i class="fa fa-check"></i><b>10.1</b> An Example</a></li>
+<li class="chapter" data-level="10.2" data-path="selecting-the-best-model.html"><a href="selecting-the-best-model.html#more-comparisons"><i class="fa fa-check"></i><b>10.2</b> More Comparisons</a></li>
+<li class="chapter" data-level="10.3" data-path="selecting-the-best-model.html"><a href="selecting-the-best-model.html#using-the-resamples-function"><i class="fa fa-check"></i><b>10.3</b> Using the resamples() function</a></li>
+<li class="chapter" data-level="10.4" data-path="selecting-the-best-model.html"><a href="selecting-the-best-model.html#model-performance"><i class="fa fa-check"></i><b>10.4</b> Model Performance</a></li>
+<li class="chapter" data-level="10.5" data-path="selecting-the-best-model.html"><a href="selecting-the-best-model.html#feature-evaluation"><i class="fa fa-check"></i><b>10.5</b> Feature Evaluation</a><ul>
+<li class="chapter" data-level="10.5.1" data-path="selecting-the-best-model.html"><a href="selecting-the-best-model.html#identifying-redundant-features"><i class="fa fa-check"></i><b>10.5.1</b> Identifying Redundant Features</a></li>
+<li class="chapter" data-level="10.5.2" data-path="selecting-the-best-model.html"><a href="selecting-the-best-model.html#highly-correlated-variables"><i class="fa fa-check"></i><b>10.5.2</b> Highly Correlated Variables</a></li>
+<li class="chapter" data-level="10.5.3" data-path="selecting-the-best-model.html"><a href="selecting-the-best-model.html#ranking-features"><i class="fa fa-check"></i><b>10.5.3</b> Ranking Features</a></li>
+<li class="chapter" data-level="10.5.4" data-path="selecting-the-best-model.html"><a href="selecting-the-best-model.html#feature-selection"><i class="fa fa-check"></i><b>10.5.4</b> Feature Selection</a></li>
+<li class="chapter" data-level="10.5.5" data-path="selecting-the-best-model.html"><a href="selecting-the-best-model.html#recursive-feature-elimination"><i class="fa fa-check"></i><b>10.5.5</b> Recursive Feature Elimination</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="data-pre-processing.html"><a href="data-pre-processing.html"><i class="fa fa-check"></i><b>11</b> Data Pre Processing</a><ul>
+<li class="chapter" data-level="11.1" data-path="data-pre-processing.html"><a href="data-pre-processing.html#types-of-pre-processing"><i class="fa fa-check"></i><b>11.1</b> Types of Pre Processing</a></li>
+<li class="chapter" data-level="11.2" data-path="data-pre-processing.html"><a href="data-pre-processing.html#missing-values"><i class="fa fa-check"></i><b>11.2</b> Missing Values</a><ul>
+<li class="chapter" data-level="11.2.1" data-path="data-pre-processing.html"><a href="data-pre-processing.html#finding-rows-with-missing-data"><i class="fa fa-check"></i><b>11.2.1</b> Finding Rows with Missing Data</a></li>
+<li class="chapter" data-level="11.2.2" data-path="data-pre-processing.html"><a href="data-pre-processing.html#finding-columns-with-missing-data"><i class="fa fa-check"></i><b>11.2.2</b> Finding Columns With Missing Data</a></li>
+<li class="chapter" data-level="11.2.3" data-path="data-pre-processing.html"><a href="data-pre-processing.html#use-the-median-approach"><i class="fa fa-check"></i><b>11.2.3</b> Use the Median Approach</a></li>
+<li class="chapter" data-level="11.2.4" data-path="data-pre-processing.html"><a href="data-pre-processing.html#package-based-approach"><i class="fa fa-check"></i><b>11.2.4</b> Package-based Approach</a></li>
+<li class="chapter" data-level="11.2.5" data-path="data-pre-processing.html"><a href="data-pre-processing.html#using-caret-1"><i class="fa fa-check"></i><b>11.2.5</b> Using caret</a></li>
+</ul></li>
+<li class="chapter" data-level="11.3" data-path="data-pre-processing.html"><a href="data-pre-processing.html#scaling"><i class="fa fa-check"></i><b>11.3</b> Scaling</a><ul>
+<li class="chapter" data-level="11.3.1" data-path="data-pre-processing.html"><a href="data-pre-processing.html#methods-that-benefit-from-scaling"><i class="fa fa-check"></i><b>11.3.1</b> Methods That Benefit From Scaling</a></li>
+<li class="chapter" data-level="11.3.2" data-path="data-pre-processing.html"><a href="data-pre-processing.html#methods-that-do-not-require-scaling"><i class="fa fa-check"></i><b>11.3.2</b> Methods That Do Not Require Scaling</a></li>
+<li class="chapter" data-level="11.3.3" data-path="data-pre-processing.html"><a href="data-pre-processing.html#how-to-scale"><i class="fa fa-check"></i><b>11.3.3</b> How To Scale</a></li>
+<li class="chapter" data-level="11.3.4" data-path="data-pre-processing.html"><a href="data-pre-processing.html#order-of-processing"><i class="fa fa-check"></i><b>11.3.4</b> Order of Processing</a></li>
+</ul></li>
+<li class="chapter" data-level="11.4" data-path="data-pre-processing.html"><a href="data-pre-processing.html#low-variance-variables"><i class="fa fa-check"></i><b>11.4</b> Low Variance Variables</a></li>
+<li class="chapter" data-level="11.5" data-path="data-pre-processing.html"><a href="data-pre-processing.html#pca---principal-components-analysis"><i class="fa fa-check"></i><b>11.5</b> PCA - Principal Components Analysis</a><ul>
+<li class="chapter" data-level="11.5.1" data-path="data-pre-processing.html"><a href="data-pre-processing.html#identify-the-factors"><i class="fa fa-check"></i><b>11.5.1</b> Identify The Factors</a></li>
+<li class="chapter" data-level="11.5.2" data-path="data-pre-processing.html"><a href="data-pre-processing.html#check-for-high-correlations"><i class="fa fa-check"></i><b>11.5.2</b> Check For High Correlations</a></li>
+<li class="chapter" data-level="11.5.3" data-path="data-pre-processing.html"><a href="data-pre-processing.html#so-why-use-pca"><i class="fa fa-check"></i><b>11.5.3</b> So Why Use PCA ?</a></li>
+<li class="chapter" data-level="11.5.4" data-path="data-pre-processing.html"><a href="data-pre-processing.html#check-the-biplot"><i class="fa fa-check"></i><b>11.5.4</b> Check The BiPlot</a></li>
+<li class="chapter" data-level="11.5.5" data-path="data-pre-processing.html"><a href="data-pre-processing.html#check-the-screeplot"><i class="fa fa-check"></i><b>11.5.5</b> Check The ScreePlot</a></li>
+<li class="chapter" data-level="11.5.6" data-path="data-pre-processing.html"><a href="data-pre-processing.html#use-the-transformed-data"><i class="fa fa-check"></i><b>11.5.6</b> Use The Transformed Data</a></li>
+<li class="chapter" data-level="11.5.7" data-path="data-pre-processing.html"><a href="data-pre-processing.html#pls"><i class="fa fa-check"></i><b>11.5.7</b> PLS</a></li>
+<li class="chapter" data-level="11.5.8" data-path="data-pre-processing.html"><a href="data-pre-processing.html#summary-1"><i class="fa fa-check"></i><b>11.5.8</b> Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="11.6" data-path="data-pre-processing.html"><a href="data-pre-processing.html#order-of-pre-processing"><i class="fa fa-check"></i><b>11.6</b> Order of Pre-Processing</a></li>
+<li class="chapter" data-level="11.7" data-path="data-pre-processing.html"><a href="data-pre-processing.html#handling-categories"><i class="fa fa-check"></i><b>11.7</b> Handling Categories</a><ul>
+<li class="chapter" data-level="11.7.1" data-path="data-pre-processing.html"><a href="data-pre-processing.html#examples"><i class="fa fa-check"></i><b>11.7.1</b> Examples</a></li>
+<li class="chapter" data-level="11.7.2" data-path="data-pre-processing.html"><a href="data-pre-processing.html#admissions-data"><i class="fa fa-check"></i><b>11.7.2</b> Admissions Data</a></li>
+<li class="chapter" data-level="11.7.3" data-path="data-pre-processing.html"><a href="data-pre-processing.html#is-rank-a-category"><i class="fa fa-check"></i><b>11.7.3</b> Is Rank A Category ?</a></li>
+<li class="chapter" data-level="11.7.4" data-path="data-pre-processing.html"><a href="data-pre-processing.html#relationship-to-one-hot-encoding"><i class="fa fa-check"></i><b>11.7.4</b> Relationship To One Hot Encoding</a></li>
+</ul></li>
+<li class="chapter" data-level="11.8" data-path="data-pre-processing.html"><a href="data-pre-processing.html#binning"><i class="fa fa-check"></i><b>11.8</b> Binning</a></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="using-external-ml-frameworks.html"><a href="using-external-ml-frameworks.html"><i class="fa fa-check"></i><b>12</b> Using External ML Frameworks</a><ul>
+<li class="chapter" data-level="12.1" data-path="using-external-ml-frameworks.html"><a href="using-external-ml-frameworks.html#using-h2o"><i class="fa fa-check"></i><b>12.1</b> Using h2o</a></li>
+<li class="chapter" data-level="12.2" data-path="using-external-ml-frameworks.html"><a href="using-external-ml-frameworks.html#create-some-h20-models"><i class="fa fa-check"></i><b>12.2</b> Create Some h20 Models</a></li>
+<li class="chapter" data-level="12.3" data-path="using-external-ml-frameworks.html"><a href="using-external-ml-frameworks.html#saving-a-model"><i class="fa fa-check"></i><b>12.3</b> Saving A Model</a></li>
+<li class="chapter" data-level="12.4" data-path="using-external-ml-frameworks.html"><a href="using-external-ml-frameworks.html#using-the-h2o-auto-ml-feature"><i class="fa fa-check"></i><b>12.4</b> Using The h2o Auto ML Feature</a></li>
+<li class="chapter" data-level="12.5" data-path="using-external-ml-frameworks.html"><a href="using-external-ml-frameworks.html#launching-a-job"><i class="fa fa-check"></i><b>12.5</b> Launching a Job</a></li>
+</ul></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Predictive Learning in R</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="comparing-different-methods" class="section level1">
+<h1><span class="header-section-number">Chapter 9</span> Comparing Different Methods</h1>
+<p>We could look at random forests to see how they perfom. It also provides an opportunity to introduce the concept of hyperparameters which are important to consider since many ML methods will use them. Many people are surprised to learn that random Forests (or even a single Decision Tree) can be used to predict a numeric outcome, but they can be. The advantages of using random Forests include the following:</p>
+<pre><code>- easy to use
+- resistant to overfitting
+- accurate use for non linear models</code></pre>
+<p>Some problems include:</p>
+<pre><code>- the rf function requires setting hyperparameters 
+- adjustment of hyperparameters can be specific to the data set
+- default vlaues will requie adjustment or &quot;tuning&quot;</code></pre>
+<p>For now, let’s set up a “shoot out” between the <strong>lm</strong> function and the <strong>rf</strong> function to see if the latter yields a lower RMSE than the former (or vice versa). You will do a lot of this when building different models. To do this would involve the normal steps of creating a train / test pair upon which to train and then test the model</p>
+<div class="sourceCode" id="cb407"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb407-1" data-line-number="1">control &lt;-<span class="st"> </span><span class="kw">trainControl</span>(<span class="dt">method =</span> <span class="st">&quot;cv&quot;</span>, <span class="dt">number =</span> <span class="dv">5</span>)</a>
+<a class="sourceLine" id="cb407-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb407-3" data-line-number="3">new_idx &lt;-<span class="st"> </span><span class="kw">createDataPartition</span>(mtcars<span class="op">$</span>mpg,<span class="dt">p=</span>.<span class="dv">80</span>,<span class="dt">list=</span><span class="ot">FALSE</span>)</a>
+<a class="sourceLine" id="cb407-4" data-line-number="4">new_train &lt;-<span class="st"> </span>mtcars[new_idx,]</a>
+<a class="sourceLine" id="cb407-5" data-line-number="5">new_test  &lt;-<span class="st"> </span>mtcars[<span class="op">-</span>new_idx,]</a>
+<a class="sourceLine" id="cb407-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb407-7" data-line-number="7"><span class="kw">set.seed</span>(<span class="dv">124</span>)</a>
+<a class="sourceLine" id="cb407-8" data-line-number="8">caret_lm &lt;-<span class="st"> </span><span class="kw">train</span>(mpg <span class="op">~</span><span class="st"> </span>.,</a>
+<a class="sourceLine" id="cb407-9" data-line-number="9">                  <span class="dt">data =</span> new_train,</a>
+<a class="sourceLine" id="cb407-10" data-line-number="10">                  <span class="dt">method =</span> <span class="st">&quot;lm&quot;</span>,</a>
+<a class="sourceLine" id="cb407-11" data-line-number="11">                  <span class="dt">trControl =</span> control)</a>
+<a class="sourceLine" id="cb407-12" data-line-number="12"></a>
+<a class="sourceLine" id="cb407-13" data-line-number="13">caret_lm<span class="op">$</span>results</a></code></pre></div>
+<pre><code>##   intercept     RMSE  Rsquared      MAE   RMSESD RsquaredSD    MAESD
+## 1      TRUE 4.948625 0.6866484 3.933441 1.403813  0.1635872 1.020206</code></pre>
+<div class="sourceCode" id="cb409"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb409-1" data-line-number="1">Metrics<span class="op">::</span><span class="kw">rmse</span>(new_test<span class="op">$</span>mpg, <span class="kw">predict</span>(caret_lm,new_test))</a></code></pre></div>
+<pre><code>## [1] 3.473319</code></pre>
+<p>The results of the <strong>lm</strong> function are pretty straightforward as are the predictions. So let’s see what the <strong>randomForest</strong> function will give us with the same data. Because we are using caret, all we have to is sub in the desired method which is <strong>rf</strong>.</p>
+<div class="sourceCode" id="cb411"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb411-1" data-line-number="1">control &lt;-<span class="st"> </span><span class="kw">trainControl</span>(<span class="dt">method =</span> <span class="st">&quot;cv&quot;</span>, <span class="dt">number =</span> <span class="dv">5</span>)</a>
+<a class="sourceLine" id="cb411-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb411-3" data-line-number="3"><span class="kw">set.seed</span>(<span class="dv">124</span>)</a>
+<a class="sourceLine" id="cb411-4" data-line-number="4">caret_rf &lt;-<span class="st"> </span><span class="kw">train</span>(mpg <span class="op">~</span><span class="st"> </span>.,</a>
+<a class="sourceLine" id="cb411-5" data-line-number="5">                  <span class="dt">data =</span> new_train,</a>
+<a class="sourceLine" id="cb411-6" data-line-number="6">                  <span class="dt">method =</span> <span class="st">&quot;rf&quot;</span>,</a>
+<a class="sourceLine" id="cb411-7" data-line-number="7">                  <span class="dt">trControl =</span> control)</a>
+<a class="sourceLine" id="cb411-8" data-line-number="8"></a>
+<a class="sourceLine" id="cb411-9" data-line-number="9">caret_ranger<span class="op">$</span>results</a></code></pre></div>
+<pre><code>##   mtry splitrule min.node.size     RMSE  Rsquared      MAE    RMSESD RsquaredSD     MAESD
+## 1    2  variance             4 2.771070 0.7814188 2.237454 0.5878971 0.09689102 0.4597547
+## 2    4  variance             4 2.705529 0.7891168 2.176160 0.5938948 0.09411764 0.4602414
+## 3    6  variance             4 2.700825 0.7856295 2.163197 0.5997924 0.09424665 0.4671776</code></pre>
+<div class="sourceCode" id="cb413"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb413-1" data-line-number="1">Metrics<span class="op">::</span><span class="kw">rmse</span>(new_test<span class="op">$</span>mpg, <span class="kw">predict</span>(caret_rf,new_test))</a></code></pre></div>
+<pre><code>## [1] 2.793816</code></pre>
+<p>So the Random Forest approach, in this case, produces a lower out of sample RMSE estimate for the test data frame. The larger question relates to why there is more information in the output for the rf model ? What is the <strong>mtry</strong> argument and why does it take on three different values during the execution of the function ?</p>
+<div class="sourceCode" id="cb415"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb415-1" data-line-number="1">caret_rf</a></code></pre></div>
+<pre><code>## Random Forest 
+## 
+## 28 samples
+## 10 predictors
+## 
+## No pre-processing
+## Resampling: Cross-Validated (5 fold) 
+## Summary of sample sizes: 23, 22, 23, 21, 23 
+## Resampling results across tuning parameters:
+## 
+##   mtry  RMSE      Rsquared   MAE     
+##    2    2.826170  0.8989416  2.207659
+##    6    2.783165  0.9046388  2.165585
+##   10    2.864304  0.8934449  2.259031
+## 
+## RMSE was used to select the optimal model using the smallest value.
+## The final value used for the model was mtry = 6.</code></pre>
+<p>The <strong>mtry</strong> argument is a <strong>hyperparameter</strong> which represents information that is supplied in the form of an argument prior to the call to the function. These parameters might not be something one can intelligently set without some experimentation. Here is some more specific information.</p>
+<div id="parameters-vs-hyperparameters-1" class="section level2">
+<h2><span class="header-section-number">9.1</span> Parameters vs Hyperparameters</h2>
+<p><strong>Model parameters</strong> are things that are generated as part of the modeling process. They are the product or result of model fitting. These might be things like slope and intercept from a linear model - or coefficients.</p>
+<p><strong>Hyperparameters</strong> have default values for various arguments but this does not mean that the defaults are appropriate for all cases.</p>
+<p>So with <strong>rf</strong> there is a hyperarameter called <strong>mtry</strong> that influences the outcome but is not necessarily something that we know how to optimally set. The <strong>mtry</strong> value is the number of variables that are randomly sampled at each tree split.</p>
+<p>To put this into perspective, if we had called the random Forest function without using caret we would have to supply a value for <strong>mtry</strong> or be prepared to accept whatever the default value is.</p>
+<div class="sourceCode" id="cb417"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb417-1" data-line-number="1"><span class="kw">library</span>(randomForest)</a>
+<a class="sourceLine" id="cb417-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb417-3" data-line-number="3">non_caret_rf &lt;-<span class="st"> </span><span class="kw">randomForest</span>(mpg<span class="op">~</span>.,</a>
+<a class="sourceLine" id="cb417-4" data-line-number="4">                             <span class="dt">data =</span> new_train,</a>
+<a class="sourceLine" id="cb417-5" data-line-number="5">                             <span class="dt">mtry =</span> <span class="dv">3</span>,      <span class="co"># This is the default </span></a>
+<a class="sourceLine" id="cb417-6" data-line-number="6">                             <span class="dt">importance =</span> <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb417-7" data-line-number="7"></a>
+<a class="sourceLine" id="cb417-8" data-line-number="8"><span class="co"># Check out the RMSE of the preditcions </span></a>
+<a class="sourceLine" id="cb417-9" data-line-number="9">Metrics<span class="op">::</span><span class="kw">rmse</span>(new_test<span class="op">$</span>mpg,<span class="kw">predict</span>(non_caret_rf,new_test))</a></code></pre></div>
+<pre><code>## [1] 2.995037</code></pre>
+<p>This provides information corresponding to one value of <strong>mtry</strong> - in this case 3. To get an idea about how the model performs with other values of <strong>mtry</strong> we could write a function to accept this value as an argument. Our function will return the RMSE corresponding to the supplied value of <strong>mtry</strong>.</p>
+<div class="sourceCode" id="cb419"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb419-1" data-line-number="1">make_mtcars_rf &lt;-<span class="st"> </span><span class="cf">function</span>(<span class="dt">mtry=</span><span class="dv">3</span>) {</a>
+<a class="sourceLine" id="cb419-2" data-line-number="2">    my_rf &lt;-<span class="st"> </span><span class="kw">randomForest</span>(mpg<span class="op">~</span>.,</a>
+<a class="sourceLine" id="cb419-3" data-line-number="3">                          <span class="dt">data =</span> new_train,</a>
+<a class="sourceLine" id="cb419-4" data-line-number="4">                          <span class="dt">mtry =</span> mtry,</a>
+<a class="sourceLine" id="cb419-5" data-line-number="5">                          <span class="dt">importance =</span> <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb419-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb419-7" data-line-number="7"><span class="co"># Check out the predictions</span></a>
+<a class="sourceLine" id="cb419-8" data-line-number="8">    rmse_rf &lt;-<span class="st"> </span>Metrics<span class="op">::</span><span class="kw">rmse</span>(new_test<span class="op">$</span>mpg,<span class="kw">predict</span>(my_rf,new_test))</a>
+<a class="sourceLine" id="cb419-9" data-line-number="9"></a>
+<a class="sourceLine" id="cb419-10" data-line-number="10">    <span class="kw">return</span>(rmse_rf)</a>
+<a class="sourceLine" id="cb419-11" data-line-number="11">}</a></code></pre></div>
+<p>So now, the following example will call the <strong>randomForest</strong> package 5 times. Starting with the first iteration, the value of <strong>mtry</strong> will be 3, the next time it will be 4, and so on until the last iteration where it will be 8. This is just an experiment to see if varying <strong>mtry</strong> will help minimize the RMSE of our model.</p>
+<p>We also have to be careful not to pick incorrect values for <strong>mtry</strong> so reading the help page for the <strong>randomForest</strong> package would be helpful. On the other hand, since <strong>mtry</strong> represents the number of features / variables to sample at each potential split, we know that it cannot practically exceed the total number of features in the data frame.</p>
+<div class="sourceCode" id="cb420"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb420-1" data-line-number="1">total_rmse &lt;-<span class="st"> </span><span class="kw">sapply</span>(<span class="dv">3</span><span class="op">:</span><span class="dv">9</span>,make_mtcars_rf) </a>
+<a class="sourceLine" id="cb420-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb420-3" data-line-number="3"><span class="co"># Get the mean rmse</span></a>
+<a class="sourceLine" id="cb420-4" data-line-number="4"><span class="kw">mean</span>(total_rmse)</a></code></pre></div>
+<pre><code>## [1] 2.892694</code></pre>
+<p>We could even create a plot of this information to simplify the selection of <strong>mtry</strong> corresponding to the lowest RMSE.</p>
+<div class="sourceCode" id="cb422"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb422-1" data-line-number="1"><span class="kw">plot</span>(<span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(total_rmse),total_rmse,<span class="dt">type=</span><span class="st">&quot;b&quot;</span>,</a>
+<a class="sourceLine" id="cb422-2" data-line-number="2">     <span class="dt">xlab =</span> <span class="st">&quot;Value of mtry&quot;</span>, </a>
+<a class="sourceLine" id="cb422-3" data-line-number="3">     <span class="dt">ylab =</span> <span class="st">&quot;RMSE&quot;</span>,</a>
+<a class="sourceLine" id="cb422-4" data-line-number="4">     <span class="dt">main =</span> <span class="st">&quot;How RMSE varies with mtry&quot;</span>)</a>
+<a class="sourceLine" id="cb422-5" data-line-number="5"><span class="kw">grid</span>()</a></code></pre></div>
+<p><img src="biosml_files/figure-html/unnamed-chunk-59-1.png" width="672" /></p>
+<p>While this is fine what would happen if there were more than one hyperparameter. If we look closer at the documentation for randomForest then we see that there is a hyperparameter called <strong>ntree</strong> which is set by default to a value of 500. We could build that into our above function to see how that might impact RMSE performance. For example, we’ll work through values of <strong>mtry</strong> from 2,3,..8. For each of those values of mtry we will use values of <strong>ntree</strong> ranging from 300, 400, to 500. Let’s go ahead and do that. So let’s build a “grid” of values.</p>
+<div class="sourceCode" id="cb423"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb423-1" data-line-number="1">train_grid &lt;-<span class="st"> </span><span class="kw">expand.grid</span>(<span class="dt">mtry=</span><span class="kw">seq</span>(<span class="dv">2</span>,<span class="dv">8</span>,<span class="dv">1</span>),</a>
+<a class="sourceLine" id="cb423-2" data-line-number="2">                          <span class="dt">numoftrees=</span><span class="kw">c</span>(<span class="dv">300</span>,<span class="dv">400</span>,<span class="dv">500</span>))</a>
+<a class="sourceLine" id="cb423-3" data-line-number="3">train_grid</a></code></pre></div>
+<pre><code>##    mtry numoftrees
+## 1     2        300
+## 2     3        300
+## 3     4        300
+## 4     5        300
+## 5     6        300
+## 6     7        300
+## 7     8        300
+## 8     2        400
+## 9     3        400
+## 10    4        400
+## 11    5        400
+## 12    6        400
+## 13    7        400
+## 14    8        400
+## 15    2        500
+## 16    3        500
+## 17    4        500
+## 18    5        500
+## 19    6        500
+## 20    7        500
+## 21    8        500</code></pre>
+<p>We need to rewrite our function to handle this “training grid”. It’s not terribly difficult, just a bit tedious.</p>
+<div class="sourceCode" id="cb425"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb425-1" data-line-number="1">make_mtcars_rf &lt;-<span class="st"> </span><span class="cf">function</span>(<span class="dt">grid=</span>train_grid) {</a>
+<a class="sourceLine" id="cb425-2" data-line-number="2">    retlist &lt;-<span class="st"> </span><span class="kw">data.frame</span>()</a>
+<a class="sourceLine" id="cb425-3" data-line-number="3">    <span class="cf">for</span> (ii <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(grid)) {</a>
+<a class="sourceLine" id="cb425-4" data-line-number="4">      my_rf &lt;-<span class="st"> </span><span class="kw">randomForest</span>(mpg<span class="op">~</span>.,</a>
+<a class="sourceLine" id="cb425-5" data-line-number="5">                          <span class="dt">data =</span> new_train,</a>
+<a class="sourceLine" id="cb425-6" data-line-number="6">                          <span class="dt">mtry =</span> grid[ii,]<span class="op">$</span>mtry,</a>
+<a class="sourceLine" id="cb425-7" data-line-number="7">                          <span class="dt">ntree =</span> grid[ii,]<span class="op">$</span>numoftrees,</a>
+<a class="sourceLine" id="cb425-8" data-line-number="8">                          <span class="dt">importance =</span> <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb425-9" data-line-number="9">      rmse_rf &lt;-<span class="st"> </span>Metrics<span class="op">::</span><span class="kw">rmse</span>(new_test<span class="op">$</span>mpg,<span class="kw">predict</span>(my_rf,new_test))</a>
+<a class="sourceLine" id="cb425-10" data-line-number="10">      retlist &lt;-<span class="st"> </span><span class="kw">rbind</span>(retlist,<span class="kw">c</span>(grid[ii,]<span class="op">$</span>mtry,grid[ii,]<span class="op">$</span>numoftrees,</a>
+<a class="sourceLine" id="cb425-11" data-line-number="11">                          rmse_rf))</a>
+<a class="sourceLine" id="cb425-12" data-line-number="12">      <span class="kw">names</span>(retlist) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;mtry&quot;</span>,<span class="st">&quot;ntree&quot;</span>,<span class="st">&quot;rmse&quot;</span>)</a>
+<a class="sourceLine" id="cb425-13" data-line-number="13">     }</a>
+<a class="sourceLine" id="cb425-14" data-line-number="14">    </a>
+<a class="sourceLine" id="cb425-15" data-line-number="15"></a>
+<a class="sourceLine" id="cb425-16" data-line-number="16"><span class="co"># Check out the predictions</span></a>
+<a class="sourceLine" id="cb425-17" data-line-number="17">    </a>
+<a class="sourceLine" id="cb425-18" data-line-number="18">    <span class="kw">return</span>(retlist)</a>
+<a class="sourceLine" id="cb425-19" data-line-number="19">}</a></code></pre></div>
+<p>Now we’ll call this function and plot the output. It appears that values of mtry correspinding to the lowest RMSE range from 4,5 to 6 depending on the number of trees. The good news is that we now have a function that we could use with other training grids.</p>
+<div class="sourceCode" id="cb426"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb426-1" data-line-number="1"><span class="kw">make_mtcars_rf</span>() <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb426-2" data-line-number="2"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x=</span>mtry,<span class="dt">y=</span>rmse)) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb426-3" data-line-number="3"><span class="st">  </span><span class="kw">geom_line</span>() <span class="op">+</span><span class="st"> </span><span class="kw">facet_wrap</span>(<span class="op">~</span>ntree) <span class="op">+</span></a>
+<a class="sourceLine" id="cb426-4" data-line-number="4"><span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">&quot;Hyperparameter Experiment&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">theme_bw</span>()</a></code></pre></div>
+<p><img src="biosml_files/figure-html/trnframerf-1.png" width="672" /></p>
+<p>The above is an example of what we would have to do if we didn’t have something like caret to help us try out different values of <strong>mtry</strong> or other parameters. As we saw from our earlier work, the model <strong>caret_rf</strong> tried three different values of the <strong>mtry</strong> hyperparameter without us even asking for it. It event tells us that the best value for <strong>mtry</strong> was 6 which corresponds to an RMSE of 2.37.</p>
+<div class="sourceCode" id="cb427"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb427-1" data-line-number="1">caret_rf</a></code></pre></div>
+<pre><code>## Random Forest 
+## 
+## 28 samples
+## 10 predictors
+## 
+## No pre-processing
+## Resampling: Cross-Validated (5 fold) 
+## Summary of sample sizes: 23, 22, 23, 21, 23 
+## Resampling results across tuning parameters:
+## 
+##   mtry  RMSE      Rsquared   MAE     
+##    2    2.826170  0.8989416  2.207659
+##    6    2.783165  0.9046388  2.165585
+##   10    2.864304  0.8934449  2.259031
+## 
+## RMSE was used to select the optimal model using the smallest value.
+## The final value used for the model was mtry = 6.</code></pre>
+<p>As a matter of fact we can plot this model with not a lot of effort and it will show us something interesting. In particular, we now see that using values less than 6 predictors / columns / features results in lower RMSE. If we use more, than the RMSE goes up. This is the power of methods that use hyperparamters. If we move through a number of values for the <strong>mtry</strong> then perhaps we can find the best value to get the best result.</p>
+<div class="sourceCode" id="cb429"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb429-1" data-line-number="1"><span class="kw">plot</span>(caret_rf)</a></code></pre></div>
+<p><img src="biosml_files/figure-html/unnamed-chunk-60-1.png" width="672" /></p>
+<p>Telling <strong>caret</strong> to use more values of <strong>mtry</strong> is possible. This will explicitly try all values from 1 - 9 inclusive. Note that the model gets built for each value of <strong>mtry</strong>. This causes the model building process to take longer than it normally would.</p>
+<div class="sourceCode" id="cb430"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb430-1" data-line-number="1">caret_rf &lt;-<span class="st"> </span><span class="kw">train</span>(mpg <span class="op">~</span><span class="st"> </span>.,</a>
+<a class="sourceLine" id="cb430-2" data-line-number="2">                  <span class="dt">data =</span> new_train,</a>
+<a class="sourceLine" id="cb430-3" data-line-number="3">                  <span class="dt">method =</span> <span class="st">&quot;rf&quot;</span>,</a>
+<a class="sourceLine" id="cb430-4" data-line-number="4">                  <span class="dt">tuneLength =</span> <span class="dv">9</span>)</a>
+<a class="sourceLine" id="cb430-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb430-6" data-line-number="6">caret_rf<span class="op">$</span>results</a></code></pre></div>
+<pre><code>##   mtry     RMSE  Rsquared      MAE    RMSESD RsquaredSD     MAESD
+## 1    2 2.645007 0.8173787 2.127978 0.5909299 0.09028811 0.5270631
+## 2    3 2.608764 0.8202262 2.067913 0.5741900 0.08894928 0.5149476
+## 3    4 2.577297 0.8234613 2.024369 0.5820523 0.09098721 0.5292862
+## 4    5 2.583019 0.8221738 2.032098 0.5806554 0.09222528 0.5258939
+## 5    6 2.621949 0.8166474 2.045854 0.5681828 0.09078944 0.5181458
+## 6    7 2.621536 0.8163281 2.058502 0.5792789 0.09306434 0.5151865
+## 7    8 2.633233 0.8131510 2.058988 0.5763685 0.09231452 0.5247132
+## 8    9 2.669532 0.8085292 2.085607 0.5886447 0.09395219 0.5261378
+## 9   10 2.693234 0.8043718 2.107377 0.5962539 0.09290693 0.5330753</code></pre>
+<div class="sourceCode" id="cb432"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb432-1" data-line-number="1">Metrics<span class="op">::</span><span class="kw">rmse</span>(new_test<span class="op">$</span>mpg, <span class="kw">predict</span>(caret_rf,new_test))</a></code></pre></div>
+<pre><code>## [1] 2.955549</code></pre>
+<p>It looks like a value of 4 will produce the lowest value for RMSE.</p>
+<div class="sourceCode" id="cb434"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb434-1" data-line-number="1"><span class="kw">plot</span>(caret_rf)</a></code></pre></div>
+<p><img src="biosml_files/figure-html/plotcaretrf-1.png" width="672" /></p>
+</div>
+<div id="hyperparameter-tuning" class="section level2">
+<h2><span class="header-section-number">9.2</span> Hyperparameter Tuning</h2>
+<p>The process of finding the “right” values for these parameters is generally referred to as “hyperparameter tuning”. Different values are supplied for each invocation of a method (as we did in the above example) to see the effect on the model. We might do this many times to arrive at the optimal parameter set to produce a model that offers the “best” explanatory and predictive power.</p>
+<p>Just to review - things like coefficients and residuals are parameters that are generated by a call to the <strong>lm</strong> function. They don’t actually exist until the function does some work. The <strong>hyperparameters</strong> are specific to whatever algorithm (and supporting R function) you are using. Concepts such as coefficients and intercept, however, are parameters that would be generated in this case by lm.</p>
+<p>More generally, what if we wanted to use other functions to do some predicting ? You can check <a href="https://topepo.github.io/caret/available-models.html">this page</a> for a list of caret supported methods along with any hyperparamters available for tuning. Obviously, if you know the underlying method you can refer directly to the help page for it.</p>
+<div id="multiple-hyperparameters" class="section level3">
+<h3><span class="header-section-number">9.2.1</span> Multiple Hyperparameters ?</h3>
+<p>Let’s look at another method for random forests such as the <strong>ranger</strong> function which builds trees very rapidly. We can easily call it via the <strong>train</strong> function. If you consult the reference manual for the caret implementation of <strong>ranger</strong> you will see that it supports three hyperparameters: <strong>mtry, splitrule</strong>, and <strong>min.node.size</strong>.</p>
+<div class="sourceCode" id="cb435"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb435-1" data-line-number="1">control &lt;-<span class="st"> </span><span class="kw">trainControl</span>(<span class="dt">method=</span><span class="st">&quot;cv&quot;</span>,<span class="dt">number=</span><span class="dv">5</span>)</a>
+<a class="sourceLine" id="cb435-2" data-line-number="2">caret_ranger &lt;-<span class="st"> </span><span class="kw">train</span>(mpg <span class="op">~</span><span class="st"> </span>.,</a>
+<a class="sourceLine" id="cb435-3" data-line-number="3">                      <span class="dt">data =</span> new_train,</a>
+<a class="sourceLine" id="cb435-4" data-line-number="4">                      <span class="dt">method =</span> <span class="st">&quot;ranger&quot;</span>,</a>
+<a class="sourceLine" id="cb435-5" data-line-number="5">                      <span class="dt">trControl=</span>control)</a>
+<a class="sourceLine" id="cb435-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb435-7" data-line-number="7">caret_ranger<span class="op">$</span>results</a></code></pre></div>
+<pre><code>##   mtry min.node.size  splitrule     RMSE  Rsquared      MAE    RMSESD RsquaredSD     MAESD
+## 1    2             5   variance 2.384264 0.8760227 1.980939 0.7787123 0.09721958 0.6726328
+## 2    2             5 extratrees 2.516712 0.8644741 2.028404 0.6539186 0.06120217 0.5130985
+## 3    6             5   variance 2.248722 0.8675506 1.827276 0.9117314 0.12298558 0.7412615
+## 4    6             5 extratrees 2.377334 0.8743410 1.946977 0.6681049 0.07227647 0.5408655
+## 5   10             5   variance 2.313165 0.8616089 1.871325 1.0109850 0.13773205 0.7672811
+## 6   10             5 extratrees 2.329986 0.8796529 1.910665 0.6766220 0.07399726 0.5196888</code></pre>
+<div class="sourceCode" id="cb437"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb437-1" data-line-number="1">Metrics<span class="op">::</span><span class="kw">rmse</span>(new_test<span class="op">$</span>mpg, <span class="kw">predict</span>(caret_ranger,new_test))</a></code></pre></div>
+<pre><code>## [1] 2.946618</code></pre>
+<p>And then we can plot these results to get a more intuitive view of the output. What we see is that it sweeps through three values of mtry. for each of those it tries out a split rule of “variance” or “extratrees” and min.node.size of 5.</p>
+<div class="sourceCode" id="cb439"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb439-1" data-line-number="1"><span class="kw">plot</span>(caret_ranger)</a></code></pre></div>
+<p><img src="biosml_files/figure-html/plotrangerinvoke-1.png" width="672" /></p>
+<div class="sourceCode" id="cb440"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb440-1" data-line-number="1">caret_ranger &lt;-<span class="st"> </span><span class="kw">train</span>(mpg <span class="op">~</span><span class="st"> </span>.,</a>
+<a class="sourceLine" id="cb440-2" data-line-number="2">                      <span class="dt">data =</span> new_train,</a>
+<a class="sourceLine" id="cb440-3" data-line-number="3">                      <span class="dt">method =</span> <span class="st">&quot;ranger&quot;</span>,</a>
+<a class="sourceLine" id="cb440-4" data-line-number="4">                      <span class="dt">tuneLength =</span> <span class="dv">5</span>)</a>
+<a class="sourceLine" id="cb440-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb440-6" data-line-number="6">caret_ranger<span class="op">$</span>results</a></code></pre></div>
+<pre><code>##    mtry min.node.size  splitrule     RMSE  Rsquared      MAE    RMSESD RsquaredSD     MAESD
+## 1     2             5   variance 2.872514 0.7917297 2.299322 0.5924495 0.09849207 0.5206793
+## 2     2             5 extratrees 2.889869 0.8044215 2.342883 0.5846857 0.08669229 0.5029955
+## 3     4             5   variance 2.786728 0.7912247 2.193220 0.5902493 0.10863209 0.5234092
+## 4     4             5 extratrees 2.815848 0.8054706 2.284514 0.5583265 0.08518280 0.4879355
+## 5     6             5   variance 2.777856 0.7887096 2.171504 0.5909759 0.10902703 0.5225292
+## 6     6             5 extratrees 2.807257 0.8012692 2.270943 0.5400794 0.08769328 0.4675717
+## 7     8             5   variance 2.772634 0.7898709 2.167048 0.6185698 0.10590349 0.5299540
+## 8     8             5 extratrees 2.786335 0.8030323 2.261831 0.5409484 0.08740137 0.4676607
+## 9    10             5   variance 2.793118 0.7849138 2.171663 0.6191209 0.10452620 0.5194213
+## 10   10             5 extratrees 2.781364 0.8019250 2.257157 0.5406294 0.08866044 0.4597346</code></pre>
+<div class="sourceCode" id="cb442"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb442-1" data-line-number="1">Metrics<span class="op">::</span><span class="kw">rmse</span>(new_test<span class="op">$</span>mpg, <span class="kw">predict</span>(caret_ranger,new_test))</a></code></pre></div>
+<pre><code>## [1] 2.725053</code></pre>
+<div class="sourceCode" id="cb444"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb444-1" data-line-number="1"><span class="kw">plot</span>(caret_ranger)</a></code></pre></div>
+<p><img src="biosml_files/figure-html/plotnewranger-1.png" width="672" /></p>
+</div>
+<div id="custom-tuning-grid" class="section level3">
+<h3><span class="header-section-number">9.2.2</span> Custom Tuning Grid</h3>
+<p>So it’s possible to go even deeper when tuning hyperparameters. We can create a custom tuning grid instead of letting caret pick the values. Of course, using <strong>tuneLength</strong> is fine but the custom tuning grid allows for finer grained control. It’s easy, all we need to do is to specify our own “tuneGrid” and then pass it to <strong>train</strong>.</p>
+<div class="sourceCode" id="cb445"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb445-1" data-line-number="1">MyGrid &lt;-<span class="st"> </span><span class="kw">data.frame</span>(</a>
+<a class="sourceLine" id="cb445-2" data-line-number="2">   <span class="dt">mtry =</span> <span class="kw">c</span>(<span class="dv">2</span>, <span class="dv">4</span>, <span class="dv">6</span>),</a>
+<a class="sourceLine" id="cb445-3" data-line-number="3">   <span class="dt">splitrule =</span> <span class="st">&quot;variance&quot;</span>,</a>
+<a class="sourceLine" id="cb445-4" data-line-number="4">   <span class="dt">min.node.size =</span> <span class="dv">4</span></a>
+<a class="sourceLine" id="cb445-5" data-line-number="5">)</a>
+<a class="sourceLine" id="cb445-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb445-7" data-line-number="7"><span class="co"># Now we supply it when calling train</span></a>
+<a class="sourceLine" id="cb445-8" data-line-number="8"></a>
+<a class="sourceLine" id="cb445-9" data-line-number="9">caret_ranger &lt;-<span class="st"> </span><span class="kw">train</span>(mpg <span class="op">~</span><span class="st"> </span>.,</a>
+<a class="sourceLine" id="cb445-10" data-line-number="10">                  <span class="dt">data =</span> new_train,</a>
+<a class="sourceLine" id="cb445-11" data-line-number="11">                  <span class="dt">method =</span> <span class="st">&quot;ranger&quot;</span>,</a>
+<a class="sourceLine" id="cb445-12" data-line-number="12">                  <span class="dt">tuneGrid =</span> MyGrid)</a>
+<a class="sourceLine" id="cb445-13" data-line-number="13"></a>
+<a class="sourceLine" id="cb445-14" data-line-number="14">caret_ranger<span class="op">$</span>results</a></code></pre></div>
+<pre><code>##   mtry splitrule min.node.size     RMSE  Rsquared      MAE    RMSESD RsquaredSD     MAESD
+## 1    2  variance             4 2.771070 0.7814188 2.237454 0.5878971 0.09689102 0.4597547
+## 2    4  variance             4 2.705529 0.7891168 2.176160 0.5938948 0.09411764 0.4602414
+## 3    6  variance             4 2.700825 0.7856295 2.163197 0.5997924 0.09424665 0.4671776</code></pre>
+<div class="sourceCode" id="cb447"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb447-1" data-line-number="1">Metrics<span class="op">::</span><span class="kw">rmse</span>(new_test<span class="op">$</span>mpg, <span class="kw">predict</span>(caret_ranger,new_test))</a></code></pre></div>
+<pre><code>## [1] 2.701966</code></pre>
+</div>
+</div>
+<div id="applied-to-classification" class="section level2">
+<h2><span class="header-section-number">9.3</span> Applied To Classification</h2>
+<p>We could extend this it deal with classification problems. We can adapt our randomForest function for use in predicting the Pima Indians diabetes outcome.</p>
+<div class="sourceCode" id="cb449"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb449-1" data-line-number="1"><span class="kw">library</span>(randomForest)</a>
+<a class="sourceLine" id="cb449-2" data-line-number="2"><span class="kw">library</span>(tidyverse)</a></code></pre></div>
+<div class="sourceCode" id="cb450"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb450-1" data-line-number="1">url &lt;-<span class="st"> &quot;https://raw.githubusercontent.com/steviep42/bios534_spring_2020/master/data/pima.csv&quot;</span></a>
+<a class="sourceLine" id="cb450-2" data-line-number="2">pm &lt;-<span class="st"> </span><span class="kw">read.csv</span>(url)</a></code></pre></div>
+<p>We’ll implement the train / test pair</p>
+<div class="sourceCode" id="cb451"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb451-1" data-line-number="1">idx &lt;-<span class="st"> </span><span class="kw">createDataPartition</span>(pm<span class="op">$</span>diabetes,<span class="dt">p=</span>.<span class="dv">8</span>,<span class="dt">list=</span><span class="ot">FALSE</span>)</a>
+<a class="sourceLine" id="cb451-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb451-3" data-line-number="3">rf_train &lt;-<span class="st"> </span>pm[ idx,]</a>
+<a class="sourceLine" id="cb451-4" data-line-number="4">rf_test  &lt;-<span class="st"> </span>pm[<span class="op">-</span>idx,]</a></code></pre></div>
+<p>Next, we’ll build the model using the randomForest method</p>
+<div class="sourceCode" id="cb452"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb452-1" data-line-number="1">rf_model &lt;-<span class="st"> </span><span class="kw">randomForest</span>(diabetes <span class="op">~</span><span class="st"> </span>.,</a>
+<a class="sourceLine" id="cb452-2" data-line-number="2">                         <span class="dt">data =</span> rf_train)</a></code></pre></div>
+<p>Then we’ll do the usual things of making some predictions and then look at an Accuracy and an AUC.</p>
+<div class="sourceCode" id="cb453"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb453-1" data-line-number="1"><span class="co"># Get the raw probabilities</span></a>
+<a class="sourceLine" id="cb453-2" data-line-number="2">rf_probabilities &lt;-<span class="st"> </span><span class="kw">predict</span>(rf_model,rf_test,<span class="dt">type=</span><span class="st">&quot;prob&quot;</span>)</a></code></pre></div>
+<p>Compute the AUC:</p>
+<div class="sourceCode" id="cb454"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb454-1" data-line-number="1">caTools<span class="op">::</span><span class="kw">colAUC</span>(rf_probabilities[,<span class="dv">1</span>],rf_test<span class="op">$</span>diabetes)</a></code></pre></div>
+<pre><code>##                  [,1]
+## neg vs. pos 0.8357547</code></pre>
+<p>Well, that was nice but how would we work in the search grid approach to see how this might be impacted by varying the hyper parameters ? We could start by picking parameters at random - as long as they are valid. mtry needs to be from 2 up to some number of features in the data set (this varies with the method) The number of trees should be somewhere between 100 and 1600.</p>
+<div class="sourceCode" id="cb456"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb456-1" data-line-number="1"><span class="kw">set.seed</span>(<span class="dv">12</span>)</a>
+<a class="sourceLine" id="cb456-2" data-line-number="2">mtry =<span class="st"> </span><span class="kw">sample</span>(<span class="dv">3</span><span class="op">:</span><span class="dv">8</span>,<span class="dv">5</span>)</a>
+<a class="sourceLine" id="cb456-3" data-line-number="3">ntrees =<span class="st"> </span><span class="kw">sample</span>(<span class="dv">200</span><span class="op">:</span><span class="dv">1200</span>,<span class="dv">5</span>)</a>
+<a class="sourceLine" id="cb456-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb456-5" data-line-number="5">my_grid &lt;-<span class="st"> </span><span class="kw">data.frame</span>()</a>
+<a class="sourceLine" id="cb456-6" data-line-number="6"><span class="cf">for</span> (ii <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(mtry)) {</a>
+<a class="sourceLine" id="cb456-7" data-line-number="7">  <span class="cf">for</span> (jj <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(ntrees)) {</a>
+<a class="sourceLine" id="cb456-8" data-line-number="8">    my_grid &lt;-<span class="st"> </span><span class="kw">rbind</span>(my_grid,<span class="kw">c</span>(mtry[ii],ntrees[jj]))</a>
+<a class="sourceLine" id="cb456-9" data-line-number="9">  }</a>
+<a class="sourceLine" id="cb456-10" data-line-number="10">}</a>
+<a class="sourceLine" id="cb456-11" data-line-number="11"><span class="kw">names</span>(my_grid) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;mtry&quot;</span>,<span class="st">&quot;numoftrees&quot;</span>)</a>
+<a class="sourceLine" id="cb456-12" data-line-number="12">my_grid</a></code></pre></div>
+<pre><code>##    mtry numoftrees
+## 1     4        373
+## 2     4        652
+## 3     4        268
+## 4     4        675
+## 5     4        745
+## 6     8        373
+## 7     8        652
+## 8     8        268
+## 9     8        675
+## 10    8        745
+## 11    6        373
+## 12    6        652
+## 13    6        268
+## 14    6        675
+## 15    6        745
+## 16    5        373
+## 17    5        652
+## 18    5        268
+## 19    5        675
+## 20    5        745
+## 21    3        373
+## 22    3        652
+## 23    3        268
+## 24    3        675
+## 25    3        745</code></pre>
+<p>So we could write a function to accept the combined set of randmoized parameters to see how it impacts performance:</p>
+<div class="sourceCode" id="cb458"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb458-1" data-line-number="1">make_diabetes_rf &lt;-<span class="st"> </span><span class="cf">function</span>(<span class="dt">grid=</span>train_grid) {</a>
+<a class="sourceLine" id="cb458-2" data-line-number="2">    retlist &lt;-<span class="st"> </span><span class="kw">data.frame</span>()</a>
+<a class="sourceLine" id="cb458-3" data-line-number="3">    <span class="cf">for</span> (ii <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(grid)) {</a>
+<a class="sourceLine" id="cb458-4" data-line-number="4">      my_rf &lt;-<span class="st"> </span><span class="kw">randomForest</span>(diabetes <span class="op">~</span><span class="st"> </span>. ,</a>
+<a class="sourceLine" id="cb458-5" data-line-number="5">                           <span class="dt">data =</span> rf_train,</a>
+<a class="sourceLine" id="cb458-6" data-line-number="6">                           <span class="dt">mtry =</span> grid[ii,]<span class="op">$</span>mtry,</a>
+<a class="sourceLine" id="cb458-7" data-line-number="7">                           <span class="dt">ntree =</span> grid[ii,]<span class="op">$</span>numoftrees,</a>
+<a class="sourceLine" id="cb458-8" data-line-number="8">                           <span class="dt">importance =</span> <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb458-9" data-line-number="9">      </a>
+<a class="sourceLine" id="cb458-10" data-line-number="10">      <span class="co">#  Get the AUC</span></a>
+<a class="sourceLine" id="cb458-11" data-line-number="11">      rf_probabilities &lt;-<span class="st"> </span><span class="kw">predict</span>(my_rf,rf_test,<span class="dt">type=</span><span class="st">&quot;prob&quot;</span>)</a>
+<a class="sourceLine" id="cb458-12" data-line-number="12">      auc &lt;-<span class="st"> </span>caTools<span class="op">::</span><span class="kw">colAUC</span>(rf_probabilities[,<span class="dv">1</span>],rf_test<span class="op">$</span>diabetes)</a>
+<a class="sourceLine" id="cb458-13" data-line-number="13">    </a>
+<a class="sourceLine" id="cb458-14" data-line-number="14">      <span class="co"># Get the Accuracy</span></a>
+<a class="sourceLine" id="cb458-15" data-line-number="15">      rf_labels &lt;-<span class="st"> </span><span class="kw">predict</span>(my_rf,rf_test)</a>
+<a class="sourceLine" id="cb458-16" data-line-number="16">      myt &lt;-<span class="st"> </span><span class="kw">table</span>(rf_labels,rf_test<span class="op">$</span>diabetes)</a>
+<a class="sourceLine" id="cb458-17" data-line-number="17">      acc &lt;-<span class="st"> </span><span class="kw">sum</span>(<span class="kw">diag</span>(myt))<span class="op">/</span><span class="kw">sum</span>(myt)</a>
+<a class="sourceLine" id="cb458-18" data-line-number="18">      </a>
+<a class="sourceLine" id="cb458-19" data-line-number="19">      <span class="co"># Return a data frame with the information</span></a>
+<a class="sourceLine" id="cb458-20" data-line-number="20">      retlist &lt;-<span class="st"> </span><span class="kw">rbind</span>(retlist,</a>
+<a class="sourceLine" id="cb458-21" data-line-number="21">                       <span class="kw">c</span>(grid[ii,]<span class="op">$</span>mtry,grid[ii,]<span class="op">$</span>numoftrees,auc,acc))</a>
+<a class="sourceLine" id="cb458-22" data-line-number="22">      <span class="kw">names</span>(retlist) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;mtry&quot;</span>,<span class="st">&quot;ntree&quot;</span>,<span class="st">&quot;auc&quot;</span>,<span class="st">&quot;acc&quot;</span>)</a>
+<a class="sourceLine" id="cb458-23" data-line-number="23">    }</a>
+<a class="sourceLine" id="cb458-24" data-line-number="24">    </a>
+<a class="sourceLine" id="cb458-25" data-line-number="25"><span class="co"># </span></a>
+<a class="sourceLine" id="cb458-26" data-line-number="26">    <span class="kw">return</span>(retlist)</a>
+<a class="sourceLine" id="cb458-27" data-line-number="27">}</a></code></pre></div>
+<p>Let’s see what we get back:</p>
+<div class="sourceCode" id="cb459"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb459-1" data-line-number="1"><span class="kw">make_diabetes_rf</span>(my_grid)</a></code></pre></div>
+<pre><code>##    mtry ntree       auc       acc
+## 1     4   373 0.8311321 0.7581699
+## 2     4   652 0.8353774 0.7516340
+## 3     4   268 0.8266981 0.7450980
+## 4     4   675 0.8314151 0.7516340
+## 5     4   745 0.8339623 0.7385621
+## 6     8   373 0.8145283 0.7385621
+## 7     8   652 0.8220755 0.7385621
+## 8     8   268 0.8208491 0.7320261
+## 9     8   675 0.8233019 0.7254902
+## 10    8   745 0.8248113 0.7320261
+## 11    6   373 0.8297170 0.7254902
+## 12    6   652 0.8257547 0.7254902
+## 13    6   268 0.8235849 0.7124183
+## 14    6   675 0.8315094 0.7320261
+## 15    6   745 0.8305660 0.7254902
+## 16    5   373 0.8311321 0.7450980
+## 17    5   652 0.8309434 0.7450980
+## 18    5   268 0.8300000 0.7385621
+## 19    5   675 0.8275472 0.7320261
+## 20    5   745 0.8339623 0.7516340
+## 21    3   373 0.8283019 0.7385621
+## 22    3   652 0.8343396 0.7450980
+## 23    3   268 0.8319811 0.7581699
+## 24    3   675 0.8358491 0.7581699
+## 25    3   745 0.8317925 0.7516340</code></pre>
+<p>So there isn’t a lot of variance in the outcomes although we didn’t know that previously which is why we performed the random search in the first place. If we wanted to, we could do something less random and more systematic by creating a predictable seqeucne of values for the hyperparameters which would result in a more granular search. In this example, we’ll also take advantage of a function called <strong>expand.grid</strong> which will help make the training grid. We could still use the above approach which uses for loops if we wanted to.</p>
+<div class="sourceCode" id="cb461"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb461-1" data-line-number="1">train_grid &lt;-<span class="st"> </span><span class="kw">expand.grid</span>(<span class="dt">mtry=</span><span class="kw">seq</span>(<span class="dv">2</span>,<span class="dv">8</span>,<span class="dv">1</span>),</a>
+<a class="sourceLine" id="cb461-2" data-line-number="2">                          <span class="dt">numoftrees=</span><span class="kw">seq</span>(<span class="dv">200</span>,<span class="dv">1400</span>,<span class="dv">200</span>))</a>
+<a class="sourceLine" id="cb461-3" data-line-number="3">train_grid</a></code></pre></div>
+<pre><code>##    mtry numoftrees
+## 1     2        200
+## 2     3        200
+## 3     4        200
+## 4     5        200
+## 5     6        200
+## 6     7        200
+## 7     8        200
+## 8     2        400
+## 9     3        400
+## 10    4        400
+## 11    5        400
+## 12    6        400
+## 13    7        400
+## 14    8        400
+## 15    2        600
+## 16    3        600
+## 17    4        600
+## 18    5        600
+## 19    6        600
+## 20    7        600
+## 21    8        600
+## 22    2        800
+## 23    3        800
+## 24    4        800
+## 25    5        800
+## 26    6        800
+## 27    7        800
+## 28    8        800
+## 29    2       1000
+## 30    3       1000
+## 31    4       1000
+## 32    5       1000
+## 33    6       1000
+## 34    7       1000
+## 35    8       1000
+## 36    2       1200
+## 37    3       1200
+## 38    4       1200
+## 39    5       1200
+## 40    6       1200
+## 41    7       1200
+## 42    8       1200
+## 43    2       1400
+## 44    3       1400
+## 45    4       1400
+## 46    5       1400
+## 47    6       1400
+## 48    7       1400
+## 49    8       1400</code></pre>
+<div class="sourceCode" id="cb463"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb463-1" data-line-number="1">make_diabetes_rf &lt;-<span class="st"> </span><span class="cf">function</span>(<span class="dt">grid=</span>train_grid) {</a>
+<a class="sourceLine" id="cb463-2" data-line-number="2">    retlist &lt;-<span class="st"> </span><span class="kw">data.frame</span>()</a>
+<a class="sourceLine" id="cb463-3" data-line-number="3">    <span class="cf">for</span> (ii <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(grid)) {</a>
+<a class="sourceLine" id="cb463-4" data-line-number="4">      my_rf &lt;-<span class="st"> </span><span class="kw">randomForest</span>(diabetes <span class="op">~</span><span class="st"> </span>. ,</a>
+<a class="sourceLine" id="cb463-5" data-line-number="5">                           <span class="dt">data =</span> rf_train,</a>
+<a class="sourceLine" id="cb463-6" data-line-number="6">                           <span class="dt">mtry =</span> grid[ii,]<span class="op">$</span>mtry,</a>
+<a class="sourceLine" id="cb463-7" data-line-number="7">                           <span class="dt">ntree =</span> grid[ii,]<span class="op">$</span>numoftrees,</a>
+<a class="sourceLine" id="cb463-8" data-line-number="8">                           <span class="dt">importance =</span> <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb463-9" data-line-number="9">      </a>
+<a class="sourceLine" id="cb463-10" data-line-number="10">      <span class="co">#  Get the AUC</span></a>
+<a class="sourceLine" id="cb463-11" data-line-number="11">      rf_probabilities &lt;-<span class="st"> </span><span class="kw">predict</span>(my_rf,rf_test,<span class="dt">type=</span><span class="st">&quot;prob&quot;</span>)</a>
+<a class="sourceLine" id="cb463-12" data-line-number="12">      auc &lt;-<span class="st"> </span>caTools<span class="op">::</span><span class="kw">colAUC</span>(rf_probabilities[,<span class="dv">1</span>],rf_test<span class="op">$</span>diabetes)</a>
+<a class="sourceLine" id="cb463-13" data-line-number="13">    </a>
+<a class="sourceLine" id="cb463-14" data-line-number="14">      <span class="co"># Get the Accuracy</span></a>
+<a class="sourceLine" id="cb463-15" data-line-number="15">      rf_labels &lt;-<span class="st"> </span><span class="kw">predict</span>(my_rf,rf_test)</a>
+<a class="sourceLine" id="cb463-16" data-line-number="16">      myt &lt;-<span class="st"> </span><span class="kw">table</span>(rf_labels,rf_test<span class="op">$</span>diabetes)</a>
+<a class="sourceLine" id="cb463-17" data-line-number="17">      acc &lt;-<span class="st"> </span><span class="kw">sum</span>(<span class="kw">diag</span>(myt))<span class="op">/</span><span class="kw">sum</span>(myt)</a>
+<a class="sourceLine" id="cb463-18" data-line-number="18">      </a>
+<a class="sourceLine" id="cb463-19" data-line-number="19">      <span class="co"># Return a data frame with the information</span></a>
+<a class="sourceLine" id="cb463-20" data-line-number="20">      retlist &lt;-<span class="st"> </span><span class="kw">rbind</span>(retlist,</a>
+<a class="sourceLine" id="cb463-21" data-line-number="21">                       <span class="kw">c</span>(grid[ii,]<span class="op">$</span>mtry,grid[ii,]<span class="op">$</span>numoftrees,auc,acc))</a>
+<a class="sourceLine" id="cb463-22" data-line-number="22">      <span class="kw">names</span>(retlist) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;mtry&quot;</span>,<span class="st">&quot;ntree&quot;</span>,<span class="st">&quot;auc&quot;</span>,<span class="st">&quot;acc&quot;</span>)</a>
+<a class="sourceLine" id="cb463-23" data-line-number="23">    }</a>
+<a class="sourceLine" id="cb463-24" data-line-number="24">    </a>
+<a class="sourceLine" id="cb463-25" data-line-number="25"><span class="co"># </span></a>
+<a class="sourceLine" id="cb463-26" data-line-number="26">    <span class="kw">return</span>(retlist)</a>
+<a class="sourceLine" id="cb463-27" data-line-number="27">}</a></code></pre></div>
+<p>So we could look at how the AUC varies for the values of mtry and ntrees. What we will experience here is longer run times because the grid has more values than the one we made when using a random approach.</p>
+<div class="sourceCode" id="cb464"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb464-1" data-line-number="1"><span class="kw">nrow</span>(my_grid)</a></code></pre></div>
+<pre><code>## [1] 25</code></pre>
+<div class="sourceCode" id="cb466"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb466-1" data-line-number="1"><span class="kw">nrow</span>(train_grid)</a></code></pre></div>
+<pre><code>## [1] 49</code></pre>
+<div class="sourceCode" id="cb468"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb468-1" data-line-number="1"><span class="co">#</span></a>
+<a class="sourceLine" id="cb468-2" data-line-number="2">stats &lt;-<span class="st"> </span><span class="kw">make_diabetes_rf</span>()</a></code></pre></div>
+<p>This plot will show us what is happening.</p>
+<div class="sourceCode" id="cb469"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb469-1" data-line-number="1">stats &lt;-<span class="st"> </span>stats <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mutate</span>(<span class="dt">ntree=</span><span class="kw">factor</span>(ntree))</a>
+<a class="sourceLine" id="cb469-2" data-line-number="2"><span class="kw">ggplot</span>(stats,<span class="kw">aes</span>(<span class="dt">x=</span>mtry,<span class="dt">y=</span>auc)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_line</span>() <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb469-3" data-line-number="3"><span class="st">  </span><span class="kw">facet_grid</span>(<span class="op">~</span><span class="kw">factor</span>(ntree)) <span class="op">+</span><span class="st"> </span><span class="kw">theme_bw</span>() <span class="op">+</span></a>
+<a class="sourceLine" id="cb469-4" data-line-number="4"><span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">&quot;AUC Across Random Forest Hyperparameters&quot;</span>)</a></code></pre></div>
+<p><img src="biosml_files/figure-html/statsm-1.png" width="672" /></p>
+<p>So what about the Accuracy ? It would be nice to see that on the graph also. There aren’t major variations in these metrics across these parameters. It depends on the method</p>
+<div class="sourceCode" id="cb470"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb470-1" data-line-number="1"><span class="co"># Reformat the stats data frame into long format</span></a>
+<a class="sourceLine" id="cb470-2" data-line-number="2">long_stats &lt;-<span class="st"> </span>stats <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">gather</span>(<span class="dt">key=</span><span class="st">&quot;variable&quot;</span>,<span class="dt">value=</span><span class="st">&quot;value&quot;</span>,<span class="op">-</span>mtry,<span class="op">-</span>ntree)</a>
+<a class="sourceLine" id="cb470-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb470-4" data-line-number="4"><span class="co"># Next, make the plot</span></a>
+<a class="sourceLine" id="cb470-5" data-line-number="5"><span class="kw">ggplot</span>(<span class="dt">data=</span>long_stats,</a>
+<a class="sourceLine" id="cb470-6" data-line-number="6">       <span class="kw">aes</span>(<span class="dt">x=</span>mtry, <span class="dt">y=</span>value, <span class="dt">colour=</span>variable)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb470-7" data-line-number="7"><span class="st">       </span><span class="kw">geom_line</span>() <span class="op">+</span><span class="st"> </span><span class="kw">facet_wrap</span>(<span class="op">~</span>ntree) <span class="op">+</span><span class="st"> </span><span class="kw">theme_minimal</span>() <span class="op">+</span></a>
+<a class="sourceLine" id="cb470-8" data-line-number="8"><span class="st">       </span><span class="kw">ggtitle</span>(<span class="st">&quot;AUC and Accuracy Across Random Forest Hyperparameters&quot;</span>)</a></code></pre></div>
+<p><img src="biosml_files/figure-html/reformv-1.png" width="672" /></p>
+<p>There are other ways to do this as some functions have tuning methods associated with them to help address this issue. The <strong>randomForest</strong> function is one such function. There is the <strong>tuneRF</strong> function available. Let’s go back to a basic example:</p>
+<div class="sourceCode" id="cb471"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb471-1" data-line-number="1">my_rf &lt;-<span class="st"> </span><span class="kw">randomForest</span>(diabetes <span class="op">~</span><span class="st"> </span>. ,</a>
+<a class="sourceLine" id="cb471-2" data-line-number="2">                           <span class="dt">data =</span> rf_train)</a></code></pre></div>
+<p>So we could use the <strong>tuneRF</strong> function and pass it our X and Y variables along with some arguments to do a grid search with hyperparameters. The function itself will call the <strong>randomForest</strong> package:</p>
+<div class="sourceCode" id="cb472"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb472-1" data-line-number="1">X =<span class="st"> </span>rf_train[,<span class="dv">1</span><span class="op">:</span><span class="dv">8</span>]</a>
+<a class="sourceLine" id="cb472-2" data-line-number="2">Y =<span class="st"> </span>rf_train[,<span class="dv">9</span>]</a>
+<a class="sourceLine" id="cb472-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb472-4" data-line-number="4">my_tune &lt;-<span class="st"> </span><span class="kw">tuneRF</span>(X,Y,<span class="dt">mtryStart=</span><span class="dv">2</span>,<span class="dt">ntreeTry=</span><span class="dv">50</span>,<span class="dt">stepFactor=</span><span class="dv">2</span>,<span class="dt">doBest=</span>T)</a></code></pre></div>
+<pre><code>## mtry = 2  OOB error = 22.93% 
+## Searching left ...
+## mtry = 1     OOB error = 26.18% 
+## -0.141844 0.05 
+## Searching right ...
+## mtry = 4     OOB error = 23.9% 
+## -0.04255319 0.05</code></pre>
+<p><img src="biosml_files/figure-html/runtunef-1.png" width="672" /></p>
+<div class="sourceCode" id="cb474"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb474-1" data-line-number="1">my_tune</a></code></pre></div>
+<pre><code>## 
+## Call:
+##  randomForest(x = x, y = y, mtry = res[which.min(res[, 2]), 1]) 
+##                Type of random forest: classification
+##                      Number of trees: 500
+## No. of variables tried at each split: 2
+## 
+##         OOB estimate of  error rate: 23.74%
+## Confusion matrix:
+##     neg pos class.error
+## neg 345  55   0.1375000
+## pos  91 124   0.4232558</code></pre>
+<div class="sourceCode" id="cb476"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb476-1" data-line-number="1"><span class="co"># Define the tuning grid: tuneGrid</span></a>
+<a class="sourceLine" id="cb476-2" data-line-number="2">tuneGrid &lt;-<span class="st"> </span><span class="kw">data.frame</span>(</a>
+<a class="sourceLine" id="cb476-3" data-line-number="3">  <span class="dt">.mtry =</span> <span class="kw">c</span>(<span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">7</span>),</a>
+<a class="sourceLine" id="cb476-4" data-line-number="4">  <span class="dt">.min.node.size =</span> <span class="dv">5</span></a>
+<a class="sourceLine" id="cb476-5" data-line-number="5">)</a>
+<a class="sourceLine" id="cb476-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb476-7" data-line-number="7">control &lt;-<span class="st"> </span><span class="kw">trainControl</span>( <span class="dt">classProbs=</span>T, <span class="dt">summaryFunction =</span> twoClassSummary)</a>
+<a class="sourceLine" id="cb476-8" data-line-number="8"></a>
+<a class="sourceLine" id="cb476-9" data-line-number="9">my_rf &lt;-<span class="st"> </span><span class="kw">train</span>(diabetes<span class="op">~</span>.,</a>
+<a class="sourceLine" id="cb476-10" data-line-number="10">                     rf_train,</a>
+<a class="sourceLine" id="cb476-11" data-line-number="11">                     <span class="dt">method=</span><span class="st">&quot;rf&quot;</span>,</a>
+<a class="sourceLine" id="cb476-12" data-line-number="12">                     <span class="dt">metric=</span><span class="st">&quot;ROC&quot;</span>,</a>
+<a class="sourceLine" id="cb476-13" data-line-number="13">                     <span class="dt">trControl =</span> control,</a>
+<a class="sourceLine" id="cb476-14" data-line-number="14">               <span class="dt">tuneLength=</span><span class="dv">7</span>)</a></code></pre></div>
+</div>
+<div id="using-validation-data-sets" class="section level2">
+<h2><span class="header-section-number">9.4</span> Using Validation Data Sets</h2>
+<p>When building a model, we generate a training and test data set. We use the former to build a model and, if we are using something like the caret package, that process involves cross fold validation or bootstrap sampling to generate a good estimate for out-of-sample error. We then apply the model to the test data frame.</p>
+<p>If we are using a method that has hyperparamters then maybe we want an intermediate data set to help validate our ultimate choice of hyperparameters. By taking this approach we can still keep our test data set off to the side for later use with the trained and validated model. Using this idea doesn’t require us to do much beyond generating a third data set.</p>
+<pre><code>The training set is used to build the classifier
+The validation set is used to tune the algorithm hyperparameters repeatedly. 
+So there will be some overfitting here, but that is why there is another stage:
+
+The test set must not be touched until the classifier is final to prevent 
+overfitting. It serves to estimate the true accuracy, if you would put the model 
+into production.</code></pre>
+<div class="sourceCode" id="cb478"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb478-1" data-line-number="1"><span class="co"># Simple into 3 sets.</span></a>
+<a class="sourceLine" id="cb478-2" data-line-number="2">idx &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="kw">seq</span>(<span class="dv">1</span>, <span class="dv">3</span>), <span class="dt">size =</span> <span class="kw">nrow</span>(pm), <span class="dt">replace =</span> <span class="ot">TRUE</span>, <span class="dt">prob =</span> <span class="kw">c</span>(.<span class="dv">8</span>, <span class="fl">.2</span>, <span class="fl">.2</span>))</a>
+<a class="sourceLine" id="cb478-3" data-line-number="3">train &lt;-<span class="st"> </span>pm[idx <span class="op">==</span><span class="st"> </span><span class="dv">1</span>,]</a>
+<a class="sourceLine" id="cb478-4" data-line-number="4">test &lt;-<span class="st"> </span>pm[idx <span class="op">==</span><span class="st"> </span><span class="dv">2</span>,]</a>
+<a class="sourceLine" id="cb478-5" data-line-number="5">valid &lt;-<span class="st"> </span>pm[idx <span class="op">==</span><span class="st"> </span><span class="dv">3</span>,]</a>
+<a class="sourceLine" id="cb478-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb478-7" data-line-number="7"><span class="co"># </span></a>
+<a class="sourceLine" id="cb478-8" data-line-number="8"></a>
+<a class="sourceLine" id="cb478-9" data-line-number="9"><span class="kw">nrow</span>(train)</a></code></pre></div>
+<pre><code>## [1] 503</code></pre>
+<div class="sourceCode" id="cb480"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb480-1" data-line-number="1"><span class="kw">nrow</span>(test)</a></code></pre></div>
+<pre><code>## [1] 121</code></pre>
+<div class="sourceCode" id="cb482"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb482-1" data-line-number="1"><span class="kw">nrow</span>(valid)</a></code></pre></div>
+<pre><code>## [1] 144</code></pre>
+<p>Then we might build a model using the training data. We’ll use Accuracy as a metric.</p>
+<div class="sourceCode" id="cb484"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb484-1" data-line-number="1">control &lt;-<span class="st"> </span><span class="kw">trainControl</span>(<span class="dt">method=</span><span class="st">&quot;cv&quot;</span>,<span class="dt">number=</span><span class="dv">5</span>)</a>
+<a class="sourceLine" id="cb484-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb484-3" data-line-number="3"><span class="kw">set.seed</span>(<span class="dv">123</span>)</a>
+<a class="sourceLine" id="cb484-4" data-line-number="4">train_rf &lt;-<span class="st"> </span><span class="kw">train</span>(diabetes<span class="op">~</span>.,</a>
+<a class="sourceLine" id="cb484-5" data-line-number="5">                  <span class="dt">data =</span> train,</a>
+<a class="sourceLine" id="cb484-6" data-line-number="6">                  <span class="dt">metric =</span> <span class="st">&quot;Accuracy&quot;</span>,</a>
+<a class="sourceLine" id="cb484-7" data-line-number="7">                  <span class="dt">method =</span> <span class="st">&quot;rf&quot;</span>, </a>
+<a class="sourceLine" id="cb484-8" data-line-number="8">                  <span class="dt">trControl =</span> control)</a>
+<a class="sourceLine" id="cb484-9" data-line-number="9"></a>
+<a class="sourceLine" id="cb484-10" data-line-number="10">train_rf</a></code></pre></div>
+<pre><code>## Random Forest 
+## 
+## 503 samples
+##   8 predictor
+##   2 classes: &#39;neg&#39;, &#39;pos&#39; 
+## 
+## No pre-processing
+## Resampling: Cross-Validated (5 fold) 
+## Summary of sample sizes: 402, 403, 402, 403, 402 
+## Resampling results across tuning parameters:
+## 
+##   mtry  Accuracy   Kappa    
+##   2     0.7633267  0.4497481
+##   5     0.7593663  0.4476956
+##   8     0.7513465  0.4315698
+## 
+## Accuracy was used to select the optimal model using the largest value.
+## The final value used for the model was mtry = 2.</code></pre>
+<div class="sourceCode" id="cb486"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb486-1" data-line-number="1"><span class="kw">set.seed</span>(<span class="dv">123</span>)</a>
+<a class="sourceLine" id="cb486-2" data-line-number="2">valid_rf &lt;-<span class="st"> </span><span class="kw">train</span>(diabetes<span class="op">~</span>.,</a>
+<a class="sourceLine" id="cb486-3" data-line-number="3">                  <span class="dt">data=</span>valid,</a>
+<a class="sourceLine" id="cb486-4" data-line-number="4">                  <span class="dt">metric=</span><span class="st">&quot;Accuracy&quot;</span>,</a>
+<a class="sourceLine" id="cb486-5" data-line-number="5">                  <span class="dt">method =</span> <span class="st">&quot;rf&quot;</span>,</a>
+<a class="sourceLine" id="cb486-6" data-line-number="6">                  <span class="dt">trControl =</span> control)</a>
+<a class="sourceLine" id="cb486-7" data-line-number="7">valid_rf<span class="op">$</span>bestTune</a></code></pre></div>
+<pre><code>##   mtry
+## 1    2</code></pre>
+<div class="sourceCode" id="cb488"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb488-1" data-line-number="1"><span class="co"># Now we would use the value of mtry to find an appropriate value</span></a>
+<a class="sourceLine" id="cb488-2" data-line-number="2"><span class="co"># of mtyry to use in the test data</span></a>
+<a class="sourceLine" id="cb488-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb488-4" data-line-number="4"><span class="kw">set.seed</span>(<span class="dv">123</span>)</a>
+<a class="sourceLine" id="cb488-5" data-line-number="5">test_rf  &lt;-<span class="st"> </span><span class="kw">train</span>(diabetes<span class="op">~</span>.,</a>
+<a class="sourceLine" id="cb488-6" data-line-number="6">                 <span class="dt">data=</span>test,</a>
+<a class="sourceLine" id="cb488-7" data-line-number="7">                 <span class="dt">metric=</span><span class="st">&quot;Accuracy&quot;</span>,</a>
+<a class="sourceLine" id="cb488-8" data-line-number="8">                 <span class="dt">method =</span> <span class="st">&quot;rf&quot;</span>,</a>
+<a class="sourceLine" id="cb488-9" data-line-number="9">                 <span class="dt">trControl =</span> <span class="kw">trainControl</span>(<span class="dt">method=</span><span class="st">&quot;none&quot;</span>),</a>
+<a class="sourceLine" id="cb488-10" data-line-number="10">                 <span class="dt">tuneGrid =</span> <span class="kw">data.frame</span>(<span class="dt">mtry =</span> <span class="dv">5</span>))</a>
+<a class="sourceLine" id="cb488-11" data-line-number="11"></a>
+<a class="sourceLine" id="cb488-12" data-line-number="12"></a>
+<a class="sourceLine" id="cb488-13" data-line-number="13">some_preds &lt;-<span class="st"> </span><span class="kw">predict</span>(test_rf,test)</a>
+<a class="sourceLine" id="cb488-14" data-line-number="14"><span class="kw">confusionMatrix</span>(<span class="kw">table</span>(<span class="dt">preds=</span>some_preds,<span class="dt">actual=</span>test<span class="op">$</span>diabetes),<span class="dt">positive=</span><span class="st">&quot;pos&quot;</span>)</a></code></pre></div>
+<pre><code>## Confusion Matrix and Statistics
+## 
+##      actual
+## preds neg pos
+##   neg  79   0
+##   pos   0  42
+##                                    
+##                Accuracy : 1        
+##                  95% CI : (0.97, 1)
+##     No Information Rate : 0.6529   
+##     P-Value [Acc &gt; NIR] : &lt; 2.2e-16
+##                                    
+##                   Kappa : 1        
+##                                    
+##  Mcnemar&#39;s Test P-Value : NA       
+##                                    
+##             Sensitivity : 1.0000   
+##             Specificity : 1.0000   
+##          Pos Pred Value : 1.0000   
+##          Neg Pred Value : 1.0000   
+##              Prevalence : 0.3471   
+##          Detection Rate : 0.3471   
+##    Detection Prevalence : 0.3471   
+##       Balanced Accuracy : 1.0000   
+##                                    
+##        &#39;Positive&#39; Class : pos      
+## </code></pre>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="decision-trees.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="selecting-the-best-model.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
