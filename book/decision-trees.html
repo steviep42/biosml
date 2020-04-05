@@ -359,26 +359,26 @@ diabetes - Class variable (test for diabetes)</code></pre>
 ## Prediction neg pos
 ##        neg 470 131
 ##        pos  30 137
-##                                        
-##                Accuracy : 0.79         
-##                  95% CI : (0.76, 0.819)
-##     No Information Rate : 0.651        
-##     P-Value [Acc &gt; NIR] : &lt; 2e-16      
-##                                        
-##                   Kappa : 0.494        
-##                                        
-##  Mcnemar&#39;s Test P-Value : 3.25e-15     
-##                                        
-##             Sensitivity : 0.511        
-##             Specificity : 0.940        
-##          Pos Pred Value : 0.820        
-##          Neg Pred Value : 0.782        
-##              Prevalence : 0.349        
-##          Detection Rate : 0.178        
-##    Detection Prevalence : 0.217        
-##       Balanced Accuracy : 0.726        
-##                                        
-##        &#39;Positive&#39; Class : pos          
+##                                           
+##                Accuracy : 0.7904          
+##                  95% CI : (0.7598, 0.8186)
+##     No Information Rate : 0.651           
+##     P-Value [Acc &gt; NIR] : &lt; 2.2e-16       
+##                                           
+##                   Kappa : 0.4944          
+##                                           
+##  Mcnemar&#39;s Test P-Value : 3.245e-15       
+##                                           
+##             Sensitivity : 0.5112          
+##             Specificity : 0.9400          
+##          Pos Pred Value : 0.8204          
+##          Neg Pred Value : 0.7820          
+##              Prevalence : 0.3490          
+##          Detection Rate : 0.1784          
+##    Detection Prevalence : 0.2174          
+##       Balanced Accuracy : 0.7256          
+##                                           
+##        &#39;Positive&#39; Class : pos             
 ## </code></pre>
 <p>Perhaps you noticed that in the example I included an argument called <strong>cp</strong> which
 corresponds to a “complexity parameter” which influences how the tree splits at various nodes.
@@ -412,25 +412,25 @@ corresponds to a “complexity parameter” which influences how the tree splits
 ## node), split, n, loss, yval, (yprob)
 ##       * denotes terminal node
 ## 
-##  1) root 614 216 neg (0.6482 0.3518)  
-##    2) glucose&lt; 144 475 113 neg (0.7621 0.2379)  
-##      4) glucose&lt; 104 187  17 neg (0.9091 0.0909) *
-##      5) glucose&gt;=104 288  96 neg (0.6667 0.3333)  
-##       10) mass&lt; 26.9 72   7 neg (0.9028 0.0972) *
-##       11) mass&gt;=26.9 216  89 neg (0.5880 0.4120)  
-##         22) age&lt; 30.5 119  34 neg (0.7143 0.2857)  
-##           44) pressure&gt;=22 112  28 neg (0.7500 0.2500) *
-##           45) pressure&lt; 22 7   1 pos (0.1429 0.8571) *
-##         23) age&gt;=30.5 97  42 pos (0.4330 0.5670)  
-##           46) age&gt;=56.5 9   2 neg (0.7778 0.2222) *
-##           47) age&lt; 56.5 88  35 pos (0.3977 0.6023)  
-##             94) pedigree&lt; 0.201 11   3 neg (0.7273 0.2727) *
-##             95) pedigree&gt;=0.201 77  27 pos (0.3506 0.6494) *
-##    3) glucose&gt;=144 139  36 pos (0.2590 0.7410)  
-##      6) mass&lt; 29.9 27  12 neg (0.5556 0.4444)  
-##       12) pressure&gt;=74.5 9   1 neg (0.8889 0.1111) *
-##       13) pressure&lt; 74.5 18   7 pos (0.3889 0.6111) *
-##      7) mass&gt;=29.9 112  21 pos (0.1875 0.8125) *</code></pre>
+##  1) root 614 216 neg (0.64820847 0.35179153)  
+##    2) glucose&lt; 143.5 475 113 neg (0.76210526 0.23789474)  
+##      4) glucose&lt; 103.5 187  17 neg (0.90909091 0.09090909) *
+##      5) glucose&gt;=103.5 288  96 neg (0.66666667 0.33333333)  
+##       10) mass&lt; 26.9 72   7 neg (0.90277778 0.09722222) *
+##       11) mass&gt;=26.9 216  89 neg (0.58796296 0.41203704)  
+##         22) age&lt; 30.5 119  34 neg (0.71428571 0.28571429)  
+##           44) pressure&gt;=22 112  28 neg (0.75000000 0.25000000) *
+##           45) pressure&lt; 22 7   1 pos (0.14285714 0.85714286) *
+##         23) age&gt;=30.5 97  42 pos (0.43298969 0.56701031)  
+##           46) age&gt;=56.5 9   2 neg (0.77777778 0.22222222) *
+##           47) age&lt; 56.5 88  35 pos (0.39772727 0.60227273)  
+##             94) pedigree&lt; 0.201 11   3 neg (0.72727273 0.27272727) *
+##             95) pedigree&gt;=0.201 77  27 pos (0.35064935 0.64935065) *
+##    3) glucose&gt;=143.5 139  36 pos (0.25899281 0.74100719)  
+##      6) mass&lt; 29.95 27  12 neg (0.55555556 0.44444444)  
+##       12) pressure&gt;=74.5 9   1 neg (0.88888889 0.11111111) *
+##       13) pressure&lt; 74.5 18   7 pos (0.38888889 0.61111111) *
+##      7) mass&gt;=29.95 112  21 pos (0.18750000 0.81250000) *</code></pre>
 <div class="sourceCode" id="cb330"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb330-1" data-line-number="1"><span class="kw">rpart.plot</span>(pm_class_tree)</a></code></pre></div>
 <p><img src="biosml_files/figure-html/rpartbuild-1.png" width="672" /></p>
 <div id="evaluating-performance" class="section level3">
@@ -451,26 +451,26 @@ corresponds to a “complexity parameter” which influences how the tree splits
 ## Prediction neg pos
 ##        neg  79  20
 ##        pos  23  32
-##                                        
-##                Accuracy : 0.721        
-##                  95% CI : (0.643, 0.79)
-##     No Information Rate : 0.662        
-##     P-Value [Acc &gt; NIR] : 0.0721       
-##                                        
-##                   Kappa : 0.384        
-##                                        
-##  Mcnemar&#39;s Test P-Value : 0.7604       
-##                                        
-##             Sensitivity : 0.615        
-##             Specificity : 0.775        
-##          Pos Pred Value : 0.582        
-##          Neg Pred Value : 0.798        
-##              Prevalence : 0.338        
-##          Detection Rate : 0.208        
-##    Detection Prevalence : 0.357        
-##       Balanced Accuracy : 0.695        
-##                                        
-##        &#39;Positive&#39; Class : pos          
+##                                         
+##                Accuracy : 0.7208        
+##                  95% CI : (0.6429, 0.79)
+##     No Information Rate : 0.6623        
+##     P-Value [Acc &gt; NIR] : 0.07215       
+##                                         
+##                   Kappa : 0.3845        
+##                                         
+##  Mcnemar&#39;s Test P-Value : 0.76037       
+##                                         
+##             Sensitivity : 0.6154        
+##             Specificity : 0.7745        
+##          Pos Pred Value : 0.5818        
+##          Neg Pred Value : 0.7980        
+##              Prevalence : 0.3377        
+##          Detection Rate : 0.2078        
+##    Detection Prevalence : 0.3571        
+##       Balanced Accuracy : 0.6949        
+##                                         
+##        &#39;Positive&#39; Class : pos           
 ## </code></pre>
 <p>We can also look at the Area Under the ROC Curve.</p>
 <div class="sourceCode" id="cb333"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb333-1" data-line-number="1"><span class="kw">library</span>(Metrics)</a>
@@ -483,15 +483,15 @@ corresponds to a “complexity parameter” which influences how the tree splits
 <a class="sourceLine" id="cb333-8" data-line-number="8">                    <span class="dt">predicted =</span> dt_pred[,<span class="dv">2</span>])</a>
 <a class="sourceLine" id="cb333-9" data-line-number="9"></a>
 <a class="sourceLine" id="cb333-10" data-line-number="10">aucval</a></code></pre></div>
-<pre><code>## [1] 0.739</code></pre>
+<pre><code>## [1] 0.7391591</code></pre>
 </div>
 <div id="tree-splitting" class="section level3">
 <h3><span class="header-section-number">8.3.2</span> Tree Splitting</h3>
 <p>The resulting tree can be thought of as an upside down tree with the root at the top. The “trunk” proceeds downward and splits into subsets based on some decision (hence the word “decision” in the title). When classifying data the idea is to segment or partition data into groups/regions where each group contains or represents a single class (“yes/no”, “positive/negative”).</p>
 <p>These groups or regions would represent a “pure” region. This is not always possible so a best effort is made. These regions are separated by decision boundaries which are used to make decisions. We’ll plot some example data to illustrate the case.</p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-37-1.png" width="672" /></p>
 <p><img src="biosml_files/figure-html/unnamed-chunk-38-1.png" width="672" /></p>
 <p><img src="biosml_files/figure-html/unnamed-chunk-39-1.png" width="672" /></p>
-<p><img src="biosml_files/figure-html/unnamed-chunk-40-1.png" width="672" /></p>
 </div>
 </div>
 <div id="gini-index" class="section level2">
@@ -525,10 +525,10 @@ corresponds to a “complexity parameter” which influences how the tree splits
 <a class="sourceLine" id="cb335-24" data-line-number="24"></a>
 <a class="sourceLine" id="cb335-25" data-line-number="25">Metrics<span class="op">::</span><span class="kw">ce</span>(<span class="dt">actual =</span> pm_test<span class="op">$</span>diabetes, </a>
 <a class="sourceLine" id="cb335-26" data-line-number="26">   <span class="dt">predicted =</span> gini_pred)</a></code></pre></div>
-<pre><code>## [1] 0.279</code></pre>
+<pre><code>## [1] 0.2792208</code></pre>
 <div class="sourceCode" id="cb337"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb337-1" data-line-number="1">Metrics<span class="op">::</span><span class="kw">ce</span>(<span class="dt">actual =</span> pm_test<span class="op">$</span>diabetes, </a>
 <a class="sourceLine" id="cb337-2" data-line-number="2">   <span class="dt">predicted =</span> info_pred)  </a></code></pre></div>
-<pre><code>## [1] 0.26</code></pre>
+<pre><code>## [1] 0.2597403</code></pre>
 </div>
 <div id="regression-trees" class="section level2">
 <h2><span class="header-section-number">8.5</span> Regression Trees</h2>
@@ -552,33 +552,33 @@ RMSE = \sqrt\frac{\sum_i^n(P_i-O_i)^2}{n}
 ## node), split, n, deviance, yval
 ##       * denotes terminal node
 ## 
-##  1) root 614 36900 32.0  
-##    2) triceps&lt; 30.5 422 22000 29.7  
-##      4) diabetes=neg 293 13600 28.3  
-##        8) pressure&lt; 45 20  2690 21.2  
-##         16) age&lt; 27 12  1620 16.2 *
-##         17) age&gt;=27 8   309 28.7 *
-##        9) pressure&gt;=45 273  9850 28.8  
-##         18) triceps&lt; 22.5 190  6890 27.8 *
-##         19) triceps&gt;=22.5 83  2420 30.9 *
-##      5) diabetes=pos 129  6240 33.1  
-##       10) glucose&lt; 126 47  3040 30.6  
-##         20) pregnant&gt;=5.5 19  1700 26.6 *
-##         21) pregnant&lt; 5.5 28   840 33.3 *
-##       11) glucose&gt;=126 82  2730 34.6 *
-##    3) triceps&gt;=30.5 192  8250 36.9  
-##      6) pregnant&gt;=1.5 128  4020 35.1  
-##       12) triceps&lt; 35.5 64  2190 33.1 *
-##       13) triceps&gt;=35.5 64  1310 37.1 *
-##      7) pregnant&lt; 1.5 64  3070 40.3  
-##       14) glucose&lt; 128 38  1010 38.0 *
-##       15) glucose&gt;=128 26  1570 43.7  
-##         30) pressure&lt; 75 10   123 38.7 *
-##         31) pressure&gt;=75 16  1030 46.8 *</code></pre>
+##  1) root 614 36909.6400 31.96971  
+##    2) triceps&lt; 30.5 422 21954.9400 29.74147  
+##      4) diabetes=neg 293 13608.7800 28.26007  
+##        8) pressure&lt; 45 20  2689.8690 21.19500  
+##         16) age&lt; 27 12  1622.3870 16.16667 *
+##         17) age&gt;=27 8   308.9587 28.73750 *
+##        9) pressure&gt;=45 273  9847.4740 28.77766  
+##         18) triceps&lt; 22.5 190  6889.5350 27.84947 *
+##         19) triceps&gt;=22.5 83  2419.5400 30.90241 *
+##      5) diabetes=pos 129  6242.6950 33.10620  
+##       10) glucose&lt; 125.5 47  3036.8640 30.57660  
+##         20) pregnant&gt;=5.5 19  1699.6170 26.62632 *
+##         21) pregnant&lt; 5.5 28   839.5686 33.25714 *
+##       11) glucose&gt;=125.5 82  2732.7020 34.55610 *
+##    3) triceps&gt;=30.5 192  8254.2630 36.86719  
+##      6) pregnant&gt;=1.5 128  4020.7590 35.12813  
+##       12) triceps&lt; 35.5 64  2192.8970 33.11406 *
+##       13) triceps&gt;=35.5 64  1308.6360 37.14219 *
+##      7) pregnant&lt; 1.5 64  3072.1590 40.34531  
+##       14) glucose&lt; 128.5 38  1014.3150 38.05000 *
+##       15) glucose&gt;=128.5 26  1565.0400 43.70000  
+##         30) pressure&lt; 75 10   122.8810 38.67000 *
+##         31) pressure&gt;=75 16  1031.0190 46.84375 *</code></pre>
 <div class="sourceCode" id="cb341"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb341-1" data-line-number="1"><span class="co"># Plot the tree model</span></a>
 <a class="sourceLine" id="cb341-2" data-line-number="2"><span class="kw">rpart.plot</span>(<span class="dt">x =</span> mass_pima_mod, </a>
 <a class="sourceLine" id="cb341-3" data-line-number="3">           <span class="dt">yesno =</span> <span class="dv">2</span>, <span class="dt">type =</span> <span class="dv">0</span>, <span class="dt">extra =</span> <span class="dv">0</span>)</a></code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-42-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-41-1.png" width="672" /></p>
 <p>Let’s compute the RMSE for this model.</p>
 <div class="sourceCode" id="cb342"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb342-1" data-line-number="1"><span class="co"># Generate predictions on a test set</span></a>
 <a class="sourceLine" id="cb342-2" data-line-number="2">pred &lt;-<span class="st"> </span><span class="kw">predict</span>(<span class="dt">object =</span> mass_pima_mod,   <span class="co"># model object </span></a>
@@ -587,7 +587,7 @@ RMSE = \sqrt\frac{\sum_i^n(P_i-O_i)^2}{n}
 <a class="sourceLine" id="cb342-5" data-line-number="5"><span class="co"># Compute the RMSE</span></a>
 <a class="sourceLine" id="cb342-6" data-line-number="6">Metrics<span class="op">::</span><span class="kw">rmse</span>(<span class="dt">actual =</span> pm_test<span class="op">$</span>mass, </a>
 <a class="sourceLine" id="cb342-7" data-line-number="7">     <span class="dt">predicted =</span> pred)</a></code></pre></div>
-<pre><code>## [1] 6.63</code></pre>
+<pre><code>## [1] 6.627414</code></pre>
 <p>Is this Good ? Bad ? Okay ? We don’t know. We’ll need to do some things like Cross Validation. And then there are additional arguments to the <strong>rpart</strong> function that we could use to influence how the model does its job. These are referred to as “hyperparamters”.</p>
 </div>
 </div>
@@ -607,21 +607,21 @@ RMSE = \sqrt\frac{\sum_i^n(P_i-O_i)^2}{n}
 <p>In effect, it is doing some work for you so you don’t have to. At the end of the run it will produce a table for inspection. The results of this table can then be used to “prune” the tree model to get a “better” tree - one that performs better than an “un pruned” tree. Let’s look at the pima mass model:</p>
 <div class="sourceCode" id="cb344"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb344-1" data-line-number="1"><span class="co"># You can plot the modelling object</span></a>
 <a class="sourceLine" id="cb344-2" data-line-number="2"><span class="kw">rpart.plot</span>(mass_pima_mod,<span class="dt">yesno =</span> <span class="dv">2</span>, <span class="dt">type =</span> <span class="dv">0</span>, <span class="dt">extra =</span> <span class="dv">0</span>)</a></code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-44-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-43-1.png" width="672" /></p>
 <div class="sourceCode" id="cb345"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb345-1" data-line-number="1"><span class="co"># You can inspect the table manually</span></a>
 <a class="sourceLine" id="cb345-2" data-line-number="2">mass_pima_mod<span class="op">$</span>cptable</a></code></pre></div>
-<pre><code>##        CP nsplit rel error xerror   xstd
-## 1  0.1815      0     1.000  1.002 0.0938
-## 2  0.0570      1     0.818  0.845 0.0809
-## 3  0.0315      2     0.761  0.807 0.0795
-## 4  0.0290      3     0.730  0.790 0.0794
-## 5  0.0206      4     0.701  0.772 0.0763
-## 6  0.0146      5     0.680  0.780 0.0781
-## 7  0.0141      6     0.666  0.801 0.0773
-## 8  0.0134      7     0.652  0.793 0.0762
-## 9  0.0132      8     0.638  0.793 0.0771
-## 10 0.0111     10     0.612  0.802 0.0772
-## 11 0.0100     11     0.601  0.804 0.0730</code></pre>
+<pre><code>##            CP nsplit rel error    xerror       xstd
+## 1  0.18153603      0 1.0000000 1.0015656 0.09381646
+## 2  0.05698963      1 0.8184640 0.8447727 0.08092338
+## 3  0.03146457      2 0.7614743 0.8067354 0.07952153
+## 4  0.02902872      3 0.7300098 0.7901790 0.07936648
+## 5  0.02055084      4 0.7009810 0.7721064 0.07632954
+## 6  0.01458696      5 0.6804302 0.7798124 0.07806591
+## 7  0.01406747      6 0.6658432 0.8012778 0.07730342
+## 8  0.01335162      7 0.6517758 0.7928406 0.07622939
+## 9  0.01315114      8 0.6384242 0.7932476 0.07707739
+## 10 0.01113909     10 0.6121219 0.8022725 0.07716219
+## 11 0.01000000     11 0.6009828 0.8042465 0.07301588</code></pre>
 <p>We want to pick the value of CP from the table that corresponds to the minimum <strong>xerror</strong> value. This can also be deduced from the plot but let’s work with the table:</p>
 <div class="sourceCode" id="cb347"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb347-1" data-line-number="1">cpt &lt;-<span class="st"> </span><span class="kw">as.data.frame.matrix</span>(mass_pima_mod<span class="op">$</span>cptable) </a>
 <a class="sourceLine" id="cb347-2" data-line-number="2">cpt_val &lt;-<span class="st"> </span>cpt[<span class="kw">order</span>(cpt<span class="op">$</span>xerror),][<span class="dv">1</span>,]<span class="op">$</span>CP</a></code></pre></div>
@@ -631,7 +631,7 @@ RMSE = \sqrt\frac{\sum_i^n(P_i-O_i)^2}{n}
 <a class="sourceLine" id="cb348-3" data-line-number="3">                          </a>
 <a class="sourceLine" id="cb348-4" data-line-number="4"><span class="co"># Plot the optimized model</span></a>
 <a class="sourceLine" id="cb348-5" data-line-number="5"><span class="kw">rpart.plot</span>(mass_pima_mod_opt, <span class="dt">yesno =</span> <span class="dv">2</span>, <span class="dt">type =</span> <span class="dv">0</span>, <span class="dt">extra =</span> <span class="dv">0</span>)</a></code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-46-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-45-1.png" width="672" /></p>
 <p>Does this optimized model perform any better ? Not really, because the optimal CP value turned out to be 0.01 which is actually the same as the default.</p>
 <div class="sourceCode" id="cb349"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb349-1" data-line-number="1"><span class="co"># Generate predictions on a test set</span></a>
 <a class="sourceLine" id="cb349-2" data-line-number="2">pred &lt;-<span class="st"> </span><span class="kw">predict</span>(<span class="dt">object =</span> mass_pima_mod_opt,   <span class="co"># model object </span></a>
@@ -640,7 +640,7 @@ RMSE = \sqrt\frac{\sum_i^n(P_i-O_i)^2}{n}
 <a class="sourceLine" id="cb349-5" data-line-number="5"><span class="co"># Compute the RMSE</span></a>
 <a class="sourceLine" id="cb349-6" data-line-number="6">Metrics<span class="op">::</span><span class="kw">rmse</span>(<span class="dt">actual =</span> pm_test<span class="op">$</span>mass, </a>
 <a class="sourceLine" id="cb349-7" data-line-number="7">     <span class="dt">predicted =</span> pred)</a></code></pre></div>
-<pre><code>## [1] 6.79</code></pre>
+<pre><code>## [1] 6.790943</code></pre>
 </div>
 <div id="grid-searching" class="section level2">
 <h2><span class="header-section-number">8.7</span> Grid Searching</h2>
@@ -704,7 +704,7 @@ RMSE = \sqrt\frac{\sum_i^n(P_i-O_i)^2}{n}
 <p>Now run the function and get the parameters corresponding to the optimal model.</p>
 <div class="sourceCode" id="cb354"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb354-1" data-line-number="1">results &lt;-<span class="st"> </span><span class="kw">do_grid_search</span>(<span class="kw">seq</span>(<span class="dv">1</span>, <span class="dv">4</span>, <span class="dv">1</span>),<span class="kw">seq</span>(<span class="dv">1</span>, <span class="dv">6</span>, <span class="dv">1</span>))</a>
 <a class="sourceLine" id="cb354-2" data-line-number="2">results<span class="op">$</span>optim_rmse</a></code></pre></div>
-<pre><code>## [1] 6.85</code></pre>
+<pre><code>## [1] 6.851048</code></pre>
 <div class="sourceCode" id="cb356"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb356-1" data-line-number="1">results<span class="op">$</span>optimal_model<span class="op">$</span>control</a></code></pre></div>
 <pre><code>## $minsplit
 ## [1] 2
@@ -796,9 +796,9 @@ RMSE = \sqrt\frac{\sum_i^n(P_i-O_i)^2}{n}
 <a class="sourceLine" id="cb362-32" data-line-number="32">}</a></code></pre></div>
 <p>Now check all of the accuracy estimates and then average them. Remember this is supposed to help us to better estimate the out of sample error.</p>
 <div class="sourceCode" id="cb363"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb363-1" data-line-number="1"><span class="kw">boxplot</span>(aucval)</a></code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-51-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-50-1.png" width="672" /></p>
 <div class="sourceCode" id="cb364"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb364-1" data-line-number="1"><span class="kw">mean</span>(aucval)</a></code></pre></div>
-<pre><code>## [1] 0.822</code></pre>
+<pre><code>## [1] 0.8217163</code></pre>
 <p>Now we’ll compare this to the function called “bagging” from the <strong>ipred</strong> package which does bagged trees directly.</p>
 <p><img src="pics/bagging2.png" /></p>
 <div class="sourceCode" id="cb366"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb366-1" data-line-number="1"><span class="kw">library</span>(ipred)</a>
@@ -813,7 +813,7 @@ RMSE = \sqrt\frac{\sum_i^n(P_i-O_i)^2}{n}
 <a class="sourceLine" id="cb367-4" data-line-number="4">                    <span class="dt">predicted =</span> bagged_pred[,<span class="dv">2</span>])</a>
 <a class="sourceLine" id="cb367-5" data-line-number="5"></a>
 <a class="sourceLine" id="cb367-6" data-line-number="6">aucval</a></code></pre></div>
-<pre><code>## [1] 0.831</code></pre>
+<pre><code>## [1] 0.8312594</code></pre>
 <p>This is better than the 0.7804305 we got when using a single Decision tree. Single decision trees are sometimes called “weak learners” because</p>
 </div>
 <div id="random-forests-1" class="section level2">
@@ -835,22 +835,22 @@ RMSE = \sqrt\frac{\sum_i^n(P_i-O_i)^2}{n}
 ##                      Number of trees: 500
 ## No. of variables tried at each split: 2
 ## 
-##         OOB estimate of  error rate: 25.6%
+##         OOB estimate of  error rate: 25.57%
 ## Confusion matrix:
 ##     neg pos class.error
-## neg 336  62       0.156
-## pos  95 121       0.440</code></pre>
+## neg 336  62   0.1557789
+## pos  95 121   0.4398148</code></pre>
 <p>Let’s look at the out of bag error matrix</p>
 <div class="sourceCode" id="cb372"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb372-1" data-line-number="1"><span class="kw">head</span>(pm_rf_model<span class="op">$</span>err.rate)</a></code></pre></div>
-<pre><code>##        OOB   neg   pos
-## [1,] 0.327 0.282 0.405
-## [2,] 0.319 0.253 0.426
-## [3,] 0.298 0.213 0.447
-## [4,] 0.286 0.201 0.438
-## [5,] 0.299 0.214 0.448
-## [6,] 0.293 0.193 0.473</code></pre>
+<pre><code>##            OOB       neg       pos
+## [1,] 0.3274336 0.2816901 0.4047619
+## [2,] 0.3185596 0.2533333 0.4264706
+## [3,] 0.2979684 0.2127660 0.4472050
+## [4,] 0.2862903 0.2012579 0.4382022
+## [5,] 0.2987013 0.2144928 0.4484536
+## [6,] 0.2929825 0.1934605 0.4729064</code></pre>
 <div class="sourceCode" id="cb374"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb374-1" data-line-number="1"><span class="kw">plot</span>(pm_rf_model)</a></code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-54-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-53-1.png" width="672" /></p>
 <p>Do some predictions with this model.</p>
 <div class="sourceCode" id="cb375"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb375-1" data-line-number="1">rf_pred &lt;-<span class="st"> </span><span class="kw">predict</span>(pm_rf_model,</a>
 <a class="sourceLine" id="cb375-2" data-line-number="2">                   <span class="dt">newdata =</span> pm_test, <span class="dt">type=</span><span class="st">&quot;prob&quot;</span>)</a>
@@ -861,7 +861,7 @@ RMSE = \sqrt\frac{\sum_i^n(P_i-O_i)^2}{n}
 <a class="sourceLine" id="cb375-7" data-line-number="7">                    <span class="dt">predicted =</span> rf_pred[,<span class="dv">2</span>])</a>
 <a class="sourceLine" id="cb375-8" data-line-number="8"></a>
 <a class="sourceLine" id="cb375-9" data-line-number="9">aucval</a></code></pre></div>
-<pre><code>## [1] 0.845</code></pre>
+<pre><code>## [1] 0.8453054</code></pre>
 <p>A slight improvement over the bagged trees.</p>
 </div>
 <div id="boosted-trees" class="section level2">
@@ -884,15 +884,15 @@ RMSE = \sqrt\frac{\sum_i^n(P_i-O_i)^2}{n}
 <a class="sourceLine" id="cb378-4" data-line-number="4">                <span class="dt">data =</span> prep_pm_train,<span class="dt">n.trees=</span><span class="dv">1000</span>)</a>
 <a class="sourceLine" id="cb378-5" data-line-number="5"><span class="kw">summary</span>(pm_boost)</a></code></pre></div>
 <p><img src="biosml_files/figure-html/gbmload-1.png" width="672" /></p>
-<pre><code>##               var rel.inf
-## glucose   glucose   24.38
-## mass         mass   16.15
-## pedigree pedigree   14.77
-## age           age   12.97
-## insulin   insulin    9.67
-## pressure pressure    8.55
-## pregnant pregnant    7.54
-## triceps   triceps    5.96</code></pre>
+<pre><code>##               var   rel.inf
+## glucose   glucose 24.381141
+## mass         mass 16.145442
+## pedigree pedigree 14.771739
+## age           age 12.973055
+## insulin   insulin  9.674303
+## pressure pressure  8.549152
+## pregnant pregnant  7.542437
+## triceps   triceps  5.962731</code></pre>
 <div class="sourceCode" id="cb380"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb380-1" data-line-number="1">boost_pred &lt;-<span class="st"> </span><span class="kw">predict</span>(pm_boost,</a>
 <a class="sourceLine" id="cb380-2" data-line-number="2">                      <span class="dt">newdata =</span> pm_test, </a>
 <a class="sourceLine" id="cb380-3" data-line-number="3">                      <span class="dt">type=</span><span class="st">&quot;response&quot;</span>,</a>
@@ -904,7 +904,7 @@ RMSE = \sqrt\frac{\sum_i^n(P_i-O_i)^2}{n}
 <a class="sourceLine" id="cb380-9" data-line-number="9">                    <span class="dt">predicted =</span> boost_pred)</a>
 <a class="sourceLine" id="cb380-10" data-line-number="10"></a>
 <a class="sourceLine" id="cb380-11" data-line-number="11">aucval</a></code></pre></div>
-<pre><code>## [1] 0.838</code></pre>
+<pre><code>## [1] 0.8378582</code></pre>
 <p>Of course, we can use the <strong>caret</strong> package to knit these altogether into one framework that dispenses wit the need to understand the details of each method although it is important for you to see examples of standalone functions since 1) it can help your understanding of the method and 2) in languages such as Python there is no equivalent to <strong>caret</strong>.</p>
 </div>
 <div id="using-caret" class="section level2">
@@ -934,13 +934,13 @@ RMSE = \sqrt\frac{\sum_i^n(P_i-O_i)^2}{n}
 ## Summary of sample sizes: 139, 138, 139, 139, 139, 137, ... 
 ## Resampling results across tuning parameters:
 ## 
-##   cp      ROC    Sens   Spec 
-##   0.0288  0.660  0.803  0.417
-##   0.0481  0.664  0.803  0.460
-##   0.1731  0.501  0.852  0.160
+##   cp          ROC        Sens       Spec     
+##   0.02884615  0.6598333  0.8027273  0.4166667
+##   0.04807692  0.6637424  0.8027273  0.4600000
+##   0.17307692  0.5006364  0.8518182  0.1600000
 ## 
 ## ROC was used to select the optimal model using the largest value.
-## The final value used for the model was cp = 0.0481.</code></pre>
+## The final value used for the model was cp = 0.04807692.</code></pre>
 <p>Next, we try out the bagging approach</p>
 <div class="sourceCode" id="cb384"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb384-1" data-line-number="1">bagging_caret &lt;-<span class="st">    </span><span class="kw">train</span>(diabetes <span class="op">~</span><span class="st"> </span>.,</a>
 <a class="sourceLine" id="cb384-2" data-line-number="2">                     <span class="dt">data =</span> pm_test,</a>
@@ -959,8 +959,8 @@ RMSE = \sqrt\frac{\sum_i^n(P_i-O_i)^2}{n}
 ## Summary of sample sizes: 139, 138, 137, 138, 139, 139, ... 
 ## Resampling results:
 ## 
-##   ROC    Sens   Spec 
-##   0.781  0.834  0.557</code></pre>
+##   ROC        Sens       Spec     
+##   0.7810152  0.8336364  0.5566667</code></pre>
 <p>Next we try out the random forest function</p>
 <div class="sourceCode" id="cb386"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb386-1" data-line-number="1">rf_caret &lt;-<span class="st">    </span><span class="kw">train</span>(diabetes <span class="op">~</span><span class="st"> </span>.,</a>
 <a class="sourceLine" id="cb386-2" data-line-number="2">                     <span class="dt">data =</span> pm_test,</a>
@@ -979,10 +979,10 @@ RMSE = \sqrt\frac{\sum_i^n(P_i-O_i)^2}{n}
 ## Summary of sample sizes: 138, 139, 138, 139, 138, 139, ... 
 ## Resampling results across tuning parameters:
 ## 
-##   mtry  ROC    Sens   Spec 
-##   2     0.814  0.864  0.550
-##   5     0.810  0.853  0.553
-##   8     0.799  0.853  0.533
+##   mtry  ROC        Sens       Spec     
+##   2     0.8137576  0.8636364  0.5500000
+##   5     0.8098939  0.8527273  0.5533333
+##   8     0.7989091  0.8527273  0.5333333
 ## 
 ## ROC was used to select the optimal model using the largest value.
 ## The final value used for the model was mtry = 2.</code></pre>
@@ -998,25 +998,25 @@ RMSE = \sqrt\frac{\sum_i^n(P_i-O_i)^2}{n}
 <div class="sourceCode" id="cb389"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb389-1" data-line-number="1"><span class="kw">cat</span>(<span class="st">&quot;Results for Rpart </span><span class="ch">\n</span><span class="st">&quot;</span>)</a></code></pre></div>
 <pre><code>## Results for Rpart</code></pre>
 <div class="sourceCode" id="cb391"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb391-1" data-line-number="1">rpart_caret<span class="op">$</span>results[<span class="dv">1</span>,]</a></code></pre></div>
-<pre><code>##       cp  ROC  Sens  Spec ROCSD SensSD SpecSD
-## 1 0.0288 0.66 0.803 0.417 0.133 0.0955  0.221</code></pre>
+<pre><code>##           cp       ROC      Sens      Spec     ROCSD     SensSD    SpecSD
+## 1 0.02884615 0.6598333 0.8027273 0.4166667 0.1334386 0.09554349 0.2206892</code></pre>
 <div class="sourceCode" id="cb393"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb393-1" data-line-number="1"><span class="kw">cat</span>(<span class="st">&quot;Results for Bagging </span><span class="ch">\n</span><span class="st">&quot;</span>)</a></code></pre></div>
 <pre><code>## Results for Bagging</code></pre>
 <div class="sourceCode" id="cb395"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb395-1" data-line-number="1">bagging_caret<span class="op">$</span>results[<span class="dv">1</span>,]</a></code></pre></div>
-<pre><code>##   parameter   ROC  Sens  Spec  ROCSD SensSD SpecSD
-## 1      none 0.781 0.834 0.557 0.0976 0.0788   0.21</code></pre>
+<pre><code>##   parameter       ROC      Sens      Spec      ROCSD     SensSD    SpecSD
+## 1      none 0.7810152 0.8336364 0.5566667 0.09758653 0.07879371 0.2096735</code></pre>
 <div class="sourceCode" id="cb397"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb397-1" data-line-number="1"><span class="kw">cat</span>(<span class="st">&quot;Results for Random Forest </span><span class="ch">\n</span><span class="st">&quot;</span>)</a></code></pre></div>
 <pre><code>## Results for Random Forest</code></pre>
 <div class="sourceCode" id="cb399"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb399-1" data-line-number="1">rf_caret<span class="op">$</span>results[<span class="dv">1</span>,]</a></code></pre></div>
-<pre><code>##   mtry   ROC  Sens Spec ROCSD SensSD SpecSD
-## 1    2 0.814 0.864 0.55 0.146  0.104  0.239</code></pre>
+<pre><code>##   mtry       ROC      Sens Spec     ROCSD    SensSD    SpecSD
+## 1    2 0.8137576 0.8636364 0.55 0.1457962 0.1036523 0.2389535</code></pre>
 <div class="sourceCode" id="cb401"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb401-1" data-line-number="1"><span class="kw">cat</span>(<span class="st">&quot;Results for Boosted Trees </span><span class="ch">\n</span><span class="st">&quot;</span>)</a></code></pre></div>
 <pre><code>## Results for Boosted Trees</code></pre>
 <div class="sourceCode" id="cb403"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb403-1" data-line-number="1">boosted_caret<span class="op">$</span>results[<span class="dv">1</span>,]</a></code></pre></div>
-<pre><code>##   shrinkage interaction.depth n.minobsinnode n.trees   ROC  Sens  Spec
-## 1       0.1                 1             10      50 0.799 0.845 0.533
-##   ROCSD SensSD SpecSD
-## 1 0.107   0.11  0.259</code></pre>
+<pre><code>##   shrinkage interaction.depth n.minobsinnode n.trees   ROC      Sens      Spec    ROCSD   SensSD
+## 1       0.1                 1             10      50 0.799 0.8445455 0.5333333 0.106574 0.109967
+##      SpecSD
+## 1 0.2591534</code></pre>
 </div>
 </div>
             </section>

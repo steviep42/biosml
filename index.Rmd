@@ -182,7 +182,9 @@ titan %>%
 
 We could even look at age distributions here. What patterns do you see here ? Did young children fare better than say someone who was 25-35 ? 
 
-```{r}
+```{r loadptitan}
+library(rpart.plot)
+data("ptitanic")
 ptitanic %>% drop_na() %>%
 ggplot(aes(x=age)) + 
   geom_histogram(aes(fill=survived),bins=20) + 
@@ -2993,7 +2995,7 @@ boosted_caret$results[1,]
 
 # Using Different Methods
 
-We started to look at random forests to see if it improve the situation. Note that we aren't, at least at this point, trying to understand the underlying details and subtleties of any of the alternative functions we might use although that is ultimately very important. However, we'll defer the conversation until later. Many people are surprised to learn that random Forests (or even a single Decision Tree) can be used to predict a numeric outcome, but they can be. The advantages of using random Forests include the following:
+We started to look at random forests to see how they perfom. It also provides an opportunity to introduce the concept of hyperparameters which are important to consider since many ML methods will use them. Many people are surprised to learn that random Forests (or even a single Decision Tree) can be used to predict a numeric outcome, but they can be. The advantages of using random Forests include the following:
 
     - easy to use
     - resistant to overfitting
@@ -3042,7 +3044,7 @@ Metrics::rmse(new_test$mpg, predict(caret_rf,new_test))
 ```
 
 
-So the Random Forest approach, in this case, produces a lower out of sample RMSE estimate for the test data frame. The larger question relates to why there is more information in the output for the rf model. What is the **mtry** argument and why does it take on three different values during the execution of the function ? 
+So the Random Forest approach, in this case, produces a lower out of sample RMSE estimate for the test data frame. The larger question relates to why there is more information in the output for the rf model ? What is the **mtry** argument and why does it take on three different values during the execution of the function ? 
 
 ```{r caretreveal}
 caret_rf
@@ -3059,7 +3061,7 @@ The **mtry** argument is a **hyperparameter** which represents information that 
 
 So with **rf** there is a hyperarameter called **mtry** that influences the outcome but is not necessarily something that we know how to optimally set. The **mtry** value is the number of variables that are randomly sampled at each tree split.
 
-To put this into perspective, if we had called the random Forest function without using caret we would have to supply a default value for **mtry** or be prepared to accept whatever the default value is. 
+To put this into perspective, if we had called the random Forest function without using caret we would have to supply a value for **mtry** or be prepared to accept whatever the default value is. 
 
 
 ```{r loadrflib,message=FALSE}
@@ -3075,7 +3077,7 @@ Metrics::rmse(new_test$mpg,predict(non_caret_rf,new_test))
 
 ```
 
-This provides information corresponding to one value of **mtry** - in this case 3. To get an idea about how the model performs with other values of **mtry** we could write a function to accept this value as an argument. Our function will return the RMSE correspinding to the supplied value of **mtry**. 
+This provides information corresponding to one value of **mtry** - in this case 3. To get an idea about how the model performs with other values of **mtry** we could write a function to accept this value as an argument. Our function will return the RMSE corresponding to the supplied value of **mtry**. 
 
 ```{r rffunctiondef}
 make_mtcars_rf <- function(mtry=3) {
@@ -3107,7 +3109,9 @@ We could even create a plot of this information to simplify the selection of **m
 
 ```{r}
 plot(1:length(total_rmse),total_rmse,type="b",
-     xlab = "Value of mtry", ylab = "RMSE")
+     xlab = "Value of mtry", 
+     ylab = "RMSE",
+     main = "How RMSE varies with mtry")
 grid()
 ```
 
@@ -3121,7 +3125,7 @@ train_grid
 
 ```
 
-We need to rewrite our function to handle this training grid. It's not terribly difficult, just a bit tedious.  
+We need to rewrite our function to handle this "training grid". It's not terribly difficult, just a bit tedious.  
 
 ```{r trainmtrf}
 make_mtcars_rf <- function(grid=train_grid) {
@@ -3151,7 +3155,7 @@ Now we'll call this function and plot the output. It appears that values of mtry
 make_mtcars_rf() %>% 
   ggplot(aes(x=mtry,y=rmse)) + 
   geom_line() + facet_wrap(~ntree) +
-  ggtitle("Hyperparameter Experiment")
+  ggtitle("Hyperparameter Experiment") + theme_bw()
 
 ```
 
