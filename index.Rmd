@@ -3000,12 +3000,67 @@ We could look at random forests to see how they perfom. It also provides an oppo
     - easy to use
     - resistant to overfitting
     - accurate use for non linear models
+    - can be used to predict numeric or binary outcomes 
 
 Some problems include:
 
     - the rf function requires setting hyperparameters 
     - adjustment of hyperparameters can be specific to the data set
     - default vlaues will requie adjustment or "tuning"
+
+
+Random Forests are a generalization, and frequently an improvement, over a single decsion tree although a single decision tree is usually more intuitive and easier to inperpret. As an example, let's use the **rpart** function to predict the **mpg** variable from the mtcars data frame:
+
+```{r examrpart}
+library(rpart)
+library(rpart.plot)
+#
+set.seed(123)
+my_small_tree <- rpart(mpg~.,data=mtcars)
+my_small_tree
+
+# Plot it
+rpart.plot(my_small_tree)
+
+```
+
+Pretty basic and easy to use to get predictions and compute an RMSE. 
+
+```{r}
+tree_preds <- predict(my_small_tree, mtcars)
+Metrics::rmse(actual= mtcars$mpg, predicted = tree_preds)
+```
+
+Using a single tree, though easy to understand, can be improvded upon by looking at multiple trees on the same data. Better yet, maybe sample some number of the features, especially the more important ones, and then somehow combine the trees to product an aggregate or "bagged" tree to get a better model - at least that is the goal. So we can use a function such as **randomForest** to do this. In this case, the performance of the RMSE is better.
+
+```{r mybagg}
+library(randomForest)
+set.seed(123)
+mpg_rf <- randomForest(mpg~.,data=mtcars)
+
+# 
+tree_preds <- predict(mpg_rf, mtcars)
+Metrics::rmse(actual= mtcars$mpg, predicted = tree_preds)
+
+```
+
+The way bagged trees work is to use bootstrap sampling to look at different versions of the input for each tree that it makes. The number of trees to make is specified before running the function. Since the sampling is bootstrap-based, some of the rows from the input will be duplicated perhaps more than once whereas other rows will not be involved at all in the training. These are commonly known as Out of Bag samples. After a give tree is formed it is then used to predict performance on the OOB samples to arrive at an OOB error. 
+
+
+```{r demoboot}
+# This generates row numbers for indexing into the mtcars data frame
+
+tre_samp <- sample(1:nrow(mtcars),replace=TRUE)
+
+#
+in_samp <- mtcars[tre_samp,]
+sum(duplicated(in_samp))
+
+# The indices corresponding to the Out of Band rows would be
+out_of_bag <- mtcars[-tre_samp,]
+head(out_of_bag)
+```
+
 
 
 For now, let's set up a "shoot out" between the **lm** function and the **rf** function to see if the latter yields a lower RMSE than the former (or vice versa). You will do a lot of this when building different models. To do this would involve the normal steps of creating a train / test pair upon which to train and then test the model
