@@ -3037,9 +3037,10 @@ set.seed(124)
 caret_rf <- train(mpg ~ .,
                   data = new_train,
                   method = "rf",
+                  metric="RMSE",
                   trControl = control)
 
-caret_ranger$results
+caret_rf$results
 Metrics::rmse(new_test$mpg, predict(caret_rf,new_test))
 ```
 
@@ -3102,6 +3103,7 @@ We also have to be careful not to pick incorrect values for **mtry** so reading 
 total_rmse <- sapply(3:9,make_mtcars_rf) 
 
 # Get the mean rmse
+total_rmse
 mean(total_rmse)
 ```
 
@@ -3178,7 +3180,8 @@ Telling **caret** to use more values of **mtry** is possible. This will explicit
 caret_rf <- train(mpg ~ .,
                   data = new_train,
                   method = "rf",
-                  tuneLength = 9)
+                  tuneLength = 9,
+                  metric="RMSE")
 
 caret_rf$results
 Metrics::rmse(new_test$mpg, predict(caret_rf,new_test))
@@ -3420,7 +3423,7 @@ This plot will show us what is happening.
 ```{r statsm}
 stats <- stats %>% mutate(ntree=factor(ntree))
 ggplot(stats,aes(x=mtry,y=auc)) + geom_line() + 
-  facet_grid(~factor(ntree)) + theme_bw() +
+  facet_grid(.~ntree) + theme_bw() +
   ggtitle("AUC Across Random Forest Hyperparameters")
 ```
 
