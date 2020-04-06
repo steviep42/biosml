@@ -427,11 +427,10 @@ future predictions</li>
 <pre><code>## [1] 4.622936</code></pre>
 <p>There is more here than meets the eye.</p>
 <div class="sourceCode" id="cb128"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb128-1" data-line-number="1"><span class="kw">names</span>(lm_fit)</a></code></pre></div>
-<pre><code>##  [1] &quot;method&quot;       &quot;modelInfo&quot;    &quot;modelType&quot;    &quot;results&quot;      &quot;pred&quot;        
-##  [6] &quot;bestTune&quot;     &quot;call&quot;         &quot;dots&quot;         &quot;metric&quot;       &quot;control&quot;     
-## [11] &quot;finalModel&quot;   &quot;preProcess&quot;   &quot;trainingData&quot; &quot;resample&quot;     &quot;resampledCM&quot; 
-## [16] &quot;perfNames&quot;    &quot;maximize&quot;     &quot;yLimits&quot;      &quot;times&quot;        &quot;levels&quot;      
-## [21] &quot;terms&quot;        &quot;coefnames&quot;    &quot;xlevels&quot;</code></pre>
+<pre><code>##  [1] &quot;method&quot;       &quot;modelInfo&quot;    &quot;modelType&quot;    &quot;results&quot;      &quot;pred&quot;         &quot;bestTune&quot;    
+##  [7] &quot;call&quot;         &quot;dots&quot;         &quot;metric&quot;       &quot;control&quot;      &quot;finalModel&quot;   &quot;preProcess&quot;  
+## [13] &quot;trainingData&quot; &quot;resample&quot;     &quot;resampledCM&quot;  &quot;perfNames&quot;    &quot;maximize&quot;     &quot;yLimits&quot;     
+## [19] &quot;times&quot;        &quot;levels&quot;       &quot;terms&quot;        &quot;coefnames&quot;    &quot;xlevels&quot;</code></pre>
 <div class="sourceCode" id="cb130"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb130-1" data-line-number="1"><span class="kw">str</span>(lm_fit<span class="op">$</span>control,<span class="dv">1</span>)</a></code></pre></div>
 <pre><code>## List of 28
 ##  $ method           : chr &quot;boot&quot;
@@ -580,8 +579,7 @@ future predictions</li>
 <p>Given that this is the underlying information that was used to build the ultimate out of sample error estimate, we should be able to take the average of the RMSE column which should match what we get in the final result.</p>
 <div class="sourceCode" id="cb150"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb150-1" data-line-number="1"><span class="co"># Access the RMSE column</span></a>
 <a class="sourceLine" id="cb150-2" data-line-number="2">my_lm<span class="op">$</span>resample[,<span class="st">&#39;RMSE&#39;</span>]</a></code></pre></div>
-<pre><code>## [1]  3.217212  5.348479  5.670200  2.346548  3.220792  4.150818  2.386493  3.438640
-## [9] 11.395476</code></pre>
+<pre><code>## [1]  3.217212  5.348479  5.670200  2.346548  3.220792  4.150818  2.386493  3.438640 11.395476</code></pre>
 <div class="sourceCode" id="cb152"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb152-1" data-line-number="1"><span class="co"># What is the average</span></a>
 <a class="sourceLine" id="cb152-2" data-line-number="2">my_lm<span class="op">$</span>resample[,<span class="st">&#39;RMSE&#39;</span>] <span class="op">%&gt;%</span><span class="st"> </span>mean</a></code></pre></div>
 <pre><code>## [1] 4.574962</code></pre>
@@ -682,8 +680,7 @@ future predictions</li>
 ## 
 ## Tuning parameter &#39;min.node.size&#39; was held constant at a value of 5
 ## RMSE was used to select the optimal model using the smallest value.
-## The final values used for the model were mtry = 6, splitrule = variance
-##  and min.node.size = 5.</code></pre>
+## The final values used for the model were mtry = 6, splitrule = variance and min.node.size = 5.</code></pre>
 <div class="sourceCode" id="cb162"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb162-1" data-line-number="1">Metrics<span class="op">::</span><span class="kw">rmse</span>(Test<span class="op">$</span>mpg,<span class="kw">predict</span>(my_ranger,Test))</a></code></pre></div>
 <pre><code>## [1] 2.288412</code></pre>
 </div>
@@ -731,8 +728,7 @@ future predictions</li>
 ## 
 ## Tuning parameter &#39;min.node.size&#39; was held constant at a value of 5
 ## RMSE was used to select the optimal model using the smallest value.
-## The final values used for the model were mtry = 6, splitrule = variance
-##  and min.node.size = 5.</code></pre>
+## The final values used for the model were mtry = 6, splitrule = variance and min.node.size = 5.</code></pre>
 <div class="sourceCode" id="cb166"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb166-1" data-line-number="1">Metrics<span class="op">::</span><span class="kw">rmse</span>(Test<span class="op">$</span>mpg,<span class="kw">predict</span>(my_ranger,Test))</a></code></pre></div>
 <pre><code>## [1] 2.338702</code></pre>
 </div>
@@ -741,7 +737,7 @@ future predictions</li>
 <p>This model returns more information than say the <strong>lm</strong> function because this method uses something called “hyperparameters” which are arguments to a given method that gets set before you call the method. In this case there are two hyperparameters called <strong>mtry</strong> and <strong>splitrule</strong> that assume default variables if we don’t supply values.</p>
 <p>We can get a plot of how the RMSE and R squared value varied with different values of <strong>mtry</strong> as well the <strong>splitrule</strong>. Here we see that an mtry value of 6 randomly selected columns / variables provides the lowest RMSE.</p>
 <div class="sourceCode" id="cb168"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb168-1" data-line-number="1"><span class="kw">ggplot</span>(my_ranger) <span class="op">+</span><span class="st"> </span><span class="kw">theme</span>(<span class="dt">legend.position =</span> <span class="st">&quot;top&quot;</span>)</a></code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
 <p>We can use the <strong>tuneLength</strong> argument to tell the <strong>train</strong> function to use N different values of <strong>mtry</strong> which is a <strong>hyperparameter</strong> to the randomForest package. The value relates to the number of columns in the data frame. We have 11 total and we are trying to predict one of them (mpg). So we can tell the <strong>train</strong> function to randomly select N variables (up to 10) when a tree is split.</p>
 <div class="sourceCode" id="cb169"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb169-1" data-line-number="1">my_ctrl &lt;-<span class="st"> </span><span class="kw">trainControl</span>(</a>
 <a class="sourceLine" id="cb169-2" data-line-number="2">    <span class="dt">method =</span> <span class="st">&quot;cv&quot;</span>, </a>
@@ -876,7 +872,7 @@ future predictions</li>
 ## RMSE was used to select the optimal model using the smallest value.
 ## The final value used for the model was mtry = 6.</code></pre>
 <div class="sourceCode" id="cb173"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb173-1" data-line-number="1"><span class="kw">plot</span>(my_rf)</a></code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
 <div class="sourceCode" id="cb174"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb174-1" data-line-number="1">Metrics<span class="op">::</span><span class="kw">rmse</span>(Test<span class="op">$</span>mpg,<span class="kw">predict</span>(my_rf,Test))</a></code></pre></div>
 <pre><code>## [1] 2.23303</code></pre>
 <p>If you have a questions about what hyper parameters can be tuned for a given method then you can refer to the online <a href="https://topepo.github.io/caret/available-models.html">caret documentation</a> Here is a screenshot of the table of supported models and associated tuning parameters.</p>
@@ -946,12 +942,11 @@ future predictions</li>
 ## 
 ## Tuning parameter &#39;min.node.size&#39; was held constant at a value of 5
 ## RMSE was used to select the optimal model using the smallest value.
-## The final values used for the model were mtry = 2, splitrule = extratrees
-##  and min.node.size = 5.</code></pre>
+## The final values used for the model were mtry = 2, splitrule = extratrees and min.node.size = 5.</code></pre>
 <div class="sourceCode" id="cb188"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb188-1" data-line-number="1">Metrics<span class="op">::</span><span class="kw">rmse</span>(Test<span class="op">$</span>mpg,<span class="kw">predict</span>(my_ranger,Test))</a></code></pre></div>
 <pre><code>## [1] 3.042224</code></pre>
 <div class="sourceCode" id="cb190"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb190-1" data-line-number="1"><span class="kw">plot</span>(my_ranger)</a></code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-25-1.png" width="672" /></p>
 </div>
 </div>
             </section>

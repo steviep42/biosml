@@ -3061,9 +3061,40 @@ out_of_bag <- mtcars[-tre_samp,]
 head(out_of_bag)
 ```
 
+We could extend this concept by plotting the "out of band" error using the "out of band" dataset associated with each tree. Remember, for each tree, we sample the input data WITH replacement which menas that some of the rows in the data frame will be left which are used to create the OOB "test" set. We can then do a prediction on this data set and compute, for example, an AUC to approximate the out of band error.
 
 
-For now, let's set up a "shoot out" between the **lm** function and the **rf** function to see if the latter yields a lower RMSE than the former (or vice versa). You will do a lot of this when building different models. To do this would involve the normal steps of creating a train / test pair upon which to train and then test the model
+```{r computeoob}
+myl <- data.frame()
+
+# We'll build a series of trees from 10 - 1000 in increments of 10
+trees <- seq(10,1000,10)
+
+
+for (ii in 1:length(trees)) {
+  model <- randomForest(diabetes ~ ., 
+                        data = PimaIndiansDiabetes, 
+                        ntree=trees[ii],keep.inbag=TRUE)
+  #
+  preds <- predict(model, PimaIndiansDiabetes, type="prob")
+  preds <- apply(preds,1,max)
+  auc <- caTools::colAUC(preds,PimaIndiansDiabetes$diabetes)
+  err <- 1-auc
+  myl <- rbind(myl,c(err,model_means,trees[ii]))
+  
+}
+names(myl) <- c("err","means","trees")
+```
+
+Look at this data frame which has a compute error / validation rate for each set of trees that we create:
+
+```{r ploterr}
+plot(y=myl$err,x=myl$trees,type="l",
+     xlab="Number Of Trees",ylab="Error",main="Error Rate")
+grid()
+```
+
+
 
 
 ```{r reprolm}
@@ -3072,42 +3103,9 @@ control <- trainControl(method = "cv", number = 5)
 new_idx <- createDataPartition(mtcars$mpg,p=.80,list=FALSE)
 new_train <- mtcars[new_idx,]
 new_test  <- mtcars[-new_idx,]
-
-set.seed(124)
-caret_lm <- train(mpg ~ .,
-                  data = new_train,
-                  method = "lm",
-                  trControl = control)
-
-caret_lm$results
-Metrics::rmse(new_test$mpg, predict(caret_lm,new_test))
-```
-
-The results of the **lm** function are pretty straightforward as are the predictions. So let's see what the **randomForest** function will give us with the same data. Because we are using caret, all we have to is sub in the desired method which is **rf**.
-
-```{r reprorf}
-control <- trainControl(method = "cv", number = 5)
-
-set.seed(124)
-caret_rf <- train(mpg ~ .,
-                  data = new_train,
-                  method = "rf",
-                  metric="RMSE",
-                  trControl = control)
-
-caret_rf$results
-Metrics::rmse(new_test$mpg, predict(caret_rf,new_test))
 ```
 
 
-So the Random Forest approach, in this case, produces a lower out of sample RMSE estimate for the test data frame. The larger question relates to why there is more information in the output for the rf model ? What is the **mtry** argument and why does it take on three different values during the execution of the function ? 
-
-```{r caretreveal}
-caret_rf
-```
-
-
-The **mtry** argument is a **hyperparameter** which represents information that is supplied in the form of an argument prior to the call to the function. These parameters might not be something one can intelligently set without some experimentation. Here is some more specific information.
 
 ## Parameters vs Hyperparameters 
 
@@ -3217,13 +3215,15 @@ make_mtcars_rf() %>%
 ```
 
 
-The above is an example of what we would have to do if we didn't have something like caret to help us try out different values of **mtry** or other parameters. As we saw from our earlier work, the model **caret_rf** tried three different values of the **mtry** hyperparameter without us even asking for it. It event tells us that the best value for **mtry** was 6 which corresponds to an RMSE of 2.37.
+The above is an example of what we would have to do if we didn't have something like caret to help us try out different values of **mtry** or other parameters. But we could see how the caret function handles this.
 
 ```{r printcaretrf}
+set.seed(321)
+caret_rf <- train(mpg ~ .,data=new_train,method="rf")
 caret_rf
 ```
 
-As a matter of fact we can plot this model with not a lot of effort and it will show us something interesting. In particular, we now see that using values less than 6 predictors / columns / features results in lower RMSE. If we use more, than the RMSE goes up. This is the power of methods that use hyperparamters. If we move through a number of values for the **mtry** then perhaps we can find the best value to get the best result. 
+As a matter of fact we can plot this model with not a lot of effort and it will show us something interesting. An mtry of 6 seems to be the best. This is the power of methods that use hyperparamters. If we move through a number of values for the **mtry** then perhaps we can find the best value to get the best result. 
 
 ```{r}
 plot(caret_rf)
@@ -3232,6 +3232,7 @@ plot(caret_rf)
 Telling **caret** to use more values of **mtry** is possible. This will explicitly try all values from 1 - 9 inclusive. Note that the model gets built for each value of **mtry**. This causes the model building process to take longer than it normally would. 
 
 ```{r caretrftune}
+set.seed(333)
 caret_rf <- train(mpg ~ .,
                   data = new_train,
                   method = "rf",
@@ -3243,7 +3244,7 @@ Metrics::rmse(new_test$mpg, predict(caret_rf,new_test))
 ```
 
 
-It looks like a value of 4 will produce the lowest value for RMSE. 
+It looks like a value of 5 will produce the lowest value for RMSE. 
 
 ```{r plotcaretrf}
 plot(caret_rf)
@@ -3589,7 +3590,7 @@ valid_rf <- train(diabetes~.,
 valid_rf$bestTune
 
 # Now we would use the value of mtry to find an appropriate value
-# of mtyry to use in the test data
+# of mtyry to use in the test data. From tje previous step it is 8
 
 set.seed(123)
 test_rf  <- train(diabetes~.,
@@ -3597,7 +3598,7 @@ test_rf  <- train(diabetes~.,
                  metric="Accuracy",
                  method = "rf",
                  trControl = trainControl(method="none"),
-                 tuneGrid = data.frame(mtry = 5))
+                 tuneGrid = data.frame(mtry = 8))
 
 
 some_preds <- predict(test_rf,test)
