@@ -3011,6 +3011,8 @@ Some problems include:
 
 Random Forests are a generalization, and frequently an improvement, over a single decsion tree although a single decision tree is usually more intuitive and easier to inperpret. As an example, let's use the **rpart** function to predict the **mpg** variable from the mtcars data frame:
 
+## A Single Decision Tree
+
 ```{r examrpart}
 library(rpart)
 library(rpart.plot)
@@ -3131,7 +3133,14 @@ Metrics::rmse(new_test$mpg,predict(non_caret_rf,new_test))
 
 ```
 
-This provides information corresponding to one value of **mtry** - in this case 3. To get an idea about how the model performs with other values of **mtry** we could write a function to accept this value as an argument. Our function will return the RMSE corresponding to the supplied value of **mtry**. 
+The randomForest function will generate "importance" information on the variables. This information is considered as the method makes its splits.
+
+```{r importrf}
+varImpPlot(non_caret_rf)
+```
+
+
+To get an idea about how the model performs with other values of **mtry** we could write a function to accept this value as an argument. Our function will return the RMSE corresponding to the supplied value of **mtry**. 
 
 ```{r rffunctiondef}
 make_mtcars_rf <- function(mtry=3) {
