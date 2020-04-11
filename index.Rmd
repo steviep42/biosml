@@ -3646,12 +3646,11 @@ set.seed(123) # Make this example reproducible
 my_lm <- train(mpg ~ wt, 
                example_Train,
                method = "lm",
-               preProc = c("center","scale"),
                trControl = control)
 
 my_lm
 plot(mpg~wt,data=example_Train,main="Train Data")
-abline(lm_fit$finalModel,lty=2)
+abline(my_lm$finalModel,lty=2)
 ```
 
 So does this model perform better than a model built using a support vector machine ? It's easy to generate such a model by reusing much of the same information from above. 
@@ -3665,7 +3664,6 @@ my_svm <- train(
   mpg ~ wt, 
   example_Train,
   method = "svmRadial",
-  preProc = c("center","scale"),
   trControl = control
 )
 
@@ -3673,7 +3671,9 @@ my_svm
 ```
 
 
-So let's plot the training data as well as the resulting regression line (in the color black) coming from the lm object. We'll also plot the results from the Support Vector Machine predictions on the same graph (in red). From this plot it appears that the Support Vector Machine does a better job of "following" the actual data - at least for the training data. We might even be able to improve the SVM performance if we tune the hyperparameters but the default without tuning seems better than the lm.  It's this type of observation that leads one to consider if there are yet other methods that would result in even better results.  
+So let's plot the training data as well as the resulting regression line (in the color black) coming from the lm object. We'll also plot the results from the Support Vector Machine predictions on the same graph (in red). From this plot it appears that the Support Vector Machine does a better job of "following" the actual data - at least for the training data. 
+
+We might even be able to improve the SVM performance if we tune the hyperparameters but the default without tuning seems better than the lm.  It's this type of observation that leads one to consider if there are yet other methods that would result in even better results.  
 
 
 ```{r pickthe3}
@@ -3691,8 +3691,8 @@ legend("topright",c("lm","svm"),col=c("black","red"),lty=1,cex=1)
 In terms of the RMSE for the Test set predictions, which method is better (i.e. the lowest RMSE) ? 
 
 ```{r pickthe4}
-lm_preds <- predict(my_lm,example_Train)
-svm_preds <- predict(my_svm,example_Train)
+lm_preds <- predict(my_lm,example_Test)
+svm_preds <- predict(my_svm,example_Test)
 #
 cat("RMSE for lm is: ",Metrics::rmse(example_Test$mpg,lm_preds),"\n")
 cat("RMSE for smv is: ",Metrics::rmse(example_Test$mpg,svm_preds),"\n")
@@ -3717,7 +3717,7 @@ set.seed(123)
 comp_mod_lm <- train(mpg ~ .,
                      example_Train,
                      method = "lm",
-                     preProc = c("center","scale"),
+#                     preProc = c("center","scale"),
                      trControl = control)
 
 
@@ -3726,7 +3726,7 @@ set.seed(123)
 comp_mod_svm <- train(mpg ~ .,
                      example_Train,
                      method = "svmRadial",
-                     preProc = c("center","scale"),
+#                     preProc = c("center","scale"),
                      trControl = control)
 
 # Train the Lasso and Elastic-Net Regularized Generalized Linear Models
@@ -3742,7 +3742,7 @@ set.seed(123)
 comp_mod_ranger <- train(mpg ~ .,
                      example_Train,
                      method = "ranger",
-                     preProc = c("center","scale"),
+#                     preProc = c("center","scale"),
                      trControl = control)
 
 ```
@@ -3785,7 +3785,7 @@ Of course, we can now use the Test data frame to see how the RMSE looks on the h
 ```{r computermse}
 Metrics::rmse(example_Test$mpg,predict(comp_mod_lm,example_Test))
 Metrics::rmse(example_Test$mpg,predict(comp_mod_svm,example_Test))
-Metrics::rmse(example_Test$mpg,predict(comp_mod_svm,example_Test))
+Metrics::rmse(example_Test$mpg,predict(comp_mod_glmnet,example_Test))
 Metrics::rmse(example_Test$mpg,predict(comp_mod_ranger,example_Test))
 ```
 
@@ -3794,8 +3794,16 @@ Metrics::rmse(example_Test$mpg,predict(comp_mod_ranger,example_Test))
 
 Features are the columns in your data set. Up until now we have not been concerned with the formula being specified choosing rather to focus on how to run models with the caret package. However, knowing how to select the "best" subset of features is important since an overspcified formula might result in very long training times and, even then, it might not be that good of a model for predicting out of sample error. Of course, various methods have ways to deal with this problem. 
 
-For example, Stepwise regression is one way to look at combinations of predictor variables to arrive at the optimal feature set according to some score (e.g. AIC, BIC). This process is implemented recursively. However, none of this should be a substitute for solid intuition about the data or knowing how features vary with each other (if at all). 
-Still, packages such as caret have ways to assist with feature selection. 
+For example, Stepwise regression is one way to look at combinations of predictor variables to arrive at the optimal feature set according to some score (e.g. AIC, BIC). This process is implemented recursively. However, none of this should be a substitute for solid intuition about the data or knowing how features vary with each other (if at all). Still, packages such as caret have ways to assist with feature selection. 
+
+A benefit of using something like Random Forests is that as part of its output it can inform us what variables it considers to be important. In reality it has to do this since it does publish information like R Squared values, coefficients or p-values. 
+
+```{r imptree}
+rf_mpg <- randomForest(mpg ~ .,data=mtcars, importance=TRUE)
+importance(rf_mpg,type=1)
+```
+
+This gives us some clues as to what variables we might want to include or exclude in our formula. 
 
 ### Identifying Redundant Features
 
@@ -3817,9 +3825,8 @@ correlations[1:6, 1:6]
 
 It turns out that there are lots of strong correlations going on here. The darker the circle the stronger the correlation. 
 
-```{r}
-suppressMessages(library(corrplot))
-corrplot(correlations, order="hclust")
+```{r plotde}
+DataExplorer::plot_correlation(correlations)
 ```
 
 The **caret** package has some functions that can help us identify highly correlated variables that might be a candidates for removal prior to use in building a model. One of the variables that is highly correlated with others is **mpg** Since that is the one we are trying to predict, we'll keep it around. The following columns from mtcars have a correlation of .75 (or higher) with some other variable(s)
@@ -3856,7 +3863,8 @@ decorrel_lm <- train(mpg~.,
 
 Another approach would be to identify the important variables as determined by a rigorous, reliable and statistically aware process. Some models will report this information as part of the computation. The **caret** package has a function called **varImp** which helps to calculate relative variable importance within an object produced by the **train** function. What this means for us is that we can take most models built with **train** and pass it to the **varImp** function.
 
-```{r}
+```{r cpzp, message=FALSE}
+set.seed(123) 
 idx <- createDataPartition(mtcars$mpg, p = .8, 
                                   list = FALSE, 
                                   times = 1)
@@ -3868,6 +3876,7 @@ myLm <- train(mpg~.,
                      method = "lm",
                      metric = "RMSE")
 
+myLm
 summary(myLm)
 ```
 
@@ -3876,17 +3885,19 @@ If you look at the summary of the model it looks pretty bleak because mot of the
 Now let's see what variables are considered to be important by using **varImp**.  Remember that this might lead us to use a subset of the more prominent variables in the formation of a new model in case, for example, the coefficients in the existing model weren't significant. 
 
 ```{r}
+set.seed(123)
 plot(varImp(myLm))
 ```
 
 How do things look in the model if we limit the formula to some of the "important" (allegedly) features ? Well, it explains more of the variance with fewer predictors (the R^2 value). Both **wt** and **hp** are significant. That's a start. 
 
 ```{r}
+set.seed(123)
 myLm <- train(mpg~wt+disp+hp,
                      data = train,
                      method = "lm",
                      metric = "RMSE")
-
+myLm
 summary(myLm)
 ```
 
@@ -3899,8 +3910,8 @@ Automatic feature selection methods can be used to build many models with differ
 ```{r rfectrl11}
 rfeControl <- rfeControl(functions=lmFuncs, method="cv", number=10)
 
-results <- rfe(mtcars[,2:11], 
-               mtcars[,1], 
+results <- rfe(x = mtcars[,2:11], 
+               y = mtcars[,1], 
                sizes=c(2:11), 
                rfeControl=rfeControl)
 
@@ -3915,6 +3926,7 @@ myLm <- train(mpg~wt+am+qsec,
                      method = "lm",
                      metric = "RMSE")
 
+myLm
 summary(myLm)
 ```
 
