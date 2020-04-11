@@ -380,7 +380,7 @@ diabetes - Class variable (test for diabetes)</code></pre>
 <p>But, as we learned we can also build a ROC curve to get the AUC which can be a general estimator of how well the model is performing.</p>
 <div class="sourceCode" id="cb261"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb261-1" data-line-number="1"><span class="kw">library</span>(caTools)</a>
 <a class="sourceLine" id="cb261-2" data-line-number="2"><span class="kw">colAUC</span>(pm_model_fitpreds,test<span class="op">$</span>diabetes,<span class="dt">plotROC=</span><span class="ot">TRUE</span>)</a></code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-33-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-47-1.png" width="672" /></p>
 <pre><code>##                  [,1]
 ## neg vs. pos 0.8677358</code></pre>
 <div class="sourceCode" id="cb263"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb263-1" data-line-number="1">fitpredt &lt;-<span class="st"> </span><span class="kw">ifelse</span>(pm_model_fitpreds <span class="op">&gt;</span><span class="st"> </span><span class="fl">.385</span>,<span class="st">&quot;pos&quot;</span>,<span class="st">&quot;neg&quot;</span>)</a>
@@ -489,7 +489,7 @@ diabetes - Class variable (test for diabetes)</code></pre>
 ## The final value used for the model was mtry = 2.</code></pre>
 <p>The object can be plotted. Here we see that the max AUC of .825 occurs when mtry is 3 and the Gini criterion is used to evaluate a tree.</p>
 <div class="sourceCode" id="cb280"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb280-1" data-line-number="1"><span class="kw">plot</span>(pm_rf_mod)</a></code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-36-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-50-1.png" width="672" /></p>
 <div class="sourceCode" id="cb281"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb281-1" data-line-number="1"><span class="kw">max</span>(pm_ranger_mod[[<span class="st">&quot;results&quot;</span>]]<span class="op">$</span>ROC)</a></code></pre></div>
 <pre><code>## [1] 0.8128779</code></pre>
 <p>This model has better sensitivity and specificity than the previous one.</p>
@@ -553,7 +553,7 @@ diabetes - Class variable (test for diabetes)</code></pre>
 ## insulin    0.000</code></pre>
 <p>These can even be plotted:</p>
 <div class="sourceCode" id="cb289"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb289-1" data-line-number="1"><span class="kw">plot</span>(<span class="kw">varImp</span>(pm_glm_mod))</a></code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-38-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-52-1.png" width="672" /></p>
 <div class="sourceCode" id="cb290"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb290-1" data-line-number="1"><span class="kw">library</span>(gridExtra)</a>
 <a class="sourceLine" id="cb290-2" data-line-number="2">plot1 &lt;-<span class="st"> </span><span class="kw">plot</span>(<span class="kw">varImp</span>(pm_glm_mod),<span class="dt">main=</span><span class="st">&quot;GLM&quot;</span>)</a>
 <a class="sourceLine" id="cb290-3" data-line-number="3">plot2 &lt;-<span class="st"> </span><span class="kw">plot</span>(<span class="kw">varImp</span>(pm_rf_mod),<span class="dt">main=</span><span class="st">&quot;rf&quot;</span>)</a>
