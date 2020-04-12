@@ -662,7 +662,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>Now let’s see what variables are considered to be important by using <strong>varImp</strong>. Remember that this might lead us to use a subset of the more prominent variables in the formation of a new model in case, for example, the coefficients in the existing model weren’t significant.</p>
 <div class="sourceCode" id="cb544"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb544-1" data-line-number="1"><span class="kw">set.seed</span>(<span class="dv">123</span>)</a>
 <a class="sourceLine" id="cb544-2" data-line-number="2"><span class="kw">plot</span>(<span class="kw">varImp</span>(myLm))</a></code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-86-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-65-1.png" width="672" /></p>
 <p>How do things look in the model if we limit the formula to some of the “important” (allegedly) features ? Well, it explains more of the variance with fewer predictors (the R^2 value). Both <strong>wt</strong> and <strong>hp</strong> are significant. That’s a start.</p>
 <div class="sourceCode" id="cb545"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb545-1" data-line-number="1"><span class="kw">set.seed</span>(<span class="dv">123</span>)</a>
 <a class="sourceLine" id="cb545-2" data-line-number="2">myLm &lt;-<span class="st"> </span><span class="kw">train</span>(mpg<span class="op">~</span>wt<span class="op">+</span>drat<span class="op">+</span>carb,</a>
@@ -741,7 +741,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ##    gear, wt, drat, am, vs</code></pre>
 <div class="sourceCode" id="cb551"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb551-1" data-line-number="1"><span class="kw">plot</span>(results,<span class="dt">type=</span><span class="kw">c</span>(<span class="st">&quot;g&quot;</span>,<span class="st">&quot;o&quot;</span>))</a></code></pre></div>
 <p><img src="biosml_files/figure-html/rfectrl11-1.png" width="672" /></p>
-<div class="sourceCode" id="cb552"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb552-1" data-line-number="1">myLm &lt;-<span class="st"> </span><span class="kw">train</span>(mpg<span class="op">~</span>wt<span class="op">+</span>am<span class="op">+</span>gear,</a>
+<div class="sourceCode" id="cb552"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb552-1" data-line-number="1">myLm &lt;-<span class="st"> </span><span class="kw">train</span>(mpg<span class="op">~</span>wt<span class="op">+</span>drat<span class="op">+</span>gear,</a>
 <a class="sourceLine" id="cb552-2" data-line-number="2">                     <span class="dt">data =</span> train,</a>
 <a class="sourceLine" id="cb552-3" data-line-number="3">                     <span class="dt">method =</span> <span class="st">&quot;lm&quot;</span>,</a>
 <a class="sourceLine" id="cb552-4" data-line-number="4">                     <span class="dt">metric =</span> <span class="st">&quot;RMSE&quot;</span>)</a>
@@ -757,8 +757,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## Summary of sample sizes: 28, 28, 28, 28, 28, 28, ... 
 ## Resampling results:
 ## 
-##   RMSE      Rsquared   MAE    
-##   3.459017  0.6787109  2.77309
+##   RMSE      Rsquared   MAE     
+##   3.392751  0.6848952  2.708587
 ## 
 ## Tuning parameter &#39;intercept&#39; was held constant at a value of TRUE</code></pre>
 <div class="sourceCode" id="cb554"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb554-1" data-line-number="1"><span class="kw">summary</span>(myLm)</a></code></pre></div>
@@ -768,20 +768,20 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## 
 ## Residuals:
 ##     Min      1Q  Median      3Q     Max 
-## -3.8226 -2.0795 -0.0659  1.4405  7.1380 
+## -4.7657 -1.8714  0.1848  1.0130  6.8310 
 ## 
 ## Coefficients:
 ##             Estimate Std. Error t value Pr(&gt;|t|)    
-## (Intercept) 34.96877    5.28206   6.620 7.57e-07 ***
-## wt          -4.86374    0.76560  -6.353 1.44e-06 ***
-## am           0.09787    2.02786   0.048    0.962    
-## gear         0.22390    1.23064   0.182    0.857    
+## (Intercept)  27.5335     7.1808   3.834   0.0008 ***
+## wt           -4.3232     0.7679  -5.630 8.52e-06 ***
+## drat          2.1989     1.5420   1.426   0.1667    
+## gear         -0.3563     1.0098  -0.353   0.7273    
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
-## Residual standard error: 2.858 on 24 degrees of freedom
-## Multiple R-squared:  0.7777, Adjusted R-squared:  0.7499 
-## F-statistic: 27.98 on 3 and 24 DF,  p-value: 5.24e-08</code></pre>
+## Residual standard error: 2.744 on 24 degrees of freedom
+## Multiple R-squared:  0.795,  Adjusted R-squared:  0.7694 
+## F-statistic: 31.03 on 3 and 24 DF,  p-value: 1.997e-08</code></pre>
 </div>
 <div id="recursive-feature-elimination" class="section level3">
 <h3><span class="header-section-number">10.5.5</span> Recursive Feature Elimination</h3>
@@ -818,7 +818,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## The top 3 variables (out of 3):
 ##    wt, am, drat</code></pre>
 <div class="sourceCode" id="cb558"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb558-1" data-line-number="1"><span class="kw">plot</span>(results,<span class="dt">type=</span><span class="kw">c</span>(<span class="st">&quot;o&quot;</span>,<span class="st">&quot;g&quot;</span>))</a></code></pre></div>
-<p><img src="biosml_files/figure-html/unnamed-chunk-88-1.png" width="672" /></p>
+<p><img src="biosml_files/figure-html/unnamed-chunk-67-1.png" width="672" /></p>
 <p>What we get back is some idea about the important features. We could then build a model with caret that uses only these features to see if the suggested RMSE value mentioned in the rfe process matches.</p>
 </div>
 </div>

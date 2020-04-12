@@ -3920,7 +3920,7 @@ plot(results,type=c("g","o"))
 ```
 
 ```{r mylmwtam}
-myLm <- train(mpg~wt+am+gear,
+myLm <- train(mpg~wt+drat+gear,
                      data = train,
                      method = "lm",
                      metric = "RMSE")
